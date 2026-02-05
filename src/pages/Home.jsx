@@ -6,7 +6,6 @@ import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import Card from '../components/UI/Card';
-import Preloader from '../components/Preloader';
 import SEOHelmet from '../components/SEOHelmet';
 import Toast from '../components/UI/Toast';
 import { useToast } from '../hooks/useToast';
@@ -225,7 +224,6 @@ const Home = () => {
         description="Transformamos suas ideias em experiências digitais memoráveis. Especialistas em UI/UX Design, Desenvolvimento Front-End e Identidade Visual."
         keywords="design digital, desenvolvimento web, ui ux design, front-end, identidade visual, branding, criação de sites"
       />
-      <Preloader />
       <div className="bg-cream min-h-screen">
         <Header />
 

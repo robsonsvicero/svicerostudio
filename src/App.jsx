@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
+import ConsentBanner from './components/ConsentBanner';
 import Home from './pages/Home';
 import Schedule from './pages/Schedule';
 import Diagnostico from './pages/Diagnostico';
@@ -15,9 +16,12 @@ import Login from './pages/Login';
 import AdminProjetos from './pages/AdminProjetos';
 import AdminBlog from './pages/AdminBlog';
 import AdminDepoimentos from './pages/AdminDepoimentos';
+import AdminAutores from './pages/AdminAutores';
 import Admin from './pages/Admin';
 import BusinessCard from './pages/BusinessCard';
 import NotFound from './pages/NotFound';
+import Privacidade from './pages/Privacidade';
+import ExclusaoDados from './pages/ExclusaoDados';
 import './styles/global.css';
 
 import Agradecimento from './pages/Agradecimento';
@@ -39,6 +43,8 @@ function App() {
           <Route path="/cartao" element={<BusinessCard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/agradecimento" element={<Agradecimento />} />
+          <Route path="/privacidade" element={<Privacidade />} />
+          <Route path="/exclusao-dados" element={<ExclusaoDados />} />
           <Route 
             path="/admin" 
             element={
@@ -71,10 +77,19 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/admin/autores" 
+            element={
+              <ProtectedRoute>
+                <AdminAutores />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ConsentBanner />
       </Router>
-    </AuthProvider>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }

@@ -17,6 +17,8 @@ const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedTag, setSelectedTag] = useState('')
   const [allTags, setAllTags] = useState([])
+  const [selectedAuthor, setSelectedAuthor] = useState('')
+  const [authors, setAuthors] = useState([])
 
   // Buscar posts publicados
   const fetchPosts = async () => {
@@ -46,8 +48,27 @@ const Blog = () => {
       setAllTags(Array.from(tagsSet).sort())
     } catch (error) {
       // Erro ao buscar posts
+      console.error('Erro ao buscar posts:', error)
     } finally {
       setIsLoading(false)
+    }
+
+    // Buscar autores publicados (separadamente para não quebrar a página se falhar)
+    try {
+      const { data: autoresData, error: autoresError } = await supabase
+        .from('autores')
+        .select('nome')
+        .eq('publicado', true)
+        .order('nome', { ascending: true })
+      
+      if (autoresError) throw autoresError
+      
+      const autorNames = autoresData ? autoresData.map(a => a.nome).filter(Boolean) : []
+      setAuthors(autorNames)
+    } catch (error) {
+      // Erro ao buscar autores - não quebra a página
+      console.error('Erro ao buscar autores:', error)
+      setAuthors([])
     }
   }
 
@@ -55,7 +76,7 @@ const Blog = () => {
     fetchPosts()
   }, [])
 
-  // Filtrar posts por categoria, tags e busca
+  // Filtrar posts por categoria, tags, autor e busca
   const filteredPosts = posts.filter(post => {
     // Filtro de categoria
     const categoryMatch = selectedCategory === 'Todos' || post.categoria === selectedCategory
@@ -63,13 +84,16 @@ const Blog = () => {
     // Filtro de tag (normalizar para lowercase)
     const tagMatch = !selectedTag || (post.tags && post.tags.toLowerCase().split(',').map(t => t.trim()).includes(selectedTag.toLowerCase()))
     
+    // Filtro de autor
+    const authorMatch = !selectedAuthor || post.autor === selectedAuthor
+    
     // Filtro de busca (título, resumo ou conteúdo)
     const searchMatch = !searchTerm || 
       post.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (post.resumo && post.resumo.toLowerCase().includes(searchTerm.toLowerCase())) ||
       post.conteudo.toLowerCase().includes(searchTerm.toLowerCase())
     
-    return categoryMatch && tagMatch && searchMatch
+    return categoryMatch && tagMatch && authorMatch && searchMatch
   })
 
   // Formatar data
@@ -170,7 +194,7 @@ const Blog = () => {
 
             {/* Filtros de Categoria */}
             {categories.length > 1 && (
-              <div className="mb-12 flex flex-wrap justify-center gap-3">
+              <div className="mb-8 flex flex-wrap justify-center gap-3">
                 {categories.map((category) => (
                   <button
                     key={category}
@@ -187,6 +211,40 @@ const Blog = () => {
               </div>
             )}
 
+            {/* Filtros de Autor */}
+            {authors.length > 0 && (
+              <div className="mb-8">
+                <div className="flex flex-wrap justify-center gap-2">
+                  {selectedAuthor && (
+                    <button
+                      onClick={() => setSelectedAuthor('')}
+                      className="px-4 py-2 rounded-full text-sm bg-primary text-white shadow-md hover:bg-primary/90 transition-all"
+                    >
+                      <i className="fa-solid fa-times mr-2"></i>
+                      {selectedAuthor}
+                    </button>
+                  )}
+                  {!selectedAuthor && (
+                    <>
+                      <span className="px-4 py-2 text-sm text-low-medium flex items-center">
+                        <i className="fa-solid fa-user mr-2"></i>
+                        Autores:
+                      </span>
+                      {authors.map((author) => (
+                        <button
+                          key={author}
+                          onClick={() => setSelectedAuthor(author)}
+                          className="px-4 py-2 rounded-full text-sm bg-white text-low-medium hover:bg-primary hover:text-white border border-cream/40 transition-all"
+                        >
+                          {author}
+                        </button>
+                      ))}
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Grid de Posts */}
             {isLoading ? (
               <div className="text-center py-20">
@@ -197,9 +255,9 @@ const Blog = () => {
               <div className="text-center py-20">
                 <i className="fa-regular fa-newspaper text-6xl text-low-light mb-4"></i>
                 <p className="text-xl text-low-medium">
-                  {selectedCategory === 'Todos' 
+                  {selectedCategory === 'Todos' && !selectedAuthor && !selectedTag
                     ? 'Nenhum post publicado ainda.' 
-                    : `Nenhum post na categoria "${selectedCategory}".`}
+                    : `Nenhum post encontrado com os filtros selecionados.`}
                 </p>
               </div>
             ) : (

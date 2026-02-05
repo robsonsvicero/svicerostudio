@@ -29,6 +29,14 @@ const Admin = () => {
       link: '/admin/depoimentos',
       color: 'bg-low-dark',
       hoverColor: 'hover:bg-low-dark/90'
+    },
+    {
+      title: 'Autores',
+      description: 'Gerencie os autores dos artigos do blog',
+      icon: 'fa-solid fa-user-tie',
+      link: '/admin/autores',
+      color: 'bg-blue-600',
+      hoverColor: 'hover:bg-blue-800/90'
     }
   ];
 

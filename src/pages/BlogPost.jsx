@@ -11,38 +11,67 @@ const BlogPost = () => {
   const { slug } = useParams()
   const navigate = useNavigate()
   const [post, setPost] = useState(null)
+  const [autor, setAutor] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [relatedPosts, setRelatedPosts] = useState([])
 
   // Inicializar Facebook SDK
   useEffect(() => {
-    // Verificar se o script já existe
-    const existingScript = document.getElementById('facebook-jssdk')
-    
-    if (window.FB) {
-      // SDK já carregado, fazer parse
-      window.FB.XFBML.parse()
-    } else if (!existingScript) {
-      // Configurar callback de inicialização
-      window.fbAsyncInit = function() {
-        window.FB.init({
-          appId: '1616292912873079', 
-          autoLogAppEvents: true,
-          xfbml: true,
-          version: 'v21.0'
-        })
-        // Parse após inicialização
+    let isCancelled = false
+    let loadHandler = null
+
+    const parseWidgets = () => {
+      if (!isCancelled && window.FB) {
         window.FB.XFBML.parse()
       }
+    }
 
-      // Carregar o SDK
-      const script = document.createElement('script')
-      script.id = 'facebook-jssdk'
-      script.src = 'https://connect.facebook.net/pt_BR/sdk.js'
-      script.async = true
-      script.defer = true
-      script.crossOrigin = 'anonymous'
-      document.body.appendChild(script)
+    const initSdk = () => {
+      if (!window.FB) return
+      window.FB.init({
+        appId: '1616292912873079',
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: 'v21.0'
+      })
+      parseWidgets()
+    }
+
+    // Verificar se o script já existe
+    const existingScript = document.getElementById('facebook-jssdk')
+
+    if (window.FB) {
+      // SDK já carregado, fazer parse
+      parseWidgets()
+    } else {
+      // Configurar callback de inicialização (mesmo se o script já existir)
+      window.fbAsyncInit = function() {
+        if (!isCancelled) {
+          initSdk()
+        }
+      }
+
+      if (!existingScript) {
+        // Carregar o SDK
+        const script = document.createElement('script')
+        script.id = 'facebook-jssdk'
+        script.src = 'https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v21.0&appId=1616292912873079&autoLogAppEvents=1'
+        script.async = true
+        script.defer = true
+        script.crossOrigin = 'anonymous'
+        document.body.appendChild(script)
+      } else {
+        // Caso o script exista mas ainda nao tenha carregado
+        loadHandler = () => parseWidgets()
+        existingScript.addEventListener('load', loadHandler)
+      }
+    }
+
+    return () => {
+      isCancelled = true
+      if (existingScript && loadHandler) {
+        existingScript.removeEventListener('load', loadHandler)
+      }
     }
   }, [])
 
@@ -62,6 +91,21 @@ const BlogPost = () => {
         return
       }
       setPost(data)
+      
+      // Buscar autor pelo nome
+      if (data.autor) {
+        const { data: autorData, error: autorError } = await supabase
+          .from('autores')
+          .select('id, nome, cargo, foto_url, bio, email')
+          .eq('nome', data.autor)
+          .eq('publicado', true)
+          .single()
+        
+        if (!autorError && autorData) {
+          setAutor(autorData)
+        }
+      }
+      
       setIsLoading(false)
     }
     if (slug) fetchPost()
@@ -189,6 +233,49 @@ const BlogPost = () => {
                 {renderContent(post.conteudo)}
               </div>
             </div>
+
+            {/* Informações do Autor */}
+            {autor && (
+              <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl p-8 md:p-12 mb-16 border border-primary/20">
+                <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+                  {autor.foto_url && (
+                    <img
+                      src={autor.foto_url}
+                      alt={autor.nome}
+                      className="w-20 h-20 rounded-full object-cover flex-shrink-0 border-4 border-white shadow-md"
+                    />
+                  )}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <i className="fa-solid fa-user text-primary"></i>
+                      <h3 className="font-title text-xl font-semibold text-low-dark">
+                        Sobre o Autor
+                      </h3>
+                    </div>
+                    <p className="font-title text-lg text-low-dark mb-1">
+                      {autor.nome}
+                    </p>
+                    <p className="text-primary font-medium mb-3">
+                      {autor.cargo}
+                    </p>
+                    {autor.bio && (
+                      <p className="text-low-medium mb-4">
+                        {autor.bio}
+                      </p>
+                    )}
+                    {autor.email && (
+                      <a 
+                        href={`mailto:${autor.email}`}
+                        className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
+                      >
+                        <i className="fa-solid fa-envelope"></i>
+                        {autor.email}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Seção de Comentários do Facebook */}
             <div className="bg-white rounded-xl shadow-md p-8 md:p-12 mb-16 border border-cream/20">

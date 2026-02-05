@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '../UI/Button';
 import logoFooter from '../../images/logo_horizontal 4.png';
 import heroImage from '../../images/hero.webp';
@@ -61,6 +62,14 @@ const Footer = () => {
           <p>© 2026</p>
           <span className="hidden sm:inline text-cream/60">•</span>
           <p className="text-cream/80 italic">Svicero Studio — Estratégia que eleva, design que posiciona</p>
+          <span className="hidden sm:inline text-cream/60">•</span>
+          <Link to="/privacidade" className="text-cream/80 hover:text-primary transition-colors">
+            Privacidade
+          </Link>
+          <span className="hidden sm:inline text-cream/60">•</span>
+          <Link to="/exclusao-dados" className="text-cream/80 hover:text-primary transition-colors">
+            Exclusão de Dados
+          </Link>
         </div>
       </div>
     </footer>

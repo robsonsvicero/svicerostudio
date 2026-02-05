@@ -11,6 +11,7 @@ const AdminBlog = () => {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const [posts, setPosts] = useState([])
+  const [autores, setAutores] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [editingId, setEditingId] = useState(null)
@@ -28,6 +29,22 @@ const AdminBlog = () => {
     autor: 'Robson Svicero',
     publicado: false
   })
+
+  // Buscar autores
+  const fetchAutores = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('autores')
+        .select('id, nome, cargo')
+        .eq('publicado', true)
+        .order('nome', { ascending: true })
+
+      if (error) throw error
+      setAutores(data || [])
+    } catch (error) {
+      console.error('Erro ao carregar autores:', error)
+    }
+  }
 
   // Buscar posts
   const fetchPosts = async () => {
@@ -50,6 +67,7 @@ const AdminBlog = () => {
 
   useEffect(() => {
     fetchPosts()
+    fetchAutores()
   }, [])
 
   // Gerar slug automaticamente do título
@@ -435,16 +453,27 @@ const AdminBlog = () => {
                   <label htmlFor="autor" className="block text-low-dark text-base mb-2">
                     Autor*
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="autor"
                     id="autor"
                     required
                     value={formData.autor}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none"
-                    placeholder="Nome do autor"
-                  />
+                  >
+                    <option value="">Selecione um autor...</option>
+                    {autores.map((autor) => (
+                      <option key={autor.id} value={autor.nome}>
+                        {autor.nome} - {autor.cargo}
+                      </option>
+                    ))}
+                  </select>
+                  {autores.length === 0 && (
+                    <p className="text-xs text-orange-600 mt-2">
+                      <i className="fa-solid fa-exclamation-triangle mr-1"></i>
+                      Nenhum autor disponível. <a href="/admin/autores" className="underline hover:no-underline font-medium">Crie um autor</a>
+                    </p>
+                  )}
                 </div>
               </div>
 
