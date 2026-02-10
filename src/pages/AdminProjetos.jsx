@@ -37,7 +37,7 @@ const AdminProjetos = () => {
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      setProjetos(data || [])
+      setProjects(data || [])
     } catch (error) {
       // Erro ao buscar projetos
       showToastMessage('Erro ao carregar projetos', 'error')
@@ -382,16 +382,16 @@ const AdminProjetos = () => {
           {/* Lista de Projetos */}
           <div className="bg-white rounded-xl shadow-lg p-8 border border-cream/20">
             <h2 className="font-title text-2xl font-light text-low-dark mb-6">
-              Projetos Cadastrados ({projetos.length})
+              Projetos Cadastrados ({projects.length})
             </h2>
 
             {isLoading ? (
               <p className="text-center text-low-medium py-8">Carregando projetos...</p>
-            ) : projetos.length === 0 ? (
+            ) : projects.length === 0 ? (
               <p className="text-center text-low-medium py-8">Nenhum projeto cadastrado ainda.</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projetos.map((projeto) => (
+                {projects.map((projeto) => (
                   <div
                     key={projeto.id}
                     className="border border-cream/40 rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
