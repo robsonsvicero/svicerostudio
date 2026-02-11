@@ -174,7 +174,7 @@ const Header = ({ variant = 'transparent' }) => {
           </a>
           <button
             onClick={handleAdminClick}
-            className="text-primary hover:text-secondary transition-colors p-2 mt-4"
+            className="text-primary hover:text-secondary transition-colors p-2 mt-4 mb-8"
             aria-label="Acessar área administrativa"
             title={user ? 'Acessar Admin' : 'Fazer Login'}
           >
