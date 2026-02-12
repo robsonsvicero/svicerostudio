@@ -18,6 +18,7 @@ const AdminProjetos = () => {
   const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast()
   const [galleryImages, setGalleryImages] = useState([])
   const [uploadingImages, setUploadingImages] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
 
   const [formData, setFormData] = useState({
     titulo: '',
@@ -150,6 +151,26 @@ const AdminProjetos = () => {
     } finally {
       setUploadingImages(false)
     }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+    const files = Array.from(e.dataTransfer.files || [])
+    handleGalleryUpload(files)
   }
 
   // Remover imagem da galeria
@@ -506,7 +527,14 @@ const AdminProjetos = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="gallery-upload"
-                    className="block w-full px-6 py-8 border-2 border-dashed border-cream/60 rounded-lg text-center cursor-pointer hover:border-primary hover:bg-cream/30 transition-colors"
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    className={`block w-full px-6 py-8 border-2 border-dashed rounded-lg text-center cursor-pointer transition-colors ${
+                      isDragging
+                        ? 'border-primary bg-cream/40'
+                        : 'border-cream/60 hover:border-primary hover:bg-cream/30'
+                    }`}
                   >
                     {uploadingImages ? (
                       <div className="flex flex-col items-center gap-2">
@@ -809,7 +837,7 @@ const AdminProjetos = () => {
             <span className="text-low-dark text-base">{toastMessage}</span>
           </div>
           <button
-            onClick={() => setShowToast(false)}
+            onClick={hideToast}
             className="text-low-medium hover:text-low-dark transition-colors"
           >
             <i className="fa-solid fa-times text-xl"></i>

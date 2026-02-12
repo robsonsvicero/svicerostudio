@@ -5,7 +5,6 @@ import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/UI/Button'
 import { formatDate } from '../utils/formatDate'
 import { useToast } from '../hooks/useToast'
-import Toast from '../components/UI/Toast'
 
 const AdminBlog = () => {
   const { user, signOut } = useAuth()
@@ -82,6 +81,39 @@ const AdminBlog = () => {
       .trim()
   }
 
+  const getUniqueSlug = async (slug, currentPostId = null) => {
+    const baseSlug = generateSlug(slug)
+
+    if (!baseSlug) {
+      return ''
+    }
+
+    const { data, error } = await supabase
+      .from('posts')
+      .select('id, slug')
+      .ilike('slug', `${baseSlug}%`)
+
+    if (error) throw error
+
+    const existingSlugs = new Set(
+      (data || [])
+        .filter(post => post.id !== currentPostId)
+        .map(post => post.slug)
+        .filter(postSlug => new RegExp(`^${baseSlug}(-\\d+)?$`).test(postSlug))
+    )
+
+    if (!existingSlugs.has(baseSlug)) {
+      return baseSlug
+    }
+
+    let counter = 1
+    while (existingSlugs.has(`${baseSlug}-${counter}`)) {
+      counter += 1
+    }
+
+    return `${baseSlug}-${counter}`
+  }
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
     
@@ -153,10 +185,18 @@ const AdminBlog = () => {
     setIsSubmitting(true)
 
     try {
+      const baseSlug = generateSlug(formData.slug || formData.titulo)
+
+      if (!baseSlug) {
+        showToastMessage('Informe um título para gerar o slug', 'error')
+        return
+      }
+
       // Normalizar tags para lowercase
       const normalizedData = {
         ...formData,
-        tags: formData.tags.toLowerCase()
+        tags: formData.tags.toLowerCase(),
+        slug: baseSlug
       }
 
       // Normalizar data_publicacao para YYYY-MM-DD (sem timezone)
@@ -175,13 +215,20 @@ const AdminBlog = () => {
         if (error) throw error
         showToastMessage('Post atualizado com sucesso!', 'success')
       } else {
+        normalizedData.slug = await getUniqueSlug(baseSlug)
+
         // Criar novo post
         const { error } = await supabase
           .from('posts')
           .insert([normalizedData])
 
         if (error) throw error
-        showToastMessage('Post criado com sucesso!', 'success')
+
+        if (normalizedData.slug !== baseSlug) {
+          showToastMessage(`Post criado com sucesso! Slug ajustado para: ${normalizedData.slug}`, 'success')
+        } else {
+          showToastMessage('Post criado com sucesso!', 'success')
+        }
       }
 
       // Reset form
@@ -200,8 +247,16 @@ const AdminBlog = () => {
       setEditingId(null)
       fetchPosts()
     } catch (error) {
-      // Erro ao salvar post
-      showToastMessage('Erro ao salvar post', 'error')
+      const isDuplicateSlug =
+        error?.code === '23505' ||
+        error?.status === 409 ||
+        /duplicate|unique|slug/i.test(error?.message || '')
+
+      if (isDuplicateSlug) {
+        showToastMessage('Já existe um post com este slug. Altere o título/slug e tente novamente.', 'error')
+      } else {
+        showToastMessage('Erro ao salvar post', 'error')
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -610,7 +665,7 @@ const AdminBlog = () => {
             <span className="text-low-dark text-base">{toastMessage}</span>
           </div>
           <button
-            onClick={() => setShowToast(false)}
+            onClick={hideToast}
             className="text-low-medium hover:text-low-dark transition-colors"
           >
             <i className="fa-solid fa-times text-xl"></i>
