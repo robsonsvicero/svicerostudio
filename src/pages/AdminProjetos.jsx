@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/UI/Button'
 import { useToast } from '../hooks/useToast'
 import Toast from '../components/UI/Toast'
+import { translateToEnglish } from '../services/translateService'
 
 const AdminProjetos = () => {
   const { user, signOut } = useAuth()
@@ -12,13 +13,19 @@ const AdminProjetos = () => {
   const [projects, setProjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isTranslating, setIsTranslating] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast()
+  const [galleryImages, setGalleryImages] = useState([])
+  const [uploadingImages, setUploadingImages] = useState(false)
 
   const [formData, setFormData] = useState({
     titulo: '',
     descricao: '',
+    descricao_longa: '',
+    descricao_longa_en: '',
     imagem_url: '',
+    site_url: '',
     link: '',
     button_text: 'Ver Projeto',
     link2: '',
@@ -50,9 +57,135 @@ const AdminProjetos = () => {
     fetchProjetos()
   }, [])
 
+  // Buscar galeria de imagens ao editar
+  useEffect(() => {
+    if (editingId) {
+      fetchGalleryImages(editingId)
+    } else {
+      setGalleryImages([])
+    }
+  }, [editingId])
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
     setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
+  }
+
+  // Função de tradução automática
+  const handleTranslate = async () => {
+    if (!formData.descricao_longa || formData.descricao_longa.trim() === '') {
+      showToastMessage('Escreva a descrição em português primeiro', 'error')
+      return
+    }
+
+    try {
+      setIsTranslating(true)
+      const translated = await translateToEnglish(formData.descricao_longa)
+      setFormData(prev => ({ ...prev, descricao_longa_en: translated }))
+      showToastMessage('Texto traduzido com sucesso!', 'success')
+    } catch (error) {
+      showToastMessage(error.message || 'Erro ao traduzir texto', 'error')
+    } finally {
+      setIsTranslating(false)
+    }
+  }
+
+  // Buscar galeria de imagens
+  const fetchGalleryImages = async (projetoId) => {
+    try {
+      const { data, error } = await supabase
+        .from('projeto_galeria')
+        .select('*')
+        .eq('projeto_id', projetoId)
+        .order('ordem', { ascending: true })
+
+      if (error) throw error
+      setGalleryImages(data || [])
+    } catch (error) {
+      console.error('Erro ao carregar galeria:', error)
+    }
+  }
+
+  // Upload de múltiplas imagens
+  const handleGalleryUpload = async (files) => {
+    if (!files || files.length === 0) return
+
+    if (files.length > 15) {
+      showToastMessage('Máximo de 15 imagens por projeto', 'error')
+      return
+    }
+
+    setUploadingImages(true)
+
+    try {
+      const uploadedUrls = []
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        const fileExt = file.name.split('.').pop()
+        const fileName = `${Math.random().toString(36).substring(7)}_${Date.now()}.${fileExt}`
+        const filePath = `${fileName}`
+
+        const { error: uploadError, data } = await supabase.storage
+          .from('projeto-galeria')
+          .upload(filePath, file)
+
+        if (uploadError) throw uploadError
+
+        const { data: urlData } = supabase.storage
+          .from('projeto-galeria')
+          .getPublicUrl(filePath)
+
+        uploadedUrls.push({
+          imagem_url: urlData.publicUrl,
+          ordem: galleryImages.length + i
+        })
+      }
+
+      setGalleryImages(prev => [...prev, ...uploadedUrls])
+      showToastMessage(`${files.length} imagens adicionadas!`, 'success')
+    } catch (error) {
+      console.error('Erro ao fazer upload:', error)
+      showToastMessage('Erro ao fazer upload das imagens', 'error')
+    } finally {
+      setUploadingImages(false)
+    }
+  }
+
+  // Remover imagem da galeria
+  const handleRemoveGalleryImage = async (index, imageId) => {
+    if (imageId) {
+      // Se já está salvo no banco, deletar
+      try {
+        const { error } = await supabase
+          .from('projeto_galeria')
+          .delete()
+          .eq('id', imageId)
+
+        if (error) throw error
+      } catch (error) {
+        console.error('Erro ao deletar imagem:', error)
+        showToastMessage('Erro ao remover imagem', 'error')
+        return
+      }
+    }
+
+    setGalleryImages(prev => prev.filter((_, i) => i !== index))
+  }
+
+  // Reordenar imagens da galeria
+  const handleReorderGallery = (fromIndex, toIndex) => {
+    const newGallery = [...galleryImages]
+    const [removed] = newGallery.splice(fromIndex, 1)
+    newGallery.splice(toIndex, 0, removed)
+    
+    // Atualizar ordem
+    const reordered = newGallery.map((img, index) => ({
+      ...img,
+      ordem: index
+    }))
+    
+    setGalleryImages(reordered)
   }
 
   const handleSubmit = async (e) => {
@@ -60,6 +193,8 @@ const AdminProjetos = () => {
     setIsSubmitting(true)
 
     try {
+      let projetoId = editingId
+
       if (editingId) {
         // Atualizar projeto existente
         const { error } = await supabase
@@ -68,22 +203,55 @@ const AdminProjetos = () => {
           .eq('id', editingId)
 
         if (error) throw error
-        showToastMessage('Projeto atualizado com sucesso!', 'success')
       } else {
         // Criar novo projeto
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('projetos')
           .insert([formData])
+          .select()
 
         if (error) throw error
-        showToastMessage('Projeto criado com sucesso!', 'success')
+        projetoId = data[0].id
       }
+
+      // Salvar galeria de imagens
+      if (galleryImages.length > 0) {
+        // Deletar imagens antigas se estiver editando
+        if (editingId) {
+          await supabase
+            .from('projeto_galeria')
+            .delete()
+            .eq('projeto_id', editingId)
+        }
+
+        // Inserir novas imagens
+        const imagesToInsert = galleryImages.map((img, index) => ({
+          projeto_id: projetoId,
+          imagem_url: img.imagem_url,
+          ordem: img.ordem !== undefined ? img.ordem : index,
+          legenda: img.legenda || null
+        }))
+
+        const { error: galleryError } = await supabase
+          .from('projeto_galeria')
+          .insert(imagesToInsert)
+
+        if (galleryError) throw galleryError
+      }
+
+      showToastMessage(
+        editingId ? 'Projeto atualizado com sucesso!' : 'Projeto criado com sucesso!',
+        'success'
+      )
 
       // Reset form
       setFormData({
         titulo: '',
         descricao: '',
+        descricao_longa: '',
+        descricao_longa_en: '',
         imagem_url: '',
+        site_url: '',
         link: '',
         button_text: 'Ver Projeto',
         link2: '',
@@ -92,9 +260,10 @@ const AdminProjetos = () => {
         mostrar_home: true
       })
       setEditingId(null)
+      setGalleryImages([])
       fetchProjetos()
     } catch (error) {
-      // Erro ao salvar projeto
+      console.error('Erro ao salvar:', error)
       showToastMessage('Erro ao salvar projeto', 'error')
     } finally {
       setIsSubmitting(false)
@@ -105,7 +274,10 @@ const AdminProjetos = () => {
     setFormData({
       titulo: projeto.titulo,
       descricao: projeto.descricao,
+      descricao_longa: projeto.descricao_longa || '',
+      descricao_longa_en: projeto.descricao_longa_en || '',
       imagem_url: projeto.imagem_url,
+      site_url: projeto.site_url || '',
       link: projeto.link,
       button_text: projeto.button_text,
       link2: projeto.link2 || '',
@@ -139,7 +311,10 @@ const AdminProjetos = () => {
     setFormData({
       titulo: '',
       descricao: '',
+      descricao_longa: '',
+      descricao_longa_en: '',
       imagem_url: '',
+      site_url: '',
       link: '',
       button_text: 'Ver Projeto',
       link2: '',
@@ -148,6 +323,7 @@ const AdminProjetos = () => {
       mostrar_home: true
     })
     setEditingId(null)
+    setGalleryImages([])
   }
 
   const handleLogout = async () => {
@@ -228,7 +404,7 @@ const AdminProjetos = () => {
 
               <div>
                 <label htmlFor="descricao" className="block text-low-dark text-base mb-2">
-                  Descrição*
+                  Descrição Curta (para o card)*
                 </label>
                 <textarea
                   name="descricao"
@@ -237,13 +413,72 @@ const AdminProjetos = () => {
                   value={formData.descricao}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none min-h-[120px] resize-y"
-                  placeholder="Descrição do projeto"
+                  placeholder="Descrição curta que aparece no card do projeto"
                 />
+              </div>
+
+              {/* Descrição Longa / Storytelling */}
+              <div className="pt-4 border-t border-cream/40">
+                <h3 className="text-low-dark text-lg font-medium mb-4">
+                  <i className="fa-solid fa-book mr-2"></i>
+                  Storytelling do Projeto
+                </h3>
+                <p className="text-sm text-low-medium mb-4">
+                  Descrição completa que aparecerá no modal. Conte a história do projeto!
+                </p>
+
+                <div className="mb-4">
+                  <label htmlFor="descricao_longa" className="block text-low-dark text-base mb-2">
+                    Descrição Completa (Português)*
+                  </label>
+                  <textarea
+                    name="descricao_longa"
+                    id="descricao_longa"
+                    value={formData.descricao_longa}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none min-h-[200px] resize-y"
+                    placeholder="Conte a história completa do projeto, os desafios, soluções e resultados..."
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="descricao_longa_en" className="block text-low-dark text-base">
+                      Descrição Completa (Inglês)
+                    </label>
+                    <button
+                      type="button"
+                      onClick={handleTranslate}
+                      disabled={isTranslating || !formData.descricao_longa}
+                      className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isTranslating ? (
+                        <>
+                          <i className="fa-solid fa-spinner fa-spin mr-2"></i>
+                          Traduzindo...
+                        </>
+                      ) : (
+                        <>
+                          <i className="fa-solid fa-language mr-2"></i>
+                          Traduzir Automaticamente
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <textarea
+                    name="descricao_longa_en"
+                    id="descricao_longa_en"
+                    value={formData.descricao_longa_en}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none min-h-[200px] resize-y"
+                    placeholder="English version of the project story (or use automatic translation)"
+                  />
+                </div>
               </div>
 
               <div>
                 <label htmlFor="imagem_url" className="block text-low-dark text-base mb-2">
-                  URL da Imagem*
+                  URL da Imagem de Capa*
                 </label>
                 <input
                   type="url"
@@ -253,13 +488,130 @@ const AdminProjetos = () => {
                   value={formData.imagem_url}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none"
-                  placeholder="https://exemplo.com/imagem.jpg"
+                  placeholder="https://exemplo.com/capa.jpg"
                 />
+                <p className="text-sm text-low-medium mt-1">Esta é a imagem que aparece no card do projeto</p>
               </div>
+
+              {/* Galeria de Imagens do Projeto */}
+              <div className="pt-4 border-t border-cream/40">
+                <h3 className="text-low-dark text-lg font-medium mb-4">
+                  <i className="fa-solid fa-images mr-2"></i>
+                  Galeria de Imagens (10-15 imagens)
+                </h3>
+                <p className="text-sm text-low-medium mb-4">
+                  Adicione imagens que serão exibidas no modal do projeto. Arraste para reordenar.
+                </p>
+
+                <div className="mb-4">
+                  <label
+                    htmlFor="gallery-upload"
+                    className="block w-full px-6 py-8 border-2 border-dashed border-cream/60 rounded-lg text-center cursor-pointer hover:border-primary hover:bg-cream/30 transition-colors"
+                  >
+                    {uploadingImages ? (
+                      <div className="flex flex-col items-center gap-2">
+                        <i className="fa-solid fa-spinner fa-spin text-3xl text-primary"></i>
+                        <p className="text-low-dark">Enviando imagens...</p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center gap-2">
+                        <i className="fa-solid fa-cloud-arrow-up text-4xl text-primary"></i>
+                        <p className="text-low-dark font-medium">Clique ou arraste imagens aqui</p>
+                        <p className="text-sm text-low-medium">PNG, JPG, WEBP até 5MB cada</p>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      id="gallery-upload"
+                      multiple
+                      accept="image/*"
+                      onChange={(e) => handleGalleryUpload(Array.from(e.target.files))}
+                      className="hidden"
+                      disabled={uploadingImages}
+                    />
+                  </label>
+                </div>
+
+                {/* Preview da Galeria */}
+                {galleryImages.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {galleryImages.map((img, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={img.imagem_url}
+                          alt={`Galeria ${index + 1}`}
+                          className="w-full aspect-square object-cover rounded-lg"
+                        />
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveGalleryImage(index, img.id)}
+                            className="w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full"
+                            title="Remover imagem"
+                          >
+                            <i className="fa-solid fa-trash text-sm"></i>
+                          </button>
+                          {index > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => handleReorderGallery(index, index - 1)}
+                              className="w-8 h-8 bg-white hover:bg-cream text-low-dark rounded-full"
+                              title="Mover para esquerda"
+                            >
+                              <i className="fa-solid fa-chevron-left text-sm"></i>
+                            </button>
+                          )}
+                          {index < galleryImages.length - 1 && (
+                            <button
+                              type="button"
+                              onClick={() => handleReorderGallery(index, index + 1)}
+                              className="w-8 h-8 bg-white hover:bg-cream text-low-dark rounded-full"
+                              title="Mover para direita"
+                            >
+                              <i className="fa-solid fa-chevron-right text-sm"></i>
+                            </button>
+                          )}
+                        </div>
+                        <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                          #{index + 1}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Links do Projeto */}
+              <div className="pt-4 border-t border-cream/40">
+                <h3 className="text-low-dark text-lg font-medium mb-4">
+                  <i className="fa-solid fa-link mr-2"></i>
+                  Links do Projeto
+                </h3>
+
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="site_url" className="block text-low-dark text-base mb-2">
+                      <i className="fa-solid fa-globe mr-2"></i>
+                      Link do Site (se aplicável)
+                    </label>
+                    <input
+                      type="url"
+                      name="site_url"
+                      id="site_url"
+                      value={formData.site_url}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none"
+                      placeholder="https://sitedobebeto.com.br"
+                    />
+                    <p className="text-sm text-low-medium mt-1">
+                      Se o projeto incluiu criação de site, o botão "Visitar Site" aparecerá no modal
+                    </p>
+                  </div>
 
               <div>
                 <label htmlFor="link" className="block text-low-dark text-base mb-2">
-                  Link do Projeto*
+                  <i className="fa-brands fa-behance mr-2"></i>
+                  Link do Behance/Portfolio*
                 </label>
                 <input
                   type="url"
@@ -269,13 +621,13 @@ const AdminProjetos = () => {
                   value={formData.link}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none"
-                  placeholder="https://exemplo.com"
+                  placeholder="https://behance.net/gallery/..."
                 />
               </div>
 
               <div>
                 <label htmlFor="button_text" className="block text-low-dark text-base mb-2">
-                  Texto do Botão*
+                  Texto do Botão Behance*
                 </label>
                 <input
                   type="text"
@@ -285,13 +637,15 @@ const AdminProjetos = () => {
                   value={formData.button_text}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none"
-                  placeholder="Ver Projeto"
+                  placeholder="Ver no Behance"
                 />
+              </div>
+                </div>
               </div>
 
               {/* Segundo Link (Opcional) */}
               <div className="pt-4 border-t border-cream/40">
-                <h3 className="text-low-dark text-lg font-medium mb-4">Segundo Link (Opcional)</h3>
+                <h3 className="text-low-dark text-lg font-medium mb-4">Link Adicional (Opcional)</h3>
                 <p className="text-sm text-low-medium mb-4">Use quando o projeto tiver mais de um serviço (ex: site + identidade visual)</p>
 
                 <div className="space-y-4">

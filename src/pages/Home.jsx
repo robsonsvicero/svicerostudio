@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
-import Card from '../components/UI/Card';
+import ProjectModal from '../components/ProjectModal';
 import SEOHelmet from '../components/SEOHelmet';
 import Toast from '../components/UI/Toast';
 import { useToast } from '../hooks/useToast';
@@ -50,6 +50,8 @@ const Home = () => {
   const [whatsappVisible, setWhatsappVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   
   // Usar hooks personalizados
   const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
@@ -177,19 +179,24 @@ const Home = () => {
           .select('*')
           .eq('mostrar_home', true)
           .order('data_projeto', { ascending: false })
-          .limit(5);
+          .limit(6);
 
         if (error) throw error;
 
-        // Mapear dados do banco para o formato esperado
+        // Mapear dados do banco para o formato esperado (incluindo novos campos para modal)
         const projetosFormatados = data.map(projeto => ({
+          id: projeto.id,
           image: projeto.imagem_url,
           title: projeto.titulo,
           description: projeto.descricao,
+          descricao_longa: projeto.descricao_longa,
+          descricao_longa_en: projeto.descricao_longa_en,
+          site_url: projeto.site_url,
           link: projeto.link,
           buttonText: projeto.button_text,
           link2: projeto.link2,
-          buttonText2: projeto.button_text2
+          buttonText2: projeto.button_text2,
+          data_projeto: projeto.data_projeto
         }));
 
         setProjects(projetosFormatados);
@@ -201,6 +208,16 @@ const Home = () => {
 
     fetchProjetos();
   }, []);
+
+  const handleOpenProject = (project) => {
+    setSelectedProject(project);
+    setIsProjectModalOpen(true);
+  };
+
+  const handleCloseProject = () => {
+    setIsProjectModalOpen(false);
+    setTimeout(() => setSelectedProject(null), 200);
+  };
 
   // Função para obter a classe de cor do avatar
   const getAvatarColorClass = (cor) => {
@@ -359,35 +376,42 @@ const Home = () => {
           <div className="max-w-screen-xl mx-auto">
             <div className="mb-12 text-center">
               <h2 className="font-title text-4xl md:text-5xl font-light text-cream mb-4">Projetos Selecionados</h2>
-
+              <p className="text-cream/70 text-lg">Casos entregues com foco em resultado e estética.</p>
             </div>
-            <div className="flex flex-col gap-12">
-              <div className="flex flex-col gap-8 min-h-[2000px]">
-                {projects.map((project, index) => (
-                  <Card
-                    key={index}
-                    variant="project"
-                    className={`sticky top-0 z-[${10 + index}] flex flex-col items-center bg-[#1a1a1a] backdrop-blur-sm rounded-xl shadow-2xl p-6 md:p-10 gap-8 border border-cream/10 transition-transform duration-300 hover:scale-[1.03] min-h-[400px] mb-8`}
-                  >
-                    <div className="w-full flex justify-center h-full">
-                      <Card.Image src={project.image} alt={project.title} className="h-full object-contain" />
-                    </div>
-                    <div className="w-full flex flex-col justify-center h-full px-0 md:px-10">
-                      <Card.Title>{project.title}</Card.Title>
-                      <Card.Description className="text-lg text-cream/70 mb-6 leading-relaxed">{project.description}</Card.Description>
-                      <Card.Actions className="flex flex-col gap-4">
-                        <Card.Button href={project.link}>{project.buttonText}</Card.Button>
-                        {project.buttonText2 && (
-                          <Card.Button href={project.link2}>{project.buttonText2}</Card.Button>
-                        )}
-                      </Card.Actions>
-                    </div>
-                  </Card>
-                ))}
-              </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {projects.slice(0, 6).map((project, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handleOpenProject(project)}
+                  className="text-left rounded-2xl border border-cream/10 bg-[#141414] p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                >
+                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-cream/5">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="mt-4">
+                    <h3 className="font-title text-xl text-cream mb-2">{project.title}</h3>
+                    <p className="text-sm text-cream/70 leading-relaxed line-clamp-3">
+                      {project.description}
+                    </p>
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
         </section>
+
+        <ProjectModal
+          isOpen={isProjectModalOpen}
+          onClose={handleCloseProject}
+          project={selectedProject}
+        />
 
         {/* Principais Serviços / Expertise */}
         <section id="servicos" className="bg-cream py-24 px-4 md:px-16">
