@@ -41,9 +41,9 @@ const ServiceFrontEnd = () => {
   return (
     <>
       <SEOHelmet 
-        title="Desenvolvimento Front-End"
-        description="Desenvolvimento de sites modernos, rápidos e otimizados para fortalecer sua presença digital. HTML, CSS, JavaScript e React."
-        keywords="desenvolvimento front-end, criação de sites, html css javascript, react, sites modernos, desenvolvimento web"
+        title="Infraestrutura Web para Marcas Premium"
+        description="Svicero Studio: Projetamos a infraestrutura visual e a engenharia de percepção que sustentam o faturamento de marcas de elite. Consultoria estratégica de design focada em maturidade e performance."
+        keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
       />
       <ServicePage {...serviceData} />
     </>

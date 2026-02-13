@@ -109,7 +109,7 @@ const Header = ({ variant = 'transparent' }) => {
                 href="/diagnostico"
                 variant="secondary"
                 className="inline-block"
-              >Solicitar Diagnóstico Estratégico
+              >Falar com um Estrategista
               </Button>
             <button
               onClick={handleAdminClick}
@@ -187,7 +187,7 @@ const Header = ({ variant = 'transparent' }) => {
                 href="/diagnostico"
                 variant="secondary"
                 className="inline-block mb-6"
-              >Solicitar Diagnóstico Estratégico
+              >Falar com um Estrategista
               </Button>
           
         </nav>

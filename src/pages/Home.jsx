@@ -16,7 +16,6 @@ import idvDesigner from '../images/idv-deigner.webp';
 import uiDesigner from '../images/ui-designer.webp';
 import developer from '../images/developer.webp';
 
-import heroImage from '../images/hero.webp';
 import aboutPhoto from '../images/aboutphoto.png';
 import sviceroCta from '../images/Svicero_CTA.png';
 
@@ -237,9 +236,9 @@ const Home = () => {
   return (
     <>
       <SEOHelmet 
-        title="Svicero Studio - Design Digital & Desenvolvimento Web"
-        description="Transformamos suas ideias em experiências digitais memoráveis. Especialistas em UI/UX Design, Desenvolvimento Front-End e Identidade Visual."
-        keywords="design digital, desenvolvimento web, ui ux design, front-end, identidade visual, branding, criação de sites"
+        title="Engenharia Visual & Design Estratégico"
+        description="Svicero Studio: Projetamos a infraestrutura visual e a engenharia de percepção que sustentam o faturamento de marcas de elite. Consultoria estratégica de design focada em maturidade e performance."
+        keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
       />
       <div className="bg-cream min-h-screen">
         <Header />
@@ -255,21 +254,15 @@ const Home = () => {
           <i className="fa-brands fa-whatsapp text-3xl"></i>
         </a>
 
-        {/* Hero Section / Banner */}
-        <section id="inicio" className="relative h-[780px] flex items-center justify-center text-center overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${heroImage})` }}></div>
-          <div className="relative z-10 flex flex-col items-center justify-center h-full w-full px-4 md:px-8">
-            <h1 className="font-title font-semibold text-cream text-4xl lg:text-6xl tracking-wide mb-6 drop-shadow-lg max-w-6xl">Posicionamento Premium.<br /> Escala Inevitável.</h1>
-            <p className="font-body text-cream text-lg md:text-xl lg:text-2xl font-normal tracking-wide mb-10 max-w-4xl drop-shadow-md">Criamos a estrutura estratégica e visual para marcas que decidiram dominar seu mercado e atrair clientes de alto valor.</p>
+        {/* Hero Section */}
+        <section id="inicio" className="w-full min-h-[72vh] flex items-center justify-center text-center px-4 md:px-8 pt-32 pb-20 bg-bg-primary border-b border-text-primary/10">
+          <div className="flex flex-col items-center justify-center w-full max-w-5xl">
+            <h1 className="font-serif font-semibold text-text-primary text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8">Sua curadoria de estilo, onde você estiver</h1>
+            <p className="font-sans text-text-primary/80 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed">Projetamos a infraestrutura visual que sustenta o faturamento de marcas de elite através da Engenharia de Percepção.</p>
             <Button
               href="/diagnostico"
               variant="secondary"
-            >Solicitar Diagnóstico Estratégico</Button>
-          </div>
-          <div className="absolute bottom-20 left-0 w-full flex justify-center z-20">
-            <a href="#triade" className="animate-bounce text-cream text-3xl hover:text-primary transition-colors duration-300">
-              <i className="fa-solid fa-chevron-down"></i>
-            </a>
+            >Falar com um Estrategista</Button>
           </div>
         </section>
 
@@ -362,7 +355,7 @@ const Home = () => {
                 variant="secondary"
                 className="inline-block mt-8"
               >
-                Solicitar Diagnóstico Estratégico
+                Falar com um Estrategista
               </Button>
               <p className="font-sans text-lg text-low-medium max-w-2xl mx-auto leading-relaxed mt-8">
                 Analisamos o seu posicionamento atual e identificamos as oportunidades de crescimento para o seu negócio.
@@ -372,11 +365,11 @@ const Home = () => {
         </section>
 
         {/* Projetos Selecionados / Works */}
-        <section id="projetos" className="bg-low-dark py-24 px-4 md:px-16">
+        <section id="projetos" className="bg-bg-primary py-24 px-4 md:px-16 border-y border-text-primary/10">
           <div className="max-w-screen-xl mx-auto">
             <div className="mb-12 text-center">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-cream mb-4">Projetos Selecionados</h2>
-              <p className="text-cream/70 text-lg">Casos entregues com foco em resultado e estética.</p>
+              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">Projetos Selecionados</h2>
+              <p className="text-text-primary/70 text-lg">Casos entregues com foco em resultado e estética.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -385,9 +378,9 @@ const Home = () => {
                   key={index}
                   type="button"
                   onClick={() => handleOpenProject(project)}
-                  className="text-left rounded-2xl border border-cream/10 bg-[#141414] p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                  className="text-left rounded-2xl border border-text-primary/10 bg-white p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-copper/60"
                 >
-                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-cream/5">
+                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-footer-bg">
                     <img
                       src={project.image}
                       alt={project.title}
@@ -396,8 +389,8 @@ const Home = () => {
                     />
                   </div>
                   <div className="mt-4">
-                    <h3 className="font-title text-xl text-cream mb-2">{project.title}</h3>
-                    <p className="text-sm text-cream/70 leading-relaxed line-clamp-3">
+                    <h3 className="font-title text-xl text-text-primary mb-2">{project.title}</h3>
+                    <p className="text-sm text-low-medium leading-relaxed line-clamp-3">
                       {project.description}
                     </p>
                   </div>
@@ -454,17 +447,17 @@ const Home = () => {
         </section>
 
         {/* Sobre / About */}
-        <section id="sobre" className="bg-low-dark py-24 px-4 md:px-16">
+        <section id="sobre" className="bg-footer-bg py-24 px-4 md:px-16 border-y border-text-primary/10">
           <div className="max-w-screen-xl mx-auto">
             <div className="mb-12 text-center">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-cream mb-4">A mente por trás da estratégia</h2>
+              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">A mente por trás da estratégia</h2>
 
             </div>
             <div className="flex flex-col lg:flex-row-reverse gap-12 items-center mb-8">
               <div className="w-full lg:w-2/5 flex justify-center mb-8 lg:mb-0">
                 <img src={aboutPhoto} alt="Robson Svicero - Fundador do Svicero Studio" className="w-full h-auto rounded-2xl shadow-lg" loading="lazy" />
               </div>
-              <div className="w-full lg:w-3/5 text-cream">
+              <div className="w-full lg:w-3/5 text-text-primary">
                 <div className="text-about">
                   <p className="text-lg leading-relaxed mb-6">Eu sou Robson Svicero, e não acredito em design como decoração. No Svicero Studio, minha missão é eliminar o abismo entre a excelência do seu serviço e a forma como o mercado o percebe.</p>
                   <p className="text-lg leading-relaxed mb-6">Com uma trajetória que integra o rigor do Design Gráfico, a precisão do UX e a robustez da Tecnologia, desenvolvi uma visão sistêmica que a maioria das agências ignora. Eu não entrego apenas layouts; eu construo ativos digitais de alta performance que servem como o alicerce para a escala de negócios que buscam o público premium.</p>
@@ -485,7 +478,7 @@ const Home = () => {
                 href="/diagnostico"
                 variant="secondary"
                 className="inline-block mt-8"
-              >Solicitar Diagnóstico Estratégico
+              >Falar com um Estrategista
               </Button>
             </div>
           </div>
@@ -505,15 +498,15 @@ const Home = () => {
                 <ul className="swiper-wrapper">
                   {depoimentos.map((depoimento) => (
                     <li key={depoimento.id} className="swiper-slide">
-                      <div className="bg-low-dark/90 rounded-2xl p-8 border border-cream/10 h-full flex flex-col">
-                        <p className="text-cream/90 text-base leading-relaxed mb-6 italic flex-1">"{depoimento.texto}"</p>
+                      <div className="bg-white rounded-2xl p-8 border border-text-primary/10 h-full flex flex-col">
+                        <p className="text-text-primary/90 text-base leading-relaxed mb-6 italic flex-1">"{depoimento.texto}"</p>
                         <div className="flex items-center gap-4 mt-auto">
                           <div className={`w-12 h-12 flex-shrink-0 rounded-full flex items-center justify-center ${getAvatarColorClass(depoimento.cor_avatar)}`}>
                             <span className="font-semibold text-lg">{depoimento.iniciais || depoimento.nome?.substring(0, 2).toUpperCase()}</span>
                           </div>
                           <div>
-                            <p className="text-cream font-medium">{depoimento.nome}</p>
-                            <p className="text-cream/60 text-sm">{depoimento.cargo}{depoimento.empresa ? `, ${depoimento.empresa}` : ''}</p>
+                            <p className="text-text-primary font-medium">{depoimento.nome}</p>
+                            <p className="text-text-primary/60 text-sm">{depoimento.cargo}{depoimento.empresa ? `, ${depoimento.empresa}` : ''}</p>
                           </div>
                         </div>
                       </div>
@@ -530,12 +523,12 @@ const Home = () => {
 
 
         {/* Blog - Últimas Publicações */}
-        <section className="bg-low-dark  py-24 px-4 md:px-16">
+        <section className="bg-bg-primary py-24 px-4 md:px-16">
           <div className="max-w-screen-xl mx-auto">
             <div className="mb-16 text-center">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-cream mb-4">Crônicas de Design</h2>
+              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">Crônicas de Design</h2>
 
-              <p className="text-lg text-cream font-light max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg text-text-primary/80 font-light max-w-2xl mx-auto leading-relaxed">
                 Insights, tutoriais e reflexões sobre design e desenvolvimento
               </p>
             </div>
@@ -622,7 +615,7 @@ const Home = () => {
                 href="/diagnostico"
                 variant="custom"
                 className="border-2 border-cream text-cream hover:text-secondary transition-colors inline-block mt-8"
-              >Solicitar Diagnóstico Estratégico
+              >Falar com um Estrategista
               </Button>
             </div>
           </div>

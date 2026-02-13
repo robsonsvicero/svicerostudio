@@ -148,7 +148,7 @@ const BlogPost = () => {
   return (
     <>
       <SEOHelmet 
-        title={post?.titulo || 'Post do Blog'}
+        title={post?.titulo || 'Insights de Engenharia Visual'}
         description={post?.resumo || 'Leia mais sobre design, desenvolvimento e estratégia digital no Svicero Studio.'}
         keywords={post?.tags || 'design, desenvolvimento, tecnologia'}
         ogImage={post?.imagem_capa || '/images/og-image.jpg'}

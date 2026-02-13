@@ -41,9 +41,9 @@ const ServiceIdentidadeVisual = () => {
   return (
     <>
       <SEOHelmet 
-        title="Identidade Visual"
-        description="Construo identidades visuais criativas, estratégicas e alinhadas à essência da sua marca para que ela se destaque e se posicione com autoridade."
-        keywords="identidade visual, branding, design de marca, logo design, manual de marca, papelaria corporativa"
+        title="Branding de Luxo e Posicionamento Elite"
+        description="Svicero Studio: Projetamos a infraestrutura visual e a engenharia de percepção que sustentam o faturamento de marcas de elite. Consultoria estratégica de design focada em maturidade e performance."
+        keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
       />
       <ServicePage {...serviceData} />
     </>

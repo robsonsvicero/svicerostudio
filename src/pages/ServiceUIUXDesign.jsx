@@ -40,9 +40,9 @@ const ServiceUIUXDesign = () => {
   return (
     <>
       <SEOHelmet 
-        title="UI & UX Design"
-        description="Crio interfaces visuais funcionais, modernas e esteticamente consistentes — focadas em experiência, usabilidade e conversão."
-        keywords="ui design, ux design, interface design, experiência do usuário, design de interfaces, usabilidade"
+        title="UI/UX para Marcas Premium e High-Ticket"
+        description="Svicero Studio: Projetamos a infraestrutura visual e a engenharia de percepção que sustentam o faturamento de marcas de elite. Consultoria estratégica de design focada em maturidade e performance."
+        keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
       />
       <ServicePage {...serviceData} />
     </>

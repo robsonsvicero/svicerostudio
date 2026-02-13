@@ -102,7 +102,7 @@ const Blog = () => {
   return (
     <>
       <SEOHelmet 
-        title="Blog - Crônicas de Design"
+        title="Insights de Engenharia Visual"
         description="Reflexões sobre design, desenvolvimento e estratégia digital. Insights e tendências do mundo do design digital."
         keywords="blog design, tendências design, desenvolvimento web, ui ux, design thinking"
       />

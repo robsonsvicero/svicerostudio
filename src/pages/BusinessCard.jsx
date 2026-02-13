@@ -34,7 +34,7 @@ const BusinessCard = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Solicitar Diagnóstico Estratégico
+            Falar com um Estrategista
           </a>
 
           <a 

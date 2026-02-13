@@ -56,7 +56,7 @@ const ServicePage = ({
             {subtitle}
           </p>
           <Button href="/diagnostico" variant="secondary">
-            Solicitar Diagnóstico Estratégico
+            Falar com um Estrategista
           </Button>
         </div>
       </section>
@@ -120,7 +120,7 @@ const ServicePage = ({
             <h2 className="font-title text-4xl md:text-5xl font-light text-cream mb-4">{ctaTitle}</h2>
             <p className="font-sans text-lg text-cream/80 mb-8 leading-relaxed">{ctaDescription}</p>
             <Button href="/diagnostico" variant="secondary">
-              Solicitar Diagnóstico Estratégico
+              Falar com um Estrategista
             </Button>
           </div>
           <div className="w-full lg:w-1/2">

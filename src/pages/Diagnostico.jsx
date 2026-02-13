@@ -1,13 +1,20 @@
 import React from 'react';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
+import SEOHelmet from '../components/SEOHelmet';
 import heroDiagnostico from '../images/hero_diagnostico.png';
 
 const Diagnostico = () => {
   return (
-    <div className="bg-cream min-h-screen">
-      <Header />
-      <main>
+    <>
+      <SEOHelmet
+        title="Diagnóstico Estratégico para Marcas de Elite"
+        description="Svicero Studio: Projetamos a infraestrutura visual e a engenharia de percepção que sustentam o faturamento de marcas de elite. Consultoria estratégica de design focada em maturidade e performance."
+        keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
+      />
+      <div className="bg-cream min-h-screen">
+        <Header />
+        <main>
         {/* Hero Section */}
         <section className="relative h-[600px] md:h-[700px] flex items-center justify-center text-center overflow-hidden">
           <div 
@@ -96,9 +103,10 @@ const Diagnostico = () => {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 };
 
