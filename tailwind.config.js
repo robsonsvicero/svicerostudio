@@ -25,8 +25,8 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
-        serif: ['Playfair Display', 'serif'],
-        title: ['Playfair Display', 'serif'],
+        serif: ['Manrope', 'sans-serif'],
+        title: ['Manrope', 'sans-serif'],
       },
       fontSize: {
         exg: '5.6rem',

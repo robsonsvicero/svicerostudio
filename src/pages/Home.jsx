@@ -28,21 +28,21 @@ const Home = () => {
       img: idvDesigner,
       alt: 'Card Designer',
       badge: { text: 'Branding & Identidade', className: 'designer text-[15px] font-medium text-[#800020] bg-[#F8CDC6]' },
-      title: 'Construção de ativos que geram reconhecimento e desejo.',
+      title: 'Arquitetura de marca para ampliar percepção de valor e desejo.',
       link: '/servico-identidade-visual'
     },
     {
       img: uiDesigner,
       alt: 'Card UI designer',
       badge: { text: 'UI & UX', className: 'ui-ux text-[15px] font-medium text-[#094C7E] bg-[#EAF4F6]' },
-      title: 'Experiências fluidas que removem as barreiras entre você e seu cliente.',
+      title: 'Experiências digitais que reduzem fricção e elevam conversão qualificada.',
       link: '/servico-ui-design'
     },
     {
       img: developer,
       alt: 'Card Web Design',
       badge: { text: 'Web Design', className: 'developer text-[15px] font-medium text-[#205C20] bg-[#D6F8D6]' },
-      title: 'Sites de alta performance com design minimalista.',
+      title: 'Infraestrutura web de alta performance para operações premium.',
       link: '/servico-front-end'
     },
   ];
@@ -250,7 +250,7 @@ const Home = () => {
           target="_blank"
           rel="noopener noreferrer"
           className={`fixed bottom-6 right-6 z-40 flex items-center justify-center w-14 h-14 bg-green-500 text-white rounded-full shadow-lg transition-opacity duration-300 ${whatsappVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-          aria-label="Fale pelo WhatsApp"
+          aria-label="Falar com um Estrategista no WhatsApp"
         >
           <i className="fa-brands fa-whatsapp text-3xl"></i>
         </a>
@@ -261,7 +261,7 @@ const Home = () => {
           <div className="absolute inset-0 bg-black/35"></div>
           <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-5xl">
             <h1 className="font-serif font-semibold text-cream text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8 drop-shadow-lg">Engenharia de Percepção para Marcas de Elite.</h1>
-            <p className="font-sans text-cream/90 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed drop-shadow-md">Projetamos a infraestrutura visual e a estratégia de experiência que sustentam a autoridade e o faturamento de marcas que exigem maturidade digital.</p>
+            <p className="font-sans text-cream/90 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed drop-shadow-md">Projetamos a infraestrutura visual e a estratégia de experiência que transformam autoridade em crescimento previsível para marcas high-ticket.</p>
             <Button
               href="/diagnostico"
               variant="secondary"
@@ -273,10 +273,10 @@ const Home = () => {
         <section id="triade" className="bg-cream py-24 px-4 md:px-16">
           <div className="max-w-screen-xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-low-dark mb-4">A Tríade Integrada: Simplicidade que posiciona.</h2>
+              <h2 className="font-title text-4xl md:text-5xl font-light text-low-dark mb-4">A Tríade Svicero: Estratégia, Percepção e Escala.</h2>
 
               <p className="font-sans text-xl text-low-medium max-w-3xl mx-auto leading-relaxed">
-                Eliminamos o abismo entre estratégia e execução. Oferecemos uma solução completa que conecta a força da sua marca à performance tecnológica.
+                Integramos branding, UX e tecnologia para eliminar ruído de posicionamento e sustentar decisões de compra de alto valor.
               </p>
             </div>
 
@@ -291,12 +291,12 @@ const Home = () => {
                   </div>
                   <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Branding & Identidade</h3>
                   <p className="text-lg text-low-medium text-center leading-relaxed mb-4 break-words">
-                    A fundação da sua autoridade. Criamos a base estratégica e visual que posiciona sua marca no mercado, garantindo que ela seja percebida como líder desde o primeiro contato.
+                    Construímos o sistema de marca que comunica sofisticação, consistência e liderança desde o primeiro contato.
                   </p>
                 </div>
                 <div className="text-center mt-auto">
                   <span className="inline-block text-sm font-medium text-primary bg-primary/10 px-4 py-2 rounded-full">
-                    O que somos
+                    Fundamento estratégico
                   </span>
                 </div>
               </div>
@@ -316,12 +316,12 @@ const Home = () => {
                   </div>
                   <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">UX/UI Design</h3>
                   <p className="text-lg text-low-medium text-center leading-relaxed mb-4 break-words">
-                    Onde a estética encontra a conversão. Projetamos interfaces intuitivas que guiam o olhar do seu cliente, transformando a navegação em uma jornada de confiança e desejo de compra.
+                    Projetamos jornadas digitais que orientam decisão, reduzem fricção e aumentam conversão com clareza estratégica.
                   </p>
                 </div>
                 <div className="text-center mt-auto">
                   <span className="inline-block text-sm font-medium text-primary bg-primary/10 px-4 py-2 rounded-full">
-                    Como pensamos
+                    Engenharia da experiência
                   </span>
                 </div>
               </div>
@@ -341,12 +341,12 @@ const Home = () => {
                   </div>
                   <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Desenvolvimento Front-end</h3>
                   <p className="text-lg text-low-medium text-center leading-relaxed mb-4 break-words">
-                    Fidelidade técnica e performance. Entregamos plataformas rápidas, responsivas e visualmente impecáveis, garantindo que a tecnologia trabalhe a favor do seu faturamento.
+                    Entregamos plataformas rápidas, elegantes e robustas para que sua operação converta com precisão e estabilidade.
                   </p>
                 </div>
                 <div className="text-center mt-auto">
                   <span className="inline-block text-sm font-medium text-primary bg-primary/10 px-4 py-2 rounded-full">
-                    Como entregamos
+                    Execução de alta precisão
                   </span>
                 </div>
               </div>
@@ -361,7 +361,7 @@ const Home = () => {
                 Falar com um Estrategista
               </Button>
               <p className="font-sans text-lg text-low-medium max-w-2xl mx-auto leading-relaxed mt-8">
-                Analisamos o seu posicionamento atual e identificamos as oportunidades de crescimento para o seu negócio.
+                Mapeamos gargalos de percepção, autoridade e conversão para destravar seu próximo ciclo de crescimento.
               </p>
             </div>
           </div>
@@ -372,7 +372,7 @@ const Home = () => {
           <div className="max-w-screen-xl mx-auto">
             <div className="mb-12 text-center">
               <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">Projetos Selecionados</h2>
-              <p className="text-text-primary/70 text-lg">Casos entregues com foco em resultado e estética.</p>
+              <p className="text-text-primary/70 text-lg">Casos com impacto direto em percepção de valor e resultado comercial.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -415,7 +415,7 @@ const Home = () => {
             <div className="mb-12 text-center">
               <h2 className="font-title text-4xl md:text-5xl font-light text-low-dark mb-4">Principais Serviços</h2>
               <p className="font-sans text-lg text-low-medium max-w-2xl mx-auto leading-relaxed">
-                Soluções completas em design e desenvolvimento web para fortalecer sua presença digital
+                Consultoria e execução para marcas que exigem sofisticação, performance e consistência.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -440,7 +440,7 @@ const Home = () => {
                       href={servico.link} 
                       className="mt-auto inline-block px-6 py-2 rounded-full border border-low-medium/30 text-low-dark bg-cream hover:bg-low-light transition-all duration-200 text-sm font-medium"
                     >
-                      Saiba mais...
+                      Ver escopo
                     </a>
                   </div>
                 </div>
@@ -453,7 +453,7 @@ const Home = () => {
         <section id="sobre" className="bg-footer-bg py-24 px-4 md:px-16 border-y border-text-primary/10">
           <div className="max-w-screen-xl mx-auto">
             <div className="mb-12 text-center">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">A mente por trás da estratégia</h2>
+              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">A liderança por trás da estratégia</h2>
 
             </div>
             <div className="flex flex-col lg:flex-row-reverse gap-12 items-center mb-8">
@@ -462,7 +462,7 @@ const Home = () => {
               </div>
               <div className="w-full lg:w-3/5 text-text-primary">
                 <div className="text-about">
-                  <p className="text-lg leading-relaxed mb-6">Eu sou Robson Svicero, e não acredito em design como decoração. No Svicero Studio, minha missão é eliminar o abismo entre a excelência do seu serviço e a forma como o mercado o percebe.</p>
+                  <p className="text-lg leading-relaxed mb-6">Eu sou Robson Svicero, e não acredito em design ornamental. No Svicero Studio, minha missão é eliminar o abismo entre a excelência do seu serviço e a forma como o mercado o percebe.</p>
                   <p className="text-lg leading-relaxed mb-6">Com uma trajetória que integra o rigor do Design Gráfico, a precisão do UX e a robustez da Tecnologia, desenvolvi uma visão sistêmica que a maioria das agências ignora. Eu não entrego apenas layouts; eu construo ativos digitais de alta performance que servem como o alicerce para a escala de negócios que buscam o público premium.</p>
                   <p className="text-lg leading-relaxed mb-6">Minha atuação se baseia na Tríade:</p>
                   <ul className="list-disc list-inside mb-6 text-lg leading-relaxed">
@@ -472,7 +472,7 @@ const Home = () => {
                   </ul>
                   <p className="text-lg leading-relaxed mb-6">Quando não estou redesenhando o posicionamento de nossos parceiros, foco no que realmente importa: a construção de um legado para minha família e a busca constante por referências que transcendem o digital.</p>
                   <br />
-                  <p className="text-xl leading-relaxed mb-6 font-semibold italic">Não estamos aqui para fazer "mais um site". Estamos aqui para posicionar sua marca onde ela merece estar.</p>
+                  <p className="text-xl leading-relaxed mb-6 font-semibold italic">Não estamos aqui para entregar "mais um site". Estamos aqui para posicionar sua marca no nível de valor que ela sustenta.</p>
                 </div>
               </div>
             </div>
@@ -494,7 +494,7 @@ const Home = () => {
               <div className="mb-12 text-center">
                 <h2 className="font-title text-4xl md:text-5xl font-light text-low-dark mb-4">Depoimentos</h2>
                 <p className="text-lg text-low-dark/80 font-light max-w-2xl mx-auto leading-relaxed">
-                  Palavras de quem valoriza a excelência
+                  Resultados percebidos por líderes que operam em alto padrão.
                 </p>
               </div>
               <div className="swiper depoimentos-swiper pb-16 relative">
@@ -529,10 +529,10 @@ const Home = () => {
         <section className="bg-bg-primary py-24 px-4 md:px-16">
           <div className="max-w-screen-xl mx-auto">
             <div className="mb-16 text-center">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">Crônicas de Design</h2>
+              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">Insights de Engenharia Visual</h2>
 
               <p className="text-lg text-text-primary/80 font-light max-w-2xl mx-auto leading-relaxed">
-                Insights, tutoriais e reflexões sobre design e desenvolvimento
+                Análises sobre branding, UX e maturidade digital para decisões de alto impacto.
               </p>
             </div>
 
@@ -593,7 +593,7 @@ const Home = () => {
             ) : (
               <div className="text-center py-12">
                 <i className="fa-regular fa-newspaper text-5xl text-low-light mb-4"></i>
-                <p className="text-lg text-low-medium">Em breve novos conteúdos por aqui!</p>
+                <p className="text-lg text-low-medium">Novos insights estratégicos em breve.</p>
               </div>
             )}
           </div>
@@ -612,8 +612,8 @@ const Home = () => {
             </div>
             {/* Texto - aparece segundo em mobile */}
             <div className="w-full md:w-1/2 order-2 md:order-1 flex flex-col items-center md:items-start max-w-screen-xl mx-auto justify-center text-cream text-center md:text-left py-12 md:py-20 px-4 md:px-16">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-cream mb-4">Pronto para o próximo nível?</h2>
-              <p className="text-lg md:text-xl mb-8 text-cream/75">Deixe a complexidade para trás. Vamos construir o posicionamento que o seu negócio merece.</p>
+              <h2 className="font-title text-4xl md:text-5xl font-light text-cream mb-4">Sua marca está pronta para o próximo patamar?</h2>
+              <p className="text-lg md:text-xl mb-8 text-cream/75">Transforme percepção em valor percebido e valor percebido em crescimento.</p>
               <Button
                 href="/diagnostico"
                 variant="custom"
