@@ -257,11 +257,15 @@ const Home = () => {
 
         {/* Hero Section */}
         <section id="inicio" className="relative w-full min-h-[72vh] flex items-center justify-center text-center px-4 md:px-8 pt-32 pb-20 border-b border-text-primary/10 overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${homeHeroImage})` }}></div>
-          <div className="absolute inset-0 bg-black/35"></div>
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `linear-gradient(to bottom, rgba(45, 42, 38, 1) 0%, rgba(45, 42, 38, 0.95) 22%, rgba(45, 42, 38, 0.7) 40%, rgba(45, 42, 38, 0) 58%), url(${homeHeroImage})`
+            }}
+          ></div>
           <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-5xl">
-            <h1 className="font-serif font-semibold text-text-primary text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8 drop-shadow-lg">Engenharia de Percepção para Marcas de Elite.</h1>
-            <p className="font-sans text-text-primary/90 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed drop-shadow-md">Projetamos a infraestrutura visual e a estratégia de experiência que transformam autoridade em crescimento previsível para marcas high-ticket.</p>
+            <h1 className="font-serif font-semibold text-[#fff8f2] text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8 drop-shadow-lg">Engenharia de Percepção para Marcas de Elite.</h1>
+            <p className="font-sans text-[#fff8f2]/90 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed drop-shadow-md">Projetamos a infraestrutura visual e a estratégia de experiência que transformam autoridade em crescimento previsível para marcas high-ticket.</p>
             <Button
               href="/diagnostico"
               variant="secondary"
