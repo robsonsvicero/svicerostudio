@@ -260,8 +260,8 @@ const Home = () => {
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${homeHeroImage})` }}></div>
           <div className="absolute inset-0 bg-black/35"></div>
           <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-5xl">
-            <h1 className="font-serif font-semibold text-cream text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8 drop-shadow-lg">Engenharia de Percepção para Marcas de Elite.</h1>
-            <p className="font-sans text-cream/90 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed drop-shadow-md">Projetamos a infraestrutura visual e a estratégia de experiência que transformam autoridade em crescimento previsível para marcas high-ticket.</p>
+            <h1 className="font-serif font-semibold text-text-primary text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8 drop-shadow-lg">Engenharia de Percepção para Marcas de Elite.</h1>
+            <p className="font-sans text-text-primary/90 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed drop-shadow-md">Projetamos a infraestrutura visual e a estratégia de experiência que transformam autoridade em crescimento previsível para marcas high-ticket.</p>
             <Button
               href="/diagnostico"
               variant="secondary"
