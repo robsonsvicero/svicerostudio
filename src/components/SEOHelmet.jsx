@@ -1,11 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import defaultOgImage from '../images/20260213_svicero_studio_og.webp';
 
 const SEOHelmet = ({ 
   title = 'Engenharia Visual & Design Estratégico',
   description = 'Svicero Studio: Projetamos a infraestrutura visual e a engenharia de percepção que sustentam o faturamento de marcas de elite. Consultoria estratégica de design focada em maturidade e performance.',
   keywords = 'Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio',
-  ogImage = '/images/og-image.jpg',
+  ogImage = defaultOgImage,
   ogType = 'website'
 }) => {
   const siteUrl = 'https://svicerostudio.com.br';
@@ -31,6 +32,14 @@ const SEOHelmet = ({
   };
 
   const fullTitle = withBrand(safeTrim(title));
+  const normalizeOgImage = (imageUrl) => {
+    if (!imageUrl) return `${siteUrl}${defaultOgImage}`;
+    if (/^https?:\/\//i.test(imageUrl) || imageUrl.startsWith('data:') || imageUrl.startsWith('//')) {
+      return imageUrl;
+    }
+    return `${siteUrl}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`;
+  };
+  const fullOgImage = normalizeOgImage(ogImage);
 
   return (
     <Helmet>
@@ -43,14 +52,14 @@ const SEOHelmet = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+      <meta property="og:image" content={fullOgImage} />
       <meta property="og:site_name" content="Svicero Studio" />
       
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+      <meta name="twitter:image" content={fullOgImage} />
       
       {/* Robots */}
       <meta name="robots" content="index, follow" />

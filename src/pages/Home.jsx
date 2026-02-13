@@ -15,6 +15,7 @@ import { formatDate } from '../utils/formatDate';
 import idvDesigner from '../images/idv-deigner.webp';
 import uiDesigner from '../images/ui-designer.webp';
 import developer from '../images/developer.webp';
+import homeHeroImage from '../images/20260213_svicero_studio_hero.webp';
 
 import aboutPhoto from '../images/aboutphoto.png';
 import sviceroCta from '../images/Svicero_CTA.png';
@@ -237,7 +238,7 @@ const Home = () => {
     <>
       <SEOHelmet 
         title="Engenharia Visual & Design Estratégico"
-        description="Svicero Studio: Projetamos a infraestrutura visual e a engenharia de percepção que sustentam o faturamento de marcas de elite. Consultoria estratégica de design focada em maturidade e performance."
+        description="Projete a infraestrutura visual que sustenta o faturamento de marcas de elite. Conheça a Engenharia de Percepção do Svicero Studio. Design e estratégia de alto padrão."
         keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
       />
       <div className="bg-cream min-h-screen">
@@ -255,10 +256,12 @@ const Home = () => {
         </a>
 
         {/* Hero Section */}
-        <section id="inicio" className="w-full min-h-[72vh] flex items-center justify-center text-center px-4 md:px-8 pt-32 pb-20 bg-bg-primary border-b border-text-primary/10">
-          <div className="flex flex-col items-center justify-center w-full max-w-5xl">
-            <h1 className="font-serif font-semibold text-text-primary text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8">Engenharia de Percepção para Marcas de Elite.</h1>
-            <p className="font-sans text-text-primary/80 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed">Projetamos a infraestrutura visual e a estratégia de experiência que sustentam a autoridade e o faturamento de marcas que exigem maturidade digital.</p>
+        <section id="inicio" className="relative w-full min-h-[72vh] flex items-center justify-center text-center px-4 md:px-8 pt-32 pb-20 border-b border-text-primary/10 overflow-hidden">
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${homeHeroImage})` }}></div>
+          <div className="absolute inset-0 bg-black/35"></div>
+          <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-5xl">
+            <h1 className="font-serif font-semibold text-cream text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8 drop-shadow-lg">Engenharia de Percepção para Marcas de Elite.</h1>
+            <p className="font-sans text-cream/90 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed drop-shadow-md">Projetamos a infraestrutura visual e a estratégia de experiência que sustentam a autoridade e o faturamento de marcas que exigem maturidade digital.</p>
             <Button
               href="/diagnostico"
               variant="secondary"

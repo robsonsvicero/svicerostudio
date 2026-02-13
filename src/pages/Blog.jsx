@@ -103,7 +103,7 @@ const Blog = () => {
     <>
       <SEOHelmet 
         title="Insights de Engenharia Visual"
-        description="Reflexões sobre design, desenvolvimento e estratégia digital. Insights e tendências do mundo do design digital."
+        description="Artigos e insights sobre UX Design, Estratégia de Marca e Engenharia de Percepção. O conteúdo exclusivo do Svicero Studio para quem busca o topo do mercado digital."
         keywords="blog design, tendências design, desenvolvimento web, ui ux, design thinking"
       />
       <div className="min-h-screen bg-cream">

@@ -41,7 +41,7 @@ const ServiceUIUXDesign = () => {
     <>
       <SEOHelmet 
         title="UI/UX para Marcas Premium e High-Ticket"
-        description="Svicero Studio: Projetamos a infraestrutura visual e a engenharia de percepção que sustentam o faturamento de marcas de elite. Consultoria estratégica de design focada em maturidade e performance."
+        description="Ecossistemas digitais fluidos e estratégia de UX para marcas que exigem precisão técnica. Reduza a fricção operacional e aumente seu ticket médio com o Svicero Studio."
         keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
       />
       <ServicePage {...serviceData} />
