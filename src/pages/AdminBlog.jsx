@@ -457,15 +457,19 @@ const AdminBlog = () => {
                   <label htmlFor="categoria" className="block text-low-dark text-base mb-2">
                     Categoria
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="categoria"
                     id="categoria"
                     value={formData.categoria}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none"
-                    placeholder="UI/UX Design, Desenvolvimento, etc."
-                  />
+                  >
+                    <option value="">Selecione uma categoria</option>
+                    <option value="Engenharia da Percepção (Branding)">Engenharia da Percepção (Branding)</option>
+                    <option value="Interface & Experiência (UX)">Interface & Experiência (UX)</option>
+                    <option value="Performance & Conversão">Performance & Conversão</option>
+                    <option value="Estratégia de Ativos (Business & IA)">Estratégia de Ativos (Business & IA)</option>
+                  </select>
                 </div>
               </div>
 
