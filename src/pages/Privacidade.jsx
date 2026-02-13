@@ -7,7 +7,7 @@ const Privacidade = () => {
   return (
     <>
       <SEOHelmet 
-        title="Política de Privacidade"
+        title="Política de Privacidade e Proteção de Dados"
         description="Política de Privacidade do Svicero Studio - Como tratamos seus dados e informações."
       />
       <div className="min-h-screen bg-cream">

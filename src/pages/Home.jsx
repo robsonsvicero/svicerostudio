@@ -257,8 +257,8 @@ const Home = () => {
         {/* Hero Section */}
         <section id="inicio" className="w-full min-h-[72vh] flex items-center justify-center text-center px-4 md:px-8 pt-32 pb-20 bg-bg-primary border-b border-text-primary/10">
           <div className="flex flex-col items-center justify-center w-full max-w-5xl">
-            <h1 className="font-serif font-semibold text-text-primary text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8">Sua curadoria de estilo, onde você estiver</h1>
-            <p className="font-sans text-text-primary/80 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed">Projetamos a infraestrutura visual que sustenta o faturamento de marcas de elite através da Engenharia de Percepção.</p>
+            <h1 className="font-serif font-semibold text-text-primary text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8">Engenharia de Percepção para Marcas de Elite.</h1>
+            <p className="font-sans text-text-primary/80 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed">Projetamos a infraestrutura visual e a estratégia de experiência que sustentam a autoridade e o faturamento de marcas que exigem maturidade digital.</p>
             <Button
               href="/diagnostico"
               variant="secondary"

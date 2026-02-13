@@ -7,7 +7,7 @@ const ExclusaoDados = () => {
   return (
     <>
       <SEOHelmet 
-        title="Exclusão de Dados"
+        title="Termos de Exclusão e Tratamento de Dados"
         description="Instruções para solicitar a exclusão de seus dados do Svicero Studio."
       />
       <div className="min-h-screen bg-cream">
