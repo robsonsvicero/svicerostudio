@@ -64,7 +64,7 @@ const Footer = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm text-text-primary gap-3 sm:gap-4 flex-wrap text-center">
           <p>© 2026</p>
           <span className="hidden sm:inline text-accent-copper">•</span>
-          <p className="text-text-primary/80 italic">Svicero Studio — Serviço de Concierge de Moda e Estratégia</p>
+          <p className="text-text-primary/80 italic">Svicero Studio — Engenharia de Percepção e Estratégia</p>
           <span className="hidden sm:inline text-accent-copper">•</span>
           <Link to="/privacidade" className="text-text-primary/80 hover:text-accent-copper transition-colors">
             Privacidade
