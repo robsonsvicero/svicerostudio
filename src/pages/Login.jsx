@@ -7,6 +7,7 @@ import logoImage from '../images/logo_alternativo 1.png'
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const { signIn } = useAuth()
@@ -89,17 +90,27 @@ const Login = () => {
               <label htmlFor="password" className="block text-low-dark text-base mb-2">
                 Senha
               </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none transition-colors"
-                placeholder="••••••••"
-                disabled={isLoading}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  id="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 pr-12 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none transition-colors"
+                  placeholder="••••••••"
+                  disabled={isLoading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-low-medium hover:text-primary transition-colors p-1"
+                  tabIndex={-1}
+                >
+                  <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                </button>
+              </div>
             </div>
 
             <Button
