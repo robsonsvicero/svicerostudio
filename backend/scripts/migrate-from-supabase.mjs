@@ -73,18 +73,19 @@ async function insertToMongo(table, data) {
 
   console.log(`📤 Inserindo ${data.length} registros em ${table}...`);
 
-  // Criar model
-  const Model = mongoose.model(table, schemas[table], table);
+  // Usar conexão direta ao invés de Model do Mongoose
+  const collection = mongoose.connection.db.collection(table);
 
-  // Limpar collection existente (opcional - remove dados antigos)
-  await Model.deleteMany({});
+  // Limpar collection existente
+  await collection.deleteMany({});
   console.log(`   🗑️ Collection ${table} limpa`);
 
-  // Transformar dados (converter id UUID para _id se necessário)
+  // Manter IDs originais do Supabase (UUIDs como strings)
   const transformedData = data.map((item) => {
+    // Manter id original como _id (string UUID)
     const { id, ...rest } = item;
     return {
-      _id: id || new mongoose.Types.ObjectId(),
+      _id: id, // UUID string como _id
       ...rest,
     };
   });
@@ -95,7 +96,7 @@ async function insertToMongo(table, data) {
 
   for (let i = 0; i < transformedData.length; i += BATCH_SIZE) {
     const batch = transformedData.slice(i, i + BATCH_SIZE);
-    await Model.insertMany(batch, { ordered: false });
+    await collection.insertMany(batch, { ordered: false });
     inserted += batch.length;
     console.log(`   📊 ${inserted}/${transformedData.length} inseridos`);
   }
