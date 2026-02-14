@@ -22,9 +22,9 @@ const Login = () => {
       
       if (error) {
         if (error.message.includes('Invalid login credentials')) {
-          setError('Email ou senha incorretos. Certifique-se de que o usuário foi criado no Supabase.')
+          setError('Email ou senha incorretos. Verifique as credenciais do usuário administrador.')
         } else if (error.message.includes('Email not confirmed')) {
-          setError('Email não confirmado. Marque "Auto Confirm User" ao criar o usuário no Supabase.')
+          setError('Conta não habilitada para login. Verifique a configuração do usuário administrador.')
         } else {
           setError(`Erro ao fazer login: ${error.message}`)
         }

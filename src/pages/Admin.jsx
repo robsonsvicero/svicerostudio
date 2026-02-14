@@ -42,8 +42,8 @@ const Admin = () => {
 
   const quickLinks = [
     { label: 'Ver Site', icon: 'fa-solid fa-globe', href: '/', external: false },
-    { label: 'Supabase', icon: 'fa-solid fa-database', href: 'https://supabase.com/dashboard', external: true },
-    { label: 'Vercel', icon: 'fa-solid fa-cloud', href: 'https://vercel.com/dashboard', external: true },
+    { label: 'MongoDB Atlas', icon: 'fa-solid fa-database', href: 'https://cloud.mongodb.com', external: true },
+    { label: 'Railway', icon: 'fa-solid fa-train', href: 'https://railway.app/dashboard', external: true },
   ];
 
   return (
@@ -138,8 +138,8 @@ const Admin = () => {
               <div>
                 <h4 className="font-title text-xl font-light mb-2">Dica</h4>
                 <p className="text-cream/80">
-                  Todas as alterações feitas no painel são salvas automaticamente no banco de dados Supabase 
-                  e refletidas imediatamente no site. Lembre-se de manter os dados atualizados para uma melhor 
+                  Todas as alterações feitas no painel são salvas automaticamente no MongoDB 
+                  via API hospedada no Railway e refletidas no site. Lembre-se de manter os dados atualizados para uma melhor 
                   experiência dos visitantes.
                 </p>
               </div>

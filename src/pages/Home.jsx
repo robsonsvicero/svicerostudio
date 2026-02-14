@@ -260,7 +260,7 @@ const Home = () => {
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(45, 42, 38, 1) 0%, rgba(45, 42, 38, 0.95) 22%, rgba(45, 42, 38, 0.7) 40%, rgba(45, 42, 38, 0) 58%), url(${homeHeroImage})`
+              backgroundImage: `linear-gradient(to bottom, rgba(45, 42, 38, 1) 0%, rgba(45, 42, 38, 0.5) 60%, rgba(45, 42, 38, 0.2) 100%), url(${homeHeroImage})`
             }}
           ></div>
           <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-5xl">
@@ -277,7 +277,7 @@ const Home = () => {
         <section id="triade" className="bg-cream py-24 px-4 md:px-16">
           <div className="max-w-screen-xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-low-dark mb-4">A Tríade Svicero: Estratégia, Percepção e Escala.</h2>
+              <h2 className="font-title text-4xl md:text-5xl font-light text-low-dark mb-4">A Tríade Svicero: Estratégia, Percepção e Maturidade</h2>
 
               <p className="font-sans text-xl text-low-medium max-w-3xl mx-auto leading-relaxed">
                 Integramos branding, UX e tecnologia para eliminar ruído de posicionamento e sustentar decisões de compra de alto valor.
@@ -293,9 +293,9 @@ const Home = () => {
                       <i className="fa-solid fa-palette text-4xl text-primary"></i>
                     </div>
                   </div>
-                  <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Branding & Identidade</h3>
+                  <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Branding & Posicionamento</h3>
                   <p className="text-lg text-low-medium text-center leading-relaxed mb-4 break-words">
-                    Construímos o sistema de marca que comunica sofisticação, consistência e liderança desde o primeiro contato.
+                    Construímos o sistema de marca que comunica sofisticação e liderança silenciosa. Eliminamos o ruído visual para que sua autoridade seja percebida antes mesmo do primeiro contato.
                   </p>
                 </div>
                 <div className="text-center mt-auto">
@@ -318,14 +318,14 @@ const Home = () => {
                       <i className="fa-solid fa-pen-ruler text-4xl text-primary"></i>
                     </div>
                   </div>
-                  <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">UX/UI Design</h3>
+                  <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Engenharia de Experiência</h3>
                   <p className="text-lg text-low-medium text-center leading-relaxed mb-4 break-words">
-                    Projetamos jornadas digitais que orientam decisão, reduzem fricção e aumentam conversão com clareza estratégica.
+                    Projetamos jornadas invisíveis que orientam a decisão de compra e reduzem a fricção cognitiva. Design que não apenas decora, mas blinda a conversão com clareza técnica.
                   </p>
                 </div>
                 <div className="text-center mt-auto">
                   <span className="inline-block text-sm font-medium text-primary bg-primary/10 px-4 py-2 rounded-full">
-                    Engenharia da experiência
+                    Arquitetura de Intenção
                   </span>
                 </div>
               </div>
@@ -343,9 +343,9 @@ const Home = () => {
                       <i className="fa-solid fa-code text-4xl text-primary"></i>
                     </div>
                   </div>
-                  <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Desenvolvimento Front-end</h3>
+                  <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Infraestrutura de Performance</h3>
                   <p className="text-lg text-low-medium text-center leading-relaxed mb-4 break-words">
-                    Entregamos plataformas rápidas, elegantes e robustas para que sua operação converta com precisão e estabilidade.
+                    Entregamos plataformas robustas e elegantes, onde a estabilidade do código sustenta a promessa da marca. Tecnologia de alta precisão para operações que não aceitam falhas.
                   </p>
                 </div>
                 <div className="text-center mt-auto">

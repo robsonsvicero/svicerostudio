@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "npm --prefix backend run dev",
+    "start:api": "npm --prefix backend run start",
     "build": "vite build",
     "postbuild": "node scripts/create-htaccess.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.86.2",
     "@tailwindcss/typography": "^0.5.19",
     "framer-motion": "^12.34.0",
     "marked": "^17.0.1",
