@@ -617,7 +617,7 @@ const Home = () => {
             {/* Texto - aparece segundo em mobile */}
             <div className="w-full md:w-1/2 order-2 md:order-1 flex flex-col items-center md:items-start max-w-screen-xl mx-auto justify-center text-cream text-center md:text-left py-12 md:py-20 px-4 md:px-16">
               <h2 className="font-title text-4xl md:text-5xl font-light text-cream mb-4">Sua marca está pronta para o próximo patamar?</h2>
-              <p className="text-lg md:text-xl mb-8 text-cream/75">Transforme percepção em valor percebido e valor percebido em crescimento.</p>
+              <p className="text-lg md:text-xl mb-8 text-cream/75">Transforme percepção em valor percebido. E valor percebido em crescimento.</p>
               <Button
                 href="/diagnostico"
                 variant="custom"
