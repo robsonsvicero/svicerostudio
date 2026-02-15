@@ -60,7 +60,7 @@ const Header = ({ variant = 'transparent' }) => {
   return (
     <header
       className={`w-full py-5 fixed top-0 left-0 z-50 transition-all duration-300
-        ${scrolled || variant === 'solid' ? 'bg-[#fff8f0cc] shadow-lg' : 'bg-transparent'}
+        ${scrolled || variant === 'solid' ? 'bg-[#fff8f2cc] shadow-lg' : 'bg-transparent'}
         `}
     >
       <div className="max-w-screen-xl w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -114,7 +114,7 @@ const Header = ({ variant = 'transparent' }) => {
             <button
               onClick={handleAdminClick}
               className={`p-2 rounded-lg transition-colors duration-200 ml-2
-                ${scrolled || variant === 'solid' ? 'text-primary hover:bg-secondary hover:text-cream' : 'text-cream hover:bg-secondary'}`}
+                ${scrolled || variant === 'solid' ? 'text-primary/20 hover:bg-secondary hover:text-cream' : 'text-cream/20 hover:bg-secondary'}`}
               aria-label="Acessar área administrativa"
               title={user ? 'Acessar Admin' : 'Fazer Login'}
             >
@@ -174,7 +174,7 @@ const Header = ({ variant = 'transparent' }) => {
           </a>
           <button
             onClick={handleAdminClick}
-            className="text-primary hover:text-secondary transition-colors p-2 mt-4 mb-8"
+            className="text-primary/20 hover:text-secondary transition-colors p-2 mt-4 mb-8"
             aria-label="Acessar área administrativa"
             title={user ? 'Acessar Admin' : 'Fazer Login'}
           >

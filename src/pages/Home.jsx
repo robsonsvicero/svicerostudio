@@ -3,6 +3,7 @@ import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import { supabase } from '../lib/supabase';
 import Header from '../components/Layout/Header';
+import Preloader from '../components/Preloader';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import ProjectModal from '../components/ProjectModal';
@@ -236,6 +237,7 @@ const Home = () => {
 
   return (
     <>
+      <Preloader />
       <SEOHelmet 
         title="Engenharia Visual & Design Estratégico"
         description="Projete a infraestrutura visual que sustenta o faturamento de marcas de elite. Conheça a Engenharia de Percepção do Svicero Studio. Design e estratégia de alto padrão."

@@ -7,10 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#2D2A26',
+        primary: '#2F353B',
         secondary: '#B87333',
         'bg-primary': '#F9F7F2',
-        'text-primary': '#2D2A26',
+        'text-primary': '#2F353B',
         'accent-copper': '#B87333',
         'footer-bg': '#EAE7E1',
         secondary300: '#E9BF84',
@@ -20,7 +20,7 @@ export default {
         'blue-light': '#5FB2D8',
         'low-light': '#8A847D',
         'low-medium': '#5F5A53',
-        'low-dark': '#2D2A26',
+        'low-dark': '#2F353B',
         gelo: '#F5F5F5',
       },
       fontFamily: {

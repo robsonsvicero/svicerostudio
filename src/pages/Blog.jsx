@@ -116,16 +116,17 @@ const Blog = () => {
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${capaBlog})` }}
           >
-            {/* Overlay escuro */}
-            <div className="absolute inset-0 bg-gradient-to-b from-dark-bg/70 via-dark-bg/60 to-dark-bg/80"></div>
+            {/* 
+            Overlay escuro */}
+            {/* <div className="absolute inset-0 bg-gradient-to-b from-dark-bg/70 via-dark-bg/60 to-dark-bg/80"></div> */}
           </div>
           
           {/* Conteúdo do Hero */}
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-            <h1 className="font-title text-4xl lg:text-6xl font-semibold text-cream mb-6 leading-tight">
+            <h1 className="font-title text-4xl lg:text-6xl font-semibold text-primary mb-6 leading-tight">
               Crônicas de Design
             </h1>
-            <p className="text-xl md:text-2xl text-cream/90 max-w-2xl mx-auto leading-relaxed font-light">
+            <p className="text-xl md:text-2xl text-primary/80 max-w-2xl mx-auto leading-relaxed font-light">
               Insights sobre design, desenvolvimento e criatividade
             </p>
           </div>
