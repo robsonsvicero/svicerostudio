@@ -103,19 +103,17 @@ const postSchema = new mongoose.Schema(
   baseSchemaOptions,
 );
 
-const autorSchema = new mongoose.Schema(
-  {
-    nome: { type: String, required: true },
-    cargo: { type: String, required: true },
-    foto_url: String,
-    bio: String,
-    email: String,
-    publicado: { type: Boolean, default: true, index: true },
-    created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, default: Date.now },
-  },
-  baseSchemaOptions,
-);
+const autorSchema = new mongoose.Schema({
+  _id: { type: String, required: true },
+  nome: { type: String, required: true },
+  cargo: { type: String, required: true },
+  foto_url: String,
+  bio: String,
+  email: String,
+  publicado: { type: Boolean, default: true, index: true },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now },
+}, baseSchemaOptions);
 
 const depoimentoSchema = new mongoose.Schema(
   {
