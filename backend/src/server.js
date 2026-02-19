@@ -335,11 +335,6 @@ app.post('/api/db/:table/query', async (req, res) => {
 
     let mongoFilter = buildMongoFilter(filters);
 
-    // Corrige filtro para autores: usa 'id' ao invés de '_id' se o filtro contiver 'id' (UUID)
-    if (table === 'autores' && mongoFilter._id && typeof mongoFilter._id === 'string') {
-      mongoFilter.id = mongoFilter._id;
-      delete mongoFilter._id;
-    }
 
     if (!isAuthenticated && operation === 'select') {
       mongoFilter = applyPublicReadConstraints(table, mongoFilter);
