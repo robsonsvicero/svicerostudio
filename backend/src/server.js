@@ -375,14 +375,18 @@ app.post('/api/db/:table/query', async (req, res) => {
 
     if (operation === 'update') {
       const updatePayload = { ...(payload || {}), updated_at: new Date() };
-      await Model.updateMany(mongoFilter, { $set: updatePayload });
+      const updateResult = await Model.updateMany(mongoFilter, { $set: updatePayload });
+      console.log('[API DEBUG updateMany]', {
+        table,
+        mongoFilter,
+        updatePayload,
+        matchedCount: updateResult.matchedCount,
+        modifiedCount: updateResult.modifiedCount,
+      });
 
-      if (returning) {
-        const updated = await Model.find(mongoFilter).lean();
-        return res.json({ data: normalizeDoc(updated), error: null });
-      }
-
-      return res.json({ data: null, error: null });
+      // Sempre retorna o(s) documento(s) atualizado(s) para depuração
+      const updated = await Model.find(mongoFilter).lean();
+      return res.json({ data: normalizeDoc(updated), error: null, matchedCount: updateResult.matchedCount, modifiedCount: updateResult.modifiedCount });
     }
 
     if (operation === 'delete') {
