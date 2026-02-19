@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import GiscusComments from '../components/Blog/GiscusComments'
 import { marked } from 'marked'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
@@ -15,65 +16,7 @@ const BlogPost = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [relatedPosts, setRelatedPosts] = useState([])
 
-  // Inicializar Facebook SDK
-  useEffect(() => {
-    let isCancelled = false
-    let loadHandler = null
-
-    const parseWidgets = () => {
-      if (!isCancelled && window.FB) {
-        window.FB.XFBML.parse()
-      }
-    }
-
-    const initSdk = () => {
-      if (!window.FB) return
-      window.FB.init({
-        appId: '1616292912873079',
-        autoLogAppEvents: true,
-        xfbml: true,
-        version: 'v21.0'
-      })
-      parseWidgets()
-    }
-
-    // Verificar se o script já existe
-    const existingScript = document.getElementById('facebook-jssdk')
-
-    if (window.FB) {
-      // SDK já carregado, fazer parse
-      parseWidgets()
-    } else {
-      // Configurar callback de inicialização (mesmo se o script já existir)
-      window.fbAsyncInit = function() {
-        if (!isCancelled) {
-          initSdk()
-        }
-      }
-
-      if (!existingScript) {
-        // Carregar o SDK
-        const script = document.createElement('script')
-        script.id = 'facebook-jssdk'
-        script.src = 'https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v21.0&appId=1616292912873079&autoLogAppEvents=1'
-        script.async = true
-        script.defer = true
-        script.crossOrigin = 'anonymous'
-        document.body.appendChild(script)
-      } else {
-        // Caso o script exista mas ainda nao tenha carregado
-        loadHandler = () => parseWidgets()
-        existingScript.addEventListener('load', loadHandler)
-      }
-    }
-
-    return () => {
-      isCancelled = true
-      if (existingScript && loadHandler) {
-        existingScript.removeEventListener('load', loadHandler)
-      }
-    }
-  }, [])
+  // Facebook Comments removido: toda a lógica do SDK foi eliminada para evitar conflitos com Giscus.
 
   // Buscar post pelo slug
   useEffect(() => {
@@ -111,19 +54,7 @@ const BlogPost = () => {
     if (slug) fetchPost()
   }, [slug, navigate])
 
-  // Re-parsear os widgets do Facebook quando o post for carregado
-  useEffect(() => {
-    if (post && window.FB) {
-      // Aguarda um delay maior para o DOM renderizar
-      setTimeout(() => {
-        console.log('[FB] Chamando FB.XFBML.parse para comentários', {
-          href: `https://svicerostudio.com.br/blog/${post.slug}`,
-          post,
-        });
-        window.FB.XFBML.parse();
-      }, 600);
-    }
-  }, [post])
+
 
   // Renderizar conteúdo como Markdown
   const renderContent = (content) => (
@@ -281,20 +212,9 @@ const BlogPost = () => {
               </div>
             )}
 
-            {/* Seção de Comentários do Facebook */}
+            {/* Seção de Comentários - Giscus */}
             <div className="bg-white rounded-xl shadow-md p-8 md:p-12 mb-16 border border-cream/20">
-              <h2 className="font-title text-2xl font-light text-low-dark mb-6 pb-4 border-b border-cream/40">
-                <i className="fa-regular fa-comments mr-3 text-primary"></i>
-                Comentários
-              </h2>
-              <div 
-                className="fb-comments" 
-                data-href={`https://svicerostudio.com.br/blog/${post.slug}`}
-                data-width="100%" 
-                data-numposts="5"
-                data-colorscheme="light"
-                data-order-by="reverse_time"
-              ></div>
+              <GiscusComments />
             </div>
 
             {/* Posts Relacionados */}
