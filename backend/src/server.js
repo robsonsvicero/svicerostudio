@@ -385,11 +385,20 @@ app.post('/api/db/:table/query', async (req, res) => {
 
     return res.status(400).json({ error: 'Operação inválida' });
   } catch (error) {
+    // Log detalhado para depuração
+    console.error('[API ERRO /api/db/:table/query]', {
+      table,
+      operation,
+      filters,
+      payload,
+      error: error,
+      errorMessage: error?.message,
+      stack: error?.stack,
+    });
     if (error?.code === 11000) {
       return res.status(409).json({ error: 'Duplicate key violation' });
     }
-
-    return res.status(500).json({ error: error.message || 'Erro interno' });
+    return res.status(500).json({ error: error.message || 'Erro interno', details: error });
   }
 });
 

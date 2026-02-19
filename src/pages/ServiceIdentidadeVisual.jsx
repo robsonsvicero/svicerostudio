@@ -28,9 +28,9 @@ const ServiceIdentidadeVisual = () => {
       'Entrega: Manual de uso da marca e aplicações visuais'
     ],
     examples: [
-      { image: alexandreIvo, alt: 'Alexandre Ivo - Identidade Visual', title: 'Alexandre Ivo', link: 'https://www.behance.net/gallery/200882919/Alexandre-Ivo-Marca' },
-      { image: powerbrain, alt: 'Powerbrain - Identidade Visual', title: 'Powerbrain', link: 'https://www.behance.net/gallery/207844939/Powerbrain-Marca' },
-      { image: chimp, alt: 'Chimp - Identidade Visual', title: 'Chimp', link: 'https://www.behance.net/gallery/155363639/Chimp-Identidade-Visual' }
+      { image: alexandreIvo, alt: 'Alexandre Ivo - Identidade Visual', title: 'Alexandre Ivo', link: 'https://www.behance.net/gallery/236215677/Alexandre-Ivo-Professor-de-musica' },
+      { image: powerbrain, alt: 'Powerbrain - Identidade Visual', title: 'Powerbrain', link: 'https://www.behance.net/gallery/221467317/PowerBrain' },
+      { image: chimp, alt: 'Chimp - Identidade Visual', title: 'Chimp', link: 'https://www.behance.net/gallery/180857079/Chimp-Skatewear' }
     ],
     ctaImage: ctaIdv,
     ctaTitle: 'Quer uma identidade visual que destaque sua marca?',
