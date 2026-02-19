@@ -114,10 +114,14 @@ const BlogPost = () => {
   // Re-parsear os widgets do Facebook quando o post for carregado
   useEffect(() => {
     if (post && window.FB) {
-      // Aguarda um pequeno delay para o DOM renderizar
+      // Aguarda um delay maior para o DOM renderizar
       setTimeout(() => {
-        window.FB.XFBML.parse()
-      }, 100)
+        console.log('[FB] Chamando FB.XFBML.parse para comentários', {
+          href: `https://svicerostudio.com.br/blog/${post.slug}`,
+          post,
+        });
+        window.FB.XFBML.parse();
+      }, 600);
     }
   }, [post])
 
