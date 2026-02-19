@@ -1,43 +1,34 @@
 import React, { useEffect, useRef } from 'react'
 
-const GiscusComments = () => {
+const IssoComments = () => {
   const ref = useRef(null)
 
   useEffect(() => {
     // Remove scripts antigos para evitar duplicidade
-    const old = document.getElementById('giscus-script')
+    const old = document.getElementById('isso-script')
     if (old) old.remove()
 
+    // Adiciona o script do Isso
     const script = document.createElement('script')
-    script.src = 'https://giscus.app/client.js'
-    script.setAttribute('data-repo', 'robsonsvicero/blog-comments')
-    script.setAttribute('data-repo-id', 'R_kgDORUOEig')
-    script.setAttribute('data-category', 'General')
-    script.setAttribute('data-category-id', 'DIC_kwDORUOEis4C2zzA')
-    script.setAttribute('data-mapping', 'pathname')
-    script.setAttribute('data-strict', '0')
-    script.setAttribute('data-reactions-enabled', '1')
-    script.setAttribute('data-emit-metadata', '0')
-    script.setAttribute('data-input-position', 'bottom')
-    script.setAttribute('data-theme', 'preferred_color_scheme')
-    script.setAttribute('data-lang', 'pt')
-    script.setAttribute('crossorigin', 'anonymous')
+    script.src = 'https://isso.svicerostudio.com.br/js/embed.min.js'
     script.async = true
-    script.id = 'giscus-script'
+    script.id = 'isso-script'
     if (ref.current) {
       ref.current.appendChild(script)
     }
   }, [])
 
   return (
-    <section className="giscus-comments mt-12">
+    <section className="isso-comments mt-12">
       <h2 className="font-title text-2xl font-light text-low-dark mb-6 pb-4 border-b border-cream/40">
         <i className="fa-regular fa-comments mr-3 text-primary"></i>
         Comentários
       </h2>
-      <div ref={ref}></div>
+      <div ref={ref}>
+        <div id="isso-thread"></div>
+      </div>
     </section>
   )
 }
 
-export default GiscusComments
+export default IssoComments

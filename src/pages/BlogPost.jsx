@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import GiscusComments from '../components/Blog/GiscusComments'
+import IssoComments from '../components/Blog/GiscusComments'
 import { marked } from 'marked'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
@@ -212,9 +212,9 @@ const BlogPost = () => {
               </div>
             )}
 
-            {/* Seção de Comentários - Giscus */}
+            {/* Seção de Comentários - Isso */}
             <div className="bg-white rounded-xl shadow-md p-8 md:p-12 mb-16 border border-cream/20">
-              <GiscusComments />
+              <IssoComments />
             </div>
 
             {/* Posts Relacionados */}
