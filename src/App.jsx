@@ -85,6 +85,14 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/admin/comentarios" 
+            element={
+              <ProtectedRoute>
+                <AdminComentarios />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ConsentBanner />

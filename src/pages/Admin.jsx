@@ -37,6 +37,14 @@ const Admin = () => {
       link: '/admin/autores',
       color: 'bg-blue-600',
       hoverColor: 'hover:bg-blue-800/90'
+    },
+    {
+      title: 'Comentários',
+      description: 'Modere os comentários dos posts do blog',
+      icon: 'fa-solid fa-comments',
+      link: '/admin/comentarios',
+      color: 'bg-green-600',
+      hoverColor: 'hover:bg-green-800/90'
     }
   ];
 

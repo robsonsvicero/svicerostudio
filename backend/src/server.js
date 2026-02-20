@@ -1,3 +1,6 @@
+import commentsRouter from './routes/comments.js'
+// Rotas de comentários (públicas)
+app.use('/api/comments', commentsRouter)
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
