@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+
+import mongoose from 'mongoose';
 
 const CommentSchema = new mongoose.Schema({
   postSlug: { type: String, required: true, index: true },
@@ -6,8 +7,8 @@ const CommentSchema = new mongoose.Schema({
   email: { type: String },
   content: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
-  approved: { type: Boolean, default: false }, // Para moderação futura
-  parentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null }, // Para replies
-})
+  approved: { type: Boolean, default: false },
+  parentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null },
+});
 
-module.exports = mongoose.model('Comment', CommentSchema)
+export default mongoose.model('Comment', CommentSchema);
