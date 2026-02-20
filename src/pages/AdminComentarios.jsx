@@ -23,11 +23,16 @@ const AdminComentarios = () => {
       })
       if (!res.ok) {
         let errMsg = 'Erro ao buscar comentários';
+        let status = res.status;
         try {
           const err = await res.json();
           errMsg = err.error || errMsg;
         } catch {}
-        setToast({ message: errMsg, type: 'error' });
+        if (status === 401) {
+          setToast({ message: 'Sessão expirada ou sem permissão. Faça login novamente.', type: 'error' });
+        } else {
+          setToast({ message: errMsg, type: 'error' });
+        }
         setComments([]);
       } else {
         const data = await res.json();
@@ -93,7 +98,10 @@ const AdminComentarios = () => {
       {loading ? (
         <div>Carregando...</div>
       ) : comments.length === 0 ? (
-        <div>Nenhum comentário encontrado.</div>
+        <div>
+          Nenhum comentário encontrado.<br />
+          <span className="text-xs text-low-medium">Verifique se há comentários pendentes ou aprovados para o filtro selecionado.</span>
+        </div>
       ) : (
         <ul className="space-y-6">
           {comments.map(c => (
