@@ -54,8 +54,7 @@ router.delete('/:id', adminAuth, async (req, res) => {
     res.status(500).json({ error: 'Erro ao excluir comentário' })
   }
 })
-import express from 'express'
-import Comment from '../models/Comment.js'
+// ...existing code...
 
 // ...existing code...
 
