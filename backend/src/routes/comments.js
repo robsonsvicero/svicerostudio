@@ -1,23 +1,29 @@
-import jwt from 'jsonwebtoken'
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import Comment from '../models/Comment.js';
+
+const router = express.Router();
+
 // Middleware simples de autenticação admin (JWT via Authorization: Bearer)
 function adminAuth(req, res, next) {
-  const auth = req.headers.authorization
-  if (!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ error: 'Token ausente' })
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ error: 'Token ausente' });
   try {
-    const token = auth.replace('Bearer ', '')
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    req.admin = decoded
-    next()
+    const token = auth.replace('Bearer ', '');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.admin = decoded;
+    next();
   } catch {
-    return res.status(401).json({ error: 'Token inválido' })
+    return res.status(401).json({ error: 'Token inválido' });
   }
 }
+
 // Listar todos os comentários (admin)
 router.get('/', adminAuth, async (req, res) => {
   try {
-    const { slug, approved } = req.query
-    const filter = {}
-    if (slug) filter.postSlug = slug
+    const { slug, approved } = req.query;
+    const filter = {};
+    if (slug) filter.postSlug = slug;
     if (approved === 'true') filter.approved = true
     if (approved === 'false') filter.approved = false
     const comments = await Comment.find(filter).sort({ createdAt: -1 })
