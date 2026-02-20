@@ -22,8 +22,8 @@ import BusinessCard from './pages/BusinessCard';
 import NotFound from './pages/NotFound';
 import Privacidade from './pages/Privacidade';
 import ExclusaoDados from './pages/ExclusaoDados';
-import './styles/global.css';
 
+import AdminComentarios from './pages/AdminComentarios';
 import Agradecimento from './pages/Agradecimento';
 
 function App() {
