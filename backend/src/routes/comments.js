@@ -72,9 +72,9 @@ router.get('/:slug', async (req, res) => {
 // Criar novo comentário
 router.post('/:slug', async (req, res) => {
   try {
-    const { name, email, content, parentId } = req.body
+    const { name, email, content, parentId } = req.body;
     if (!name || !content) {
-      return res.status(400).json({ error: 'Nome e comentário são obrigatórios' })
+      return res.status(400).json({ error: 'Nome e comentário são obrigatórios' });
     }
     const comment = await Comment.create({
       postSlug: req.params.slug,
@@ -83,11 +83,12 @@ router.post('/:slug', async (req, res) => {
       content,
       parentId: parentId || null,
       approved: false // Pode mudar para true se não quiser moderação
-    })
-    res.status(201).json(comment)
+    });
+    res.status(201).json(comment);
   } catch (err) {
-    res.status(500).json({ error: 'Erro ao criar comentário' })
+    console.error('[API ERRO criar comentário]', err);
+    res.status(500).json({ error: 'Erro ao criar comentário' });
   }
-})
+});
 
 export default router
