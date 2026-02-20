@@ -214,7 +214,7 @@ const BlogPost = () => {
 
             {/* Seção de Comentários - Isso */}
             <div className="bg-white rounded-xl shadow-md p-8 md:p-12 mb-16 border border-cream/20">
-              <IssoComments />
+              <IssoComments slug={slug} />
             </div>
 
             {/* Posts Relacionados */}
