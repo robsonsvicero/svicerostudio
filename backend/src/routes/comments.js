@@ -57,7 +57,7 @@ router.delete('/:id', adminAuth, async (req, res) => {
 import express from 'express'
 import Comment from '../models/Comment.js'
 
-const router = express.Router()
+// ...existing code...
 
 // Listar comentários de um post
 router.get('/:slug', async (req, res) => {
