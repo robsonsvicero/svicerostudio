@@ -1,6 +1,5 @@
-import commentsRouter from './routes/comments.js'
-// Rotas de comentários (públicas)
-app.use('/api/comments', commentsRouter)
+import commentsRouter from './routes/comments.js';
+// ...existing code...
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
@@ -26,6 +25,7 @@ if (!JWT_SECRET) {
 
 const allowedTables = new Set(['projetos', 'projeto_galeria', 'posts', 'autores', 'depoimentos']);
 
+
 const app = express();
 app.use(express.json({ limit: '20mb' }));
 
@@ -36,6 +36,9 @@ app.use(
     credentials: true,
   }),
 );
+
+// Rotas de comentários (públicas)
+app.use('/api/comments', commentsRouter);
 
 const baseSchemaOptions = {
   versionKey: false,
