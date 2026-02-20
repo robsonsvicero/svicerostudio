@@ -17,12 +17,27 @@ const AdminComentarios = () => {
     let url = `${API_URL}?`
     if (filter.slug) url += `slug=${encodeURIComponent(filter.slug)}&`
     if (filter.approved !== 'all') url += `approved=${filter.approved}`
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    const data = await res.json()
-    setComments(Array.isArray(data) ? data : [])
-    setLoading(false)
+    try {
+      const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      if (!res.ok) {
+        let errMsg = 'Erro ao buscar comentários';
+        try {
+          const err = await res.json();
+          errMsg = err.error || errMsg;
+        } catch {}
+        setToast({ message: errMsg, type: 'error' });
+        setComments([]);
+      } else {
+        const data = await res.json();
+        setComments(Array.isArray(data) ? data : []);
+      }
+    } catch (e) {
+      setToast({ message: 'Erro de rede', type: 'error' });
+      setComments([]);
+    }
+    setLoading(false);
   }
 
   useEffect(() => { if (token) fetchComments() }, [token, filter])
