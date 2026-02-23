@@ -786,60 +786,54 @@ const AdminProjetos = () => {
               <p className="text-center text-low-medium py-8">Nenhum projeto cadastrado ainda.</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects.map((projeto) => (
-                  <div
-                    key={projeto.id}
-                    className="border border-cream/40 rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
-                  >
-                    <img
-                      src={projeto.imagem_url}
-                      alt={projeto.titulo}
-                      className="w-full aspect-video object-cover"
-                    />
-                    <div className="p-4">
-                      <h3 className="font-title text-xl font-light text-low-dark mb-2">
-                        {projeto.titulo}
-                      </h3>
-                      <p className="text-sm text-low-medium mb-4 line-clamp-2">
-                        {projeto.descricao}
-                      </p>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          onClick={() => handleEdit(projeto)}
-                          className="flex-1 py-2 text-sm !bg-primary !text-white !border-2 !border-primary hover:!bg-primary/90"
-                        >
-                          <i className="fa-solid fa-pen mr-2"></i>
-                          Editar
-                        </Button>
-                        <Button
-                          variant="custom"
-                          onClick={() => handleDelete(projeto.id)}
-                          className="flex-1 py-2 text-sm !bg-red-500 !border-2 !border-red-500 !text-white hover:!bg-red-600"
-                        >
-                          <i className="fa-solid fa-trash mr-2"></i>
-                          Excluir
-                        </Button>
+                {[...projects]
+                  .sort((a, b) => new Date(b.data_projeto) - new Date(a.data_projeto))
+                  .map((projeto) => (
+                    <div
+                      key={projeto.id}
+                      className="border border-cream/40 rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+                    >
+                      <img
+                        src={projeto.imagem_url || projeto.imagemUrl || '/images/placeholder.png'}
+                        alt={projeto.titulo}
+                        className="w-full aspect-video object-cover"
+                        onError={e => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
+                      />
+                      <div className="p-4">
+                        <h3 className="font-title text-xl font-light text-low-dark mb-2">
+                          {projeto.titulo}
+                        </h3>
+                        <p className="text-sm text-low-medium mb-4 line-clamp-2">
+                          {projeto.descricao}
+                        </p>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => handleEdit(projeto)}
+                            className="flex-1 py-2 text-sm !bg-primary !text-white !border-2 !border-primary hover:!bg-primary/90"
+                          >
+                            <i className="fa-solid fa-pen mr-2"></i>
+                            Editar
+                          </Button>
+                          <Button
+                            variant="custom"
+                            onClick={() => handleDelete(projeto.id)}
+                            className="flex-1 py-2 text-sm !bg-red-500 !border-2 !border-red-500 !text-white hover:!bg-red-600"
+                          >
+                            <i className="fa-solid fa-trash mr-2"></i>
+                            Excluir
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
           </div>
         </div>
 
         {/* Botões de navegação */}
-        <div className="max-w-screen-xl mx-auto mt-12 mb-8 flex flex-col sm:flex-row justify-center gap-4 px-4 md:px-16">
-          <Button href="/admin" variant="primary">
-            <i className="fa-solid fa-gauge-high mr-2"></i>
-            Voltar ao Dashboard
-          </Button>
-          <Button href="/" variant="secondary">
-            <i className="fa-solid fa-home mr-2"></i>
-            Ir para o Site
-          </Button>
-        </div>
+
       </section>
 
       {/* Toast Notification */}
