@@ -411,10 +411,11 @@ const Home = () => {
                 >
                   <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-footer-bg">
                     <img
-                      src={project.image}
+                      src={project.imagem_url || project.image || '/images/placeholder.png'}
                       alt={project.title}
                       className="w-full h-full object-cover"
                       loading="lazy"
+                      onError={e => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
                     />
                   </div>
                   <div className="mt-4">

@@ -512,19 +512,29 @@ const AdminProjetos = () => {
 
               <div>
                 <label htmlFor="imagem_url" className="block text-low-dark text-base mb-2">
-                  URL da Imagem de Capa*
+                  Imagem de Capa*
                 </label>
                 <input
-                  type="url"
+                  type="file"
+                  accept="image/*"
                   name="imagem_url"
                   id="imagem_url"
-                  required
-                  value={formData.imagem_url}
-                  onChange={handleInputChange}
+                  required={!editingId}
                   className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none"
-                  placeholder="https://exemplo.com/capa.jpg"
+                  onChange={async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setFormData(f => ({ ...f, imagem_url: reader.result }));
+                    };
+                    reader.readAsDataURL(file);
+                  }}
                 />
-                <p className="text-sm text-low-medium mt-1">Esta é a imagem que aparece no card do projeto</p>
+                {formData.imagem_url && (
+                  <img src={formData.imagem_url} alt="Prévia da imagem" className="mt-2 rounded-lg max-h-40" />
+                )}
+                <p className="text-sm text-low-medium mt-1">Esta é a imagem que aparece no card do projeto. O arquivo será salvo no banco de dados como base64.</p>
               </div>
 
               {/* Galeria de Imagens do Projeto */}
