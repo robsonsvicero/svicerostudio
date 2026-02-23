@@ -3,7 +3,20 @@ import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/UI/Button'
 import Toast from '../components/UI/Toast'
 
-const API_URL = '/api/comments'
+const resolveApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL
+
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return 'http://localhost:4000'
+    }
+  }
+
+  return 'https://svicerostudio-production.up.railway.app'
+}
+
+const API_URL = `${resolveApiBaseUrl()}/api/comments`
 
 const AdminComentarios = () => {
   const { token } = useAuth()
