@@ -105,7 +105,7 @@ const AdminComentarios = () => {
           <option value="false">Pendentes</option>
           <option value="true">Aprovados</option>
         </select>
-        <Button type="button" onClick={fetchComments}>Buscar</Button>
+        <Button type="button" variant='primary' onClick={fetchComments}>Buscar</Button>
       </form>
       {toast.message && <Toast message={toast.message} type={toast.type} onClose={() => setToast({})} />}
       {loading ? (
@@ -124,7 +124,7 @@ const AdminComentarios = () => {
               <div className="whitespace-pre-line text-low-dark mb-2">{c.content}</div>
               <div className="flex gap-2">
                 {!c.approved && <Button size="sm" variant="primary" onClick={() => handleApprove(c._id || c.id)}>Aprovar</Button>}
-                <Button size="sm" variant="secondary" onClick={() => handleDelete(c._id || c.id)}>Excluir</Button>
+                <Button size="sm" variant="outline" onClick={() => handleDelete(c._id || c.id)}>Excluir</Button>
               </div>
             </li>
           ))}

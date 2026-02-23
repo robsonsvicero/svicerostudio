@@ -75,7 +75,7 @@ const Button = ({
   // Cor do preenchimento animado
   let fillColor = '#171F2A'; // primary
   if (variant === 'secondary') fillColor = '#844219'; // secondary
-  else if (variant === 'outline') fillColor = '#E0A96D'; // hover mais visível
+  else if (variant === 'outline') fillColor = '#2F353B'; // hover mais visível
   else if (variant === 'custom') fillColor = '#FFF8F0'; // cream
   
   // Permite sobrescrever com prop customFillColor
@@ -86,7 +86,7 @@ const Button = ({
   const iconHoverClass = variant === 'custom' ? '' : 'group-hover:text-cream text-cream';
 
   // Para outline, texto escuro e hover claro
-  const textBaseClass = variant === 'outline' ? 'text-low-dark group-hover:text-white' : '';
+  const textBaseClass = variant === 'outline' ? 'text-low-dark group-hover:text-[#FFF8F0]' : '';
 
   const content = (
     <>
