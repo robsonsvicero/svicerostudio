@@ -45,7 +45,7 @@ const AdminProjetos = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ orderBy: { data_projeto: -1 } }),
+        body: JSON.stringify({ operation: 'select', orderBy: { column: 'data_projeto', ascending: false } }),
       });
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao buscar projetos');
