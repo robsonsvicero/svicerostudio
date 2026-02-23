@@ -123,8 +123,8 @@ const AdminComentarios = () => {
               <div className="text-xs text-low-medium mb-1">{new Date(c.createdAt).toLocaleString('pt-BR')} | Post: <span className="font-mono">{c.postSlug}</span></div>
               <div className="whitespace-pre-line text-low-dark mb-2">{c.content}</div>
               <div className="flex gap-2">
-                {!c.approved && <Button size="sm" variant="success" onClick={() => handleApprove(c._id || c.id)}>Aprovar</Button>}
-                <Button size="sm" variant="danger" onClick={() => handleDelete(c._id || c.id)}>Excluir</Button>
+                {!c.approved && <Button size="sm" variant="primary" onClick={() => handleApprove(c._id || c.id)}>Aprovar</Button>}
+                <Button size="sm" variant="secondary" onClick={() => handleDelete(c._id || c.id)}>Excluir</Button>
               </div>
             </li>
           ))}
