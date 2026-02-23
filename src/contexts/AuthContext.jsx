@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+const API_URL = import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app';
+const TOKEN_KEY = 'svicero_admin_token';
 
 const AuthContext = createContext({})
 
@@ -11,45 +12,71 @@ export const useAuth = () => {
   return context
 }
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // Recupera token e usuário do localStorage
   useEffect(() => {
-    // Verificar sessão atual
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-      setLoading(false)
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+    // Valida sessão na API
+    fetch(`${API_URL}/api/auth/session`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
     })
+      .then(async (res) => {
+        if (!res.ok) {
+          localStorage.removeItem(TOKEN_KEY);
+          setUser(null);
+        } else {
+          const data = await res.json();
+          setUser(data.user);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setUser(null);
+        setLoading(false);
+      });
+  }, []);
 
-    // Escutar mudanças na autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
+  // Login
   const signIn = async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    return { data, error }
-  }
+    try {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const payload = await res.json();
+      if (!res.ok) {
+        return { error: { message: payload.error || 'Erro ao fazer login' } };
+      }
+      localStorage.setItem(TOKEN_KEY, payload.token);
+      setUser(payload.user);
+      return { error: null };
+    } catch (err) {
+      return { error: { message: 'Erro de conexão' } };
+    }
+  };
 
+  // Logout
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    return { error }
-  }
+    localStorage.removeItem(TOKEN_KEY);
+    setUser(null);
+    return { error: null };
+  };
 
   const value = {
     user,
     loading,
     signIn,
     signOut,
-  }
+  };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

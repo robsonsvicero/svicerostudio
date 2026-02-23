@@ -60,10 +60,11 @@
 ## 🚀 Como Usar
 
 ### Passo 1: Criar a Tabela no Supabase
-1. Abra seu dashboard do Supabase
-2. Vá para SQL Editor
-3. Copie o conteúdo de `CREATE_AUTORES_TABLE.sql`
-4. Execute o script
+### Passo 1: Criar a Collection no MongoDB
+1. Abra o MongoDB Atlas
+2. Crie a collection `autores`
+3. Defina os campos conforme o modelo
+4. Pronto!
 
 ### Passo 2: Cadastrar Autores
 1. Acesse `/admin` (painel admin)

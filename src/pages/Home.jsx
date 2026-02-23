@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
-import { supabase } from '../lib/supabase';
 import Header from '../components/Layout/Header';
 import Preloader from '../components/Preloader';
 import Footer from '../components/Layout/Footer';
@@ -10,7 +9,6 @@ import ProjectModal from '../components/ProjectModal';
 import SEOHelmet from '../components/SEOHelmet';
 import Toast from '../components/UI/Toast';
 import { useToast } from '../hooks/useToast';
-import { useBlogPosts, useDepoimentos } from '../hooks/useSupabaseData';
 import { formatDate } from '../utils/formatDate';
 
 import idvDesigner from '../images/idv-deigner.webp';
@@ -56,8 +54,66 @@ const Home = () => {
   
   // Usar hooks personalizados
   const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
-  const { data: blogPosts = [] } = useBlogPosts(3);
-  const { data: depoimentos = [] } = useDepoimentos();
+  // Buscar projetos, depoimentos e posts via API REST
+  const [depoimentos, setDepoimentos] = useState([]);
+  const [blogPosts, setBlogPosts] = useState([]);
+
+  useEffect(() => {
+    // Buscar projetos
+    const fetchProjetos = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filters: [{ mostrar_home: true }], orderBy: { data_projeto: -1 }, limit: 6 }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar projetos');
+        setProjects(payload.data || []);
+      } catch (error) {
+        showToastMessage('Erro ao carregar projetos', 'error');
+      }
+    };
+    fetchProjetos();
+  }, []);
+
+  useEffect(() => {
+    // Buscar depoimentos
+    const fetchDepoimentos = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filters: [{ ativo: true }], orderBy: { ordem: 1 } }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar depoimentos');
+        setDepoimentos(payload.data || []);
+      } catch (error) {
+        showToastMessage('Erro ao carregar depoimentos', 'error');
+      }
+    };
+    fetchDepoimentos();
+  }, []);
+
+  useEffect(() => {
+    // Buscar posts do blog
+    const fetchBlogPosts = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderBy: { data_publicacao: -1 }, limit: 3 }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar posts');
+        setBlogPosts(payload.data || []);
+      } catch (error) {
+        showToastMessage('Erro ao carregar posts', 'error');
+      }
+    };
+    fetchBlogPosts();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

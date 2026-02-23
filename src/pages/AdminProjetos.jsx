@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/UI/Button'
 import { useToast } from '../hooks/useToast'
@@ -38,25 +37,27 @@ const AdminProjetos = () => {
   // Buscar projetos
   const fetchProjetos = async () => {
     try {
-      setIsLoading(true)
-      const { data, error } = await supabase
-        .from('projetos')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      setProjects(data || [])
+      setIsLoading(true);
+      const token = localStorage.getItem('svicero_admin_token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderBy: { data_projeto: -1 } }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar projetos');
+      setProjects(payload.data || []);
     } catch (error) {
-      // Erro ao buscar projetos
-      showToastMessage('Erro ao carregar projetos', 'error')
+      showToastMessage('Erro ao carregar projetos', 'error');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  useEffect(() => {
-    fetchProjetos()
-  }, [])
+  useEffect(() => { fetchProjetos(); }, []);
 
   // Buscar galeria de imagens ao editar
   useEffect(() => {
@@ -94,18 +95,22 @@ const AdminProjetos = () => {
   // Buscar galeria de imagens
   const fetchGalleryImages = async (projetoId) => {
     try {
-      const { data, error } = await supabase
-        .from('projeto_galeria')
-        .select('*')
-        .eq('projeto_id', projetoId)
-        .order('ordem', { ascending: true })
-
-      if (error) throw error
-      setGalleryImages(data || [])
+      const token = localStorage.getItem('svicero_admin_token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ filters: [{ projeto_id: projetoId }], orderBy: { ordem: 1 } }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar galeria');
+      setGalleryImages(payload.data || []);
     } catch (error) {
-      console.error('Erro ao carregar galeria:', error)
+      console.error('Erro ao carregar galeria:', error);
     }
-  }
+  };
 
   // Upload de múltiplas imagens
   const handleGalleryUpload = async (files) => {
@@ -178,21 +183,25 @@ const AdminProjetos = () => {
     if (imageId) {
       // Se já está salvo no banco, deletar
       try {
-        const { error } = await supabase
-          .from('projeto_galeria')
-          .delete()
-          .eq('id', imageId)
-
-        if (error) throw error
+        const token = localStorage.getItem('svicero_admin_token');
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/delete`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ filters: [{ id: imageId }] }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao remover imagem');
       } catch (error) {
-        console.error('Erro ao deletar imagem:', error)
-        showToastMessage('Erro ao remover imagem', 'error')
-        return
+        console.error('Erro ao deletar imagem:', error);
+        showToastMessage('Erro ao remover imagem', 'error');
+        return;
       }
     }
-
-    setGalleryImages(prev => prev.filter((_, i) => i !== index))
-  }
+    setGalleryImages(prev => prev.filter((_, i) => i !== index));
+  };
 
   // Reordenar imagens da galeria
   const handleReorderGallery = (fromIndex, toIndex) => {
@@ -210,61 +219,70 @@ const AdminProjetos = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
+    e.preventDefault();
+    setIsSubmitting(true);
     try {
-      let projetoId = editingId
-
+      let projetoId = editingId;
+      const token = localStorage.getItem('svicero_admin_token');
       if (editingId) {
         // Atualizar projeto existente
-        const { error } = await supabase
-          .from('projetos')
-          .update(formData)
-          .eq('id', editingId)
-
-        if (error) throw error
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/update`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ filters: [{ id: editingId }], data: formData }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar projeto');
       } else {
         // Criar novo projeto
-        const { data, error } = await supabase
-          .from('projetos')
-          .insert([formData])
-          .select()
-
-        if (error) throw error
-        projetoId = data[0].id
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/insert`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ data: formData }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao criar projeto');
+        projetoId = payload.data?.[0]?.id;
       }
-
       // Salvar galeria de imagens
       if (galleryImages.length > 0) {
         // Deletar imagens antigas se estiver editando
         if (editingId) {
-          await supabase
-            .from('projeto_galeria')
-            .delete()
-            .eq('projeto_id', editingId)
+          await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/delete`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ filters: [{ projeto_id: editingId }] }),
+          });
         }
-
         // Inserir novas imagens
         const imagesToInsert = galleryImages.map((img, index) => ({
           projeto_id: projetoId,
           imagem_url: img.imagem_url,
           ordem: img.ordem !== undefined ? img.ordem : index,
           legenda: img.legenda || null
-        }))
-
-        const { error: galleryError } = await supabase
-          .from('projeto_galeria')
-          .insert(imagesToInsert)
-
-        if (galleryError) throw galleryError
+        }));
+        await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/insert`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ data: imagesToInsert }),
+        });
       }
-
       showToastMessage(
         editingId ? 'Projeto atualizado com sucesso!' : 'Projeto criado com sucesso!',
         'success'
-      )
-
+      );
       // Reset form
       setFormData({
         titulo: '',
@@ -279,17 +297,17 @@ const AdminProjetos = () => {
         button_text2: '',
         data_projeto: '',
         mostrar_home: true
-      })
-      setEditingId(null)
-      setGalleryImages([])
-      fetchProjetos()
+      });
+      setEditingId(null);
+      setGalleryImages([]);
+      fetchProjetos();
     } catch (error) {
-      console.error('Erro ao salvar:', error)
-      showToastMessage('Erro ao salvar projeto', 'error')
+      console.error('Erro ao salvar:', error);
+      showToastMessage('Erro ao salvar projeto', 'error');
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleEdit = (projeto) => {
     setFormData({
@@ -311,22 +329,25 @@ const AdminProjetos = () => {
   }
 
   const handleDelete = async (id) => {
-    if (!confirm('Tem certeza que deseja excluir este projeto?')) return
-
+    if (!confirm('Tem certeza que deseja excluir este projeto?')) return;
     try {
-      const { error } = await supabase
-        .from('projetos')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
-      showToastMessage('Projeto excluído com sucesso!', 'success')
-      fetchProjetos()
+      const token = localStorage.getItem('svicero_admin_token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/delete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ filters: [{ id }] }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao excluir projeto');
+      showToastMessage('Projeto excluído com sucesso!', 'success');
+      fetchProjetos();
     } catch (error) {
-      // Erro ao excluir projeto
-      showToastMessage('Erro ao excluir projeto', 'error')
+      showToastMessage('Erro ao excluir projeto', 'error');
     }
-  }
+  };
 
   const handleCancelEdit = () => {
     setFormData({

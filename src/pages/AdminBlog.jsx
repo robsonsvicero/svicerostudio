@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/UI/Button'
 import { formatDate } from '../utils/formatDate'
@@ -32,42 +31,53 @@ const AdminBlog = () => {
   // Buscar autores
   const fetchAutores = async () => {
     try {
-      const { data, error } = await supabase
-        .from('autores')
-        .select('id, nome, cargo')
-        .eq('publicado', true)
-        .order('nome', { ascending: true })
-
-      if (error) throw error
-      setAutores(data || [])
+      setIsLoading(true);
+      const token = localStorage.getItem('svicero_admin_token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({}),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar autores');
+      setAutores(payload.data || []);
     } catch (error) {
-      console.error('Erro ao carregar autores:', error)
+      showToastMessage('Erro ao carregar autores', 'error');
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
   // Buscar posts
   const fetchPosts = async () => {
     try {
-      setIsLoading(true)
-      const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      setPosts(data || [])
+      setIsLoading(true);
+      const token = localStorage.getItem('svicero_admin_token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderBy: { created_at: -1 } }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar posts');
+      setPosts(payload.data || []);
     } catch (error) {
-      // Erro ao buscar posts
-      showToastMessage('Erro ao carregar posts', 'error')
+      showToastMessage('Erro ao carregar posts', 'error');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchPosts()
-    fetchAutores()
-  }, [])
+    fetchAutores();
+    fetchPosts();
+  }, []);
 
   // Gerar slug automaticamente do título
   const generateSlug = (text) => {
@@ -88,19 +98,24 @@ const AdminBlog = () => {
       return ''
     }
 
-    const { data, error } = await supabase
-      .from('posts')
-      .select('id, slug')
-      .ilike('slug', `${baseSlug}%`)
-
-    if (error) throw error
-
+    // Busca slugs existentes via API
+    const token = localStorage.getItem('svicero_admin_token');
+    const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ select: 'id,slug', filters: [{ slug: { $regex: `^${baseSlug}` } }] }),
+    });
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || 'Erro ao buscar slugs');
     const existingSlugs = new Set(
-      (data || [])
+      (payload.data || [])
         .filter(post => post.id !== currentPostId)
         .map(post => post.slug)
-        .filter(postSlug => new RegExp(`^${baseSlug}(-\\d+)?$`).test(postSlug))
-    )
+        .filter(postSlug => new RegExp(`^${baseSlug}(-\d+)?$`).test(postSlug))
+    );
 
     if (!existingSlugs.has(baseSlug)) {
       return baseSlug
@@ -551,30 +566,39 @@ const AdminBlog = () => {
               </div>
 
               <div className="flex gap-4 justify-end">
-                {editingId && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleCancelEdit}
-                    className="px-8 py-3 !bg-neutral-200 !text-neutral-800 !border-2 !border-neutral-300 hover:!bg-neutral-300"
-                  >
-                    Cancelar
-                  </Button>
-                )}
-                <Button
-                  type="submit"
-                  variant="primary"
-                  className="px-8 py-3 !bg-primary !text-white hover:!bg-primary/90"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Salvando...' : editingId ? 'Atualizar' : 'Criar Post'}
-                </Button>
-              </div>
-            </form>
-          </div>
-
-          {/* Lista de Posts */}
-          <div className="bg-white rounded-xl shadow-lg p-8 border border-cream/20">
+                const token = localStorage.getItem('svicero_admin_token');
+                if (editingId) {
+                  // Atualizar post existente
+                  const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/update`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ filters: [{ id: editingId }], data: normalizedData }),
+                  });
+                  const payload = await res.json();
+                  if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar post');
+                  showToastMessage('Post atualizado com sucesso!', 'success');
+                } else {
+                  normalizedData.slug = await getUniqueSlug(baseSlug);
+                  // Criar novo post
+                  const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/insert`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ data: normalizedData }),
+                  });
+                  const payload = await res.json();
+                  if (!res.ok) throw new Error(payload.error || 'Erro ao criar post');
+                  if (normalizedData.slug !== baseSlug) {
+                    showToastMessage(`Post criado com sucesso! Slug ajustado para: ${normalizedData.slug}`, 'success');
+                  } else {
+                    showToastMessage('Post criado com sucesso!', 'success');
+                  }
+                }
             <h2 className="font-title text-2xl font-light text-low-dark mb-6">
               Posts Cadastrados ({posts.length})
             </h2>
@@ -583,19 +607,23 @@ const AdminBlog = () => {
               <p className="text-center text-low-medium py-8">Carregando posts...</p>
             ) : posts.length === 0 ? (
               <p className="text-center text-low-medium py-8">Nenhum post cadastrado ainda.</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-cream/50">
-                    <tr>
-                      <th className="text-left px-4 py-3 text-low-dark font-medium">Título</th>
-                      <th className="text-left px-4 py-3 text-low-dark font-medium">Categoria</th>
-                      <th className="text-left px-4 py-3 text-low-dark font-medium">Data</th>
-                      <th className="text-center px-4 py-3 text-low-dark font-medium">Status</th>
-                      <th className="text-center px-4 py-3 text-low-dark font-medium">Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+            try {
+              const token = localStorage.getItem('svicero_admin_token');
+              const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/delete`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ filters: [{ id }] }),
+              });
+              const payload = await res.json();
+              if (!res.ok) throw new Error(payload.error || 'Erro ao excluir post');
+              showToastMessage('Post excluído com sucesso!', 'success');
+              fetchPosts();
+            } catch (error) {
+              showToastMessage('Erro ao excluir post', 'error');
+            }
                     {posts.map((post) => (
                       <tr key={post.id} className="border-t border-cream/40 hover:bg-cream/20">
                         <td className="px-4 py-4">

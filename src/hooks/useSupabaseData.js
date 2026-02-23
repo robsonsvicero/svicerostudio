@@ -99,3 +99,4 @@ export const useDepoimentos = () => {
     orderBy: { column: 'ordem', ascending: true }
   });
 };
+// Arquivo removido: useSupabaseData.js não é mais utilizado.

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import SEOHelmet from '../components/SEOHelmet'
@@ -20,61 +19,38 @@ const Blog = () => {
   const [selectedAuthor, setSelectedAuthor] = useState('')
   const [authors, setAuthors] = useState([])
 
-  // Buscar posts publicados
-  const fetchPosts = async () => {
-    try {
-      setIsLoading(true)
-      const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .eq('publicado', true)
-        .order('data_publicacao', { ascending: false })
-
-      if (error) throw error
-
-      setPosts(data || [])
-
-      // Extrair categorias únicas
-      const uniqueCategories = ['Todos', ...new Set(data.map(post => post.categoria).filter(Boolean))]
-      setCategories(uniqueCategories)
-
-      // Extrair tags únicas (normalizar para lowercase)
-      const tagsSet = new Set()
-      data.forEach(post => {
-        if (post.tags) {
-          post.tags.toLowerCase().split(',').forEach(tag => tagsSet.add(tag.trim()))
-        }
-      })
-      setAllTags(Array.from(tagsSet).sort())
-    } catch (error) {
-      // Erro ao buscar posts
-      console.error('Erro ao buscar posts:', error)
-    } finally {
-      setIsLoading(false)
-    }
-
-    // Buscar autores publicados (separadamente para não quebrar a página se falhar)
-    try {
-      const { data: autoresData, error: autoresError } = await supabase
-        .from('autores')
-        .select('nome')
-        .eq('publicado', true)
-        .order('nome', { ascending: true })
-      
-      if (autoresError) throw autoresError
-      
-      const autorNames = autoresData ? autoresData.map(a => a.nome).filter(Boolean) : []
-      setAuthors(autorNames)
-    } catch (error) {
-      // Erro ao buscar autores - não quebra a página
-      console.error('Erro ao buscar autores:', error)
-      setAuthors([])
-    }
-  }
-
+  // Buscar posts e autores via API REST
   useEffect(() => {
-    fetchPosts()
-  }, [])
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderBy: { data_publicacao: -1 } }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar posts');
+        setPosts(payload.data || []);
+        // Extrair categorias e tags
+        const cats = new Set(['Todos']);
+        const tags = new Set();
+        const authorsSet = new Set();
+        (payload.data || []).forEach(post => {
+          if (post.categoria) cats.add(post.categoria);
+          if (post.tags) post.tags.split(',').forEach(t => tags.add(t.trim().toLowerCase()));
+          if (post.autor) authorsSet.add(post.autor);
+        });
+        setCategories(Array.from(cats));
+        setAllTags(Array.from(tags));
+        setAuthors(Array.from(authorsSet));
+      } catch (error) {
+        setPosts([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   // Filtrar posts por categoria, tags, autor e busca
   const filteredPosts = posts.filter(post => {

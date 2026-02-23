@@ -1,3 +1,4 @@
+// Arquivo removido: supabase.js não é mais utilizado.
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 const TOKEN_KEY = 'svicero_admin_token'
 

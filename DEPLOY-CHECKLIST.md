@@ -101,10 +101,11 @@
 - Confirmar `ADMIN_EMAIL` e `ADMIN_PASSWORD`
 
 ### Dados não aparecem
-- Verificar se `VITE_API_URL` está correto no frontend
-- Testar endpoint direto: `https://[api]/api/db/posts/query`
+### Dados não aparecem
+ Verificar se `VITE_API_URL` está correto no frontend
+ Testar endpoint direto: `https://[api]/api/db/posts/query`
 
----
+----
 
 ## Contatos de Suporte
 

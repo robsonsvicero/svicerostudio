@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/UI/Button';
 import { useToast } from '../hooks/useToast';
@@ -33,26 +32,30 @@ const AdminDepoimentos = () => {
     { value: 'silver', label: 'Prata', class: 'bg-gray-400/20 text-gray-400' },
   ];
 
-  useEffect(() => {
-    fetchDepoimentos();
-  }, []);
-
+  // Buscar depoimentos
   const fetchDepoimentos = async () => {
     try {
-      const { data, error } = await supabase
-        .from('depoimentos')
-        .select('*')
-        .order('ordem', { ascending: true });
-
-      if (error) throw error;
-      setDepoimentos(data || []);
+      setLoading(true);
+      const token = localStorage.getItem('svicero_admin_token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderBy: { ordem: 1 } }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar depoimentos');
+      setDepoimentos(payload.data || []);
     } catch (error) {
-      // Erro ao buscar depoimentos
       showToastMessage('Erro ao carregar depoimentos', 'error');
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => { fetchDepoimentos(); }, []);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -81,20 +84,32 @@ const AdminDepoimentos = () => {
         ordem: parseInt(formData.ordem)
       };
 
+      const token = localStorage.getItem('svicero_admin_token');
       if (editingId) {
-        const { error } = await supabase
-          .from('depoimentos')
-          .update(dataToSave)
-          .eq('id', editingId);
-
-        if (error) throw error;
+        // Atualizar depoimento
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/update`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ filters: [{ id: editingId }], data: dataToSave }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar depoimento');
         showToastMessage('Depoimento atualizado com sucesso!');
       } else {
-        const { error } = await supabase
-          .from('depoimentos')
-          .insert([dataToSave]);
-
-        if (error) throw error;
+        // Criar depoimento
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/insert`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ data: dataToSave }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao criar depoimento');
         showToastMessage('Depoimento criado com sucesso!');
       }
 
@@ -126,16 +141,20 @@ const AdminDepoimentos = () => {
     if (!window.confirm('Tem certeza que deseja excluir este depoimento?')) return;
 
     try {
-      const { error } = await supabase
-        .from('depoimentos')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
+      const token = localStorage.getItem('svicero_admin_token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/delete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ filters: [{ id }] }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao excluir depoimento');
       showToastMessage('Depoimento excluído com sucesso!');
       fetchDepoimentos();
     } catch (error) {
-      // Erro ao excluir depoimento
       showToastMessage('Erro ao excluir depoimento', 'error');
     }
   };
@@ -152,16 +171,20 @@ const AdminDepoimentos = () => {
 
   const toggleAtivo = async (id, ativo) => {
     try {
-      const { error } = await supabase
-        .from('depoimentos')
-        .update({ ativo: !ativo })
-        .eq('id', id);
-
-      if (error) throw error;
+      const token = localStorage.getItem('svicero_admin_token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/update`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ filters: [{ id }], data: { ativo: !ativo } }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar status');
       showToastMessage(`Depoimento ${!ativo ? 'ativado' : 'desativado'}!`);
       fetchDepoimentos();
     } catch (error) {
-      // Erro ao atualizar status
       showToastMessage('Erro ao atualizar status', 'error');
     }
   };

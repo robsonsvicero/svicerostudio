@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth()
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -13,14 +13,15 @@ const ProtectedRoute = ({ children }) => {
           <p className="text-lg text-low-medium">Carregando...</p>
         </div>
       </div>
-    )
+    );
   }
 
+  // Se não há usuário ou token, redireciona para login
   if (!user) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/login" replace />;
   }
 
-  return children
-}
+  return children;
+};
 
 export default ProtectedRoute
