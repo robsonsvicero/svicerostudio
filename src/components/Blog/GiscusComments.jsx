@@ -101,8 +101,9 @@ const Comments = ({ slug }) => {
   return (
     <section className="comments mt-12">
       <button
-        className="mb-4 bg-low-dark text-white px-4 py-2 rounded hover:bg-low-medium transition-colors"
+        className="mb-4 bg-primary text-white px-4 py-2 rounded shadow hover:bg-primary/90 transition-colors border border-primary"
         onClick={handleBack}
+        style={{ minWidth: 100 }}
       >
         <i className="fa-solid fa-arrow-left mr-2"></i> Voltar
       </button>
@@ -145,8 +146,9 @@ const Comments = ({ slug }) => {
         {success && <div className="text-green-700 mb-2">{success}</div>}
         <button
           type="submit"
-          className="bg-primary text-white px-6 py-2 rounded font-medium hover:bg-primary/90 transition-colors"
+          className="bg-primary text-white px-6 py-2 rounded font-medium shadow hover:bg-primary/90 transition-colors border border-primary"
           disabled={sending}
+          style={{ minWidth: 120 }}
         >
           {sending ? 'Enviando...' : 'Comentar'}
         </button>
@@ -166,12 +168,14 @@ const Comments = ({ slug }) => {
                 {!c.approved && (
                   <div className="mt-2 flex gap-2">
                     <button
-                      className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                      className="bg-green-700 text-white px-3 py-1 rounded shadow border border-green-700 hover:bg-green-800"
                       onClick={() => handleApprove(c._id || c.id)}
+                      style={{ minWidth: 80 }}
                     >Aprovar</button>
                     <button
-                      className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                      className="bg-red-700 text-white px-3 py-1 rounded shadow border border-red-700 hover:bg-red-800"
                       onClick={() => handleDelete(c._id || c.id)}
+                      style={{ minWidth: 80 }}
                     >Excluir</button>
                   </div>
                 )}
