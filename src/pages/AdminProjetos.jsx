@@ -214,25 +214,25 @@ const AdminProjetos = () => {
       const token = localStorage.getItem('svicero_admin_token');
       if (editingId) {
         // Atualizar projeto existente
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/update`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/query`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ filters: [{ id: editingId }], data: formData }),
+          body: JSON.stringify({ operation: 'update', filters: [{ id: editingId }], payload: formData }),
         });
         const payload = await res.json();
         if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar projeto');
       } else {
         // Criar novo projeto
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/insert`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/query`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ data: formData }),
+          body: JSON.stringify({ operation: 'insert', payload: formData }),
         });
         const payload = await res.json();
         if (!res.ok) throw new Error(payload.error || 'Erro ao criar projeto');
