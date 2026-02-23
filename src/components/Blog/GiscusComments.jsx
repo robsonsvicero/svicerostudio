@@ -23,6 +23,37 @@ const Comments = ({ slug }) => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
+  // Função para aprovar comentário
+  const handleApprove = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/approve/${id}`, { method: 'PATCH' })
+      if (!res.ok) throw new Error('Erro ao aprovar comentário')
+      setSuccess('Comentário aprovado!')
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  // Função para excluir comentário
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error('Erro ao excluir comentário')
+      setSuccess('Comentário excluído!')
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  // Botão para voltar
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      window.history.back()
+    } else {
+      window.location.href = '/admin'
+    }
+  }
+
   useEffect(() => {
     setLoading(true)
     fetch(`${API_URL}/${slug}`)
@@ -69,6 +100,12 @@ const Comments = ({ slug }) => {
 
   return (
     <section className="comments mt-12">
+      <button
+        className="mb-4 bg-low-dark text-white px-4 py-2 rounded hover:bg-low-medium transition-colors"
+        onClick={handleBack}
+      >
+        <i className="fa-solid fa-arrow-left mr-2"></i> Voltar
+      </button>
       <h2 className="font-title text-2xl font-light text-low-dark mb-6 pb-4 border-b border-cream/40">
         <i className="fa-regular fa-comments mr-3 text-primary"></i>
         Comentários
@@ -126,6 +163,18 @@ const Comments = ({ slug }) => {
                 <div className="font-semibold text-low-dark">{c.name}</div>
                 <div className="text-xs text-low-medium mb-1">{new Date(c.createdAt).toLocaleString('pt-BR')}</div>
                 <div className="whitespace-pre-line text-low-dark">{c.content}</div>
+                {!c.approved && (
+                  <div className="mt-2 flex gap-2">
+                    <button
+                      className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                      onClick={() => handleApprove(c._id || c.id)}
+                    >Aprovar</button>
+                    <button
+                      className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                      onClick={() => handleDelete(c._id || c.id)}
+                    >Excluir</button>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
