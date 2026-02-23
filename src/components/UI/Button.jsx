@@ -45,7 +45,7 @@ const Button = ({
   } else if (variant === 'secondary') {
     variantClasses = 'bg-secondary border-none text-cream';
   } else if (variant === 'outline') {
-    variantClasses = 'bg-transparent border-2 border-primary text-cream outline-hover';
+    variantClasses = 'bg-transparent border-2 border-primary text-low-dark outline-hover';
     outlineHoverClass = 'outline-hover';
   } else if (variant === 'custom') {
     // Variante custom: não aplica estilos de cor/borda, permite controle total via className
@@ -75,7 +75,7 @@ const Button = ({
   // Cor do preenchimento animado
   let fillColor = '#171F2A'; // primary
   if (variant === 'secondary') fillColor = '#844219'; // secondary
-  else if (variant === 'outline') fillColor = '#FFF8F0'; // cream
+  else if (variant === 'outline') fillColor = '#E0A96D'; // hover mais visível
   else if (variant === 'custom') fillColor = '#FFF8F0'; // cream
   
   // Permite sobrescrever com prop customFillColor
@@ -84,6 +84,9 @@ const Button = ({
   // Classes de hover para texto (custom não força cor)
   const textHoverClass = variant === 'custom' ? '' : 'group-hover:text-cream text-cream';
   const iconHoverClass = variant === 'custom' ? '' : 'group-hover:text-cream text-cream';
+
+  // Para outline, texto escuro e hover claro
+  const textBaseClass = variant === 'outline' ? 'text-low-dark group-hover:text-white' : '';
 
   const content = (
     <>
@@ -95,7 +98,7 @@ const Button = ({
         aria-hidden="true"
       />
       {icon && <span className={`relative z-10 mr-2 text-xl transition-colors duration-300 ${iconHoverClass}`}>{icon}</span>}
-      <span className={`relative z-10 transition-colors duration-300 ${textHoverClass}`}>{children}</span>
+      <span className={`relative z-10 transition-colors duration-300 ${textHoverClass} ${textBaseClass}`}>{children}</span>
     </>
   );
 
