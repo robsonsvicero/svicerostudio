@@ -1,101 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import Button from '../components/UI/Button'
-import { formatDate } from '../utils/formatDate'
-import { useToast } from '../hooks/useToast'
+
+import React from 'react';
 
 const AdminBlog = () => {
-  const { user, signOut } = useAuth()
-  const navigate = useNavigate()
-  const [posts, setPosts] = useState([])
-  const [autores, setAutores] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [editingId, setEditingId] = useState(null)
-  const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast()
+  return (
+    <div>Teste estrutura</div>
+  );
+};
 
-  const [formData, setFormData] = useState({
-    titulo: '',
-    slug: '',
-    resumo: '',
-    conteudo: '',
-    imagem_destaque: '',
-    categoria: '',
-    tags: '',
-    data_publicacao: '',
-    autor: 'Robson Svicero',
-    publicado: false
-  })
+export default AdminBlog;
 
-  // Buscar autores
-  const fetchAutores = async () => {
-    try {
-      setIsLoading(true);
-      const token = localStorage.getItem('svicero_admin_token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({}),
-      });
-      const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar autores');
-      setAutores(payload.data || []);
-    } catch (error) {
-      showToastMessage('Erro ao carregar autores', 'error');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+import React from 'react';
 
-  // Buscar posts
-  const fetchPosts = async () => {
-    try {
-      setIsLoading(true);
-      const token = localStorage.getItem('svicero_admin_token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ orderBy: { created_at: -1 } }),
-      });
-      const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar posts');
-      setPosts(payload.data || []);
-    } catch (error) {
-      showToastMessage('Erro ao carregar posts', 'error');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+const AdminBlog = () => {
+  return (
+    <div>Teste estrutura</div>
+  );
+};
 
-  useEffect(() => {
-    fetchAutores();
-    fetchPosts();
-  }, []);
-
-  // Gerar slug automaticamente do título
-  const generateSlug = (text) => {
-    return text
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // Remove acentos
-      .replace(/[^\w\s-]/g, '') // Remove caracteres especiais
-      .replace(/\s+/g, '-') // Substitui espaços por hífens
-      .replace(/-+/g, '-') // Remove hífens duplicados
-      .trim()
-  }
-
-  const getUniqueSlug = async (slug, currentPostId = null) => {
-    const baseSlug = generateSlug(slug)
-
-    if (!baseSlug) {
-      return ''
+export default AdminBlog;
     }
 
     // Busca slugs existentes via API
@@ -364,8 +286,20 @@ const AdminBlog = () => {
               </Button>
             </div>
           </div>
-        )
-    }
+          {/* Formulário */}
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-12 border border-cream/20">
+            <h2 className="font-title text-2xl font-light text-low-dark mb-6">
+              {editingId ? 'Editar Post' : 'Novo Post'}
+            </h2>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="titulo" className="block text-low-dark text-base mb-2">
+                    Título*
+                  </label>
+                  <input
+                    type="text"
+                    name="titulo"
                     id="titulo"
                     required
                     value={formData.titulo}
@@ -374,7 +308,6 @@ const AdminBlog = () => {
                     placeholder="Título do post"
                   />
                 </div>
-
                 <div>
                   <label htmlFor="slug" className="block text-low-dark text-base mb-2">
                     Slug (URL)* <span className="text-xs text-low-medium">(gerado automaticamente)</span>
@@ -391,7 +324,6 @@ const AdminBlog = () => {
                   />
                 </div>
               </div>
-
               <div>
                 <label htmlFor="resumo" className="block text-low-dark text-base mb-2">
                   Resumo <span className="text-xs text-low-medium">(aparece na listagem)</span>
@@ -405,7 +337,6 @@ const AdminBlog = () => {
                   placeholder="Breve descrição do post..."
                 />
               </div>
-
               <div>
                 <label htmlFor="conteudo" className="block text-low-dark text-base mb-2">
                   Conteúdo* 
@@ -543,6 +474,10 @@ const AdminBlog = () => {
 
               <div className="flex gap-4 justify-end">
                 {/* Botões de ação ficam aqui, sem código JS de submit */}
+              </div>
+            </form>
+
+            {/* Listagem de posts */}
             <h2 className="font-title text-2xl font-light text-low-dark mb-6">
               Posts Cadastrados ({posts.length})
             </h2>
@@ -612,41 +547,37 @@ const AdminBlog = () => {
                   </tbody>
                 </table>
               </div>
-              )}
+            )}
+
+            {/* Botões de navegação */}
+            <div className="max-w-screen-xl mx-auto mt-12 mb-8 flex flex-col sm:flex-row justify-center gap-4 px-4 md:px-16">
+              <Button href="/admin" variant="primary">
+                <i className="fa-solid fa-gauge-high mr-2"></i>
+                Voltar ao Dashboard
+              </Button>
+              <Button href="/" variant="secondary">
+                <i className="fa-solid fa-home mr-2"></i>
+                Ir para o Site
+              </Button>
             </div>
-          </form>
-        </div>
 
-        {/* Botões de navegação */}
-        <div className="max-w-screen-xl mx-auto mt-12 mb-8 flex flex-col sm:flex-row justify-center gap-4 px-4 md:px-16">
-          <Button href="/admin" variant="primary">
-            <i className="fa-solid fa-gauge-high mr-2"></i>
-            Voltar ao Dashboard
-          </Button>
-          <Button href="/" variant="secondary">
-            <i className="fa-solid fa-home mr-2"></i>
-            Ir para o Site
-          </Button>
+        </div>
+        {/* Toast Notification */}
+        {showToast && (
+          <div className={`fixed top-8 right-8 z-50 min-w-[320px] max-w-[450px] p-6 bg-white rounded-xl shadow-2xl flex items-center justify-between gap-4 animate-slideInRight border-l-4 ${toastType === 'success' ? 'border-green-500' : 'border-red-500'}`}>
+            <div className="flex items-center gap-3 flex-1">
+              <i className={`fa-solid text-2xl ${toastType === 'success' ? 'fa-circle-check text-green-500' : 'fa-circle-exclamation text-red-500'}`}></i>
+              <span className="text-low-dark text-base">{toastMessage}</span>
+            </div>
+            <button
+              onClick={hideToast}
+              className="text-low-medium hover:text-low-dark transition-colors"
+            >
+              <i className="fa-solid fa-times text-xl"></i>
+            </button>
           </div>
-
-      {/* Toast Notification */}
-      {showToast && (
-        <div className={`fixed top-8 right-8 z-50 min-w-[320px] max-w-[450px] p-6 bg-white rounded-xl shadow-2xl flex items-center justify-between gap-4 animate-slideInRight border-l-4 ${toastType === 'success' ? 'border-green-500' : 'border-red-500'}`}>
-          <div className="flex items-center gap-3 flex-1">
-            <i className={`fa-solid text-2xl ${toastType === 'success' ? 'fa-circle-check text-green-500' : 'fa-circle-exclamation text-red-500'}`}></i>
-            <span className="text-low-dark text-base">{toastMessage}</span>
-          </div>
-          <button
-            onClick={hideToast}
-            className="text-low-medium hover:text-low-dark transition-colors"
-          >
-            <i className="fa-solid fa-times text-xl"></i>
-          </button>
-        </div>
-      )}
-        </div>
-      )
-  }
-
-
+        )}
+      </div>
+    )
+}
 export default AdminBlog
