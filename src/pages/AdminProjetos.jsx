@@ -394,20 +394,12 @@ const AdminProjetos = () => {
             </div>
             <div className="flex gap-3">
               <Button
-                variant="primary"
-                onClick={() => navigate('/admin/blog')}
-                className="px-6 py-2 bg"
+                variant="outline"
+                onClick={() => navigate('/admin')}
+                className="px-6 py-2"
               >
-                <i className="fa-solid fa-blog mr-2"></i>
-                Gerenciar Blog
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={handleLogout}
-                className="px-6 py-2 !bg-red-500 !border-2 !border-red-500 !text-white hover:!bg-red-600"
-              >
-                <i className="fa-solid fa-right-from-bracket mr-2"></i>
-                Sair
+                <i className="fa-solid fa-arrow-left mr-2"></i>
+                Voltar ao Admin
               </Button>
             </div>
           </div>
@@ -821,7 +813,7 @@ const AdminProjetos = () => {
                           Editar
                         </Button>
                         <Button
-                          variant="outline"
+                          variant="custom"
                           onClick={() => handleDelete(projeto.id)}
                           className="flex-1 py-2 text-sm !bg-red-500 !border-2 !border-red-500 !text-white hover:!bg-red-600"
                         >

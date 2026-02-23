@@ -228,43 +228,7 @@ const Home = () => {
   };
 
   // Buscar projetos do Supabase (últimos 5 marcados para exibir na home)
-  useEffect(() => {
-    const fetchProjetos = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('projetos')
-          .select('*')
-          .eq('mostrar_home', true)
-          .order('data_projeto', { ascending: false })
-          .limit(6);
 
-        if (error) throw error;
-
-        // Mapear dados do banco para o formato esperado (incluindo novos campos para modal)
-        const projetosFormatados = data.map(projeto => ({
-          id: projeto.id,
-          image: projeto.imagem_url,
-          title: projeto.titulo,
-          description: projeto.descricao,
-          descricao_longa: projeto.descricao_longa,
-          descricao_longa_en: projeto.descricao_longa_en,
-          site_url: projeto.site_url,
-          link: projeto.link,
-          buttonText: projeto.button_text,
-          link2: projeto.link2,
-          buttonText2: projeto.button_text2,
-          data_projeto: projeto.data_projeto
-        }));
-
-        setProjects(projetosFormatados);
-      } catch (error) {
-        // Erro ao buscar projetos - usando fallback
-        setProjects([]);
-      }
-    };
-
-    fetchProjetos();
-  }, []);
 
   const handleOpenProject = (project) => {
     setSelectedProject(project);
