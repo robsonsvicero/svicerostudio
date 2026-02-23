@@ -12,10 +12,10 @@ export const useAuth = () => {
   return context
 }
 
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Recupera token e usuário do localStorage
   useEffect(() => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) {
@@ -23,7 +23,6 @@ export const useAuth = () => {
       setLoading(false);
       return;
     }
-    // Valida sessão na API
     fetch(`${API_URL}/api/auth/session`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
@@ -44,7 +43,6 @@ export const useAuth = () => {
       });
   }, []);
 
-  // Login
   const signIn = async (email, password) => {
     try {
       const res = await fetch(`${API_URL}/api/auth/login`, {
@@ -64,7 +62,6 @@ export const useAuth = () => {
     }
   };
 
-  // Logout
   const signOut = async () => {
     localStorage.removeItem(TOKEN_KEY);
     setUser(null);
@@ -79,4 +76,4 @@ export const useAuth = () => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+};

@@ -340,8 +340,7 @@ const AdminBlog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
-      <section className="pt-20 pb-24 px-4 md:px-16">
+    <div className="min-h-screen bg-cream pt-20 pb-24 px-4 md:px-16">
         <div className="max-w-screen-xl mx-auto">
           {/* Header com informações do usuário e navegação */}
           <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white rounded-xl shadow-lg p-6 border border-cream/20">
@@ -365,31 +364,8 @@ const AdminBlog = () => {
               </Button>
             </div>
           </div>
-
-          <div className="mb-12 text-center">
-            <h1 className="font-title text-4xl md:text-5xl font-semibold text-low-dark mb-2 mt-16">
-              Gerenciar Blog
-            </h1>
-            <p className="text-lg text-low-medium">
-              Crie, edite ou remova posts do blog
-            </p>
-          </div>
-
-          {/* Formulário */}
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-12 border border-cream/20">
-            <h2 className="font-title text-2xl font-light text-low-dark mb-6">
-              {editingId ? 'Editar Post' : 'Novo Post'}
-            </h2>
-            
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="titulo" className="block text-low-dark text-base mb-2">
-                    Título*
-                  </label>
-                  <input
-                    type="text"
-                    name="titulo"
+        )
+    }
                     id="titulo"
                     required
                     value={formData.titulo}
@@ -566,39 +542,7 @@ const AdminBlog = () => {
               </div>
 
               <div className="flex gap-4 justify-end">
-                const token = localStorage.getItem('svicero_admin_token');
-                if (editingId) {
-                  // Atualizar post existente
-                  const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/update`, {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({ filters: [{ id: editingId }], data: normalizedData }),
-                  });
-                  const payload = await res.json();
-                  if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar post');
-                  showToastMessage('Post atualizado com sucesso!', 'success');
-                } else {
-                  normalizedData.slug = await getUniqueSlug(baseSlug);
-                  // Criar novo post
-                  const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/insert`, {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({ data: normalizedData }),
-                  });
-                  const payload = await res.json();
-                  if (!res.ok) throw new Error(payload.error || 'Erro ao criar post');
-                  if (normalizedData.slug !== baseSlug) {
-                    showToastMessage(`Post criado com sucesso! Slug ajustado para: ${normalizedData.slug}`, 'success');
-                  } else {
-                    showToastMessage('Post criado com sucesso!', 'success');
-                  }
-                }
+                {/* Botões de ação ficam aqui, sem código JS de submit */}
             <h2 className="font-title text-2xl font-light text-low-dark mb-6">
               Posts Cadastrados ({posts.length})
             </h2>
@@ -607,23 +551,19 @@ const AdminBlog = () => {
               <p className="text-center text-low-medium py-8">Carregando posts...</p>
             ) : posts.length === 0 ? (
               <p className="text-center text-low-medium py-8">Nenhum post cadastrado ainda.</p>
-            try {
-              const token = localStorage.getItem('svicero_admin_token');
-              const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/delete`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ filters: [{ id }] }),
-              });
-              const payload = await res.json();
-              if (!res.ok) throw new Error(payload.error || 'Erro ao excluir post');
-              showToastMessage('Post excluído com sucesso!', 'success');
-              fetchPosts();
-            } catch (error) {
-              showToastMessage('Erro ao excluir post', 'error');
-            }
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-left border border-cream/40 rounded-xl">
+                  <thead>
+                    <tr className="bg-cream/40">
+                      <th className="px-4 py-3 font-medium text-low-dark">Título</th>
+                      <th className="px-4 py-3 font-medium text-low-dark">Categoria</th>
+                      <th className="px-4 py-3 font-medium text-low-dark">Data</th>
+                      <th className="px-4 py-3 font-medium text-low-dark">Status</th>
+                      <th className="px-4 py-3 font-medium text-low-dark">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     {posts.map((post) => (
                       <tr key={post.id} className="border-t border-cream/40 hover:bg-cream/20">
                         <td className="px-4 py-4">
@@ -672,8 +612,9 @@ const AdminBlog = () => {
                   </tbody>
                 </table>
               </div>
-            )}
-          </div>
+              )}
+            </div>
+          </form>
         </div>
 
         {/* Botões de navegação */}
@@ -686,8 +627,7 @@ const AdminBlog = () => {
             <i className="fa-solid fa-home mr-2"></i>
             Ir para o Site
           </Button>
-        </div>
-      </section>
+          </div>
 
       {/* Toast Notification */}
       {showToast && (
@@ -704,8 +644,9 @@ const AdminBlog = () => {
           </button>
         </div>
       )}
-    </div>
-  )
-}
+        </div>
+      )
+  }
+
 
 export default AdminBlog
