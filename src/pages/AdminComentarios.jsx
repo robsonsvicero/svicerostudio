@@ -87,6 +87,13 @@ const AdminComentarios = () => {
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
+      <button
+        className="mb-6 bg-primary text-white px-4 py-2 rounded shadow hover:bg-primary/90 transition-colors border border-primary"
+        onClick={() => window.location.href = '/admin'}
+        style={{ minWidth: 100 }}
+      >
+        <i className="fa-solid fa-arrow-left mr-2"></i> Voltar ao Admin
+      </button>
       <h1 className="font-title text-3xl mb-8">Moderação de Comentários</h1>
       <form className="flex gap-4 mb-8">
         <input
