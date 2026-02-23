@@ -53,24 +53,22 @@ const Blog = () => {
   }, []);
 
   // Filtrar posts por categoria, tags, autor e busca
-  const filteredPosts = posts.filter(post => {
-    // Filtro de categoria
-    const categoryMatch = selectedCategory === 'Todos' || post.categoria === selectedCategory
-    
-    // Filtro de tag (normalizar para lowercase)
-    const tagMatch = !selectedTag || (post.tags && post.tags.toLowerCase().split(',').map(t => t.trim()).includes(selectedTag.toLowerCase()))
-    
-    // Filtro de autor
-    const authorMatch = !selectedAuthor || post.autor === selectedAuthor
-    
-    // Filtro de busca (título, resumo ou conteúdo)
-    const searchMatch = !searchTerm || 
-      post.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (post.resumo && post.resumo.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      post.conteudo.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    return categoryMatch && tagMatch && authorMatch && searchMatch
-  })
+  const filteredPosts = posts
+    .filter(post => {
+      // Filtro de categoria
+      const categoryMatch = selectedCategory === 'Todos' || post.categoria === selectedCategory;
+      // Filtro de tag (normalizar para lowercase)
+      const tagMatch = !selectedTag || (post.tags && post.tags.toLowerCase().split(',').map(t => t.trim()).includes(selectedTag.toLowerCase()));
+      // Filtro de autor
+      const authorMatch = !selectedAuthor || post.autor === selectedAuthor;
+      // Filtro de busca (título, resumo ou conteúdo)
+      const searchMatch = !searchTerm ||
+        post.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (post.resumo && post.resumo.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        post.conteudo.toLowerCase().includes(searchTerm.toLowerCase());
+      return categoryMatch && tagMatch && authorMatch && searchMatch;
+    })
+    .sort((a, b) => new Date(b.data_publicacao) - new Date(a.data_publicacao));
 
   // Formatar data
   // Usa `formatDate` de `src/utils/formatDate.js`
