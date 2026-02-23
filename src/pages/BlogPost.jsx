@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import IssoComments from '../components/Blog/GiscusComments'
+import Comments from '../components/Blog/GiscusComments'
 import { marked } from 'marked'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
@@ -214,7 +214,7 @@ const BlogPost = () => {
 
             {/* Seção de Comentários - Isso */}
             <div className="bg-white rounded-xl shadow-md p-8 md:p-12 mb-16 border border-cream/20">
-              <IssoComments slug={slug} />
+              <Comments slug={slug} />
             </div>
 
             {/* Posts Relacionados */}
