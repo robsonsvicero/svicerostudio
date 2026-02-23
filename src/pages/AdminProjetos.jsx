@@ -114,47 +114,35 @@ const AdminProjetos = () => {
 
   // Upload de múltiplas imagens
   const handleGalleryUpload = async (files) => {
-    if (!files || files.length === 0) return
-
+    if (!files || files.length === 0) return;
     if (files.length > 15) {
-      showToastMessage('Máximo de 15 imagens por projeto', 'error')
-      return
+      showToastMessage('Máximo de 15 imagens por projeto', 'error');
+      return;
     }
-
-    setUploadingImages(true)
-
+    setUploadingImages(true);
     try {
-      const uploadedUrls = []
-
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        const fileExt = file.name.split('.').pop()
-        const fileName = `${Math.random().toString(36).substring(7)}_${Date.now()}.${fileExt}`
-        const filePath = `${fileName}`
-
-        const { error: uploadError, data } = await supabase.storage
-          .from('projeto-galeria')
-          .upload(filePath, file)
-
-        if (uploadError) throw uploadError
-
-        const { data: urlData } = supabase.storage
-          .from('projeto-galeria')
-          .getPublicUrl(filePath)
-
-        uploadedUrls.push({
-          imagem_url: urlData.publicUrl,
-          ordem: galleryImages.length + i
+      const base64Images = await Promise.all(
+        files.map((file, idx) => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              resolve({
+                imagem_url: reader.result,
+                ordem: galleryImages.length + idx
+              });
+            };
+            reader.onerror = () => reject('Erro ao ler imagem');
+            reader.readAsDataURL(file);
+          });
         })
-      }
-
-      setGalleryImages(prev => [...prev, ...uploadedUrls])
-      showToastMessage(`${files.length} imagens adicionadas!`, 'success')
+      );
+      setGalleryImages(prev => [...prev, ...base64Images]);
+      showToastMessage(`${files.length} imagens adicionadas!`, 'success');
     } catch (error) {
-      console.error('Erro ao fazer upload:', error)
-      showToastMessage('Erro ao fazer upload das imagens', 'error')
+      console.error('Erro ao fazer upload:', error);
+      showToastMessage('Erro ao fazer upload das imagens', 'error');
     } finally {
-      setUploadingImages(false)
+      setUploadingImages(false);
     }
   }
 
@@ -818,9 +806,9 @@ const AdminProjetos = () => {
                         </p>
                         <div className="flex gap-2">
                           <Button
-                            variant="outline"
+                            variant="primary"
                             onClick={() => handleEdit(projeto)}
-                            className="flex-1 py-2 text-sm !bg-primary !text-white !border-2 !border-primary hover:!bg-primary/90"
+                            className="flex-1 py-2 text-sm"
                           >
                             <i className="fa-solid fa-pen mr-2"></i>
                             Editar
