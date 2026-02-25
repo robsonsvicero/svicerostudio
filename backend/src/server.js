@@ -355,6 +355,11 @@ app.post('/api/db/:table/query', async (req, res) => {
       }
       if (limit) query = query.limit(Number(limit));
 
+      // Permite uso de disco para ordenação pesada
+      if (typeof query.allowDiskUse === 'function') {
+        query = query.allowDiskUse(true);
+      }
+
       const docs = await query.lean();
       const data = normalizeDoc(docs);
 
