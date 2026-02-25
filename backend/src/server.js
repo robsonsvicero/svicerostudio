@@ -346,21 +346,17 @@ app.post('/api/db/:table/query', async (req, res) => {
 
     if (operation === 'select') {
       const projection = normalizeProjection(select);
-      let query = Model.find(mongoFilter);
-
-      if (projection) query = query.select(projection);
+      // Usar aggregate para permitir allowDiskUse
+      const pipeline = [];
+      if (Object.keys(mongoFilter).length > 0) pipeline.push({ $match: mongoFilter });
       if (orderBy?.column) {
         const orderField = orderBy.column === 'id' ? '_id' : orderBy.column;
-        query = query.sort({ [orderField]: orderBy.ascending === false ? -1 : 1 });
+        pipeline.push({ $sort: { [orderField]: orderBy.ascending === false ? -1 : 1 } });
       }
-      if (limit) query = query.limit(Number(limit));
+      if (limit) pipeline.push({ $limit: Number(limit) });
+      if (projection) pipeline.push({ $project: projection });
 
-      // Permite uso de disco para ordenação pesada
-      if (typeof query.allowDiskUse === 'function') {
-        query = query.allowDiskUse(true);
-      }
-
-      const docs = await query.lean();
+      const docs = await Model.aggregate(pipeline).option({ allowDiskUse: true });
       const data = normalizeDoc(docs);
 
       if (single) {
