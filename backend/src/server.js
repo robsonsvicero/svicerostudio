@@ -356,7 +356,7 @@ app.post('/api/db/:table/query', async (req, res) => {
       if (limit) pipeline.push({ $limit: Number(limit) });
       if (projection) pipeline.push({ $project: projection });
 
-      const docs = await Model.aggregate(pipeline).option({ allowDiskUse: true });
+      const docs = await Model.aggregate(pipeline).allowDiskUse(true);
       const data = normalizeDoc(docs);
 
       if (single) {
