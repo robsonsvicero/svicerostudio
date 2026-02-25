@@ -65,7 +65,7 @@ const Home = () => {
         const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/query`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ filters: [{ mostrar_home: true }], orderBy: { data_projeto: -1 }, limit: 6 }),
+          body: JSON.stringify({ filters: [{ mostrar_home: true }], orderBy: { column: 'data_projeto', ascending: false }, limit: 6 }),
         });
         const payload = await res.json();
         if (!res.ok) throw new Error(payload.error || 'Erro ao buscar projetos');
