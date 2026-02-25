@@ -385,10 +385,10 @@ const AdminBlog = () => {
                   <td>{post.publicado ? 'Publicado' : 'Rascunho'}</td>
                   <td>{post.autor}</td>
                   <td>
-                    <Button variant="secondary" onClick={() => handleEdit(post)} className="mr-2">Editar</Button>
-                    <Button variant="danger" onClick={() => handleDelete(post.id)}>
-                      Excluir
-                    </Button>
+                    <div className="flex flex-row gap-2">
+                      <Button variant="primary" onClick={() => handleEdit(post)}>Editar</Button>
+                      <Button variant="danger" onClick={() => handleDelete(post.id)}>Excluir</Button>
+                    </div>
                   </td>
                 </tr>
               ))}

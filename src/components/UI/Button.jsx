@@ -75,10 +75,10 @@ const Button = ({
   };
 
   // Cor do preenchimento animado
-  let fillColor = '#171F2A'; // primary
+  let fillColor = '#2F353B'; // primary
   if (variant === 'secondary') fillColor = '#844219'; // secondary
   else if (variant === 'danger') fillColor = '#dc2626'; // vermelho
-  else if (variant === 'outline') fillColor = '#2F353B'; // hover mais visível
+  else if (variant === 'outline') fillColor = '#171F2A'; // hover mais visível
   else if (variant === 'custom') fillColor = '#FFF8F0'; // cream
 
   // Permite sobrescrever com prop customFillColor
