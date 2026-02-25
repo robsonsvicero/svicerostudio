@@ -103,7 +103,7 @@ const Home = () => {
         const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderBy: { data_publicacao: -1 }, limit: 3 }),
+          body: JSON.stringify({ orderBy: { column: 'data_publicacao', ascending: false }, limit: 3 }),
         });
         const payload = await res.json();
         if (!res.ok) throw new Error(payload.error || 'Erro ao buscar posts');
