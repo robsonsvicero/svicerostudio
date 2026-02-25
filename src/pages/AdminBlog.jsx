@@ -222,22 +222,52 @@ const AdminBlog = () => {
         {/* Formulário */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-12 border border-cream/20">
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <input name="titulo" value={formData.titulo} onChange={handleInputChange} placeholder="Título *" required />
-            <input name="slug" value={formData.slug} onChange={handleInputChange} placeholder="Slug" />
-            <textarea name="resumo" value={formData.resumo} onChange={handleInputChange} placeholder="Resumo" />
-            <textarea name="conteudo" value={formData.conteudo} onChange={handleInputChange} onPaste={handlePaste} placeholder="Conteúdo *" required />
-            <div className="flex flex-col gap-2">
-              <label>Imagem de destaque:</label>
-              <input type="file" accept="image/*" onChange={handleImageUpload} />
-              {imagemPreview && <img src={imagemPreview} alt="Preview" className="max-w-xs rounded-xl mt-2" />}
+            <div className="flex flex-col gap-1">
+              <label htmlFor="titulo">Título *</label>
+              <input id="titulo" name="titulo" value={formData.titulo} onChange={handleInputChange} placeholder="Título *" required className="border border-gray-300 rounded px-3 py-2" />
             </div>
-            <input name="categoria" value={formData.categoria} onChange={handleInputChange} placeholder="Categoria" />
-            <input name="tags" value={formData.tags} onChange={handleInputChange} placeholder="Tags (separadas por vírgula)" />
-            <input name="data_publicacao" value={formData.data_publicacao} onChange={handleInputChange} placeholder="Data de publicação" type="date" />
-            <div className="flex flex-col gap-2">
-              <label>Autor *</label>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="slug">Slug</label>
+              <input id="slug" name="slug" value={formData.slug} onChange={handleInputChange} placeholder="Slug" className="border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="resumo">Resumo</label>
+              <textarea id="resumo" name="resumo" value={formData.resumo} onChange={handleInputChange} placeholder="Resumo" className="border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="conteudo">Conteúdo *</label>
+              <textarea id="conteudo" name="conteudo" value={formData.conteudo} onChange={handleInputChange} onPaste={handlePaste} placeholder="Conteúdo *" required className="border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="imagem_destaque">Imagem de destaque (link do Imgur):</label>
+              <input id="imagem_destaque" name="imagem_destaque" value={formData.imagem_destaque} onChange={handleInputChange} placeholder="https://i.imgur.com/xxxxxxx.jpg" className="border border-gray-300 rounded px-3 py-2" />
+              <span className="text-xs text-gray-500">Cole o link direto da imagem hospedada no Imgur.</span>
+              {formData.imagem_destaque && formData.imagem_destaque.startsWith('http') && (
+                <img src={formData.imagem_destaque} alt="Preview" className="max-w-xs rounded-xl mt-2" />
+              )}
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="categoria">Categoria</label>
+              <select id="categoria" name="categoria" value={formData.categoria} onChange={handleInputChange} className="border border-gray-300 rounded px-3 py-2">
+                <option value="">Selecione</option>
+                <option value="Notícias">Notícias</option>
+                <option value="Tutoriais">Tutoriais</option>
+                <option value="Dicas">Dicas</option>
+                <option value="Outros">Outros</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="tags">Tags</label>
+              <input id="tags" name="tags" value={formData.tags} onChange={handleInputChange} placeholder="Tags (separadas por vírgula)" className="border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="data_publicacao">Data de publicação</label>
+              <input id="data_publicacao" name="data_publicacao" value={formData.data_publicacao} onChange={handleInputChange} placeholder="Data de publicação" type="date" className="border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="autor">Autor *</label>
               {autores.length > 0 ? (
-                <select name="autor" value={formData.autor} onChange={handleInputChange} required>
+                <select id="autor" name="autor" value={formData.autor} onChange={handleInputChange} required className="border border-gray-300 rounded px-3 py-2">
                   <option value="">Selecione</option>
                   {autores.map(autor => (
                     <option key={autor.id} value={autor.nome}>{autor.nome}</option>
@@ -248,8 +278,8 @@ const AdminBlog = () => {
               )}
             </div>
             <div className="flex items-center gap-2">
-              <label>Status:</label>
-              <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleInputChange} />
+              <label htmlFor="publicado">Status:</label>
+              <input id="publicado" type="checkbox" name="publicado" checked={formData.publicado} onChange={handleInputChange} />
               <span>{formData.publicado ? 'Publicado' : 'Rascunho'}</span>
             </div>
             <div className="flex gap-4 justify-end">
