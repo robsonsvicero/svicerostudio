@@ -53,9 +53,12 @@ const AdminBlog = () => {
   const fetchPosts = async () => {
     try {
       setIsLoading(true);
-      const { data, error } = await supabase
+      let query = supabase
         .from('posts')
-        .select('*');
+        .select('*')
+        .order('data_publicacao', { ascending: false, nullsFirst: false })
+        .order('created_at', { ascending: false });
+      const { data, error } = await query;
       if (error) throw error;
       setPosts(data || []);
     } catch (error) {

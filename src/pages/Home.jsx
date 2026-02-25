@@ -566,44 +566,52 @@ const Home = () => {
             {blogPosts.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                  {blogPosts.map((post) => {
-                    return (
-                      <a
-                        key={post.id}
-                        href={`/blog/${post.slug}`}
-                        className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-cream/20"
-                      >
-                        {post.imagem_destaque && (
-                          <div className="aspect-video overflow-hidden bg-cream">
-                            <img
-                              src={post.imagem_destaque}
-                              alt={post.titulo}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                          </div>
-                        )}
-                        <div className="p-6">
-                          {post.categoria && (
-                            <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-3">
-                              {post.categoria}
+                  {blogPosts
+                    .slice() // cópia para não mutar state
+                    .sort((a, b) => {
+                      const aDate = a.data_publicacao ? new Date(a.data_publicacao) : new Date(a.created_at);
+                      const bDate = b.data_publicacao ? new Date(b.data_publicacao) : new Date(b.created_at);
+                      return bDate - aDate;
+                    })
+                    .slice(0, 3)
+                    .map((post) => {
+                      return (
+                        <a
+                          key={post.id}
+                          href={`/blog/${post.slug}`}
+                          className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-cream/20"
+                        >
+                          {post.imagem_destaque && (
+                            <div className="aspect-video overflow-hidden bg-cream">
+                              <img
+                                src={post.imagem_destaque}
+                                alt={post.titulo}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                          )}
+                          <div className="p-6">
+                            {post.categoria && (
+                              <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-3">
+                                {post.categoria}
+                              </span>
+                            )}
+                            <h3 className="font-title text-xl font-light text-low-dark mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                              {post.titulo}
+                            </h3>
+                            {post.resumo && (
+                              <p className="text-low-medium text-sm mb-3 line-clamp-2 leading-relaxed">
+                                {post.resumo}
+                              </p>
+                            )}
+                            <span className="text-sm text-low-medium flex items-center gap-2">
+                              <i className="fa-regular fa-calendar"></i>
+                              {formatDate(post.data_publicacao)}
                             </span>
-                          )}
-                          <h3 className="font-title text-xl font-light text-low-dark mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                            {post.titulo}
-                          </h3>
-                          {post.resumo && (
-                            <p className="text-low-medium text-sm mb-3 line-clamp-2 leading-relaxed">
-                              {post.resumo}
-                            </p>
-                          )}
-                          <span className="text-sm text-low-medium flex items-center gap-2">
-                            <i className="fa-regular fa-calendar"></i>
-                            {formatDate(post.data_publicacao)}
-                          </span>
-                        </div>
-                      </a>
-                    );
-                  })}
+                          </div>
+                        </a>
+                      );
+                    })}
                 </div>
 
                 <div className="text-center">
