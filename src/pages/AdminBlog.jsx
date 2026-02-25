@@ -359,12 +359,12 @@ const AdminBlog = () => {
         <div className="overflow-x-auto">
           <table className="min-w-full w-full text-left border border-cream/40 rounded-xl table-fixed">
             <colgroup>
-              <col style={{ width: '180px' }} />
-              <col />
-              <col />
-              <col />
-              <col />
-              <col style={{ width: '170px' }} />
+              <col style={{ width: '260px' }} /> {/* Título */}
+              <col /> {/* Categoria */}
+              <col /> {/* Data */}
+              <col /> {/* Status */}
+              <col /> {/* Autor */}
+              <col style={{ width: '200px' }} /> {/* Ações */}
             </colgroup>
             <thead>
               <tr>
