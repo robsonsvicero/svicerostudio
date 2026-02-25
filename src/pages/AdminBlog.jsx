@@ -250,10 +250,10 @@ const AdminBlog = () => {
               <label htmlFor="categoria">Categoria</label>
               <select id="categoria" name="categoria" value={formData.categoria} onChange={handleInputChange} className="border border-gray-300 rounded px-3 py-2">
                 <option value="">Selecione</option>
-                <option value="Notícias">Notícias</option>
-                <option value="Tutoriais">Tutoriais</option>
-                <option value="Dicas">Dicas</option>
-                <option value="Outros">Outros</option>
+                <option value="Design Estratégico & Psicologia do Valor">Design Estratégico & Psicologia do Valor</option>
+                <option value="UX Design & Engenharia de Lucro">UX Design & Engenharia de Lucro</option>
+                <option value="Execução Técnica & Performance Digital">Execução Técnica & Performance Digital</option>
+                <option value="Carreira & Mercado Freelance">Carreira & Mercado Freelance</option>
               </select>
             </div>
             <div className="flex flex-col gap-1">
@@ -321,8 +321,10 @@ const AdminBlog = () => {
                   <td>{post.publicado ? 'Publicado' : 'Rascunho'}</td>
                   <td>{post.autor}</td>
                   <td>
-                    <Button variant="secondary" onClick={() => handleEdit(post)}>Editar</Button>
-                    <Button variant="danger" onClick={() => handleDelete(post.id)}>Excluir</Button>
+                    <Button variant="secondary" onClick={() => handleEdit(post)} className="mr-2">Editar</Button>
+                    <Button variant="danger" onClick={() => handleDelete(post.id)}>
+                      Excluir
+                    </Button>
                   </td>
                 </tr>
               ))}

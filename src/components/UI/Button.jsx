@@ -44,6 +44,8 @@ const Button = ({
     variantClasses = 'bg-primary border-none text-cream';
   } else if (variant === 'secondary') {
     variantClasses = 'bg-secondary border-none text-cream';
+  } else if (variant === 'danger') {
+    variantClasses = 'bg-red-600 border-none text-white hover:bg-red-700';
   } else if (variant === 'outline') {
     variantClasses = 'bg-transparent border-2 border-primary text-low-dark outline-hover';
     outlineHoverClass = 'outline-hover';
@@ -75,9 +77,10 @@ const Button = ({
   // Cor do preenchimento animado
   let fillColor = '#171F2A'; // primary
   if (variant === 'secondary') fillColor = '#844219'; // secondary
+  else if (variant === 'danger') fillColor = '#dc2626'; // vermelho
   else if (variant === 'outline') fillColor = '#2F353B'; // hover mais visível
   else if (variant === 'custom') fillColor = '#FFF8F0'; // cream
-  
+
   // Permite sobrescrever com prop customFillColor
   if (customFillColor) fillColor = customFillColor;
 
