@@ -14,6 +14,7 @@ const AdminBlog = () => {
 
   // Estados
   const [posts, setPosts] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
   const [autores, setAutores] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,8 +55,7 @@ const AdminBlog = () => {
       setIsLoading(true);
       const { data, error } = await supabase
         .from('posts')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('*');
       if (error) throw error;
       setPosts(data || []);
     } catch (error) {
@@ -63,6 +63,37 @@ const AdminBlog = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+  // Função para ordenar os posts conforme sortConfig
+  const sortedPosts = React.useMemo(() => {
+    if (!posts) return [];
+    const sorted = [...posts];
+    if (sortConfig.key) {
+      sorted.sort((a, b) => {
+        let aValue = a[sortConfig.key];
+        let bValue = b[sortConfig.key];
+        // Para datas, converter para Date
+        if (sortConfig.key === 'data_publicacao' || sortConfig.key === 'created_at') {
+          aValue = aValue ? new Date(aValue) : new Date(0);
+          bValue = bValue ? new Date(bValue) : new Date(0);
+        }
+        if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+    return sorted;
+  }, [posts, sortConfig]);
+
+  // Handler para clicar no cabeçalho e ordenar
+  const handleSort = (key) => {
+    setSortConfig((prev) => {
+      if (prev.key === key) {
+        // Alterna asc/desc
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+      }
+      return { key, direction: 'asc' };
+    });
   };
 
   useEffect(() => {
@@ -298,24 +329,57 @@ const AdminBlog = () => {
           )}
         </div>
 
+        {/* Insights de Engenharia Visual */}
+        <h2 className="font-title text-2xl font-light text-low-dark mb-2">Insights de Engenharia Visual</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {sortedPosts
+            .filter(p => p.publicado)
+            .sort((a, b) => {
+              // Ordena por data_publicacao ou created_at (desc)
+              const aDate = a.data_publicacao ? new Date(a.data_publicacao) : new Date(a.created_at);
+              const bDate = b.data_publicacao ? new Date(b.data_publicacao) : new Date(b.created_at);
+              return bDate - aDate;
+            })
+            .slice(0, 3)
+            .map((post) => (
+              <div key={post.id} className="bg-white rounded-xl shadow p-4 border border-cream/30 flex flex-col">
+                <span className="text-xs text-gray-500 mb-1">{post.categoria}</span>
+                <h3 className="font-title text-lg font-semibold mb-2 truncate" title={post.titulo}>{post.titulo}</h3>
+                <p className="text-sm text-gray-700 mb-2 line-clamp-3">{post.resumo}</p>
+                {post.imagem_destaque && post.imagem_destaque.startsWith('http') && (
+                  <img src={post.imagem_destaque} alt="Imagem de destaque" className="rounded-xl mb-2 max-h-32 object-cover" />
+                )}
+                <span className="text-xs text-gray-400 mt-auto">{post.data_publicacao || post.created_at}</span>
+              </div>
+            ))}
+        </div>
+
         {/* Listagem de posts */}
         <h2 className="font-title text-2xl font-light text-low-dark mb-6">Posts Cadastrados ({posts.length})</h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full text-left border border-cream/40 rounded-xl">
+          <table className="min-w-full w-full text-left border border-cream/40 rounded-xl table-fixed">
+            <colgroup>
+              <col style={{ width: '180px' }} />
+              <col />
+              <col />
+              <col />
+              <col />
+              <col style={{ width: '170px' }} />
+            </colgroup>
             <thead>
               <tr>
-                <th>Título</th>
-                <th>Categoria</th>
-                <th>Data</th>
-                <th>Status</th>
-                <th>Autor</th>
+                <th className="truncate cursor-pointer select-none" onClick={() => handleSort('titulo')}>Título {sortConfig.key === 'titulo' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                <th className="cursor-pointer select-none" onClick={() => handleSort('categoria')}>Categoria {sortConfig.key === 'categoria' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                <th className="cursor-pointer select-none" onClick={() => handleSort('data_publicacao')}>Data {sortConfig.key === 'data_publicacao' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                <th className="cursor-pointer select-none" onClick={() => handleSort('publicado')}>Status {sortConfig.key === 'publicado' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+                <th className="cursor-pointer select-none" onClick={() => handleSort('autor')}>Autor {sortConfig.key === 'autor' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
                 <th>Ações</th>
               </tr>
             </thead>
             <tbody>
-              {posts.map((post, idx) => (
+              {sortedPosts.map((post, idx) => (
                 <tr key={idx}>
-                  <td>{post.titulo}</td>
+                  <td className="truncate" title={post.titulo}>{post.titulo}</td>
                   <td>{post.categoria}</td>
                   <td>{post.data_publicacao}</td>
                   <td>{post.publicado ? 'Publicado' : 'Rascunho'}</td>
