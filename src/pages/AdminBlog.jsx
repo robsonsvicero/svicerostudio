@@ -31,7 +31,7 @@ const AdminBlog = () => {
     tags: '',
     data_publicacao: '',
     autor: '',
-    publicado: false
+    publicado: true
   });
 
   // Buscar autores publicados
@@ -317,9 +317,8 @@ const AdminBlog = () => {
               )}
             </div>
             <div className="flex items-center gap-2">
-              <label htmlFor="publicado">Status:</label>
+              <label htmlFor="publicado">Publicado:</label>
               <input id="publicado" type="checkbox" name="publicado" checked={formData.publicado} onChange={handleInputChange} />
-              <span>{formData.publicado ? 'Publicado' : 'Rascunho'}</span>
             </div>
             <div className="flex gap-4 justify-end">
               <Button type="submit" disabled={isSubmitting} variant="primary">Salvar</Button>
