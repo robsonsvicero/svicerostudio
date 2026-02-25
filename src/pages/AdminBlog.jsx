@@ -233,6 +233,11 @@ const AdminBlog = () => {
 
   return (
     <div className="min-h-screen bg-cream pt-20 pb-24 px-4 md:px-16">
+      <div className="max-w-screen-xl mx-auto mb-4">
+        <Button variant="outline" onClick={() => navigate('/admin')} icon={<i className="fa-solid fa-arrow-left"></i>}>
+          Voltar
+        </Button>
+      </div>
       <Toast 
         message={toastMessage} 
         type={toastType} 
@@ -329,30 +334,7 @@ const AdminBlog = () => {
           )}
         </div>
 
-        {/* Insights de Engenharia Visual */}
-        <h2 className="font-title text-2xl font-light text-low-dark mb-2">Insights de Engenharia Visual</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {sortedPosts
-            .filter(p => p.publicado)
-            .sort((a, b) => {
-              // Ordena por data_publicacao ou created_at (desc)
-              const aDate = a.data_publicacao ? new Date(a.data_publicacao) : new Date(a.created_at);
-              const bDate = b.data_publicacao ? new Date(b.data_publicacao) : new Date(b.created_at);
-              return bDate - aDate;
-            })
-            .slice(0, 3)
-            .map((post) => (
-              <div key={post.id} className="bg-white rounded-xl shadow p-4 border border-cream/30 flex flex-col">
-                <span className="text-xs text-gray-500 mb-1">{post.categoria}</span>
-                <h3 className="font-title text-lg font-semibold mb-2 truncate" title={post.titulo}>{post.titulo}</h3>
-                <p className="text-sm text-gray-700 mb-2 line-clamp-3">{post.resumo}</p>
-                {post.imagem_destaque && post.imagem_destaque.startsWith('http') && (
-                  <img src={post.imagem_destaque} alt="Imagem de destaque" className="rounded-xl mb-2 max-h-32 object-cover" />
-                )}
-                <span className="text-xs text-gray-400 mt-auto">{post.data_publicacao || post.created_at}</span>
-              </div>
-            ))}
-        </div>
+
 
         {/* Listagem de posts */}
         <h2 className="font-title text-2xl font-light text-low-dark mb-6">Posts Cadastrados ({posts.length})</h2>
