@@ -260,7 +260,7 @@ const AdminProjetos = () => {
           legenda: img.legenda || null
         }));
         console.log('Enviando imagens para projeto_galeria:', imagesToInsert);
-        await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/insert`, {
+        await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/query`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
