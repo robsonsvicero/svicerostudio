@@ -264,7 +264,7 @@ const AdminProjetos = () => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ data: imagesToInsert }),
+          body: JSON.stringify({ operation: 'insert', payload: imagesToInsert }),
         });
       }
       showToastMessage(
