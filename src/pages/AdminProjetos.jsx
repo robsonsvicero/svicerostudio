@@ -133,7 +133,8 @@ const AdminProjetos = () => {
         const file = files[idx];
         const formData = new FormData();
         formData.append('file', file);
-        // Opcional: pode adicionar outros campos se backend aceitar
+        formData.append('bucket', 'projetos');
+        formData.append('key', `${Date.now()}_${file.name}`);
         const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/storage/upload`, {
           method: 'POST',
           headers: {
