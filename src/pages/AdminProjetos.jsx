@@ -243,23 +243,23 @@ const AdminProjetos = () => {
         console.log('galleryImages para inserir:', galleryImages);
         // Deletar imagens antigas se estiver editando
         if (editingId) {
-          await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/delete`, {
+          await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/query`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ filters: [{ projeto_id: editingId }] }),
+            body: JSON.stringify({ operation: 'delete', filters: [{ column: 'projeto_id', operator: 'eq', value: editingId }] }),
           });
         }
         // Inserir novas imagens
-        console.log('Enviando imagens para projeto_galeria:', imagesToInsert);
         const imagesToInsert = galleryImages.map((img, index) => ({
           projeto_id: projetoId,
           imagem_url: img.imagem_url,
           ordem: img.ordem !== undefined ? img.ordem : index,
           legenda: img.legenda || null
         }));
+        console.log('Enviando imagens para projeto_galeria:', imagesToInsert);
         await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/insert`, {
           method: 'POST',
           headers: {
