@@ -240,6 +240,7 @@ const AdminProjetos = () => {
       }
       // Salvar galeria de imagens
       if (galleryImages.length > 0) {
+        console.log('galleryImages para inserir:', galleryImages);
         // Deletar imagens antigas se estiver editando
         if (editingId) {
           await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/delete`, {
@@ -252,6 +253,7 @@ const AdminProjetos = () => {
           });
         }
         // Inserir novas imagens
+        console.log('Enviando imagens para projeto_galeria:', imagesToInsert);
         const imagesToInsert = galleryImages.map((img, index) => ({
           projeto_id: projetoId,
           imagem_url: img.imagem_url,
