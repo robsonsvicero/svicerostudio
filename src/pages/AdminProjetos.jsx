@@ -112,31 +112,45 @@ const AdminProjetos = () => {
     }
   };
 
-  // Upload de múltiplas imagens
+  // Upload de múltiplas imagens (binário via /api/storage/upload)
   const handleGalleryUpload = async (files) => {
     if (!files || files.length === 0) return;
     if (files.length > 15) {
       showToastMessage('Máximo de 15 imagens por projeto', 'error');
       return;
     }
+    // Limite de tamanho: 8MB por imagem (backend aceita até 8MB)
+    const tooBig = Array.from(files).find(f => f.size > 8 * 1024 * 1024);
+    if (tooBig) {
+      showToastMessage('Cada imagem deve ter no máximo 8MB', 'error');
+      return;
+    }
     setUploadingImages(true);
     try {
-      const base64Images = await Promise.all(
-        files.map((file, idx) => {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              resolve({
-                imagem_url: reader.result,
-                ordem: galleryImages.length + idx
-              });
-            };
-            reader.onerror = () => reject('Erro ao ler imagem');
-            reader.readAsDataURL(file);
-          });
-        })
-      );
-      setGalleryImages(prev => [...prev, ...base64Images]);
+      const token = localStorage.getItem('svicero_admin_token');
+      const uploadedImages = [];
+      for (let idx = 0; idx < files.length; idx++) {
+        const file = files[idx];
+        const formData = new FormData();
+        formData.append('file', file);
+        // Opcional: pode adicionar outros campos se backend aceitar
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/storage/upload`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+        const payload = await res.json();
+        if (!res.ok || !payload.url) {
+          throw new Error(payload.error || 'Erro ao enviar imagem');
+        }
+        uploadedImages.push({
+          imagem_url: payload.url,
+          ordem: galleryImages.length + idx,
+        });
+      }
+      setGalleryImages(prev => [...prev, ...uploadedImages]);
       showToastMessage(`${files.length} imagens adicionadas!`, 'success');
     } catch (error) {
       console.error('Erro ao fazer upload:', error);
@@ -238,9 +252,8 @@ const AdminProjetos = () => {
         if (!res.ok) throw new Error(payload.error || 'Erro ao criar projeto');
         projetoId = payload.data?.[0]?.id;
       }
-      // Salvar galeria de imagens
+      // Salvar galeria de imagens (URLs)
       if (galleryImages.length > 0) {
-        console.log('galleryImages para inserir:', galleryImages);
         // Deletar imagens antigas se estiver editando
         if (editingId) {
           await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/query`, {
@@ -252,14 +265,13 @@ const AdminProjetos = () => {
             body: JSON.stringify({ operation: 'delete', filters: [{ column: 'projeto_id', operator: 'eq', value: editingId }] }),
           });
         }
-        // Inserir novas imagens
+        // Inserir novas imagens (apenas URLs)
         const imagesToInsert = galleryImages.map((img, index) => ({
           projeto_id: projetoId,
           imagem_url: img.imagem_url,
           ordem: img.ordem !== undefined ? img.ordem : index,
           legenda: img.legenda || null
         }));
-        console.log('Enviando imagens para projeto_galeria:', imagesToInsert);
         await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projeto_galeria/query`, {
           method: 'POST',
           headers: {
@@ -551,7 +563,7 @@ const AdminProjetos = () => {
                       <div className="flex flex-col items-center gap-2">
                         <i className="fa-solid fa-cloud-arrow-up text-4xl text-primary"></i>
                         <p className="text-low-dark font-medium">Clique ou arraste imagens aqui</p>
-                        <p className="text-sm text-low-medium">PNG, JPG, WEBP até 5MB cada</p>
+                        <p className="text-sm text-low-medium">PNG, JPG, WEBP até 500kb cada</p>
                       </div>
                     )}
                     <input
@@ -564,9 +576,10 @@ const AdminProjetos = () => {
                       disabled={uploadingImages}
                     />
                   </label>
+                  <p className="text-sm text-low-medium mt-1">Imagens serão salvas diretamente no banco de dados (upload binário). Máximo 8MB por imagem.</p>
                 </div>
 
-                {/* Preview da Galeria */}
+                {/* Preview da Galeria (URLs) */}
                 {galleryImages.length > 0 && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {galleryImages.map((img, index) => (
@@ -575,6 +588,7 @@ const AdminProjetos = () => {
                           src={img.imagem_url}
                           alt={`Galeria ${index + 1}`}
                           className="w-full aspect-square object-cover rounded-lg"
+                          onError={e => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
                         />
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
                           <button
