@@ -102,7 +102,7 @@ const AdminProjetos = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ filters: [{ projeto_id: projetoId }], orderBy: { ordem: 1 } }),
+        body: JSON.stringify({ filters: [{ column: 'projeto_id', operator: 'eq', value: projetoId }], orderBy: { column: 'ordem', ascending: true } }),
       });
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao buscar galeria');
