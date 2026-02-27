@@ -59,7 +59,6 @@
 
 ## 🚀 Como Usar
 
-### Passo 1: Criar a Tabela no Supabase
 ### Passo 1: Criar a Collection no MongoDB
 1. Abra o MongoDB Atlas
 2. Crie a collection `autores`

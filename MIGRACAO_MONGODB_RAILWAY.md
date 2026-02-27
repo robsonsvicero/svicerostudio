@@ -4,8 +4,6 @@ Este projeto foi migrado para usar **API própria (Node/Express)** + **MongoDB A
 
 ## 1) O que mudou no código
 
-- Frontend deixou de usar credenciais Supabase no navegador.
-- Camada `src/lib/supabase.js` agora é um cliente compatível que chama a API backend.
 - Backend novo em `backend/` com:
   - autenticação admin por JWT
   - CRUD de `projetos`, `projeto_galeria`, `posts`, `autores`, `depoimentos`

@@ -227,7 +227,7 @@ const Home = () => {
     }
   };
 
-  // Buscar projetos do Supabase (últimos 5 marcados para exibir na home)
+  // Buscar projetos do backend (últimos 5 marcados para exibir na home)
 
 
   const handleOpenProject = (project) => {

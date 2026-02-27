@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/UI/Button'
 import { useToast } from '../hooks/useToast'
@@ -204,21 +203,24 @@ const AdminAutores = () => {
 
       if (editingId) {
         // Atualizar autor existente
-        const { error } = await supabase
-          .from('autores')
-          .update(formData)
-          .eq('id', editingId)
-
-        if (error) throw error
-        showToastMessage('Autor atualizado com sucesso!', 'success')
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: editingId }], payload: formData }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar autor');
+        showToastMessage('Autor atualizado com sucesso!', 'success');
       } else {
         // Criar novo autor
-        const { error } = await supabase
-          .from('autores')
-          .insert([formData])
-
-        if (error) throw error
-        showToastMessage('Autor criado com sucesso!', 'success')
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ operation: 'insert', payload: formData }),
+        });
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao criar autor');
+        showToastMessage('Autor criado com sucesso!', 'success');
       }
 
       // Reset form
@@ -255,19 +257,19 @@ const AdminAutores = () => {
   }
 
   const handleDelete = async (id) => {
-    if (!confirm('Tem certeza que deseja excluir este autor?')) return
-
+    if (!confirm('Tem certeza que deseja excluir este autor?')) return;
     try {
-      const { error } = await supabase
-        .from('autores')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
-      showToastMessage('Autor excluído com sucesso!', 'success')
-      fetchAutores()
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ operation: 'delete', filters: [{ column: 'id', operator: 'eq', value: id }] }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao excluir autor');
+      showToastMessage('Autor excluído com sucesso!', 'success');
+      fetchAutores();
     } catch (error) {
-      showToastMessage('Erro ao excluir autor', 'error')
+      showToastMessage('Erro ao excluir autor', 'error');
     }
   }
 

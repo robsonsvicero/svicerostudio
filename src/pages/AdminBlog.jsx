@@ -168,44 +168,38 @@ const AdminBlog = () => {
       if (!formData.titulo || !formData.conteudo || !formData.autor) {
         showToastMessage('Preencha todos os campos obrigatórios', 'error');
         setIsSubmitting(false);
-        e.preventDefault();
-        setIsSubmitting(true);
-        try {
-          // Validação básica
-          if (!formData.titulo || !formData.conteudo || !formData.autor) {
-            showToastMessage('Preencha todos os campos obrigatórios', 'error');
-            return;
-          }
-          // Slug único
-          const slug = await getUniqueSlug(formData.slug, editingId);
-          const payload = { ...formData, slug };
-          let result;
-          const apiUrl = `${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`;
-          if (editingId) {
-            result = await fetch(apiUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: editingId }], payload }),
-            });
-          } else {
-            result = await fetch(apiUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ operation: 'insert', payload }),
-            });
-          }
-          const payloadRes = await result.json();
-          if (!result.ok) throw new Error(payloadRes.error || 'Erro ao salvar post');
-          showToastMessage('Post salvo!', 'success');
-          setFormData({ titulo: '', slug: '', resumo: '', conteudo: '', imagem_destaque: '', categoria: '', tags: '', data_publicacao: '', autor: '', publicado: false });
-          setEditingId(null);
-          fetchPosts();
-        } catch (error) {
-          showToastMessage('Erro ao salvar post', 'error');
-        } finally {
-          setIsSubmitting(false);
-        }
-      };
+        return;
+      }
+      // Slug único
+      const slug = await getUniqueSlug(formData.slug, editingId);
+      const payload = { ...formData, slug };
+      let result;
+      const apiUrl = `${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`;
+      if (editingId) {
+        result = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: editingId }], payload }),
+        });
+      } else {
+        result = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ operation: 'insert', payload }),
+        });
+      }
+      const payloadRes = await result.json();
+      if (!result.ok) throw new Error(payloadRes.error || 'Erro ao salvar post');
+      showToastMessage('Post salvo!', 'success');
+      setFormData({ titulo: '', slug: '', resumo: '', conteudo: '', imagem_destaque: '', categoria: '', tags: '', data_publicacao: '', autor: '', publicado: false });
+      setEditingId(null);
+      fetchPosts();
+    } catch (error) {
+      showToastMessage('Erro ao salvar post', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   const handleDelete = async (id) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {

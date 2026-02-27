@@ -89,7 +89,6 @@ Write-Host "   • https://svicerostudio.com.br/admin/projetos (após login)" -F
 
 Write-Host "`n⚠ IMPORTANTE:" -ForegroundColor Yellow
 Write-Host "  • As variáveis do .env foram incluídas no build automaticamente" -ForegroundColor White
-Write-Host "  • Supabase está configurado e funcionando" -ForegroundColor White
 Write-Host "  • Limpe o cache do navegador após o deploy" -ForegroundColor White
 Write-Host "  • Verifique se o .htaccess está funcionando" -ForegroundColor White
 Write-Host "  • Teste em modo anônimo/privado" -ForegroundColor White

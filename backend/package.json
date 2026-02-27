@@ -7,10 +7,9 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "migrate:supabase": "node scripts/migrate-from-supabase.mjs"
+     // "migrate:supabase": "node scripts/migrate-from-supabase.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.9",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

@@ -9,11 +9,8 @@ O projeto já possui uma base técnica muito favorável para incluir um CRM Lite
 - Persistência em MongoDB Atlas via Mongoose.
 - Autenticação administrativa com JWT.
 - Upload de arquivos já implementado (coleção `uploads`).
-- Camada cliente no frontend (`src/lib/supabase.js`) funcionando como adaptador para API própria.
 
 ### Observação importante de arquitetura
-
-Apesar do nome `supabase`, a implementação atual já conversa com a API própria (Mongo/Express). Ou seja, não há dependência funcional de Supabase para continuar a evolução do admin.
 
 ---
 

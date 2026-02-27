@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Comments from '../components/Blog/GiscusComments'
 import { marked } from 'marked'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Header from '../components/Layout/Header'
@@ -15,7 +14,6 @@ const BlogPost = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [relatedPosts, setRelatedPosts] = useState([])
 
-  // Facebook Comments removido: toda a lógica do SDK foi eliminada para evitar conflitos com Giscus.
 
   // Buscar post pelo slug
   useEffect(() => {
