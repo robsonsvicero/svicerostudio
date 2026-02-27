@@ -154,8 +154,14 @@ const AdminProjetos = () => {
       setGalleryImages(prev => [...prev, ...uploadedImages]);
       showToastMessage(`${files.length} imagens adicionadas!`, 'success');
     } catch (error) {
-      console.error('Erro ao fazer upload:', error);
-      showToastMessage('Erro ao fazer upload das imagens', 'error');
+      // Tenta mostrar a mensagem real do backend, se existir
+      if (error instanceof Error && error.message) {
+        console.error('Erro ao fazer upload:', error.message);
+        showToastMessage(`Erro ao fazer upload: ${error.message}`, 'error');
+      } else {
+        console.error('Erro ao fazer upload:', error);
+        showToastMessage('Erro ao fazer upload das imagens', 'error');
+      }
     } finally {
       setUploadingImages(false);
     }
