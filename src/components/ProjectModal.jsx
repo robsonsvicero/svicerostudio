@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { supabase } from '../lib/supabase';
+
 
 const ProjectModal = ({ isOpen, onClose, project }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -17,14 +17,19 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
   const fetchGalleryImages = async () => {
     try {
       setIsLoading(true);
-      const { data, error } = await supabase
-        .from('projeto_galeria')
-        .select('*')
-        .eq('projeto_id', project.id)
-        .order('ordem', { ascending: true });
-
-      if (error) throw error;
-      setGalleryImages(data || []);
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app';
+      const res = await fetch(`${apiUrl}/api/db/projeto_galeria/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          operation: 'select',
+          filters: [{ column: 'projeto_id', operator: 'eq', value: project.id }],
+          orderBy: { column: 'ordem', ascending: true }
+        })
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar galeria');
+      setGalleryImages(payload.data || []);
     } catch (error) {
       console.error('Erro ao carregar galeria:', error);
     } finally {
