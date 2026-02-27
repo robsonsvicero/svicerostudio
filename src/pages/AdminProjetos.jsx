@@ -144,7 +144,9 @@ const AdminProjetos = () => {
         });
         const payload = await res.json();
         if (!res.ok || !payload.url) {
-          throw new Error(payload.error || 'Erro ao enviar imagem');
+          // Log detalhado do payload para debug
+          console.error('Falha no upload. Status:', res.status, 'Payload:', payload);
+          throw new Error(payload.error || JSON.stringify(payload) || 'Erro ao enviar imagem');
         }
         uploadedImages.push({
           imagem_url: payload.url,
