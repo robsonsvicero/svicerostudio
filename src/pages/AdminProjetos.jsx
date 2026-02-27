@@ -148,9 +148,9 @@ const AdminProjetos = () => {
           console.error('Falha no upload. Status:', res.status, 'Payload:', payload);
           throw new Error(payload.error || JSON.stringify(payload) || 'Erro ao enviar imagem');
         }
-        // Monta a URL da imagem a partir do path retornado
+        // Monta a URL da imagem usando o endpoint correto do backend
         const apiUrl = import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app';
-        const imageUrl = `${apiUrl}/public/${payload.data.path}`;
+        const imageUrl = `${apiUrl}/api/storage/public/projetos/${payload.data.path}`;
         uploadedImages.push({
           imagem_url: imageUrl,
           ordem: galleryImages.length + idx,
