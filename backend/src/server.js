@@ -26,8 +26,17 @@ if (!JWT_SECRET) {
 const allowedTables = new Set(['projetos', 'projeto_galeria', 'posts', 'autores', 'depoimentos']);
 
 
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 const app = express();
 app.use(express.json({ limit: '20mb' }));
+
+// Servir arquivos estáticos da pasta 'public' na rota '/public'
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
 const corsOrigins = CORS_ORIGIN.split(',').map((origin) => origin.trim()).filter(Boolean);
 app.use(
