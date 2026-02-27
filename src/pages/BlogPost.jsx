@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Comments from '../components/Blog/GiscusComments'
 import { marked } from 'marked'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import SEOHelmet from '../components/SEOHelmet'
@@ -21,38 +20,39 @@ const BlogPost = () => {
   // Buscar post pelo slug
   useEffect(() => {
     const fetchPost = async () => {
-      setIsLoading(true)
-      const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .eq('slug', slug)
-        .eq('publicado', true)
-        .single()
-      if (error || !data) {
-        setIsLoading(false)
-        navigate('/404')
-        return
-      }
-      setPost(data)
-      
-      // Buscar autor pelo nome
-      if (data.autor) {
-        const { data: autorData, error: autorError } = await supabase
-          .from('autores')
-          .select('id, nome, cargo, foto_url, bio, email')
-          .eq('nome', data.autor)
-          .eq('publicado', true)
-          .single()
-        
-        if (!autorError && autorData) {
-          setAutor(autorData)
+      setIsLoading(true);
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ operation: 'select', filters: [{ column: 'slug', operator: 'eq', value: slug }], single: true }),
+        });
+        const payload = await res.json();
+        if (!res.ok || !payload.data) {
+          setIsLoading(false);
+          navigate('/404');
+          return;
         }
+        setPost(payload.data);
+        // Buscar autor pelo nome
+        if (payload.data.autor) {
+          const resAutor = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ operation: 'select', filters: [{ column: 'nome', operator: 'eq', value: payload.data.autor }], single: true }),
+          });
+          const autorPayload = await resAutor.json();
+          if (resAutor.ok && autorPayload.data) {
+            setAutor(autorPayload.data);
+          }
+        }
+      } catch {
+        navigate('/404');
       }
-      
-      setIsLoading(false)
-    }
-    if (slug) fetchPost()
-  }, [slug, navigate])
+      setIsLoading(false);
+    };
+    if (slug) fetchPost();
+  }, [slug, navigate]);
 
 
 
