@@ -595,6 +595,7 @@ const AdminProjetos = () => {
                 </div>
 
                 {/* Preview da Galeria (URLs) */}
+                {(() => { console.log('DEBUG galleryImages:', galleryImages); return null; })()}
                 {galleryImages.length > 0 && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {galleryImages.map((img, index) => (
