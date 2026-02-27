@@ -143,13 +143,16 @@ const AdminProjetos = () => {
           body: formData,
         });
         const payload = await res.json();
-        if (!res.ok || !payload.url) {
-          // Log detalhado do payload para debug
+        // Novo formato: espera data.path
+        if (!res.ok || !payload.data?.path) {
           console.error('Falha no upload. Status:', res.status, 'Payload:', payload);
           throw new Error(payload.error || JSON.stringify(payload) || 'Erro ao enviar imagem');
         }
+        // Monta a URL da imagem a partir do path retornado
+        const apiUrl = import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app';
+        const imageUrl = `${apiUrl}/public/${payload.data.path}`;
         uploadedImages.push({
-          imagem_url: payload.url,
+          imagem_url: imageUrl,
           ordem: galleryImages.length + idx,
         });
       }
