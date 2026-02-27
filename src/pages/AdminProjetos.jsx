@@ -109,98 +109,6 @@ const AdminProjetos = () => {
       setGallery([]);
     }
   };
-  const [error, setError] = useState('');
-  const [token, setToken] = useState(localStorage.getItem('svicero_admin_token') || '');
-
-  // Listar projetos
-  useEffect(() => {
-    const fetchProjects = async () => {
-      setIsLoading(true);
-      setError('');
-      try {
-        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ operation: 'select', orderBy: { column: 'data_projeto', ascending: false } }),
-        });
-        const payload = await res.json();
-        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar projetos');
-        setProjects(payload.data || []);
-      } catch (err) {
-        setError(err.message || 'Erro ao buscar projetos');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchProjects();
-  }, [token]);
-
-  // Formulário de projeto
-  const [form, setForm] = useState({
-    titulo: '', descricao: '', imagem_url: '', data_projeto: '', link: '', button_text: 'Ver Projeto',
-    descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true
-  });
-  const [gallery, setGallery] = useState([]); // [{ url, file }]
-  const [uploading, setUploading] = useState(false);
-  const [submitMsg, setSubmitMsg] = useState('');
-  const [editing, setEditing] = useState(null);
-
-  // Upload handler
-  const handleGalleryUpload = async (files) => {
-    setUploading(true);
-    const uploaded = [];
-    for (const file of files) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('bucket', 'projetos');
-      formData.append('key', `${Date.now()}_${file.name}`);
-      const res = await fetch(`${API_URL}/api/storage/upload`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-      const payload = await res.json();
-      if (res.ok && payload.data?.path) {
-        uploaded.push({ url: `${API_URL}/api/storage/public/projetos/${payload.data.path}`, file });
-      }
-    }
-    setGallery((prev) => [...prev, ...uploaded]);
-    setUploading(false);
-  };
-
-  // Submit handler
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitMsg('Salvando...');
-    try {
-      // 1. Salvar projeto
-      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ operation: editing ? 'update' : 'insert', filters: editing ? [{ id: editing }] : undefined, payload: form }),
-      });
-      const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || 'Erro ao salvar projeto');
-      const projetoId = editing || payload.data?.[0]?.id;
-      // 2. Salvar galeria
-      if (gallery.length > 0) {
-        await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ operation: 'insert', payload: gallery.map((img, i) => ({ projeto_id: projetoId, imagem_url: img.url, ordem: i })) }),
-        });
-      }
-      setSubmitMsg('Projeto salvo!');
-      setForm({ titulo: '', descricao: '', imagem_url: '', data_projeto: '', link: '', button_text: 'Ver Projeto', descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true });
-      setGallery([]);
-      setEditing(null);
-    } catch (err) {
-      setSubmitMsg(err.message || 'Erro ao salvar');
-    }
-  };
 
   // Render
   return (
@@ -282,5 +190,4 @@ const AdminProjetos = () => {
     </div>
   );
 };
-
 export default AdminProjetos;
