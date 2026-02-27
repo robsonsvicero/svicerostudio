@@ -1,29 +1,80 @@
-    // Excluir projeto
-    const handleDeleteProject = async (id) => {
-      if (!window.confirm('Tem certeza que deseja excluir este projeto?')) return;
+// ...existing code...
+
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const API_URL = import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app';
+
+const AdminProjetos = () => {
+  const navigate = useNavigate();
+  const [projects, setProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [token, setToken] = useState(localStorage.getItem('svicero_admin_token') || '');
+
+  // Listar projetos
+  useEffect(() => {
+    const fetchProjects = async () => {
       setIsLoading(true);
       setError('');
       try {
-        // 1. Excluir imagens da galeria
-        await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ operation: 'delete', filters: [{ projeto_id: id }] }),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ operation: 'select', orderBy: { column: 'data_projeto', ascending: false } }),
         });
-        // 2. Excluir projeto
-        await fetch(`${API_URL}/api/db/projetos/query`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ operation: 'delete', filters: [{ id }] }),
-        });
-        // 3. Atualizar lista
-        setProjects((prev) => prev.filter((p) => p.id !== id));
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar projetos');
+        setProjects(payload.data || []);
       } catch (err) {
-        setError('Erro ao excluir projeto');
+        setError(err.message || 'Erro ao buscar projetos');
       } finally {
         setIsLoading(false);
       }
     };
+    fetchProjects();
+  }, [token]);
+
+  // Formulário de projeto
+  const [form, setForm] = useState({
+    titulo: '', descricao: '', imagem_url: '', data_projeto: '', link: '', button_text: 'Ver Projeto',
+    descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true
+  });
+  const [gallery, setGallery] = useState([]); // [{ url, file }]
+  const [uploading, setUploading] = useState(false);
+  const [submitMsg, setSubmitMsg] = useState('');
+  const [editing, setEditing] = useState(null);
+
+  // Excluir projeto
+  const handleDeleteProject = async (id) => {
+    if (!window.confirm('Tem certeza que deseja excluir este projeto?')) return;
+    setIsLoading(true);
+    setError('');
+    try {
+      // 1. Excluir imagens da galeria
+      await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ operation: 'delete', filters: [{ projeto_id: id }] }),
+      });
+      // 2. Excluir projeto
+      await fetch(`${API_URL}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ operation: 'delete', filters: [{ id }] }),
+      });
+      // 3. Atualizar lista
+      setProjects((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      setError('Erro ao excluir projeto');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Editar projeto
   const handleEditProject = async (proj) => {
     setEditing(proj.id);
@@ -58,15 +109,6 @@
       setGallery([]);
     }
   };
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app';
-
-const AdminProjetos = () => {
-  const navigate = useNavigate();
-  const [projects, setProjects] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [token, setToken] = useState(localStorage.getItem('svicero_admin_token') || '');
 
