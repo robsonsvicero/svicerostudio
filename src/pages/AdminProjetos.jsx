@@ -263,6 +263,9 @@ const AdminProjetos = () => {
         const payload = await res.json();
         if (!res.ok) throw new Error(payload.error || 'Erro ao criar projeto');
         projetoId = payload.data?.[0]?.id;
+        // Após criar, já entra em modo de edição do novo projeto
+        setEditingId(projetoId);
+        fetchGalleryImages(projetoId);
       }
       // Salvar galeria de imagens (URLs)
       if (galleryImages.length > 0) {
