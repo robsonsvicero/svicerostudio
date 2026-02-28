@@ -48,6 +48,29 @@ const AdminProjetos = () => {
   const [submitMsg, setSubmitMsg] = useState('');
   const [editing, setEditing] = useState(null);
 
+  // Upload de imagens para galeria
+  const handleGalleryUpload = async (files) => {
+    setUploading(true);
+    const uploaded = [];
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('bucket', 'projetos');
+      formData.append('key', `${Date.now()}_${file.name}`);
+      const res = await fetch(`${API_URL}/api/storage/upload`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const payload = await res.json();
+      if (res.ok && payload.data?.path) {
+        uploaded.push({ url: `${API_URL}/api/storage/public/projetos/${payload.data.path}` });
+      }
+    }
+    setGallery((prev) => [...prev, ...uploaded]);
+    setUploading(false);
+  };
+
   // Excluir projeto
   const handleDeleteProject = async (id) => {
     if (!window.confirm('Tem certeza que deseja excluir este projeto?')) return;
