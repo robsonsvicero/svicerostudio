@@ -258,14 +258,14 @@ const AdminProjetos = () => {
 
   // Render
   return (
-    <div className="min-h-screen bg-cream p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-cream p-8">
       <h1 className="text-3xl font-bold mb-6">Administração de Projetos</h1>
       {isLoading && <p>Carregando projetos...</p>}
       {error && <p className="text-red-500">{error}</p>}
       <button className="mb-4 px-4 py-2 bg-primary text-white rounded" onClick={() => navigate('/admin')}>Voltar ao Admin</button>
 
       {/* Formulário */}
-      <form onSubmit={handleSubmit} className="bg-white rounded shadow p-8 mb-8 flex flex-col gap-4 w-full max-w-3xl mx-auto">
+      <form onSubmit={handleSubmit} className="bg-white rounded shadow p-8 mb-8 flex flex-col gap-4 w-full">
         <h2 className="text-xl font-semibold mb-2">{editing ? 'Editar Projeto' : 'Novo Projeto'}</h2>
         <input className="border p-2 rounded" required placeholder="Título" value={form.titulo} onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))} />
         <input className="border p-2 rounded" required placeholder="Breve descrição" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))} />
@@ -288,12 +288,16 @@ const AdminProjetos = () => {
         </label>
         <div className="flex gap-4 flex-wrap mt-2">
           {gallery.map((img, i) => (
-            <div key={img.id || i} className="relative w-28 h-28 bg-gray-100 border rounded shadow flex items-center justify-center overflow-hidden">
+            <div
+              key={img.id || i}
+              className="relative group w-36 h-28 bg-white shadow-md flex items-center justify-center overflow-hidden border border-gray-200"
+              style={{ borderRadius: 8 }}
+            >
               <img src={img.url} alt="img" className="w-full h-full object-cover" />
-              {/* Botão de remover */}
+              {/* Comandos só no hover */}
               <button
                 type="button"
-                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-lg border-2 border-white hover:bg-red-700 transition"
+                className="absolute left-2 top-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg border-2 border-white opacity-0 group-hover:opacity-100 transition"
                 style={{ zIndex: 2 }}
                 onClick={async () => {
                   if (img.id) {
@@ -309,41 +313,55 @@ const AdminProjetos = () => {
                 }}
                 aria-label="Remover imagem"
               >
-                <span className="text-lg font-bold">×</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
-              {/* Setas para ordenar */}
-              <div className="absolute bottom-1 left-1 flex flex-col gap-1">
-                <button type="button" className="bg-white border rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-gray-200" disabled={i === 0}
-                  onClick={() => {
-                    if (i > 0) {
-                      setGallery(g => {
-                        const arr = [...g];
-                        [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
-                        return arr;
-                      });
-                    }
-                  }}
-                  aria-label="Mover para cima"
-                >▲</button>
-                <button type="button" className="bg-white border rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-gray-200" disabled={i === gallery.length - 1}
-                  onClick={() => {
-                    if (i < gallery.length - 1) {
-                      setGallery(g => {
-                        const arr = [...g];
-                        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-                        return arr;
-                      });
-                    }
-                  }}
-                  aria-label="Mover para baixo"
-                >▼</button>
-              </div>
+              {/* Setas para ordenar só no hover */}
+              <button
+                type="button"
+                className="absolute right-2 top-2 bg-white/80 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow border border-gray-300 opacity-0 group-hover:opacity-100 transition"
+                disabled={i === 0}
+                onClick={() => {
+                  if (i > 0) {
+                    setGallery(g => {
+                      const arr = [...g];
+                      [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+                      return arr;
+                    });
+                  }
+                }}
+                aria-label="Mover para esquerda"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className="absolute right-2 bottom-2 bg-white/80 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow border border-gray-300 opacity-0 group-hover:opacity-100 transition"
+                disabled={i === gallery.length - 1}
+                onClick={() => {
+                  if (i < gallery.length - 1) {
+                    setGallery(g => {
+                      const arr = [...g];
+                      [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                      return arr;
+                    });
+                  }
+                }}
+                aria-label="Mover para direita"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
           ))}
         </div>
         <button
           type="submit"
-          className={`mt-6 w-full px-4 py-3 rounded font-semibold text-lg shadow transition ${uploading ? 'bg-gray-400 text-gray-100 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700'}`}
+          className={`mt-6 w-full px-4 py-3 rounded font-semibold text-lg shadow transition ${uploading ? 'bg-primary/60 text-white cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-dark'}`}
           disabled={uploading || submitting}
         >
           {uploading ? (
@@ -360,16 +378,17 @@ const AdminProjetos = () => {
       </form>
 
       {/* Lista de projetos */}
-      <div className="bg-white rounded shadow p-6">
+      <div className="bg-white rounded shadow p-6 w-full">
         <h2 className="text-xl font-semibold mb-4">Projetos Cadastrados</h2>
         {projects.length === 0 ? (
           <p>Nenhum projeto cadastrado.</p>
         ) : (
           <ul className="space-y-4">
             {projects.map((proj) => (
-              <li key={proj.id} className="border-b pb-2 flex justify-between items-center gap-2">
-                <div className="flex flex-col">
-                  <span className="font-medium">{proj.titulo}</span>
+              <li key={proj.id} className="border-b pb-2 flex items-center gap-4">
+                <img src={proj.imagem_url} alt="Capa" className="w-20 h-16 object-cover rounded shadow border" />
+                <div className="flex flex-col flex-1 min-w-0">
+                  <span className="font-medium truncate">{proj.titulo}</span>
                   <span className="text-sm text-gray-500">{proj.data_projeto}</span>
                 </div>
                 <div className="flex gap-2">
