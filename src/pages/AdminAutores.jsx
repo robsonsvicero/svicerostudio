@@ -34,18 +34,23 @@ const AdminAutores = () => {
   // Buscar autores
   const fetchAutores = async () => {
     try {
-      setIsLoading(true)
-      const { data, error } = await supabase
-        .from('autores')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      setAutores(data || [])
+      setIsLoading(true);
+      const token = localStorage.getItem('svicero_admin_token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderBy: { column: 'created_at', ascending: false } }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar autores');
+      setAutores(payload.data || []);
     } catch (error) {
-      showToastMessage('Erro ao carregar autores', 'error')
+      showToastMessage('Erro ao carregar autores', 'error');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
