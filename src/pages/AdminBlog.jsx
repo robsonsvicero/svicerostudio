@@ -261,102 +261,103 @@ const AdminBlog = () => {
             </button>
           </div>
 
-        {/* Toast */}
-        <Toast show={showToast} message={toastMessage} type={toastType} onClose={hideToast} />
+          {/* Toast */}
+          <Toast show={showToast} message={toastMessage} type={toastType} onClose={hideToast} />
 
-        {/* Formulário de Post */}
-        <form onSubmit={handleSubmit} className="bg-white rounded shadow p-8 mb-8 flex flex-col gap-4 w-full">
-          <h2 className="text-xl font-semibold mb-2">{editingId ? 'Editar Post' : 'Novo Post'}</h2>
-          <input className="border p-2 rounded w-full" name="titulo" required placeholder="Título" value={formData.titulo} onChange={handleInputChange} />
-          <input className="border p-2 rounded w-full" name="slug" required placeholder="Slug (URL)" value={formData.slug} onChange={handleInputChange} />
-          <input className="border p-2 rounded w-full" name="resumo" required placeholder="Resumo" value={formData.resumo} onChange={handleInputChange} />
-          <textarea className="border p-2 rounded w-full" name="conteudo" rows={6} required placeholder="Conteúdo (Markdown)" value={formData.conteudo} onChange={handleInputChange} onPaste={handlePaste} />
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <label className="block mb-1 font-medium">Imagem de destaque</label>
-              <input className="border p-2 rounded w-full" name="imagem_destaque" placeholder="URL da imagem ou cole uma imagem" value={formData.imagem_destaque} onChange={handleInputChange} />
-              <input className="mt-2" type="file" accept="image/*" onChange={handleImageUpload} />
-              {imagemPreview && <img src={imagemPreview} alt="preview" className="mt-2 w-full max-h-40 object-contain rounded" />}
+          {/* Formulário de Post */}
+          <form onSubmit={handleSubmit} className="bg-white rounded shadow p-8 mb-8 flex flex-col gap-4 w-full">
+            <h2 className="text-xl font-semibold mb-2">{editingId ? 'Editar Post' : 'Novo Post'}</h2>
+            <input className="border p-2 rounded w-full" name="titulo" required placeholder="Título" value={formData.titulo} onChange={handleInputChange} />
+            <input className="border p-2 rounded w-full" name="slug" required placeholder="Slug (URL)" value={formData.slug} onChange={handleInputChange} />
+            <input className="border p-2 rounded w-full" name="resumo" required placeholder="Resumo" value={formData.resumo} onChange={handleInputChange} />
+            <textarea className="border p-2 rounded w-full" name="conteudo" rows={6} required placeholder="Conteúdo (Markdown)" value={formData.conteudo} onChange={handleInputChange} onPaste={handlePaste} />
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1">
+                <label className="block mb-1 font-medium">Imagem de destaque</label>
+                <input className="border p-2 rounded w-full" name="imagem_destaque" placeholder="URL da imagem ou cole uma imagem" value={formData.imagem_destaque} onChange={handleInputChange} />
+                <input className="mt-2" type="file" accept="image/*" onChange={handleImageUpload} />
+                {imagemPreview && <img src={imagemPreview} alt="preview" className="mt-2 w-full max-h-40 object-contain rounded" />}
+              </div>
+              <div className="flex-1 flex flex-col gap-2">
+                <label className="block font-medium">Categoria</label>
+                <input className="border p-2 rounded w-full" name="categoria" placeholder="Categoria" value={formData.categoria} onChange={handleInputChange} />
+                <label className="block font-medium">Tags (separadas por vírgula)
+                  <input className="border p-2 rounded w-full mt-1" name="tags" placeholder="tag1, tag2" value={formData.tags} onChange={handleInputChange} />
+                </label>
+                <label className="block font-medium">Data de publicação
+                  <input className="border p-2 rounded w-full mt-1" name="data_publicacao" type="date" value={formData.data_publicacao} onChange={handleInputChange} />
+                </label>
+                <label className="block font-medium">Autor
+                  <select className="border p-2 rounded w-full mt-1" name="autor" value={formData.autor} onChange={handleInputChange} required>
+                    <option value="">Selecione</option>
+                    {autores.map(a => <option key={a.id} value={a.id}>{a.nome}</option>)}
+                  </select>
+                </label>
+                <label className="flex items-center gap-2 mt-2">
+                  <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleInputChange} /> Publicado
+                </label>
+              </div>
             </div>
-            <div className="flex-1 flex flex-col gap-2">
-              <label className="block font-medium">Categoria</label>
-              <input className="border p-2 rounded w-full" name="categoria" placeholder="Categoria" value={formData.categoria} onChange={handleInputChange} />
-              <label className="block font-medium">Tags (separadas por vírgula)
-                <input className="border p-2 rounded w-full mt-1" name="tags" placeholder="tag1, tag2" value={formData.tags} onChange={handleInputChange} />
-              </label>
-              <label className="block font-medium">Data de publicação
-                <input className="border p-2 rounded w-full mt-1" name="data_publicacao" type="date" value={formData.data_publicacao} onChange={handleInputChange} />
-              </label>
-              <label className="block font-medium">Autor
-                <select className="border p-2 rounded w-full mt-1" name="autor" value={formData.autor} onChange={handleInputChange} required>
-                  <option value="">Selecione</option>
-                  {autores.map(a => <option key={a.id} value={a.id}>{a.nome}</option>)}
-                </select>
-              </label>
-              <label className="flex items-center gap-2 mt-2">
-                <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleInputChange} /> Publicado
-              </label>
+            <div className="flex flex-col sm:flex-row gap-2 mt-6 w-full">
+              <button type="submit" className={`w-full sm:w-auto px-4 py-3 rounded font-semibold text-lg shadow transition ${isSubmitting ? 'bg-primary/60 text-white cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-dark'}`} disabled={isSubmitting}>
+                {isSubmitting ? 'Salvando...' : 'Salvar Post'}
+              </button>
+              {editingId && (
+                <button type="button" className="w-full sm:w-auto px-4 py-3 rounded font-semibold text-lg shadow bg-gray-300 text-gray-800 hover:bg-gray-400 transition" onClick={handleCancelEdit}>Cancelar</button>
+              )}
             </div>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2 mt-6 w-full">
-            <button type="submit" className={`w-full sm:w-auto px-4 py-3 rounded font-semibold text-lg shadow transition ${isSubmitting ? 'bg-primary/60 text-white cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-dark'}`} disabled={isSubmitting}>
-              {isSubmitting ? 'Salvando...' : 'Salvar Post'}
-            </button>
-            {editingId && (
-              <button type="button" className="w-full sm:w-auto px-4 py-3 rounded font-semibold text-lg shadow bg-gray-300 text-gray-800 hover:bg-gray-400 transition" onClick={handleCancelEdit}>Cancelar</button>
+            <div className="mt-4">
+              <label className="block font-medium mb-1">Preview Markdown</label>
+              <div className="prose prose-sm bg-gray-50 rounded p-4 max-h-64 overflow-auto">
+                <Markdown>{previewMarkdown}</Markdown>
+              </div>
+            </div>
+          </form>
+
+          {/* Lista de Posts */}
+          <div className="bg-white rounded shadow p-6 w-full">
+            <h2 className="text-xl font-semibold mb-4">Posts Cadastrados</h2>
+            {isLoading ? (
+              <p>Carregando posts...</p>
+            ) : sortedPosts.length === 0 ? (
+              <p>Nenhum post cadastrado.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-sm">
+                  <thead>
+                    <tr>
+                      <th className="p-2 cursor-pointer" onClick={() => handleSort('titulo')}>Título</th>
+                      <th className="p-2 cursor-pointer" onClick={() => handleSort('autor')}>Autor</th>
+                      <th className="p-2 cursor-pointer" onClick={() => handleSort('data_publicacao')}>Data</th>
+                      <th className="p-2 cursor-pointer" onClick={() => handleSort('publicado')}>Publicado</th>
+                      <th className="p-2">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sortedPosts.map(post => (
+                      <tr key={post.id} className="border-t">
+                        <td className="p-2 max-w-xs truncate">{post.titulo}</td>
+                        <td className="p-2">{autores.find(a => a.id === post.autor)?.nome || '-'}</td>
+                        <td className="p-2">{post.data_publicacao ? new Date(post.data_publicacao).toLocaleDateString() : '-'}</td>
+                        <td className="p-2">{post.publicado ? 'Sim' : 'Não'}</td>
+                        <td className="p-2 flex gap-2">
+                          <button className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => {
+                            setFormData({ ...post });
+                            setPreviewMarkdown(post.conteudo);
+                            setImagemPreview(post.imagem_destaque || null);
+                            setEditingId(post.id);
+                          }}>Editar</button>
+                          <button className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => handleDelete(post.id)}>Excluir</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
-          <div className="mt-4">
-            <label className="block font-medium mb-1">Preview Markdown</label>
-            <div className="prose prose-sm bg-gray-50 rounded p-4 max-h-64 overflow-auto">
-              <Markdown>{previewMarkdown}</Markdown>
-            </div>
-          </div>
-        </form>
-
-        {/* Lista de Posts */}
-        <div className="bg-white rounded shadow p-6 w-full">
-          <h2 className="text-xl font-semibold mb-4">Posts Cadastrados</h2>
-          {isLoading ? (
-            <p>Carregando posts...</p>
-          ) : sortedPosts.length === 0 ? (
-            <p>Nenhum post cadastrado.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-sm">
-                <thead>
-                  <tr>
-                    <th className="p-2 cursor-pointer" onClick={() => handleSort('titulo')}>Título</th>
-                    <th className="p-2 cursor-pointer" onClick={() => handleSort('autor')}>Autor</th>
-                    <th className="p-2 cursor-pointer" onClick={() => handleSort('data_publicacao')}>Data</th>
-                    <th className="p-2 cursor-pointer" onClick={() => handleSort('publicado')}>Publicado</th>
-                    <th className="p-2">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedPosts.map(post => (
-                    <tr key={post.id} className="border-t">
-                      <td className="p-2 max-w-xs truncate">{post.titulo}</td>
-                      <td className="p-2">{autores.find(a => a.id === post.autor)?.nome || '-'}</td>
-                      <td className="p-2">{post.data_publicacao ? new Date(post.data_publicacao).toLocaleDateString() : '-'}</td>
-                      <td className="p-2">{post.publicado ? 'Sim' : 'Não'}</td>
-                      <td className="p-2 flex gap-2">
-                        <button className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => {
-                          setFormData({ ...post });
-                          setPreviewMarkdown(post.conteudo);
-                          setImagemPreview(post.imagem_destaque || null);
-                          setEditingId(post.id);
-                        }}>Editar</button>
-                        <button className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => handleDelete(post.id)}>Excluir</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
         </div>
-      </div>
+      </main>
     </div>
   );
 }
