@@ -243,7 +243,7 @@ const AdminProjetos = () => {
 
   // Render
   return (
-    <div className="min-h-screen bg-cream p-8">
+    <div className="min-h-screen bg-cream px-4 py-8 md:px-12 lg:px-32 xl:px-64">
       <h1 className="text-3xl font-bold mb-6">Administração de Projetos</h1>
       {isLoading && <p>Carregando projetos...</p>}
       {error && <p className="text-red-500">{error}</p>}
@@ -252,16 +252,16 @@ const AdminProjetos = () => {
       {/* Formulário */}
       <form onSubmit={handleSubmit} className="bg-white rounded shadow p-8 mb-8 flex flex-col gap-4 w-full">
         <h2 className="text-xl font-semibold mb-2">{editing ? 'Editar Projeto' : 'Novo Projeto'}</h2>
-        <input className="border p-2 rounded" required placeholder="Título" value={form.titulo} onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))} />
-        <input className="border p-2 rounded" required placeholder="Breve descrição" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))} />
-        <textarea className="border p-2 rounded" rows={3} placeholder="Descrição longa (pt-br)" value={form.descricao_longa} onChange={e => setForm(f => ({ ...f, descricao_longa: e.target.value }))} />
-        <textarea className="border p-2 rounded" rows={3} placeholder="Descrição longa (en)" value={form.descricao_longa_en} onChange={e => setForm(f => ({ ...f, descricao_longa_en: e.target.value }))} />
-        <input className="border p-2 rounded" required placeholder="Imagem da Capa (URL)" value={form.imagem_url} onChange={e => setForm(f => ({ ...f, imagem_url: e.target.value }))} />
-        <input className="border p-2 rounded" required placeholder="Link Behance (URL)" value={form.link} onChange={e => setForm(f => ({ ...f, link: e.target.value }))} />
-        <input className="border p-2 rounded" placeholder="Texto do botão do Link Behance" value={form.button_text} onChange={e => setForm(f => ({ ...f, button_text: e.target.value }))} />
-        <input className="border p-2 rounded" placeholder="Link do Site (URL, opcional)" value={form.site_url} onChange={e => setForm(f => ({ ...f, site_url: e.target.value }))} />
-        <input className="border p-2 rounded" placeholder="Texto do botão do Link do Site" value={form.button_text2} onChange={e => setForm(f => ({ ...f, button_text2: e.target.value }))} />
-        <input className="border p-2 rounded" type="date" required placeholder="Data de criação" value={form.data_projeto} onChange={e => setForm(f => ({ ...f, data_projeto: e.target.value }))} />
+        <input className="border p-2 rounded w-full" required placeholder="Título" value={form.titulo} onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))} />
+        <input className="border p-2 rounded w-full" required placeholder="Breve descrição" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))} />
+        <textarea className="border p-2 rounded w-full" rows={3} placeholder="Descrição longa (pt-br)" value={form.descricao_longa} onChange={e => setForm(f => ({ ...f, descricao_longa: e.target.value }))} />
+        <textarea className="border p-2 rounded w-full" rows={3} placeholder="Descrição longa (en)" value={form.descricao_longa_en} onChange={e => setForm(f => ({ ...f, descricao_longa_en: e.target.value }))} />
+        <input className="border p-2 rounded w-full" required placeholder="Imagem da Capa (URL)" value={form.imagem_url} onChange={e => setForm(f => ({ ...f, imagem_url: e.target.value }))} />
+        <input className="border p-2 rounded w-full" required placeholder="Link Behance (URL)" value={form.link} onChange={e => setForm(f => ({ ...f, link: e.target.value }))} />
+        <input className="border p-2 rounded w-full" placeholder="Texto do botão do Link Behance" value={form.button_text} onChange={e => setForm(f => ({ ...f, button_text: e.target.value }))} />
+        <input className="border p-2 rounded w-full" placeholder="Link do Site (URL, opcional)" value={form.site_url} onChange={e => setForm(f => ({ ...f, site_url: e.target.value }))} />
+        <input className="border p-2 rounded w-full" placeholder="Texto do botão do Link do Site" value={form.button_text2} onChange={e => setForm(f => ({ ...f, button_text2: e.target.value }))} />
+        <input className="border p-2 rounded w-full" type="date" required placeholder="Data de criação" value={form.data_projeto} onChange={e => setForm(f => ({ ...f, data_projeto: e.target.value }))} />
         <label className="block">Mostrar na Home?
           <select className="border p-2 rounded ml-2" value={form.mostrar_home ? 'sim' : 'nao'} onChange={e => setForm(f => ({ ...f, mostrar_home: e.target.value === 'sim' }))}>
             <option value="sim">Sim</option>
@@ -344,22 +344,41 @@ const AdminProjetos = () => {
             </div>
           ))}
         </div>
-        <button
-          type="submit"
-          className={`mt-6 w-full px-4 py-3 rounded font-semibold text-lg shadow transition ${uploading ? 'bg-primary/60 text-white cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-dark'}`}
-          disabled={uploading || submitting}
-        >
-          {uploading ? (
-            <span className="flex items-center justify-center gap-2">
-              <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-              </svg>
-              Carregando imagens...
-            </span>
-          ) : submitting ? 'Salvando...' : 'Salvar Projeto'}
-        </button>
-        {submitMsg && <p className="mt-2 text-blue-600">{submitMsg}</p>}
+        <div className="flex flex-col sm:flex-row gap-2 mt-6 w-full">
+          <button
+            type="submit"
+            className={`w-full sm:w-auto px-4 py-3 rounded font-semibold text-lg shadow transition ${uploading ? 'bg-primary/60 text-white cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-dark'}`}
+            disabled={uploading || submitting}
+          >
+            {uploading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
+                Carregando imagens...
+              </span>
+            ) : submitting ? 'Salvando...' : 'Salvar Projeto'}
+          </button>
+          {editing && (
+            <button
+              type="button"
+              className="w-full sm:w-auto px-4 py-3 rounded font-semibold text-lg shadow bg-gray-300 text-gray-800 hover:bg-gray-400 transition"
+              onClick={() => {
+                setEditing(null);
+                setForm({
+                  titulo: '', descricao: '', imagem_url: '', data_projeto: '', link: '', button_text: 'Ver Projeto',
+                  descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true
+                });
+                setGallery([]);
+                setSubmitMsg('');
+              }}
+            >
+              Cancelar
+            </button>
+          )}
+        </div>
+        {submitMsg && <p className="mt-2 text-blue-600 w-full">{submitMsg}</p>}
       </form>
 
       {/* Lista de projetos */}
