@@ -50,6 +50,7 @@ const AdminProjetos = () => {
     console.log('[DEBUG] Estado gallery atualizado:', gallery);
   }, [gallery]);
   const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [submitMsg, setSubmitMsg] = useState('');
   const [editing, setEditing] = useState(null);
 
@@ -150,6 +151,8 @@ const AdminProjetos = () => {
   // Salvar ou atualizar projeto
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
     setSubmitMsg('Salvando...');
     try {
       // 1. Salvar projeto
@@ -213,6 +216,7 @@ const AdminProjetos = () => {
       setSubmitMsg('Projeto salvo!');
       setForm({ titulo: '', descricao: '', imagem_url: '', data_projeto: '', link: '', button_text: 'Ver Projeto', descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true });
       setEditing(null);
+      setSubmitting(false);
       // Atualizar lista de projetos
       const refresh = await fetch(`${API_URL}/api/db/projetos/query`, {
         method: 'POST',
@@ -247,6 +251,7 @@ const AdminProjetos = () => {
       }
     } catch (err) {
       setSubmitMsg(err.message || 'Erro ao salvar');
+      setSubmitting(false);
       console.error('Erro ao salvar projeto/galeria:', err);
     }
   };
@@ -296,8 +301,8 @@ const AdminProjetos = () => {
             </div>
           ))}
         </div>
-        <button type="submit" className="mt-4 px-4 py-2 bg-green-600 text-white rounded" disabled={uploading}>
-          {uploading ? 'Aguarde, enviando imagens...' : 'Salvar Projeto'}
+        <button type="submit" className="mt-4 px-4 py-2 bg-green-600 text-white rounded" disabled={uploading || submitting}>
+          {uploading ? 'Aguarde, enviando imagens...' : submitting ? 'Salvando...' : 'Salvar Projeto'}
         </button>
         {uploading && <p className="text-yellow-600">Aguarde o envio das imagens antes de salvar.</p>}
         {submitMsg && <p className="mt-2 text-blue-600">{submitMsg}</p>}
