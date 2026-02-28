@@ -235,10 +235,31 @@ const AdminBlog = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cream pt-20 pb-24 px-4 md:px-16">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Administração de Blog</h1>
-        <button className="mb-4 px-4 py-2 bg-primary text-white rounded" onClick={() => navigate('/admin')}>Voltar ao Admin</button>
+    <div className="bg-cream min-h-screen">
+      <main className="pt-20 pb-20 px-4 md:px-16">
+        <div className="max-w-6xl mx-auto">
+          {/* Header padrão admin */}
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <button
+                onClick={() => navigate('/admin')}
+                className="text-primary hover:underline font-medium mb-4 flex items-center gap-2"
+              >
+                <i className="fa-solid fa-arrow-left"></i>
+                Voltar ao Painel
+              </button>
+              <h1 className="font-title text-4xl font-semibold text-low-dark">
+                Gerenciar Blog
+              </h1>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+            >
+              <i className="fa-solid fa-right-from-bracket"></i>
+              Sair
+            </button>
+          </div>
 
         {/* Toast */}
         <Toast show={showToast} message={toastMessage} type={toastType} onClose={hideToast} />

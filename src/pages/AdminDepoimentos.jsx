@@ -219,47 +219,39 @@ const AdminDepoimentos = () => {
     <div className="bg-cream min-h-screen">
       {/* Toast Notification */}
       {showToast && (
-        <div className={`fixed top-24 right-6 z-50 px-6 py-4 rounded-lg shadow-lg transition-all duration-300 ${toastType === 'success' ? 'bg-green-500' : 'bg-red-500'
-          } text-white`}>
+        <div className={`fixed top-24 right-6 z-50 px-6 py-4 rounded-lg shadow-lg transition-all duration-300 ${toastType === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white`}>
           {toastMessage}
         </div>
       )}
 
       <main className="pt-20 pb-20 px-4 md:px-16">
-        <div className="max-w-screen-xl mx-auto">
-          {/* Header */}
-          <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white rounded-xl shadow-lg p-6 border border-cream/20">
+        <div className="max-w-6xl mx-auto">
+          {/* Header padrão admin */}
+          <div className="flex justify-between items-center mb-12">
             <div>
-              <h1 className="font-title text-4xl md:text-5xl font-semibold text-low-dark mb-2">
-                Bem-vindo
-              </h1>
-              <p className="text-low-medium text-lg">
-                <span className="text-primary font-medium">{user?.email}</span>
-              </p>
-            </div>
-            <div className="flex gap-3">
-              
-              <Button
-                variant="secondary"
-                onClick={handleLogout}
-                className="px-6 py-2 !bg-red-500 !border-2 !border-red-500 !text-white hover:!bg-red-600"
+              <button
+                onClick={() => navigate('/admin')}
+                className="text-primary hover:underline font-medium mb-4 flex items-center gap-2"
               >
-                <i className="fa-solid fa-right-from-bracket mr-2"></i>
-                Sair
-              </Button>
-            </div>
-          </div>
-          <div className="flex flex-col justify-between items-start md:items-center gap-4 mb-12 mt-16">
-            <div>
-              <h1 className="font-title text-4xl md:text-5xl font-semibold text-low-dark mb-2">
+                <i className="fa-solid fa-arrow-left"></i>
+                Voltar ao Painel
+              </button>
+              <h1 className="font-title text-4xl font-semibold text-low-dark">
                 Gerenciar Depoimentos
               </h1>
-              <p className="text-low-medium text-lg">
-                Adicione e gerencie os depoimentos exibidos no site
-              </p>
             </div>
-            <div className="w-full items-center flex justify-end">
-              <Button
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+            >
+              <i className="fa-solid fa-right-from-bracket"></i>
+              Sair
+            </button>
+          </div>
+
+          {/* Botão novo depoimento */}
+          <div className="w-full items-center flex justify-end mb-8">
+            <Button
               onClick={() => {
                 resetForm();
                 setShowForm(true);
@@ -269,7 +261,6 @@ const AdminDepoimentos = () => {
             >
               Novo Depoimento
             </Button>
-            </div>
           </div>
 
           {/* Formulário */}
