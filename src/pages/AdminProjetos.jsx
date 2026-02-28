@@ -129,7 +129,6 @@ const AdminProjetos = () => {
       mostrar_home: proj.mostrar_home !== false,
     });
     // Buscar galeria do projeto
-    setGallery([]); // Limpa antes de buscar para evitar imagens antigas
     try {
       const res = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
         method: 'POST',
