@@ -268,26 +268,35 @@ const AdminProjetos = () => {
       <form onSubmit={handleSubmit} className="bg-white rounded shadow p-6 mb-8 flex flex-col gap-4 max-w-2xl">
         <h2 className="text-xl font-semibold mb-2">{editing ? 'Editar Projeto' : 'Novo Projeto'}</h2>
         <input className="border p-2 rounded" required placeholder="Título" value={form.titulo} onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))} />
-        <textarea className="border p-2 rounded" required placeholder="Descrição" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))} />
-        <input className="border p-2 rounded" type="date" required placeholder="Data" value={form.data_projeto} onChange={e => setForm(f => ({ ...f, data_projeto: e.target.value }))} />
-        <input className="border p-2 rounded" placeholder="Link Behance" value={form.link} onChange={e => setForm(f => ({ ...f, link: e.target.value }))} />
-        <input className="border p-2 rounded" placeholder="URL da Capa (opcional)" value={form.imagem_url} onChange={e => setForm(f => ({ ...f, imagem_url: e.target.value }))} />
-        {/* Upload de imagens */}
-        <label className="block">Galeria de Imagens
+        <input className="border p-2 rounded" required placeholder="Breve descrição" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))} />
+        <textarea className="border p-2 rounded" rows={3} placeholder="Descrição longa (pt-br)" value={form.descricao_longa} onChange={e => setForm(f => ({ ...f, descricao_longa: e.target.value }))} />
+        <textarea className="border p-2 rounded" rows={3} placeholder="Descrição longa (en)" value={form.descricao_longa_en} onChange={e => setForm(f => ({ ...f, descricao_longa_en: e.target.value }))} />
+        <input className="border p-2 rounded" required placeholder="Imagem da Capa (URL)" value={form.imagem_url} onChange={e => setForm(f => ({ ...f, imagem_url: e.target.value }))} />
+        <input className="border p-2 rounded" required placeholder="Link Behance (URL)" value={form.link} onChange={e => setForm(f => ({ ...f, link: e.target.value }))} />
+        <input className="border p-2 rounded" placeholder="Texto do botão do Link Behance" value={form.button_text} onChange={e => setForm(f => ({ ...f, button_text: e.target.value }))} />
+        <input className="border p-2 rounded" placeholder="Link do Site (URL, opcional)" value={form.site_url} onChange={e => setForm(f => ({ ...f, site_url: e.target.value }))} />
+        <input className="border p-2 rounded" placeholder="Texto do botão do Link do Site" value={form.button_text2} onChange={e => setForm(f => ({ ...f, button_text2: e.target.value }))} />
+        <input className="border p-2 rounded" type="date" required placeholder="Data de criação" value={form.data_projeto} onChange={e => setForm(f => ({ ...f, data_projeto: e.target.value }))} />
+        <label className="block">Mostrar na Home?
+          <select className="border p-2 rounded ml-2" value={form.mostrar_home ? 'sim' : 'nao'} onChange={e => setForm(f => ({ ...f, mostrar_home: e.target.value === 'sim' }))}>
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+        </label>
+        <label className="block mt-2">Galeria de Imagens
           <input type="file" multiple accept="image/*" className="block mt-2" disabled={uploading} onChange={e => handleGalleryUpload(Array.from(e.target.files))} />
         </label>
-        {/* Visualização das imagens */}
         <div className="flex gap-4 flex-wrap mt-2">
           {gallery.map((img, i) => (
             <div key={img.id || i} className="relative w-28 h-28 bg-gray-100 border rounded shadow flex items-center justify-center overflow-hidden">
               <img src={img.url} alt="img" className="w-full h-full object-cover" />
+              {/* Botão de remover */}
               <button
                 type="button"
                 className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-lg border-2 border-white hover:bg-red-700 transition"
                 style={{ zIndex: 2 }}
                 onClick={async () => {
                   if (img.id) {
-                    // Imagem persistida: remover do backend
                     try {
                       await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
                         method: 'POST',
@@ -302,6 +311,33 @@ const AdminProjetos = () => {
               >
                 <span className="text-lg font-bold">×</span>
               </button>
+              {/* Setas para ordenar */}
+              <div className="absolute bottom-1 left-1 flex flex-col gap-1">
+                <button type="button" className="bg-white border rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-gray-200" disabled={i === 0}
+                  onClick={() => {
+                    if (i > 0) {
+                      setGallery(g => {
+                        const arr = [...g];
+                        [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+                        return arr;
+                      });
+                    }
+                  }}
+                  aria-label="Mover para cima"
+                >▲</button>
+                <button type="button" className="bg-white border rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-gray-200" disabled={i === gallery.length - 1}
+                  onClick={() => {
+                    if (i < gallery.length - 1) {
+                      setGallery(g => {
+                        const arr = [...g];
+                        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                        return arr;
+                      });
+                    }
+                  }}
+                  aria-label="Mover para baixo"
+                >▼</button>
+              </div>
             </div>
           ))}
         </div>
