@@ -132,7 +132,19 @@ const AdminProjetos = () => {
       if (!res.ok) throw new Error(payload.error || 'Erro ao salvar projeto');
       const projetoId = editing || payload.data?.[0]?.id;
       // 2. Salvar galeria
+      console.log('Salvando galeria:', gallery, 'projetoId:', projetoId);
       if (gallery.length > 0) {
+        // Ao editar, remove todas as imagens antigas antes de inserir as novas
+        if (editing) {
+          await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify({
+              operation: 'delete',
+              filters: [{ column: 'projeto_id', operator: 'eq', value: projetoId }]
+            }),
+          });
+        }
         await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
