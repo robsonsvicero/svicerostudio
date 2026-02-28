@@ -169,6 +169,11 @@ const AdminProjetos = () => {
       }
       if (!projetoId) {
         console.error('[ERRO] payload.data retornado:', payload.data);
+        if (Array.isArray(payload.data)) {
+          payload.data.forEach((item, idx) => {
+            console.error(`[ERRO] payload.data[${idx}]:`, item);
+          });
+        }
         throw new Error('ID do projeto não encontrado após salvar.');
       }
       // 2. Salvar galeria
