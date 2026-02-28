@@ -72,6 +72,12 @@ const AdminProjetos = () => {
       console.log('Gallery após upload:', novo);
       return novo;
     });
+  };
+
+  // Log sempre que gallery mudar
+  React.useEffect(() => {
+    console.log('[DEBUG] Estado gallery atualizado:', gallery);
+  }, [gallery]);
     setUploading(false);
   };
 
@@ -289,11 +295,10 @@ const AdminProjetos = () => {
             </div>
           ))}
         </div>
-        <button type="submit" className="mt-4 px-4 py-2 bg-green-600 text-white rounded">Salvar Projeto</button>
-                <button type="submit" className="mt-4 px-4 py-2 bg-green-600 text-white rounded" disabled={uploading}>
-                  {uploading ? 'Aguarde, enviando imagens...' : 'Salvar Projeto'}
-                </button>
-                {uploading && <p className="text-yellow-600">Aguarde o envio das imagens antes de salvar.</p>}
+        <button type="submit" className="mt-4 px-4 py-2 bg-green-600 text-white rounded" disabled={uploading}>
+          {uploading ? 'Aguarde, enviando imagens...' : 'Salvar Projeto'}
+        </button>
+        {uploading && <p className="text-yellow-600">Aguarde o envio das imagens antes de salvar.</p>}
         {submitMsg && <p className="mt-2 text-blue-600">{submitMsg}</p>}
       </form>
 
