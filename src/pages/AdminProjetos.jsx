@@ -44,6 +44,11 @@ const AdminProjetos = () => {
     descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true
   });
   const [gallery, setGallery] = useState([]); // [{ url, file }]
+
+  // Log sempre que gallery mudar
+  useEffect(() => {
+    console.log('[DEBUG] Estado gallery atualizado:', gallery);
+  }, [gallery]);
   const [uploading, setUploading] = useState(false);
   const [submitMsg, setSubmitMsg] = useState('');
   const [editing, setEditing] = useState(null);
@@ -72,14 +77,10 @@ const AdminProjetos = () => {
       console.log('Gallery após upload:', novo);
       return novo;
     });
-  };
-
-  // Log sempre que gallery mudar
-  React.useEffect(() => {
-    console.log('[DEBUG] Estado gallery atualizado:', gallery);
-  }, [gallery]);
     setUploading(false);
   };
+
+  // (Removido useEffect duplicado e setUploading solto)
 
   // Excluir projeto
   const handleDeleteProject = async (id) => {
@@ -332,5 +333,5 @@ const AdminProjetos = () => {
       </div>
     </div>
   );
-};
+}
 export default AdminProjetos;
