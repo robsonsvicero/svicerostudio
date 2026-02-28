@@ -277,13 +277,14 @@ const AdminProjetos = () => {
           <input type="file" multiple accept="image/*" className="block mt-2" disabled={uploading} onChange={e => handleGalleryUpload(Array.from(e.target.files))} />
         </label>
         {/* Visualização das imagens */}
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-4 flex-wrap mt-2">
           {gallery.map((img, i) => (
-            <div key={img.id || i} className="relative">
-              <img src={img.url} alt="img" className="w-24 h-24 object-cover rounded border" />
+            <div key={img.id || i} className="relative w-28 h-28 bg-gray-100 border rounded shadow flex items-center justify-center overflow-hidden">
+              <img src={img.url} alt="img" className="w-full h-full object-cover" />
               <button
                 type="button"
-                className="absolute top-0 right-0 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-lg border-2 border-white hover:bg-red-700 transition"
+                style={{ zIndex: 2 }}
                 onClick={async () => {
                   if (img.id) {
                     // Imagem persistida: remover do backend
@@ -297,11 +298,14 @@ const AdminProjetos = () => {
                   }
                   setGallery(g => g.filter((_, idx) => idx !== i));
                 }}
-              >×</button>
+                aria-label="Remover imagem"
+              >
+                <span className="text-lg font-bold">×</span>
+              </button>
             </div>
           ))}
         </div>
-        <button type="submit" className="mt-4 px-4 py-2 bg-green-600 text-white rounded" disabled={uploading || submitting}>
+        <button type="submit" className="mt-6 w-full px-4 py-3 bg-green-600 text-white rounded font-semibold text-lg shadow hover:bg-green-700 transition" disabled={uploading || submitting}>
           {uploading ? 'Aguarde, enviando imagens...' : submitting ? 'Salvando...' : 'Salvar Projeto'}
         </button>
         {uploading && <p className="text-yellow-600">Aguarde o envio das imagens antes de salvar.</p>}
