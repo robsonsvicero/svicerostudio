@@ -13,28 +13,29 @@ const AdminProjetos = () => {
   const [token, setToken] = useState(localStorage.getItem('svicero_admin_token') || '');
 
   // Listar projetos
+  const fetchProjects = async () => {
+    setIsLoading(true);
+    setError('');
+    try {
+      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ operation: 'select', orderBy: { column: 'data_projeto', ascending: false } }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar projetos');
+      setProjects(payload.data || []);
+    } catch (err) {
+      setError(err.message || 'Erro ao buscar projetos');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchProjects = async () => {
-      setIsLoading(true);
-      setError('');
-      try {
-        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ operation: 'select', orderBy: { column: 'data_projeto', ascending: false } }),
-        });
-        const payload = await res.json();
-        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar projetos');
-        setProjects(payload.data || []);
-      } catch (err) {
-        setError(err.message || 'Erro ao buscar projetos');
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchProjects();
   }, [token]);
 
