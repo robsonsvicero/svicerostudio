@@ -67,7 +67,11 @@ const AdminProjetos = () => {
         uploaded.push({ url: `${API_URL}/api/storage/public/projetos/${payload.data.path}` });
       }
     }
-    setGallery((prev) => [...prev, ...uploaded]);
+    setGallery((prev) => {
+      const novo = [...prev, ...uploaded];
+      console.log('Gallery após upload:', novo);
+      return novo;
+    });
     setUploading(false);
   };
 
