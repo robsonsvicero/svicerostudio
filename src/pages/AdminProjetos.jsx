@@ -110,6 +110,52 @@ const AdminProjetos = () => {
     }
   };
 
+  // Salvar ou atualizar projeto
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitMsg('Salvando...');
+    try {
+      // 1. Salvar projeto
+      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          operation: editing ? 'update' : 'insert',
+          filters: editing ? [{ id: editing }] : undefined,
+          payload: form
+        }),
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Erro ao salvar projeto');
+      const projetoId = editing || payload.data?.[0]?.id;
+      // 2. Salvar galeria
+      if (gallery.length > 0) {
+        await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({
+            operation: 'insert',
+            payload: gallery.map((img, i) => ({ projeto_id: projetoId, imagem_url: img.url, ordem: i }))
+          }),
+        });
+      }
+      setSubmitMsg('Projeto salvo!');
+      setForm({ titulo: '', descricao: '', imagem_url: '', data_projeto: '', link: '', button_text: 'Ver Projeto', descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true });
+      setGallery([]);
+      setEditing(null);
+      // Atualizar lista de projetos
+      const refresh = await fetch(`${API_URL}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ operation: 'select', orderBy: { column: 'data_projeto', ascending: false } }),
+      });
+      const refreshPayload = await refresh.json();
+      setProjects(refreshPayload.data || []);
+    } catch (err) {
+      setSubmitMsg(err.message || 'Erro ao salvar');
+    }
+  };
+
   // Render
   return (
     <div className="min-h-screen bg-cream p-8">
