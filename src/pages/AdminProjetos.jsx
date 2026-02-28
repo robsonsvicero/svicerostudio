@@ -157,22 +157,25 @@ const AdminProjetos = () => {
       let projetoId = editing;
       if (!editing) {
         // Criação de novo projeto
-        const res = await fetch(`${API_URL}/api/db/projetos`, {
+        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body: JSON.stringify(form),
+          body: JSON.stringify({ operation: 'insert', payload: form }),
         });
         const payload = await res.json();
-        if (!res.ok) throw new Error(payload.message || 'Erro ao criar projeto');
-        projetoId = payload.data.id;
+        if (!res.ok) throw new Error(payload.error || 'Erro ao criar projeto');
+        // payload.data pode ser array (insertMany)
+        projetoId = Array.isArray(payload.data) ? payload.data[0]?.id : payload.data?.id;
       } else {
         // Edição de projeto existente
-        const res = await fetch(`${API_URL}/api/db/projetos/${editing}`, {
-          method: 'PUT',
+        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body: JSON.stringify(form),
+          body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: editing }], payload: form }),
         });
-        if (!res.ok) throw new Error('Erro ao atualizar projeto');
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar projeto');
+        projetoId = editing;
       }
       // Salvar galeria
       for (const [idx, img] of gallery.entries()) {
