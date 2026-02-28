@@ -198,7 +198,6 @@ const AdminProjetos = () => {
       }
       setSubmitMsg('Projeto salvo!');
       setForm({ titulo: '', descricao: '', imagem_url: '', data_projeto: '', link: '', button_text: 'Ver Projeto', descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true });
-      setGallery([]);
       setEditing(null);
       // Atualizar lista de projetos
       const refresh = await fetch(`${API_URL}/api/db/projetos/query`, {
@@ -208,6 +207,30 @@ const AdminProjetos = () => {
       });
       const refreshPayload = await refresh.json();
       setProjects(refreshPayload.data || []);
+      // Buscar galeria do backend após salvar
+      if (projetoId) {
+        try {
+          const galRes = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify({
+              operation: 'select',
+              filters: [{ column: 'projeto_id', operator: 'eq', value: projetoId }],
+              orderBy: { column: 'ordem', ascending: true }
+            }),
+          });
+          const galPayload = await galRes.json();
+          if (galRes.ok && Array.isArray(galPayload.data)) {
+            setGallery(galPayload.data.map(img => ({ url: img.imagem_url, id: img.id })));
+          } else {
+            setGallery([]);
+          }
+        } catch {
+          setGallery([]);
+        }
+      } else {
+        setGallery([]);
+      }
     } catch (err) {
       setSubmitMsg(err.message || 'Erro ao salvar');
       console.error('Erro ao salvar projeto/galeria:', err);
