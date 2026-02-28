@@ -469,7 +469,7 @@ app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (re
 app.get('/api/storage/public/:bucket/:key', async (req, res) => {
   const { bucket, key } = req.params;
 
-  const doc = await Upload.findOne({ bucket, storageKey: key }).lean();
+  const doc = await Upload.findOne({ bucket, storageKey: key });
   if (!doc) {
     console.log('[DOWNLOAD] Arquivo não encontrado:', { bucket, key });
     return res.status(404).send('Arquivo não encontrado');
