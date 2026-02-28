@@ -380,7 +380,8 @@ app.post('/api/db/:table/query', async (req, res) => {
       const now = new Date();
       const rows = items.map((item) => ({ ...item, created_at: item.created_at || now, updated_at: now }));
       const inserted = await Model.insertMany(rows);
-      return res.json({ data: returning ? normalizeDoc(inserted) : null, error: null });
+      // Sempre retorna o(s) documento(s) inserido(s) para garantir que o id chegue ao frontend
+      return res.json({ data: normalizeDoc(inserted), error: null });
     }
 
     if (operation === 'update') {
