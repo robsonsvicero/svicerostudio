@@ -7,6 +7,7 @@ import Toast from '../components/UI/Toast';
 
 const AdminDepoimentos = () => {
   const { user, signOut } = useAuth()
+  const navigate = useNavigate();
   const [depoimentos, setDepoimentos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
