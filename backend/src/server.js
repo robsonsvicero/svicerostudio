@@ -442,8 +442,11 @@ app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (re
   const file = req.file;
 
   if (!bucket || !key || !file) {
+    console.log('[UPLOAD] Falha: bucket, key ou file ausente', { bucket, key, file: !!file });
     return res.status(400).json({ error: 'bucket, key e file são obrigatórios' });
   }
+
+  console.log('[UPLOAD] Recebido:', { bucket, key, originalName: file.originalname, mimeType: file.mimetype, size: file.size, bufferLength: file.buffer?.length });
 
   await Upload.findOneAndUpdate(
     { bucket, storageKey: key },
@@ -459,6 +462,7 @@ app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (re
     { upsert: true, new: true },
   );
 
+  console.log('[UPLOAD] Salvo no banco:', { bucket, key });
   return res.json({ data: { path: key }, error: null });
 });
 
@@ -467,9 +471,11 @@ app.get('/api/storage/public/:bucket/:key', async (req, res) => {
 
   const doc = await Upload.findOne({ bucket, storageKey: key }).lean();
   if (!doc) {
+    console.log('[DOWNLOAD] Arquivo não encontrado:', { bucket, key });
     return res.status(404).send('Arquivo não encontrado');
   }
 
+  console.log('[DOWNLOAD] Arquivo encontrado:', { bucket, key, mimeType: doc.mimeType, dataLength: doc.data?.length });
   res.setHeader('Content-Type', doc.mimeType || 'application/octet-stream');
   return res.send(doc.data);
 });
