@@ -157,7 +157,17 @@ const AdminProjetos = () => {
       });
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao salvar projeto');
-      const projetoId = editing || payload.data?.[0]?.id;
+      let projetoId = null;
+      if (editing) {
+        projetoId = editing;
+      } else if (payload.data && Array.isArray(payload.data) && payload.data[0]?.id) {
+        projetoId = payload.data[0].id;
+      } else if (payload.data && payload.data.id) {
+        projetoId = payload.data.id;
+      }
+      if (!projetoId) {
+        throw new Error('ID do projeto não encontrado após salvar.');
+      }
       // 2. Salvar galeria
       console.log('Salvando galeria:', gallery, 'projetoId:', projetoId);
       if (gallery.length > 0) {
