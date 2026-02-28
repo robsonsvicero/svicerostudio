@@ -411,17 +411,17 @@ const Home = () => {
                 >
                   <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-footer-bg">
                     <img
-                      src={project.imagem_url || project.image || '/images/placeholder.png'}
-                      alt={project.title}
+                      src={project.imagem_url || '/images/placeholder.png'}
+                      alt={project.titulo}
                       className="w-full h-full object-cover"
                       loading="lazy"
                       onError={e => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
                     />
                   </div>
                   <div className="mt-4">
-                    <h3 className="font-title text-xl text-text-primary mb-2">{project.title}</h3>
+                    <h3 className="font-title text-xl text-text-primary mb-2">{project.titulo}</h3>
                     <p className="text-sm text-low-medium leading-relaxed line-clamp-3">
-                      {project.description}
+                      {project.descricao}
                     </p>
                   </div>
                 </button>
