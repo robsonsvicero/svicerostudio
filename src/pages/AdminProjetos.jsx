@@ -152,7 +152,8 @@ const AdminProjetos = () => {
         body: JSON.stringify({
           operation: editing ? 'update' : 'insert',
           filters: editing ? [{ id: editing }] : undefined,
-          payload: form
+          payload: form,
+          returning: true
         }),
       });
       const payload = await res.json();
