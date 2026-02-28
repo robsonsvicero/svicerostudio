@@ -435,6 +435,9 @@ const AdminProjetos = () => {
           </ul>
         )}
       </div>
+
+        </div>
+      </main>
     </div>
   );
 }
