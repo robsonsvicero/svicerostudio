@@ -267,9 +267,20 @@ function normalizeDoc(doc) {
   if (!doc) return null;
   if (Array.isArray(doc)) return doc.map((item) => normalizeDoc(item));
 
-  const plain = typeof doc.toObject === 'function' ? doc.toObject() : { ...doc };
-  plain.id = plain._id?.toString();
-  delete plain._id;
+  // Garante que _id seja convertido para id mesmo se já for plain object
+  let plain = doc;
+  if (typeof doc.toObject === 'function') {
+    plain = doc.toObject();
+  } else {
+    plain = { ...doc };
+  }
+  // Se _id não existir, tenta pegar id direto
+  if (plain._id) {
+    plain.id = plain._id.toString();
+    delete plain._id;
+  } else if (!plain.id && doc.id) {
+    plain.id = doc.id;
+  }
   return plain;
 }
 
