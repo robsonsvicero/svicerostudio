@@ -161,7 +161,7 @@ const AdminProjetos = () => {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           operation: editing ? 'update' : 'insert',
-          filters: editing ? [{ id: editing }] : undefined,
+          filters: editing ? [{ column: '_id', operator: 'eq', value: editing }] : undefined,
           payload: form,
           returning: true
         }),
