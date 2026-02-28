@@ -164,7 +164,6 @@ const AdminProjetos = () => {
         });
         const payload = await res.json();
         if (!res.ok) throw new Error(payload.error || 'Erro ao criar projeto');
-        // payload.data pode ser array (insertMany)
         projetoId = Array.isArray(payload.data) ? payload.data[0]?.id : payload.data?.id;
       } else {
         // Edição de projeto existente
@@ -210,30 +209,10 @@ const AdminProjetos = () => {
         button_text2: '',
         mostrar_home: true,
       });
-      if (!editing) setGallery([]); // Limpa galeria só ao criar novo projeto
+      setGallery([]); // Limpa galeria sempre após salvar
+      setSubmitMsg('');
+      setSubmitting(false);
       fetchProjects();
-      // Buscar galeria do backend após salvar
-      if (projetoId) {
-        try {
-          const galRes = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-            body: JSON.stringify({
-              operation: 'select',
-              filters: [{ column: 'projeto_id', operator: 'eq', value: projetoId }],
-              orderBy: { column: 'ordem', ascending: true }
-            }),
-          });
-          const galPayload = await galRes.json();
-          if (galRes.ok && Array.isArray(galPayload.data)) {
-            setGallery(galPayload.data.map(img => ({ url: img.imagem_url, id: img.id })));
-          } else {
-            setGallery([]);
-          }
-        } catch (err) {
-          setGallery([]);
-        }
-      }
     } catch (err) {
       setSubmitMsg(err.message || 'Erro ao salvar');
       setSubmitting(false);
