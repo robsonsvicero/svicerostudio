@@ -258,14 +258,14 @@ const AdminProjetos = () => {
 
   // Render
   return (
-    <div className="min-h-screen bg-cream p-8">
+    <div className="min-h-screen bg-cream p-8 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-6">Administração de Projetos</h1>
       {isLoading && <p>Carregando projetos...</p>}
       {error && <p className="text-red-500">{error}</p>}
       <button className="mb-4 px-4 py-2 bg-primary text-white rounded" onClick={() => navigate('/admin')}>Voltar ao Admin</button>
 
       {/* Formulário */}
-      <form onSubmit={handleSubmit} className="bg-white rounded shadow p-6 mb-8 flex flex-col gap-4 max-w-2xl">
+      <form onSubmit={handleSubmit} className="bg-white rounded shadow p-8 mb-8 flex flex-col gap-4 w-full max-w-3xl mx-auto">
         <h2 className="text-xl font-semibold mb-2">{editing ? 'Editar Projeto' : 'Novo Projeto'}</h2>
         <input className="border p-2 rounded" required placeholder="Título" value={form.titulo} onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))} />
         <input className="border p-2 rounded" required placeholder="Breve descrição" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))} />
@@ -341,10 +341,21 @@ const AdminProjetos = () => {
             </div>
           ))}
         </div>
-        <button type="submit" className="mt-6 w-full px-4 py-3 bg-green-600 text-white rounded font-semibold text-lg shadow hover:bg-green-700 transition" disabled={uploading || submitting}>
-          {uploading ? 'Aguarde, enviando imagens...' : submitting ? 'Salvando...' : 'Salvar Projeto'}
+        <button
+          type="submit"
+          className={`mt-6 w-full px-4 py-3 rounded font-semibold text-lg shadow transition ${uploading ? 'bg-gray-400 text-gray-100 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700'}`}
+          disabled={uploading || submitting}
+        >
+          {uploading ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+              </svg>
+              Carregando imagens...
+            </span>
+          ) : submitting ? 'Salvando...' : 'Salvar Projeto'}
         </button>
-        {uploading && <p className="text-yellow-600">Aguarde o envio das imagens antes de salvar.</p>}
         {submitMsg && <p className="mt-2 text-blue-600">{submitMsg}</p>}
       </form>
 
