@@ -181,17 +181,17 @@ const AdminProjetos = () => {
       for (const [idx, img] of gallery.entries()) {
         if (!img.id && img.url) {
           // Nova imagem
-          await fetch(`${API_URL}/api/db/projeto_galeria`, {
+          await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-            body: JSON.stringify({ projeto_id: projetoId, imagem_url: img.url, ordem: idx }),
+            body: JSON.stringify({ operation: 'insert', payload: { projeto_id: projetoId, imagem_url: img.url, ordem: idx } }),
           });
         } else if (img.id) {
           // Atualizar ordem
-          await fetch(`${API_URL}/api/db/projeto_galeria/${img.id}`, {
-            method: 'PUT',
+          await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+            method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-            body: JSON.stringify({ ordem: idx }),
+            body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: img.id }], payload: { ordem: idx } }),
           });
         }
       }
@@ -211,7 +211,7 @@ const AdminProjetos = () => {
         mostrar_home: true,
       });
       if (!editing) setGallery([]); // Limpa galeria só ao criar novo projeto
-      fetchProjetos();
+      fetchProjects();
       // Buscar galeria do backend após salvar
       if (projetoId) {
         try {
