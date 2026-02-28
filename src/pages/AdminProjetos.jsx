@@ -157,6 +157,7 @@ const AdminProjetos = () => {
         }),
       });
       const payload = await res.json();
+      console.log('[DEBUG] Resposta do backend ao salvar projeto:', payload);
       if (!res.ok) throw new Error(payload.error || 'Erro ao salvar projeto');
       let projetoId = null;
       if (editing) {
@@ -167,6 +168,7 @@ const AdminProjetos = () => {
         projetoId = payload.data.id;
       }
       if (!projetoId) {
+        console.error('[ERRO] payload.data retornado:', payload.data);
         throw new Error('ID do projeto não encontrado após salvar.');
       }
       // 2. Salvar galeria
