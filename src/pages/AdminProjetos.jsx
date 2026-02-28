@@ -128,6 +128,7 @@ const AdminProjetos = () => {
       mostrar_home: proj.mostrar_home !== false,
     });
     // Buscar galeria do projeto
+    setGallery([]); // Limpa antes de buscar para evitar imagens antigas
     try {
       const res = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
         method: 'POST',
@@ -140,11 +141,9 @@ const AdminProjetos = () => {
       const payload = await res.json();
       if (res.ok && Array.isArray(payload.data)) {
         setGallery(payload.data.map(img => ({ url: img.imagem_url, id: img.id })));
-      } else {
-        setGallery([]);
       }
     } catch {
-      setGallery([]);
+      // Não sobrescreve o estado gallery se falhar
     }
   };
 
@@ -155,76 +154,61 @@ const AdminProjetos = () => {
     setSubmitting(true);
     setSubmitMsg('Salvando...');
     try {
-      // 1. Salvar projeto
-      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          operation: editing ? 'update' : 'insert',
-          filters: editing ? [{ column: '_id', operator: 'eq', value: editing }] : undefined,
-          payload: form,
-          returning: true
-        }),
-      });
-      const payload = await res.json();
-      console.log('[DEBUG] Resposta do backend ao salvar projeto:', payload);
-      if (!res.ok) throw new Error(payload.error || 'Erro ao salvar projeto');
-      let projetoId = null;
-      if (editing) {
-        projetoId = editing;
-      } else if (payload.data && Array.isArray(payload.data) && payload.data[0]?.id) {
-        projetoId = payload.data[0].id;
-      } else if (payload.data && payload.data.id) {
-        projetoId = payload.data.id;
-      }
-      if (!projetoId) {
-        console.error('[ERRO] payload.data retornado:', payload.data);
-        if (Array.isArray(payload.data)) {
-          payload.data.forEach((item, idx) => {
-            console.error(`[ERRO] payload.data[${idx}]:`, item);
-          });
-        }
-        throw new Error('ID do projeto não encontrado após salvar.');
-      }
-      // 2. Salvar galeria
-      console.log('Salvando galeria:', gallery, 'projetoId:', projetoId);
-      if (gallery.length > 0) {
-        // Ao editar, remove todas as imagens antigas antes de inserir as novas
-        if (editing) {
-          const delRes = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-            body: JSON.stringify({
-              operation: 'delete',
-              filters: [{ column: 'projeto_id', operator: 'eq', value: projetoId }]
-            }),
-          });
-          const delPayload = await delRes.json();
-          console.log('Delete galeria:', delPayload);
-        }
-        const insertRes = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+      let projetoId = editing;
+      if (!editing) {
+        // Criação de novo projeto
+        const res = await fetch(`${API_URL}/api/db/projetos`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body: JSON.stringify({
-            operation: 'insert',
-            payload: gallery.map((img, i) => ({ projeto_id: projetoId, imagem_url: img.url, ordem: i }))
-          }),
+          body: JSON.stringify(form),
         });
-        const insertPayload = await insertRes.json();
-        console.log('Insert galeria:', insertPayload);
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.message || 'Erro ao criar projeto');
+        projetoId = payload.data.id;
+      } else {
+        // Edição de projeto existente
+        const res = await fetch(`${API_URL}/api/db/projetos/${editing}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify(form),
+        });
+        if (!res.ok) throw new Error('Erro ao atualizar projeto');
       }
-      setSubmitMsg('Projeto salvo!');
-      setForm({ titulo: '', descricao: '', imagem_url: '', data_projeto: '', link: '', button_text: 'Ver Projeto', descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true });
+      // Salvar galeria
+      for (const [idx, img] of gallery.entries()) {
+        if (!img.id && img.url) {
+          // Nova imagem
+          await fetch(`${API_URL}/api/db/projeto_galeria`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify({ projeto_id: projetoId, imagem_url: img.url, ordem: idx }),
+          });
+        } else if (img.id) {
+          // Atualizar ordem
+          await fetch(`${API_URL}/api/db/projeto_galeria/${img.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify({ ordem: idx }),
+          });
+        }
+      }
       setEditing(null);
-      setSubmitting(false);
-      // Atualizar lista de projetos
-      const refresh = await fetch(`${API_URL}/api/db/projetos/query`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ operation: 'select', orderBy: { column: 'data_projeto', ascending: false } }),
+      setForm({
+        titulo: '',
+        descricao: '',
+        imagem_url: '',
+        data_projeto: '',
+        link: '',
+        button_text: 'Ver Projeto',
+        descricao_longa: '',
+        descricao_longa_en: '',
+        site_url: '',
+        link2: '',
+        button_text2: '',
+        mostrar_home: true,
       });
-      const refreshPayload = await refresh.json();
-      setProjects(refreshPayload.data || []);
+      if (!editing) setGallery([]); // Limpa galeria só ao criar novo projeto
+      fetchProjetos();
       // Buscar galeria do backend após salvar
       if (projetoId) {
         try {
@@ -243,11 +227,9 @@ const AdminProjetos = () => {
           } else {
             setGallery([]);
           }
-        } catch {
+        } catch (err) {
           setGallery([]);
         }
-      } else {
-        setGallery([]);
       }
     } catch (err) {
       setSubmitMsg(err.message || 'Erro ao salvar');
