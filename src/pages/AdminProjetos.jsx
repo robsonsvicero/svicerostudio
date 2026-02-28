@@ -97,7 +97,10 @@ const AdminProjetos = () => {
       const res = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ operation: 'select', filters: [{ projeto_id: proj.id }] }),
+        body: JSON.stringify({
+          operation: 'select',
+          filters: [{ column: 'projeto_id', operator: 'eq', value: proj.id }]
+        }),
       });
       const payload = await res.json();
       if (res.ok && Array.isArray(payload.data)) {
