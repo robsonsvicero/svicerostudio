@@ -163,7 +163,7 @@ const AdminProjetos = () => {
       if (gallery.length > 0) {
         // Ao editar, remove todas as imagens antigas antes de inserir as novas
         if (editing) {
-          await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+          const delRes = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({
@@ -171,8 +171,10 @@ const AdminProjetos = () => {
               filters: [{ column: 'projeto_id', operator: 'eq', value: projetoId }]
             }),
           });
+          const delPayload = await delRes.json();
+          console.log('Delete galeria:', delPayload);
         }
-        await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+        const insertRes = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body: JSON.stringify({
@@ -180,6 +182,8 @@ const AdminProjetos = () => {
             payload: gallery.map((img, i) => ({ projeto_id: projetoId, imagem_url: img.url, ordem: i }))
           }),
         });
+        const insertPayload = await insertRes.json();
+        console.log('Insert galeria:', insertPayload);
       }
       setSubmitMsg('Projeto salvo!');
       setForm({ titulo: '', descricao: '', imagem_url: '', data_projeto: '', link: '', button_text: 'Ver Projeto', descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true });
@@ -195,6 +199,7 @@ const AdminProjetos = () => {
       setProjects(refreshPayload.data || []);
     } catch (err) {
       setSubmitMsg(err.message || 'Erro ao salvar');
+      console.error('Erro ao salvar projeto/galeria:', err);
     }
   };
 
