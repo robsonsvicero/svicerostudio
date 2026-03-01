@@ -45,6 +45,7 @@ const AdminProjetos = () => {
     descricao_longa: '', descricao_longa_en: '', site_url: '', link2: '', button_text2: '', mostrar_home: true
   });
   const [gallery, setGallery] = useState([]); // [{ url, file }]
+  const [galleryError, setGalleryError] = useState('');
 
   // Log sempre que gallery mudar
   useEffect(() => {
@@ -57,6 +58,14 @@ const AdminProjetos = () => {
 
   // Upload de imagens para galeria
   const handleGalleryUpload = async (files) => {
+    setGalleryError('');
+    const MAX_SIZE_MB = 5;
+    const MAX_SIZE = MAX_SIZE_MB * 1024 * 1024;
+    const tooBig = files.find(f => f.size > MAX_SIZE);
+    if (tooBig) {
+      setGalleryError(`A imagem "${tooBig.name}" é muito grande. O limite é ${MAX_SIZE_MB}MB.`);
+      return;
+    }
     setUploading(true);
     const uploaded = [];
     for (const file of files) {
@@ -275,6 +284,7 @@ const AdminProjetos = () => {
         <label className="block mt-2">Galeria de Imagens
           <input type="file" multiple accept="image/*" className="block mt-2" disabled={uploading} onChange={e => handleGalleryUpload(Array.from(e.target.files))} />
         </label>
+        {galleryError && <p className="text-red-600 text-sm mt-1">{galleryError}</p>}
         <div className="flex gap-4 flex-wrap mt-2">
           {gallery.map((img, i) => (
             <div
