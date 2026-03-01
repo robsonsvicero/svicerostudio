@@ -526,7 +526,7 @@ const Home = () => {
               </div>
               <div className="swiper depoimentos-swiper pb-16 relative">
                 <ul className="swiper-wrapper">
-                  {depoimentos.map((depoimento) => (
+                  {[...depoimentos].sort((a, b) => Number(a.ordem) - Number(b.ordem)).map((depoimento) => (
                     <li key={depoimento.id} className="swiper-slide">
                       <div className="bg-white rounded-2xl p-8 border border-text-primary/10 h-full flex flex-col">
                         <p className="text-text-primary/90 text-base leading-relaxed mb-6 italic flex-1">"{depoimento.texto}"</p>
