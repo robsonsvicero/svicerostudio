@@ -6,7 +6,7 @@ import { useToast } from '../hooks/useToast'
 import Toast from '../components/UI/Toast'
 
 const AdminAutores = () => {
-  const { user, signOut } = useAuth()
+  const { user, signOut, token } = useAuth()
   const navigate = useNavigate()
   const [autores, setAutores] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -210,7 +210,10 @@ const AdminAutores = () => {
         // Atualizar autor existente
         const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
           body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: editingId }], payload: formData }),
         });
         const payload = await res.json();
@@ -220,7 +223,10 @@ const AdminAutores = () => {
         // Criar novo autor
         const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
           body: JSON.stringify({ operation: 'insert', payload: formData }),
         });
         const payload = await res.json();
@@ -266,7 +272,10 @@ const AdminAutores = () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify({ operation: 'delete', filters: [{ column: 'id', operator: 'eq', value: id }] }),
       });
       const payload = await res.json();
