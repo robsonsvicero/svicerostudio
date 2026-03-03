@@ -5,6 +5,7 @@ import { useToast } from '../hooks/useToast';
 import Toast from '../components/UI/Toast';
 import Button from '../components/UI/Button';
 import Markdown from 'react-markdown';
+import { authFetch } from '../utils/authFetch';
 import { formatDate } from '../utils/formatDate';
 
 const AdminBlog = () => {
@@ -187,23 +188,21 @@ const AdminBlog = () => {
       let result;
       const apiUrl = `${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`;
       if (editingId) {
-        result = await fetch(apiUrl, {
+        result = await authFetch(apiUrl, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: editingId }], payload }),
-        });
+        }, token);
       } else {
-        result = await fetch(apiUrl, {
+        result = await authFetch(apiUrl, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({ operation: 'insert', payload }),
-        });
+        }, token);
       }
       const payloadRes = await result.json();
       if (!result.ok) throw new Error(payloadRes.error || 'Erro ao salvar post');
@@ -219,14 +218,13 @@ const AdminBlog = () => {
   };
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
+      const res = await authFetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ operation: 'delete', filters: [{ column: 'id', operator: 'eq', value: id }] }),
-      });
+      }, token);
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao excluir post');
       showToastMessage('Post excluído!', 'success');

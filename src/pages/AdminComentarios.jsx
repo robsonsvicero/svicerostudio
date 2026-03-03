@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import { authFetch } from '../utils/authFetch';
 import Button from '../components/UI/Button'
 import Toast from '../components/UI/Toast'
 
@@ -31,9 +32,9 @@ const AdminComentarios = () => {
     if (filter.slug) url += `slug=${encodeURIComponent(filter.slug)}&`
     if (filter.approved !== 'all') url += `approved=${filter.approved}`
     try {
-      const res = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const res = await authFetch(url, {
+        headers: {}
+      }, token)
       if (!res.ok) {
         let errMsg = 'Erro ao buscar comentários';
         let status = res.status;
@@ -61,9 +62,9 @@ const AdminComentarios = () => {
   useEffect(() => { if (token) fetchComments() }, [token, filter])
 
   const handleApprove = async (id) => {
-    const res = await fetch(`${API_URL}/${id}/approve`, {
-      method: 'PATCH', headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await authFetch(`${API_URL}/${id}/approve`, {
+      method: 'PATCH', headers: {}
+    }, token)
     if (res.ok) {
       setToast({ message: 'Comentário aprovado!', type: 'success' })
       fetchComments()
@@ -74,9 +75,9 @@ const AdminComentarios = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Excluir este comentário?')) return
-    const res = await fetch(`${API_URL}/${id}`, {
-      method: 'DELETE', headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await authFetch(`${API_URL}/${id}`, {
+      method: 'DELETE', headers: {}
+    }, token)
     if (res.ok) {
       setToast({ message: 'Comentário excluído!', type: 'success' })
       fetchComments()

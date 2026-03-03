@@ -198,9 +198,9 @@ const AdminProjetos = () => {
           // Atualizar ordem
           await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: img.id }], payload: { ordem: idx } }),
-          });
+          }, token);
         }
       }
       setEditing(null);

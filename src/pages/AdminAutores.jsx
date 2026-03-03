@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { authFetch } from '../utils/authFetch';
 import Button from '../components/UI/Button'
 import { useToast } from '../hooks/useToast'
 import Toast from '../components/UI/Toast'
@@ -211,11 +212,10 @@ const AdminAutores = () => {
         const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: editingId }], payload: formData }),
-        });
+        }, token);
         const payload = await res.json();
         if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar autor');
         showToastMessage('Autor atualizado com sucesso!', 'success');
@@ -224,11 +224,10 @@ const AdminAutores = () => {
         const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({ operation: 'insert', payload: formData }),
-        });
+        }, token);
         const payload = await res.json();
         if (!res.ok) throw new Error(payload.error || 'Erro ao criar autor');
         showToastMessage('Autor criado com sucesso!', 'success');
@@ -270,14 +269,13 @@ const AdminAutores = () => {
   const handleDelete = async (id) => {
     if (!confirm('Tem certeza que deseja excluir este autor?')) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
+      const res = await authFetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ operation: 'delete', filters: [{ column: 'id', operator: 'eq', value: id }] }),
-      });
+      }, token);
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao excluir autor');
       showToastMessage('Autor excluído com sucesso!', 'success');
