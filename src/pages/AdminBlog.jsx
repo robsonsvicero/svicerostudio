@@ -8,7 +8,7 @@ import Markdown from 'react-markdown';
 
 const AdminBlog = () => {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user, signOut, token } = useAuth();
   const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
 
   // Estados
@@ -178,13 +178,19 @@ const AdminBlog = () => {
       if (editingId) {
         result = await fetch(apiUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
           body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: editingId }], payload }),
         });
       } else {
         result = await fetch(apiUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
           body: JSON.stringify({ operation: 'insert', payload }),
         });
       }
@@ -204,7 +210,10 @@ const AdminBlog = () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify({ operation: 'delete', filters: [{ column: 'id', operator: 'eq', value: id }] }),
       });
       const payload = await res.json();
@@ -280,7 +289,13 @@ const AdminBlog = () => {
               </div>
               <div className="flex-1 flex flex-col gap-2">
                 <label className="block font-medium">Categoria</label>
-                <input className="border p-2 rounded w-full" name="categoria" placeholder="Categoria" value={formData.categoria} onChange={handleInputChange} />
+                <select className="border p-2 rounded w-full" name="categoria" value={formData.categoria} onChange={handleInputChange} required>
+                  <option value="">Selecione uma categoria</option>
+                  <option value="Performance & Conversão">Performance & Conversão</option>
+                  <option value="Estratégia de Ativos (Business & IA)">Estratégia de Ativos (Business & IA)</option>
+                  <option value="Engenharia de Percepção (Branding)">Engenharia de Percepção (Branding)</option>
+                  <option value="UX Design & Engenharia de Lucro">UX Design & Engenharia de Lucro</option>
+                </select>
                 <label className="block font-medium">Tags (separadas por vírgula)
                   <input className="border p-2 rounded w-full mt-1" name="tags" placeholder="tag1, tag2" value={formData.tags} onChange={handleInputChange} />
                 </label>
