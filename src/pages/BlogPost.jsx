@@ -6,6 +6,8 @@ import Footer from '../components/Layout/Footer'
 import SEOHelmet from '../components/SEOHelmet'
 import { formatDate } from '../utils/formatDate'
 
+import Comments from '../components/Blog/Comments'
+
 const BlogPost = () => {
   const { slug } = useParams()
   const navigate = useNavigate()
