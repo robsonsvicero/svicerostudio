@@ -5,6 +5,7 @@ import { useToast } from '../hooks/useToast';
 import Toast from '../components/UI/Toast';
 import Button from '../components/UI/Button';
 import Markdown from 'react-markdown';
+import { formatDate } from '../utils/formatDate';
 
 const AdminBlog = () => {
   const navigate = useNavigate();
@@ -364,6 +365,7 @@ const AdminBlog = () => {
                         <td className="p-2 max-w-xs truncate">{post.titulo}</td>
                         <td className="p-2">{autores.find(a => a.id === post.autor)?.nome || '-'}</td>
                         <td className="p-2">{post.data_publicacao ? new Date(post.data_publicacao).toLocaleDateString() : '-'}</td>
+                                                <td className="p-2">{post.data_publicacao ? formatDate(post.data_publicacao) : '-'}</td>
                         <td className="p-2">{post.publicado ? 'Sim' : 'Não'}</td>
                         <td className="p-2 flex gap-2">
                           <button className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => {
