@@ -172,7 +172,17 @@ const AdminBlog = () => {
       }
       // Slug único
       const slug = await getUniqueSlug(formData.slug, editingId);
-      const payload = { ...formData, slug };
+      // Normaliza data_publicacao para YYYY-MM-DD puro
+      let data_publicacao = formData.data_publicacao;
+      if (data_publicacao) {
+        // Se vier como Date ou ISO, extrai só a parte da data
+        if (data_publicacao instanceof Date) {
+          data_publicacao = data_publicacao.toISOString().slice(0, 10);
+        } else if (/^\d{4}-\d{2}-\d{2}/.test(data_publicacao)) {
+          data_publicacao = data_publicacao.slice(0, 10);
+        }
+      }
+      const payload = { ...formData, slug, data_publicacao };
       let result;
       const apiUrl = `${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`;
       if (editingId) {
