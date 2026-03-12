@@ -119,7 +119,6 @@ const postSchema = new mongoose.Schema(
 );
 
 const autorSchema = new mongoose.Schema({
-  _id: { type: String, required: true },
   nome: { type: String, required: true },
   cargo: { type: String, required: true },
   foto_url: String,
