@@ -20,11 +20,11 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-cream px-4">
+        <div className="min-h-screen flex items-center justify-center bg-dark-bg px-4">
           <div className="max-w-2xl w-full text-center">
             <div className="mb-8">
               <div className="text-6xl mb-4">⚠️</div>
-              <h1 className="font-title text-4xl md:text-5xl font-semibold text-primary mb-4">
+              <h1 className="font-title text-4xl md:text-5xl font-semibold text-low-dark mb-4">
                 Algo deu errado
               </h1>
               <p className="font-body text-lg text-low-dark mb-8">
@@ -35,7 +35,7 @@ class ErrorBoundary extends React.Component {
             <div className="space-y-4">
               <button
                 onClick={() => window.location.reload()}
-                className="inline-block px-8 py-3 bg-primary text-cream font-title text-lg rounded-lg shadow-md hover:scale-105 hover:bg-secondary transition-all duration-300"
+                className="inline-block px-8 py-3 bg-secondary text-white font-title text-lg rounded-lg shadow-md hover:scale-105 hover:bg-secondary/90 transition-all duration-300"
               >
                 Recarregar página
               </button>
@@ -43,7 +43,7 @@ class ErrorBoundary extends React.Component {
               <div className="mt-4">
                 <a
                   href="/"
-                  className="inline-block px-8 py-3 bg-transparent border-2 border-primary text-primary font-title text-lg rounded-lg hover:bg-primary hover:text-cream transition-all duration-300"
+                  className="inline-block px-8 py-3 bg-transparent border-2 border-white/30 text-text-primary font-title text-lg rounded-lg hover:bg-secondary hover:border-secondary hover:text-white transition-all duration-300"
                 >
                   Voltar para a página inicial
                 </a>
@@ -57,6 +57,8 @@ class ErrorBoundary extends React.Component {
                 </summary>
                 <pre className="text-sm text-red-600 overflow-auto">
                   {this.state.error.toString()}
+                  <br />
+                  {this.state.error.stack}
                 </pre>
               </details>
             )}

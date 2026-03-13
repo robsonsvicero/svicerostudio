@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/UI/Button'
-import logoImage from '../images/logo_alternativo 1.png'
+import logoImage from '../images/logo_alternativo 4.png'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -42,14 +42,14 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-cream flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-[#141414] flex flex-col items-center justify-center px-4">
+      <div className="w-full max-w-md flex flex-col gap-6">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <div className="text-center">
           <img 
             src={logoImage} 
             alt="Svicero Studio" 
-            className="h-16 mx-auto mb-12"
+            className="h-32 mx-auto mb-16"
           />
           <h1 className="font-title text-3xl md:text-4xl font-semibold text-low-dark mb-2">
             Área Administrativa
@@ -60,7 +60,7 @@ const Login = () => {
         </div>
 
         {/* Formulário de Login */}
-        <div className="bg-white rounded-xl shadow-lg p-8 border border-cream/20">
+        <div className="bg-gelo rounded-xl p-8 border border-white/10">
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
@@ -68,7 +68,6 @@ const Login = () => {
                 <span className="text-red-700 text-sm">{error}</span>
               </div>
             )}
-
             <div>
               <label htmlFor="email" className="block text-low-dark text-base mb-2">
                 Email
@@ -80,12 +79,11 @@ const Login = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-lg bg-[#141414] border border-cream/40 text-low-dark text-base focus:border-secondary focus:outline-none transition-colors"
                 placeholder="seu@email.com"
                 disabled={isLoading}
               />
             </div>
-
             <div>
               <label htmlFor="password" className="block text-low-dark text-base mb-2">
                 Senha
@@ -98,27 +96,22 @@ const Login = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 pr-12 rounded-lg bg-cream border border-cream/40 text-low-dark text-base focus:border-primary focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 pr-12 rounded-lg bg-[#141414] border border-cream/40 text-low-dark text-base focus:border-secondary focus:outline-none transition-colors"
                   placeholder="••••••••"
                   disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-low-medium hover:text-primary transition-colors p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-low-medium hover:text-secondary transition-colors p-1 bg-transparent border-none"
                   tabIndex={-1}
+                  style={{ outline: 'none', boxShadow: 'none' }}
                 >
                   <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
                 </button>
               </div>
             </div>
-
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-full py-3 !bg-primary !text-cream hover:!bg-primary/90"
-              disabled={isLoading}
-            >
+            <Button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <i className="fa-solid fa-spinner fa-spin"></i>
@@ -132,10 +125,10 @@ const Login = () => {
         </div>
 
         {/* Link para voltar */}
-        <div className="text-center mt-6">
+        <div className="text-center">
           <a 
             href="/" 
-            className="text-low-dark hover:text-primary transition-colors text-sm font-medium"
+            className="text-low-dark hover:text-secondary transition-colors text-sm font-medium"
           >
             <i className="fa-solid fa-arrow-left mr-2"></i>
             Voltar para o site

@@ -1,7 +1,7 @@
 /* Business Card Styles */
 .business-card-container {
   min-height: 100vh;
-  background-color: #FFF8F0;
+  background-color: var(--dark-bg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,7 +48,7 @@
   font-family: 'Manrope', 'Inter', sans-serif;
   font-size: 28px;
   font-weight: 700;
-  color: #2F353B;
+  color: var(--cream);
   margin: 0 0 8px 0;
   letter-spacing: 0.5px;
 }
@@ -57,7 +57,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-style: italic;
-  color: #2F353B;
+  color: var(--cream);
   margin: 0;
   font-weight: 400;
 }
@@ -73,7 +73,8 @@
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   line-height: 1.6;
-  color: #8f8f8f;
+  letter-spacing: 0.75px;
+  color: #f8f7f280;
   margin: 0;
 }
 

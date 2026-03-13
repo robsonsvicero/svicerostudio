@@ -1,145 +1,138 @@
-import React, { useEffect, useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import { authFetch } from '../utils/authFetch';
-import Button from '../components/UI/Button'
-import Toast from '../components/UI/Toast'
+import React, { useEffect, useState, useCallback } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../hooks/useToast';
+import Button from '../components/UI/Button';
+import AdminLayout from '../components/Admin/AdminLayout';
 
-const resolveApiBaseUrl = () => {
-  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL
-
-  if (typeof window !== 'undefined') {
-    const host = window.location.hostname
-    if (host === 'localhost' || host === '127.0.0.1') {
-      return 'http://localhost:4000'
-    }
-  }
-
-  return 'https://svicerostudio-production.up.railway.app'
-}
-
-const API_URL = `${resolveApiBaseUrl()}/api/comments`
+import { API_URL } from '../lib/api.js';
 
 const AdminComentarios = () => {
-  const { token } = useAuth()
-  const [comments, setComments] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState({ slug: '', approved: 'all' })
-  const [toast, setToast] = useState({ message: '', type: '' })
+    const { token } = useAuth();
+    const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
+    
+    const [comments, setComments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState('pending'); // 'pending', 'approved'
 
-  const fetchComments = async () => {
-    setLoading(true)
-    let url = `${API_URL}?`
-    if (filter.slug) url += `slug=${encodeURIComponent(filter.slug)}&`
-    if (filter.approved !== 'all') url += `approved=${filter.approved}`
-    try {
-      const res = await authFetch(url, {
-        headers: {}
-      }, token)
-      if (!res.ok) {
-        let errMsg = 'Erro ao buscar comentários';
-        let status = res.status;
+    const fetchComments = useCallback(async () => {
+        if (!token) return;
+        setLoading(true);
+        // Backend expects 'false' for pending, 'true' for approved
+        const approvedStatus = filter === 'pending' ? 'false' : 'true';
         try {
-          const err = await res.json();
-          errMsg = err.error || errMsg;
-        } catch {}
-        if (status === 401) {
-          setToast({ message: 'Sessão expirada ou sem permissão. Faça login novamente.', type: 'error' });
-        } else {
-          setToast({ message: errMsg, type: 'error' });
+            const res = await fetch(`${API_URL}/api/comments?approved=${approvedStatus}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Erro ao buscar comentários');
+            setComments(Array.isArray(data) ? data : []);
+        } catch (e) {
+            showToastMessage(e.message, 'error');
+            setComments([]);
+        } finally {
+            setLoading(false);
         }
-        setComments([]);
-      } else {
-        const data = await res.json();
-        setComments(Array.isArray(data) ? data : []);
-      }
-    } catch (e) {
-      setToast({ message: 'Erro de rede', type: 'error' });
-      setComments([]);
-    }
-    setLoading(false);
-  }
+    }, [token, filter, showToastMessage]);
 
-  useEffect(() => { if (token) fetchComments() }, [token, filter])
+    useEffect(() => {
+        fetchComments();
+    }, [fetchComments]);
 
-  const handleApprove = async (id) => {
-    const res = await authFetch(`${API_URL}/${id}/approve`, {
-      method: 'PATCH', headers: {}
-    }, token)
-    if (res.ok) {
-      setToast({ message: 'Comentário aprovado!', type: 'success' })
-      fetchComments()
-    } else {
-      setToast({ message: 'Erro ao aprovar.', type: 'error' })
-    }
-  }
+    const handleUpdateStatus = async (id, newStatus) => {
+        const url = newStatus === 'approved' 
+            ? `${API_URL}/api/comments/${id}/approve`
+            : `${API_URL}/api/comments/${id}`; // Assuming DELETE for rejection
+        
+        const method = newStatus === 'approved' ? 'PATCH' : 'DELETE';
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Excluir este comentário?')) return
-    const res = await authFetch(`${API_URL}/${id}`, {
-      method: 'DELETE', headers: {}
-    }, token)
-    if (res.ok) {
-      setToast({ message: 'Comentário excluído!', type: 'success' })
-      fetchComments()
-    } else {
-      setToast({ message: 'Erro ao excluir.', type: 'error' })
-    }
-  }
+        try {
+            const res = await fetch(url, {
+                method: method,
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) {
+                const errData = await res.json();
+                throw new Error(errData.error || `Erro ao ${newStatus === 'approved' ? 'aprovar' : 'excluir'}`);
+            }
+            showToastMessage(`Comentário ${newStatus === 'approved' ? 'aprovado' : 'excluído'}!`, 'success');
+            fetchComments();
+        } catch (err) {
+            showToastMessage(err.message, 'error');
+        }
+    };
 
-  return (
-    <div className="max-w-4xl mx-auto py-12 px-4">
-      <button
-        className="mb-6 bg-primary text-white px-4 py-2 rounded shadow hover:bg-primary/90 transition-colors border border-primary"
-        onClick={() => window.location.href = '/admin'}
-        style={{ minWidth: 100 }}
-      >
-        <i className="fa-solid fa-arrow-left mr-2"></i> Voltar ao Admin
-      </button>
-      <h1 className="font-title text-3xl mb-8">Moderação de Comentários</h1>
-      <form className="flex gap-4 mb-8">
-        <input
-          type="text"
-          placeholder="Filtrar por slug do post"
-          className="border rounded px-3 py-2 flex-1"
-          value={filter.slug}
-          onChange={e => setFilter(f => ({ ...f, slug: e.target.value }))}
-        />
-        <select
-          className="border rounded px-3 py-2"
-          value={filter.approved}
-          onChange={e => setFilter(f => ({ ...f, approved: e.target.value }))}
-        >
-          <option value="all">Todos</option>
-          <option value="false">Pendentes</option>
-          <option value="true">Aprovados</option>
-        </select>
-        <Button type="button" variant='primary' onClick={fetchComments}>Buscar</Button>
-      </form>
-      {toast.message && <Toast message={toast.message} type={toast.type} onClose={() => setToast({})} />}
-      {loading ? (
-        <div>Carregando...</div>
-      ) : comments.length === 0 ? (
-        <div>
-          Nenhum comentário encontrado.<br />
-          <span className="text-xs text-low-medium">Verifique se há comentários pendentes ou aprovados para o filtro selecionado.</span>
-        </div>
-      ) : (
-        <ul className="space-y-6">
-          {comments.map(c => (
-            <li key={c._id || c.id} className="border-b pb-4">
-              <div className="font-semibold text-low-dark">{c.name} <span className="text-xs text-low-medium">({c.email})</span></div>
-              <div className="text-xs text-low-medium mb-1">{new Date(c.createdAt).toLocaleString('pt-BR')} | Post: <span className="font-mono">{c.postSlug}</span></div>
-              <div className="whitespace-pre-line text-low-dark mb-2">{c.content}</div>
-              <div className="flex gap-2">
-                {!c.approved && <Button size="sm" variant="primary" onClick={() => handleApprove(c._id || c.id)}>Aprovar</Button>}
-                <Button size="sm" variant="outline" onClick={() => handleDelete(c._id || c.id)}>Excluir</Button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+    return (
+        <AdminLayout toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}>
+                <div className="relative overflow-hidden rounded-[32px] border border-white/8 bg-[#181818] shadow-2xl shadow-black/30">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(184,115,51,0.14),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(95,178,216,0.10),_transparent_22%)]" />
+                    <div className="relative border-b border-white/8 px-6 py-6 lg:px-8">
+                        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                            <div className="max-w-3xl">
+                                <div className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#E9BF84]">
+                                    Moderação
+                                </div>
+                                <h1 className="mt-4 font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
+                                    Gerenciar Comentários
+                                </h1>
+                                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60 lg:text-base">
+                                    Aprove, rejeite e gerencie as interações nos artigos do blog.
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 p-1.5">
+                                <button onClick={() => setFilter('pending')} className={`w-full rounded-[14px] px-5 py-3 text-sm font-medium transition ${filter === 'pending' ? 'bg-[#B87333] text-black' : 'text-white/60 hover:bg-white/5'}`}>
+                                    Pendentes
+                                </button>
+                                <button onClick={() => setFilter('approved')} className={`w-full rounded-[14px] px-5 py-3 text-sm font-medium transition ${filter === 'approved' ? 'bg-[#B87333] text-black' : 'text-white/60 hover:bg-white/5'}`}>
+                                    Aprovados
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-export default AdminComentarios
+                    <div className="p-6 lg:p-8">
+                        {loading && <p className="text-white/60 text-center py-10">Carregando comentários...</p>}
+                        {!loading && comments.length === 0 && (
+                            <div className="py-20 text-center">
+                                <p className="text-lg font-medium text-white">Nenhum comentário {filter === 'pending' ? 'pendente' : 'aprovado'}.</p>
+                                <p className="mt-2 text-sm text-white/50">Todos os comentários estão em dia!</p>
+                            </div>
+                        )}
+                        {!loading && comments.length > 0 && (
+                            <ul className="space-y-4">
+                                {comments.map((comment) => (
+                                    <li key={comment._id} className="rounded-2xl border border-white/10 bg-white/[.03] p-5 backdrop-blur-sm">
+                                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="font-semibold text-white">{comment.name}</div>
+                                                    <a href={`mailto:${comment.email}`} className="text-sm text-white/50 hover:text-[#B87333] truncate">{comment.email}</a>
+                                                </div>
+                                                <p className="mt-1 text-xs text-white/40">
+                                                    Em <a href={`/blog/${comment.postSlug}`} target="_blank" rel="noopener noreferrer" className="hover:text-white underline underline-offset-2">{comment.postSlug}</a>
+                                                    {' • '}
+                                                    {new Date(comment.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                                                </p>
+                                            </div>
+                                            <div className="mt-4 sm:mt-0 flex-shrink-0 flex items-center gap-2">
+                                                {filter === 'pending' && (
+                                                    <Button variant="primary" size="sm" onClick={() => handleUpdateStatus(comment._id, 'approved')}>
+                                                        Aprovar
+                                                    </Button>
+                                                )}
+                                                <Button variant="danger" size="sm" onClick={() => handleUpdateStatus(comment._id, 'deleted')}>
+                                                    Excluir
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        <p className="mt-4 text-white/80 whitespace-pre-line text-sm leading-6">{comment.content}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                </div>
+    </AdminLayout>
+    );
+};
+
+export default AdminComentarios;

@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './Button.css';
 
-const Button = ({ 
-  children, 
+const Button = ({
+  children,
   variant = 'outline', // outline, primary, secondary, custom
-  size = 'md', 
-  className = '', 
+  size = 'md',
+  className = '',
   icon,
   onClick,
   href,
@@ -13,7 +13,7 @@ const Button = ({
   rel,
   type = 'button',
   fillColor: customFillColor, // Cor de preenchimento customizada
-  ...props 
+  ...props
 }) => {
   const btnRef = useRef(null);
   const circleRef = useRef(null);
@@ -30,7 +30,7 @@ const Button = ({
   }, [className]); // Removido btnRef.current e size das dependências
 
   // Classes base
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-300 relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary';
+  const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-300 relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-secondary';
   const sizeClasses = {
     sm: 'px-6 py-2 text-base',
     md: 'px-8 py-3 text-lg',
@@ -41,20 +41,21 @@ const Button = ({
   let variantClasses = '';
   let outlineHoverClass = '';
   if (variant === 'primary') {
-    variantClasses = 'bg-primary border-none text-cream';
+    variantClasses = 'bg-primary border-none text-cream shadow-lg hover:bg-primary700';
   } else if (variant === 'secondary') {
-    variantClasses = 'bg-secondary border-none text-cream';
+    variantClasses = 'bg-secondary border-none text-cream shadow-lg hover:bg-secondary700';
   } else if (variant === 'danger') {
-    variantClasses = 'bg-red-600 border-none text-white hover:bg-red-700';
+    variantClasses = 'bg-red-600 border-none text-white shadow-lg hover:bg-red-700';
   } else if (variant === 'outline') {
-    variantClasses = 'bg-transparent border-2 border-primary text-low-dark outline-hover';
+    variantClasses = 'bg-transparent border-2 border-white/30 text-low-dark shadow-lg outline-hover';
     outlineHoverClass = 'outline-hover';
   } else if (variant === 'custom') {
     // Variante custom: não aplica estilos de cor/borda, permite controle total via className
     variantClasses = '';
   }
 
-  const classes = `${baseClasses} ${sizeClasses[size]} ${variantClasses} ${className}`;
+  // Garantir que rounded-2xl sempre seja aplicado por último
+  const classes = `${baseClasses} ${sizeClasses[size]} ${variantClasses} ${className} rounded-2xl`;
 
   // Centraliza o círculo no centro do botão
   const handleMouseEnter = () => {
@@ -75,11 +76,11 @@ const Button = ({
   };
 
   // Cor do preenchimento animado
-  let fillColor = '#2F353B'; // primary
-  if (variant === 'secondary') fillColor = '#844219'; // secondary
+  let fillColor = '#444444'; // primary (dark card on dark bg)
+  if (variant === 'secondary') fillColor = '#844219'; // deeper orange on orange
   else if (variant === 'danger') fillColor = '#dc2626'; // vermelho
-  else if (variant === 'outline') fillColor = '#171F2A'; // hover mais visível
-  else if (variant === 'custom') fillColor = '#FFF8F0'; // cream
+  else if (variant === 'outline') fillColor = '#F8F7F280'; // hover fill on outline
+  else if (variant === 'custom') fillColor = '#EFEFEF'; // cor clara padrão para custom
 
   // Permite sobrescrever com prop customFillColor
   if (customFillColor) fillColor = customFillColor;
@@ -89,7 +90,7 @@ const Button = ({
   const iconHoverClass = variant === 'custom' ? '' : 'group-hover:text-cream text-cream';
 
   // Para outline, texto escuro e hover claro
-  const textBaseClass = variant === 'outline' ? 'text-low-dark group-hover:text-[#FFF8F0]' : '';
+  const textBaseClass = variant === 'outline' ? 'text-low-dark group-hover:text-[#EFEFEF]' : '';
 
   const content = (
     <>

@@ -1,6 +1,11 @@
+import BlogSection from '../components/Home/BlogSection';
+import ProjectsSection from '../components/Home/ProjectsSection';
 import React, { useEffect, useState, useRef } from 'react';
 import Swiper from 'swiper/bundle';
+import { Pagination } from 'swiper/modules';
+Swiper.use([Pagination]);
 import 'swiper/css/bundle';
+import 'swiper/css/pagination';
 import Header from '../components/Layout/Header';
 import Preloader from '../components/Preloader';
 import Footer from '../components/Layout/Footer';
@@ -10,14 +15,17 @@ import SEOHelmet from '../components/SEOHelmet';
 import Toast from '../components/UI/Toast';
 import { useToast } from '../hooks/useToast';
 import { formatDate } from '../utils/formatDate';
+import { API_URL } from '../lib/api.js';
 
 import idvDesigner from '../images/idv-deigner.webp';
 import uiDesigner from '../images/ui-designer.webp';
 import developer from '../images/developer.webp';
-import homeHeroImage from '../images/20260213_svicero_studio_hero.webp';
 
-import aboutPhoto from '../images/aboutphoto.png';
+import HeroSection from '../components/Home/HeroSection';
+import ServicesSection from '../components/Home/ServicesSection';
+
 import sviceroCta from '../images/Svicero_CTA.png';
+import AboutSection from '../components/Home/AboutSection';
 
 
 const Home = () => {
@@ -26,127 +34,113 @@ const Home = () => {
     {
       img: idvDesigner,
       alt: 'Card Designer',
-      badge: { text: 'Branding & Identidade', className: 'designer text-[15px] font-medium text-[#800020] bg-[#F8CDC6]' },
+      badge: { text: 'Branding & Identidade', className: 'designer text-[15px] font-medium text-[#FF9BAA] bg-[#FF9BAA]/20' },
       title: 'Arquitetura de marca para ampliar percepção de valor e desejo.',
       link: '/servico-identidade-visual'
     },
     {
       img: uiDesigner,
       alt: 'Card UI designer',
-      badge: { text: 'UI & UX', className: 'ui-ux text-[15px] font-medium text-[#094C7E] bg-[#EAF4F6]' },
+      badge: { text: 'UI & UX', className: 'ui-ux text-[15px] font-medium text-[#7EC8E3] bg-[#7EC8E3]/20' },
       title: 'Experiências digitais que reduzem fricção e elevam conversão qualificada.',
       link: '/servico-ui-design'
     },
     {
       img: developer,
       alt: 'Card Web Design',
-      badge: { text: 'Web Design', className: 'developer text-[15px] font-medium text-[#205C20] bg-[#D6F8D6]' },
+      badge: { text: 'Web Design', className: 'developer text-[15px] font-medium text-[#6FCF97] bg-[#6FCF97]/20' },
       title: 'Infraestrutura web de alta performance para operações premium.',
       link: '/servico-front-end'
     },
   ];
-  
+
   const [whatsappVisible, setWhatsappVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
-  
-  // Usar hooks personalizados
-  const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
-  // Buscar projetos, depoimentos e posts via API REST
   const [depoimentos, setDepoimentos] = useState([]);
   const [blogPosts, setBlogPosts] = useState([]);
+  const { showToast, toastMessage, toastType, hideToast, showToastMessage } = useToast();
 
-  useEffect(() => {
-    // Buscar projetos
-    const fetchProjetos = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/projetos/query`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ filters: [{ column: 'mostrar_home', operator: 'eq', value: true }], orderBy: { column: 'data_projeto', ascending: false }, limit: 6 }),
-        });
-        const payload = await res.json();
-        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar projetos');
-        setProjects(payload.data || []);
-      } catch (error) {
-        showToastMessage('Erro ao carregar projetos', 'error');
-      }
-    };
-    fetchProjetos();
-  }, []);
-
-  useEffect(() => {
-    // Buscar depoimentos
-    const fetchDepoimentos = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/query`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ filters: [{ ativo: true }], orderBy: { ordem: 1 } }),
-        });
-        const payload = await res.json();
-        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar depoimentos');
-        setDepoimentos(payload.data || []);
-      } catch (error) {
-        showToastMessage('Erro ao carregar depoimentos', 'error');
-      }
-    };
-    fetchDepoimentos();
-  }, []);
-
-  useEffect(() => {
-    // Buscar posts do blog
-    const fetchBlogPosts = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderBy: { column: 'data_publicacao', ascending: false }, limit: 3 }),
-        });
-        const payload = await res.json();
-        if (!res.ok) throw new Error(payload.error || 'Erro ao buscar posts');
-        setBlogPosts(payload.data || []);
-      } catch (error) {
-        showToastMessage('Erro ao carregar posts', 'error');
-      }
-    };
-    fetchBlogPosts();
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setWhatsappVisible(window.scrollY > 100);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Inicializar Swiper - separado em useEffect próprio
   const swipersRef = useRef([]);
   const [swipersInitialized, setSwipersInitialized] = useState(false);
 
-  useEffect(() => {
-    // Aguarda depoimentos carregarem antes de inicializar Swiper
-    if (depoimentos.length === 0) return;
+  // Funções de busca de dados
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          operation: 'select',
+          options: {
+            where: { exibir_home: true },
+            limit: 5,
+            orderBy: { column: 'ordem', ascending: true }
+          }
+        })
+      });
+      const payload = await res.json();
+      setProjects(payload.data || []);
+    } catch (error) {
+      console.error("Failed to fetch projects:", error);
+    }
+  };
 
-    // Destruir swipers anteriores
-    swipersRef.current.forEach(swiper => {
-      if (swiper && swiper.destroy) {
-        try { swiper.destroy(true, true); } catch (e) { /* ignora */ }
-      }
-    });
-    swipersRef.current = [];
+  const fetchDepoimentos = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/db/depoimentos/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ operation: 'select', orderBy: { column: 'ordem', ascending: true } })
+      });
+      const payload = await res.json();
+      setDepoimentos(payload.data || []);
+    } catch (error) {
+      console.error("Failed to fetch testimonials:", error);
+    }
+  };
+
+  const fetchBlogPosts = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/db/posts/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          operation: 'select',
+          options: {
+            where: { publicado: true },
+            limit: 3,
+            orderBy: { column: 'data_publicacao', ascending: false }
+          }
+        })
+      });
+      const payload = await res.json();
+      setBlogPosts(payload.data || []);
+    } catch (error) {
+      console.error("Failed to fetch blog posts:", error);
+    }
+  };
+
+  // Efeito para buscar todos os dados na montagem
+  useEffect(() => {
+    fetchProjects();
+    fetchDepoimentos();
+    fetchBlogPosts();
+  }, []);
+
+  // Efeito para inicializar o Swiper de depoimentos
+  useEffect(() => {
+    if (depoimentos.length === 0) return;
 
     const timeoutId = setTimeout(() => {
       const depoimentosSwiper = document.querySelector('.depoimentos-swiper');
       if (depoimentosSwiper) {
         const depoimentosSwiperInstance = new Swiper('.depoimentos-swiper', {
+          loop: true,
           slidesPerView: 1,
           spaceBetween: 24,
-          loop: true,
           grabCursor: true,
           centeredSlides: false,
           watchOverflow: true,
@@ -167,18 +161,9 @@ const Home = () => {
             prevEl: '.depoimentos-swiper .swiper-button-prev',
           },
           breakpoints: {
-            640: {
-              slidesPerView: 1,
-              spaceBetween: 24
-            },
-            768: {
-              slidesPerView: 2,
-              spaceBetween: 32
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 32
-            }
+            640: { slidesPerView: 1, spaceBetween: 24 },
+            768: { slidesPerView: 2, spaceBetween: 32 },
+            1024: { slidesPerView: 3, spaceBetween: 32 }
           }
         });
         swipersRef.current.push(depoimentosSwiperInstance);
@@ -187,7 +172,7 @@ const Home = () => {
         console.error('Elemento .depoimentos-swiper não encontrado');
       }
     }, 200);
-    
+
     return () => {
       clearTimeout(timeoutId);
       swipersRef.current.forEach(swiper => {
@@ -195,8 +180,9 @@ const Home = () => {
           try { swiper.destroy(true, true); } catch (e) { /* ignora */ }
         }
       });
+      swipersRef.current = [];
     };
-  }, [depoimentos.length]);
+  }, [depoimentos]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -258,12 +244,12 @@ const Home = () => {
   return (
     <>
       <Preloader />
-      <SEOHelmet 
+      <SEOHelmet
         title="Engenharia Visual & Design Estratégico"
         description="Projete a infraestrutura visual que sustenta o faturamento de marcas de elite. Conheça a Engenharia de Percepção do Svicero Studio. Design e estratégia de alto padrão."
         keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
       />
-      <div className="bg-cream min-h-screen">
+      <div className="bg-dark-bg min-h-screen">
         <Header />
 
         {/* Botão flutuante WhatsApp */}
@@ -278,157 +264,93 @@ const Home = () => {
         </a>
 
         {/* Hero Section */}
-        <section id="inicio" className="relative w-full min-h-[72vh] flex items-center justify-center text-center px-4 md:px-8 pt-32 pb-20 border-b border-text-primary/10 overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(45, 42, 38, 1) 0%, rgba(45, 42, 38, 0.5) 60%, rgba(45, 42, 38, 0.2) 100%), url(${homeHeroImage})`
-            }}
-          ></div>
-          <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-5xl">
-            <h1 className="font-serif font-semibold text-[#fff8f2] text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8 drop-shadow-lg">Engenharia de Percepção para Marcas de Elite.</h1>
-            <p className="font-sans text-[#fff8f2]/90 text-lg md:text-xl font-normal mb-10 max-w-4xl leading-relaxed drop-shadow-md">Projetamos a infraestrutura visual e a estratégia de experiência que transformam autoridade em crescimento previsível para marcas high-ticket.</p>
-            <Button
-              href="/diagnostico"
-              variant="secondary"
-            >Falar com um Estrategista</Button>
-          </div>
-        </section>
+        <HeroSection />
 
         {/* Tríade Integrada */}
-        <section id="triade" className="bg-cream py-24 px-4 md:px-16">
+        <section id="triade" className="py-24 px-4 md:px-16 bg-dark-bg">
           <div className="max-w-screen-xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-low-dark mb-4">A Tríade Svicero: Estratégia, Percepção e Maturidade</h2>
-
-              <p className="font-sans text-xl text-low-medium max-w-3xl mx-auto leading-relaxed">
-                Integramos branding, UX e tecnologia para eliminar ruído de posicionamento e sustentar decisões de compra de alto valor.
+            <div className="text-left mb-16">
+              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
+                <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                METODOLOGIA
+              </span>
+              <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">O que o Svicero Studio faz por você</h2>
+              <p className="font-sans text-lg md:text-xl text-[#B2B8C6] max-w-3xl leading-relaxed">
+                Unimos <span className='font-semibold'>estratégia de marca</span>, <span className='font-semibold'>design</span> e <span className='font-semibold'>tecnologia</span> para tirar sua marca da cara de amadora e dar base para você se posicionar com mais segurança.
               </p>
             </div>
-
-            <div className="flex flex-col md:flex-row md:justify-center md:items-stretch gap-8 md:gap-10 mb-12">
-              {/* Identidade Visual */}
-              <div className="bg-white rounded-2xl p-6 md:p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 border-t-4 border-primary flex-1 flex flex-col justify-between md:max-w-[400px] w-full mx-auto">
-                <div className="h-full flex flex-col">
-                  <div className="flex justify-center mb-6">
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
-                      <i className="fa-solid fa-palette text-4xl text-primary"></i>
-                    </div>
-                  </div>
-                  <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Branding & Posicionamento</h3>
-                  <p className="text-lg text-low-medium text-center leading-relaxed mb-4 break-words">
-                    Construímos o sistema de marca que comunica sofisticação e liderança silenciosa. Eliminamos o ruído visual para que sua autoridade seja percebida antes mesmo do primeiro contato.
-                  </p>
-                </div>
-                <div className="text-center mt-auto">
-                  <span className="inline-block text-sm font-medium text-primary bg-primary/10 px-4 py-2 rounded-full">
-                    Fundamento estratégico
-                  </span>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-8">
+              {/* 01 */}
+              <div className="flex flex-col items-center text-center">
+                <span className="font-title text-7xl md:text-8xl font-extrabold text-secondary/40 leading-none mb-3">01</span>
+                <h3 className="font-title text-2xl font-bold text-white mb-4">Estratégia de marca</h3>
+                <p className="text-[#B2B8C6] leading-relaxed max-w-xs">
+                  Definimos como você quer ser visto, quem quer atrair e o espaço que quer ocupar no mercado. Isso guia todas as decisões de design e site.
+                </p>
               </div>
 
-              {/* Seta conectora (oculta em mobile) */}
-              <div className="hidden md:flex items-center justify-center">
-                <i className="fa-solid fa-arrow-right text-4xl text-primary/40"></i>
+              {/* 02 */}
+              <div className="flex flex-col items-center text-center">
+                <span className="font-title text-7xl md:text-8xl font-extrabold text-secondary/40 leading-none mb-3">02</span>
+                <h3 className="font-title text-2xl font-bold text-white mb-4">Identidade visual</h3>
+                <p className="text-[#B2B8C6] leading-relaxed max-w-xs">
+                  Criamos uma identidade visual completa que tira a cara de amador e passa o nível de profissionalismo que você já entrega.
+                </p>
               </div>
 
-              {/* UX/UI Design */}
-              <div className="bg-white rounded-2xl p-6 md:p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 border-t-4 border-primary flex-1 flex flex-col justify-between md:max-w-[400px] w-full mx-auto">
-                <div className="h-full flex flex-col">
-                  <div className="flex justify-center mb-6">
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
-                      <i className="fa-solid fa-pen-ruler text-4xl text-primary"></i>
-                    </div>
-                  </div>
-                  <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Engenharia de Experiência</h3>
-                  <p className="text-lg text-low-medium text-center leading-relaxed mb-4 break-words">
-                    Projetamos jornadas invisíveis que orientam a decisão de compra e reduzem a fricção cognitiva. Design que não apenas decora, mas blinda a conversão com clareza técnica.
-                  </p>
-                </div>
-                <div className="text-center mt-auto">
-                  <span className="inline-block text-sm font-medium text-primary bg-primary/10 px-4 py-2 rounded-full">
-                    Arquitetura de Intenção
-                  </span>
-                </div>
-              </div>
-
-              {/* Seta conectora (oculta em mobile) */}
-              <div className="hidden md:flex items-center justify-center">
-                <i className="fa-solid fa-arrow-right text-4xl text-primary/40"></i>
-              </div>
-
-              {/* Front-end */}
-              <div className="bg-white rounded-2xl p-6 md:p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 border-t-4 border-primary flex-1 flex flex-col justify-between md:max-w-[400px] w-full mx-auto">
-                <div className="h-full flex flex-col">
-                  <div className="flex justify-center mb-6">
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
-                      <i className="fa-solid fa-code text-4xl text-primary"></i>
-                    </div>
-                  </div>
-                  <h3 className="font-title text-2xl font-light text-center text-low-dark mb-4">Infraestrutura de Performance</h3>
-                  <p className="text-lg text-low-medium text-center leading-relaxed mb-4 break-words">
-                    Entregamos plataformas robustas e elegantes, onde a estabilidade do código sustenta a promessa da marca. Tecnologia de alta precisão para operações que não aceitam falhas.
-                  </p>
-                </div>
-                <div className="text-center mt-auto">
-                  <span className="inline-block text-sm font-medium text-primary bg-primary/10 px-4 py-2 rounded-full">
-                    Execução de alta precisão
-                  </span>
-                </div>
+              {/* 03 */}
+              <div className="flex flex-col items-center text-center">
+                <span className="font-title text-7xl md:text-8xl font-extrabold text-secondary/40 leading-none mb-3">03</span>
+                <h3 className="font-title text-2xl font-bold text-white mb-4">Presença digital</h3>
+                <p className="text-[#B2B8C6] leading-relaxed max-w-xs">
+                  Construímos um site e materiais digitais que facilitam o contato e ajudam a transformar visitas em clientes.
+                </p>
               </div>
             </div>
+            {/* Para quem é */}
+            <div className="bg-[#222] rounded-2xl p-8 md:p-12 mt-36 mb-8 max-w-3xl mx-auto flex flex-col items-center">
+              <h2 className="font-title text-3xl md:text-4xl font-extrabold text-white mb-2 text-left w-full">Para quem é</h2>
+              <div className="text-[#B2B8C6] text-base md:text-lg font-light mb-6 text-left w-full">Especialmente para psicopedagogas, personal trainers e pequenos negócios que prestam serviços.</div>
+              <h3 className="font-title text-xl md:text-2xl font-bold text-white mb-4 text-left w-full">É para você se:</h3>
+              <ul className="text-[#B2B8C6] text-base md:text-lg font-light mb-8 w-full">
+                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Você atende bem, mas sente que sua imagem não acompanha o nível do seu trabalho.</li>
+                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Tem vergonha de indicar seu site ou perfil quando alguém pede "o link para te conhecer melhor".</li>
+                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Quer cobrar melhor pelos seus serviços, mas sente que a aparência da sua marca ainda puxa para baixo.</li>
+                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Se perde tentando fazer "arte" no Canva e sente que cada peça parece de um lugar diferente.</li>
+                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Quer um processo organizado, sem precisar entender de design ou tecnologia.</li>
+                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Você for, especialmente, MEI, autônomo ou negócios locais.</li>
+              </ul>
+              <hr className="w-full border-t border-[#444] mb-6 mt-2" />
+              <div className="text-[#B2B8C6] text-left w-full mb-6">Se você se viu em 2 ou mais pontos, vale a pena conversar com o estúdio.</div>
+              <div className="flex flex-col md:flex-row gap-4">
+                <Button
+                  href="/formulario-interesse"
+                  variant="secondary"
+                >
+                  Quero falar sobre minha marca
+                </Button>
+                <Button
+                  href="/processos"
+                  variant="outline"                  
+                >
+                  Ver como trabalhamos
+                </Button>
+              </div>
+              
 
-            <div className="text-center pt-8">
-              <Button
-                href="/diagnostico"
-                variant="secondary"
-                className="inline-block mt-8"
-              >
-                Falar com um Estrategista
-              </Button>
-              <p className="font-sans text-lg text-low-medium max-w-2xl mx-auto leading-relaxed mt-8">
-                Mapeamos gargalos de percepção, autoridade e conversão para destravar seu próximo ciclo de crescimento.
-              </p>
             </div>
           </div>
         </section>
 
         {/* Projetos Selecionados / Works */}
-        <section id="projetos" className="bg-bg-primary py-24 px-4 md:px-16 border-y border-text-primary/10">
-          <div className="max-w-screen-xl mx-auto">
-            <div className="mb-12 text-center">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">Projetos Selecionados</h2>
-              <p className="text-text-primary/70 text-lg">Casos com impacto direto em percepção de valor e resultado comercial.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.slice(0, 6).map((project, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => handleOpenProject(project)}
-                  className="text-left rounded-2xl border border-text-primary/10 bg-white p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-copper/60"
-                >
-                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-footer-bg">
-                    <img
-                      src={project.imagem_url || '/images/placeholder.png'}
-                      alt={project.titulo}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      onError={e => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
-                    />
-                  </div>
-                  <div className="mt-4">
-                    <h3 className="font-title text-xl text-text-primary mb-2">{project.titulo}</h3>
-                    <p className="text-sm text-low-medium leading-relaxed line-clamp-3">
-                      {project.descricao}
-                    </p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
+        <ProjectsSection
+          projects={projects.map(p => ({
+            image: p.imagem_url,
+            title: p.titulo,
+            description: p.descricao,
+            ...p
+          }))}
+        />
 
         <ProjectModal
           isOpen={isProjectModalOpen}
@@ -436,116 +358,53 @@ const Home = () => {
           project={selectedProject}
         />
 
-        {/* Principais Serviços / Expertise */}
-        <section id="servicos" className="bg-cream py-24 px-4 md:px-16">
-          <div className="max-w-screen-xl mx-auto">
-            <div className="mb-12 text-center">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-low-dark mb-4">Principais Serviços</h2>
-              <p className="font-sans text-lg text-low-medium max-w-2xl mx-auto leading-relaxed">
-                Consultoria e execução para marcas que exigem sofisticação, performance e consistência.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {servicos.map((servico, idx) => (
-                <div key={idx} className="bg-white rounded-2xl shadow-md border border-cream/20 p-6 transition-all duration-300 hover:shadow-xl">
-                  <div className="flex flex-col h-full">
-                    <div className="w-full aspect-[16/9] overflow-hidden rounded-xl mb-4">
-                      <img 
-                        src={servico.img} 
-                        alt={servico.alt} 
-                        className="w-full h-full object-cover" 
-                        loading="lazy" 
-                      />
-                    </div>
-                    <span className={"inline-block w-fit px-4 py-2 mb-4 rounded-full text-sm font-medium " + (servico.badge.className || "")}>
-                      {servico.badge.text}
-                    </span>
-                    <div className="flex-1">
-                      <p className="text-base text-low-dark leading-relaxed mb-4">{servico.title}</p>
-                    </div>
-                    <a 
-                      href={servico.link} 
-                      className="mt-auto inline-block px-6 py-2 rounded-full border border-low-medium/30 text-low-dark bg-cream hover:bg-low-light transition-all duration-200 text-sm font-medium"
-                    >
-                      Ver escopo
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Sobre / About */}
-        <section id="sobre" className="bg-footer-bg py-24 px-4 md:px-16 border-y border-text-primary/10">
-          <div className="max-w-screen-xl mx-auto">
-            <div className="mb-12 text-center">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">A liderança por trás da estratégia</h2>
-
-            </div>
-            <div className="flex flex-col lg:flex-row-reverse gap-12 items-center mb-8">
-              <div className="w-full lg:w-2/5 flex justify-center mb-8 lg:mb-0">
-                <img src={aboutPhoto} alt="Robson Svicero - Fundador do Svicero Studio" className="w-full h-auto rounded-2xl shadow-lg" loading="lazy" />
-              </div>
-              <div className="w-full lg:w-3/5 text-text-primary">
-                <div className="text-about">
-                  <p className="text-lg leading-relaxed mb-6">Eu sou Robson Svicero, e não acredito em design ornamental. No Svicero Studio, minha missão é eliminar o abismo entre a excelência do seu serviço e a forma como o mercado o percebe.</p>
-                  <p className="text-lg leading-relaxed mb-6">Com uma trajetória que integra o rigor do Design Gráfico, a precisão do UX e a robustez da Tecnologia, desenvolvi uma visão sistêmica que a maioria das agências ignora. Eu não entrego apenas layouts; eu construo ativos digitais de alta performance que servem como o alicerce para a escala de negócios que buscam o público premium.</p>
-                  <p className="text-lg leading-relaxed mb-6">Minha atuação se baseia na Tríade:</p>
-                  <ul className="list-disc list-inside mb-6 text-lg leading-relaxed">
-                    <li className="mb-2"><strong>Estratégia:</strong> Onde definimos seu domínio de mercado.</li>
-                    <li className="mb-2"><strong>Design:</strong> Onde construímos sua percepção de autoridade.</li>
-                    <li className="mb-2"><strong>Tecnologia:</strong> Onde garantimos que sua estrutura seja rápida, fluida e impecável.</li>
-                  </ul>
-                  <p className="text-lg leading-relaxed mb-6">Quando não estou redesenhando o posicionamento de nossos parceiros, foco no que realmente importa: a construção de um legado para minha família e a busca constante por referências que transcendem o digital.</p>
-                  <br />
-                  <p className="text-xl leading-relaxed mb-6 font-semibold italic">Não estamos aqui para entregar "mais um site". Estamos aqui para posicionar sua marca no nível de valor que ela sustenta.</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-center mt-8">
-              <Button
-                href="/diagnostico"
-                variant="secondary"
-                className="inline-block mt-8"
-              >Falar com um Estrategista
-              </Button>
-            </div>
-          </div>
-        </section>
+             {/* Sobre / About */}
+        <AboutSection />
 
         {/* Depoimentos */}
         {depoimentos.length > 0 && (
-          <section className="bg-cream py-24 px-4 md:px-16">
+          <section className="bg-dark-bg py-24 px-4 md:px-16">
             <div className="max-w-screen-xl mx-auto">
-              <div className="mb-12 text-center">
-                <h2 className="font-title text-4xl md:text-5xl font-light text-low-dark mb-4">Depoimentos</h2>
-                <p className="text-lg text-low-dark/80 font-light max-w-2xl mx-auto leading-relaxed">
-                  Resultados percebidos por líderes que operam em alto padrão.
-                </p>
+              <div className="mb-12 text-left">
+                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
+                <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                FEEDBACK
+              </span>
+                <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">O que diz quem passa pelo nosso processo</h2>
               </div>
-              <div className="swiper depoimentos-swiper pb-16 relative">
-                <ul className="swiper-wrapper">
-                  {[...depoimentos].sort((a, b) => Number(a.ordem) - Number(b.ordem)).map((depoimento) => (
-                    <li key={depoimento.id} className="swiper-slide">
-                      <div className="bg-white rounded-2xl p-8 border border-text-primary/10 h-full flex flex-col">
-                        <p className="text-text-primary/90 text-base leading-relaxed mb-6 italic flex-1">"{depoimento.texto}"</p>
-                        <div className="flex items-center gap-4 mt-auto">
-                          <div className={`w-12 h-12 flex-shrink-0 rounded-full flex items-center justify-center ${getAvatarColorClass(depoimento.cor_avatar)}`}>
-                            <span className="font-semibold text-lg">{depoimento.iniciais || depoimento.nome?.substring(0, 2).toUpperCase()}</span>
+              <div className="relative">
+                <div className="swiper depoimentos-swiper">
+                  <div className="swiper-wrapper">
+                    {[...depoimentos].sort((a, b) => Number(a.ordem) - Number(b.ordem)).map((depoimento) => (
+                      <div key={depoimento.id} className="swiper-slide">
+                        <div className="bg-white/5 rounded-2xl border border-secondary700 p-8 flex flex-col h-full shadow-md">
+                          {/* Estrelas */}
+                          <div className="mb-4">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <i key={i} className={`fa-solid fa-star text-secondary text-xl mr-1 ${i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''}`}></i>
+                            ))}
                           </div>
-                          <div>
-                            <p className="text-text-primary font-medium">{depoimento.nome}</p>
-                            <p className="text-text-primary/60 text-sm">{depoimento.cargo}{depoimento.empresa ? `, ${depoimento.empresa}` : ''}</p>
+                          {/* Texto */}
+                          <p className="text-[#B2B8C6] text-base font-normal leading-relaxed mb-6 italic flex-1">"{depoimento.texto}"</p>
+                          {/* Avatar, nome e cargo */}
+                          <div className="flex items-center gap-4 mt-auto">
+                            <div className="w-12 h-12 flex-shrink-0 rounded-full bg-[#E5E5E5] flex items-center justify-center">
+                              <span className="font-semibold text-lg text-secondary700">{depoimento.iniciais || depoimento.nome?.substring(0, 2).toUpperCase()}</span>
+                            </div>
+                            <div>
+                              <p className="text-white font-bold text-base">{depoimento.nome}</p>
+                              <p className="text-[#B2B8C6] text-sm font-normal">{depoimento.cargo}{depoimento.empresa ? `, ${depoimento.empresa}` : ''}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </li>
-                  ))}
-                </ul>
-                <div className="swiper-pagination mt-8"></div>
-                <div className="swiper-button-prev"></div>
-                <div className="swiper-button-next"></div>
+                    ))}
+                  </div>
+
+                  <div className="swiper-button-prev"></div>
+                  <div className="swiper-button-next"></div>
+                  <div className="swiper-pagination mt-12 flex justify-center"></div>
+                </div>
               </div>
             </div>
           </section>
@@ -553,107 +412,27 @@ const Home = () => {
 
 
         {/* Blog - Últimas Publicações */}
-        <section className="bg-bg-primary py-24 px-4 md:px-16">
-          <div className="max-w-screen-xl mx-auto">
-            <div className="mb-16 text-center">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-text-primary mb-4">Insights de Engenharia Visual</h2>
-
-              <p className="text-lg text-text-primary/80 font-light max-w-2xl mx-auto leading-relaxed">
-                Análises sobre branding, UX e maturidade digital para decisões de alto impacto.
-              </p>
-            </div>
-
-            {blogPosts.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                  {blogPosts
-                    .slice() // cópia para não mutar state
-                    .sort((a, b) => {
-                      const aDate = a.data_publicacao ? new Date(a.data_publicacao) : new Date(a.created_at);
-                      const bDate = b.data_publicacao ? new Date(b.data_publicacao) : new Date(b.created_at);
-                      return bDate - aDate;
-                    })
-                    .slice(0, 3)
-                    .map((post) => {
-                      return (
-                        <a
-                          key={post.id}
-                          href={`/blog/${post.slug}`}
-                          className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-cream/20"
-                        >
-                          {post.imagem_destaque && (
-                            <div className="aspect-video overflow-hidden bg-cream">
-                              <img
-                                src={post.imagem_destaque}
-                                alt={post.titulo}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                              />
-                            </div>
-                          )}
-                          <div className="p-6">
-                            {post.categoria && (
-                              <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-3">
-                                {post.categoria}
-                              </span>
-                            )}
-                            <h3 className="font-title text-xl font-light text-low-dark mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                              {post.titulo}
-                            </h3>
-                            {post.resumo && (
-                              <p className="text-low-medium text-sm mb-3 line-clamp-2 leading-relaxed">
-                                {post.resumo}
-                              </p>
-                            )}
-                            <span className="text-sm text-low-medium flex items-center gap-2">
-                              <i className="fa-regular fa-calendar"></i>
-                              {formatDate(post.data_publicacao)}
-                            </span>
-                          </div>
-                        </a>
-                      );
-                    })}
-                </div>
-
-                <div className="text-center">
-                  <Button
-                    href="/blog"
-                    variant="secondary"
-                    icon={<i className="fa-solid fa-arrow-right"></i>}
-                    className="px-8 py-4 text-lg"
-                  >
-                    Ver Todos os Posts
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <div className="text-center py-12">
-                <i className="fa-regular fa-newspaper text-5xl text-low-light mb-4"></i>
-                <p className="text-lg text-low-medium">Novos insights estratégicos em breve.</p>
-              </div>
-            )}
-          </div>
-        </section>
+        <BlogSection blogPosts={blogPosts} />
 
         {/* CTA Final */}
-        <section className="w-full bg-secondary overflow-hidden">
-          <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-stretch">
-            {/* Imagem - aparece primeiro em mobile */}
-            <div className="w-full md:w-1/2 order-1 md:order-2">
-              <img
-                src={sviceroCta}
-                alt="Svicero Studio CTA"
-                className="w-full h-64 md:h-full object-cover rounded-bl-[60px] rounded-tr-[60px]"
-              />
-            </div>
-            {/* Texto - aparece segundo em mobile */}
-            <div className="w-full md:w-1/2 order-2 md:order-1 flex flex-col items-center md:items-start max-w-screen-xl mx-auto justify-center text-cream text-center md:text-left py-12 md:py-20 px-4 md:px-16">
-              <h2 className="font-title text-4xl md:text-5xl font-light text-cream mb-4">Sua marca está pronta para o próximo patamar?</h2>
-              <p className="text-lg md:text-xl mb-8 text-cream/75">Transforme percepção em valor percebido. E valor percebido em crescimento.</p>
+        <section className="w-full bg-dark-bg py-24 px-4 flex justify-center items-center min-h-[420px]">
+          <div className="max-w-screen-xl w-full mx-auto bg-gradient-to-br from-secondary via-secondary to-secondary700 rounded-[48px] shadow-xl flex flex-col items-center justify-center px-8 py-16">
+            <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white text-center mb-6">Pronto para dar o próximo passo com sua marca?</h2>
+            <p className="text-lg md:text-xl text-white/80 font-light text-center mb-10">Se você sente que já passou da hora da sua marca acompanhar o nível do seu trabalho, o próximo passo é simples. Conte um pouco sobre seu momento para que o Svicero Studio possa te orientar com clareza.</p>
+            <div className="flex flex-col md:flex-row gap-6 mt-2">
               <Button
-                href="/diagnostico"
+                href="/formulario-interesse"
+                variant="primary"
+                className="transition-colors"
+              >Preencher formulário de interesse
+              </Button>
+              <Button
+                href="https://wa.me/5511964932007"
+                target="_blank"
+                rel="noopener noreferrer"
                 variant="custom"
-                className="border-2 border-cream text-cream hover:text-secondary transition-colors inline-block mt-8"
-              >Falar com um Estrategista
+                className="bg-transparent text-white font-bold text-lg px-8 py-4 rounded-xl border border-white shadow-md hover:bg-white hover:text-secondary transition-colors"
+              >Falar pelo WhatsApp
               </Button>
             </div>
           </div>
@@ -667,11 +446,11 @@ const Home = () => {
 
 
         {/* Toast Notification */}
-        <Toast 
-          show={showToast} 
-          message={toastMessage} 
-          type={toastType} 
-          onClose={hideToast} 
+        <Toast
+          show={showToast}
+          message={toastMessage}
+          type={toastType}
+          onClose={hideToast}
         />
       </div>
     </>

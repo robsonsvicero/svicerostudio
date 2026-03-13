@@ -1,28 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../hooks/useToast';
-import Toast from '../components/UI/Toast';
 import Button from '../components/UI/Button';
 import Markdown from 'react-markdown';
-import { authFetch } from '../utils/authFetch';
-import { formatDate } from '../utils/formatDate';
+import ImageUploadSlot from '../components/UI/ImageUploadSlot';
+import AdminLayout from '../components/Admin/AdminLayout';
+
+import { API_URL } from '../lib/api.js';
 
 const AdminBlog = () => {
   const navigate = useNavigate();
-  const { user, signOut, token } = useAuth();
+  const { token, signOut } = useAuth();
   const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
 
-  // Estados
-  const [posts, setPosts] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
-  const [autores, setAutores] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [previewMarkdown, setPreviewMarkdown] = useState('');
-  const [imagemPreview, setImagemPreview] = useState(null);
-  const [formData, setFormData] = useState({
+  const initialFormState = {
     titulo: '',
     slug: '',
     resumo: '',
@@ -30,361 +22,312 @@ const AdminBlog = () => {
     imagem_destaque: '',
     categoria: '',
     tags: '',
-    data_publicacao: '',
+    data_publicacao: new Date().toISOString().slice(0, 10),
     autor: '',
-    publicado: true
-  });
+    publicado: true,
+  };
 
-  // Buscar autores publicados
-  const fetchAutores = async () => {
+  const [posts, setPosts] = useState([]);
+  const [autores, setAutores] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [formData, setFormData] = useState(initialFormState);
+
+  const fetchAutores = useCallback(async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
+      const res = await fetch(`${API_URL}/api/db/autores/query`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ operation: 'select', filters: [{ column: 'publicado', operator: 'eq', value: true }], orderBy: { column: 'nome', ascending: true } }),
       });
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao buscar autores');
       setAutores(payload.data || []);
     } catch (error) {
-      showToastMessage('Erro ao carregar autores', 'error');
+      showToastMessage(error.message, 'error');
     }
-  };
+  }, [token, showToastMessage]);
 
-  // Buscar posts
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
+      const res = await fetch(`${API_URL}/api/db/posts/query`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ operation: 'select', orderBy: { column: 'data_publicacao', ascending: false }, limit: 100 }),
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ operation: 'select', orderBy: { column: 'data_publicacao', ascending: false } }),
       });
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao buscar posts');
       setPosts(payload.data || []);
     } catch (error) {
-      showToastMessage('Erro ao carregar posts', 'error');
+      showToastMessage(error.message, 'error');
     } finally {
       setIsLoading(false);
     }
-  };
-  // Função para ordenar os posts conforme sortConfig
-  const sortedPosts = React.useMemo(() => {
-    if (!posts) return [];
-    const sorted = [...posts];
-    if (sortConfig.key) {
-      sorted.sort((a, b) => {
-        let aValue = a[sortConfig.key];
-        let bValue = b[sortConfig.key];
-        // Para datas, converter para Date
-        if (sortConfig.key === 'data_publicacao' || sortConfig.key === 'created_at') {
-          aValue = aValue ? new Date(aValue) : new Date(0);
-          bValue = bValue ? new Date(bValue) : new Date(0);
-        }
-        if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-        if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
-        return 0;
-      });
-    }
-    return sorted;
-  }, [posts, sortConfig]);
-
-  // Handler para clicar no cabeçalho e ordenar
-  const handleSort = (key) => {
-    setSortConfig((prev) => {
-      if (prev.key === key) {
-        // Alterna asc/desc
-        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
-      }
-      return { key, direction: 'asc' };
-    });
-  };
+  }, [token, showToastMessage]);
 
   useEffect(() => {
-    fetchAutores();
-    fetchPosts();
-  }, []);
-
-  // Slug único
-  const getUniqueSlug = async (slug, currentPostId = null) => {
-    // Busca slug único no backend REST
-    const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ operation: 'select', filters: [{ column: 'slug', operator: 'eq', value: slug }], single: true }),
-    });
-    const payload = await res.json();
-    if (!res.ok) return slug;
-    if (payload.data && (!currentPostId || payload.data.id !== currentPostId)) {
-      return slug + '-' + Math.floor(Math.random() * 1000);
+    if (token) {
+      fetchAutores();
+      fetchPosts();
     }
-    return slug;
-  };
+  }, [token, fetchAutores, fetchPosts]);
 
-  // Manipulação de campos
-  const handleInputChange = (e) => {
+  const handleFieldChange = (e) => {
     const { name, value, type, checked } = e.target;
+    let newSlug = formData.slug;
     if (name === 'titulo') {
-      setFormData(prev => ({ ...prev, titulo: value, slug: value.toLowerCase().replace(/\s+/g, '-') }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+      newSlug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     }
-    if (name === 'conteudo') setPreviewMarkdown(value);
+    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value, ...(name === 'titulo' && { slug: newSlug }) }));
   };
 
-  // Processar imagens coladas
-  const handlePaste = async (e) => {
-    const items = e.clipboardData.items;
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].type.indexOf('image') !== -1) {
-        const file = items[i].getAsFile();
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          setImagemPreview(ev.target.result);
-          setFormData(prev => ({ ...prev, imagem_destaque: ev.target.result }));
-        };
-        reader.readAsDataURL(file);
-      }
+  const handleImageUpload = useCallback(async (file) => {
+    if (!file) {
+      setFormData(prev => ({ ...prev, imagem_destaque: '' }));
+      return;
     }
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('bucket', 'posts'); // Assuming 'posts' bucket
+    formData.append('key', `${Date.now()}_${file.name}`);
+
+    try {
+      const res = await fetch(`${API_URL}/api/storage/upload`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Falha no upload');
+      
+      const imageUrl = `${API_URL}/api/storage/public/posts/${payload.data.path}`;
+      setFormData(prev => ({ ...prev, imagem_destaque: imageUrl }));
+      showToastMessage('Imagem enviada com sucesso!', 'success');
+    } catch (err) {
+      showToastMessage(err.message, 'error');
+    } finally {
+      setIsUploading(false);
+    }
+  }, [token, showToastMessage]);
+  
+  const resetForm = () => {
+    setFormData(initialFormState);
+    setEditingId(null);
   };
 
-  // Upload de imagem
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setImagemPreview(ev.target.result);
-      setFormData(prev => ({ ...prev, imagem_destaque: ev.target.result }));
-    };
-    reader.readAsDataURL(file);
-  };
-
-  // Submissão do formulário
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
+    const { autor, ...restOfForm } = formData;
+    const payload = { ...restOfForm, autor_id: autor };
+
+    const op = editingId ? 'update' : 'insert';
+    const filters = editingId ? [{ column: 'id', operator: 'eq', value: editingId }] : [];
+
     try {
-      // Validação básica
-      if (!formData.titulo || !formData.conteudo || !formData.autor) {
-        showToastMessage('Preencha todos os campos obrigatórios', 'error');
-        setIsSubmitting(false);
-        return;
-      }
-      // Slug único
-      const slug = await getUniqueSlug(formData.slug, editingId);
-      // Normaliza data_publicacao para YYYY-MM-DD puro
-      let data_publicacao = formData.data_publicacao;
-      if (data_publicacao) {
-        // Se vier como Date ou ISO, extrai só a parte da data
-        if (data_publicacao instanceof Date) {
-          data_publicacao = data_publicacao.toISOString().slice(0, 10);
-        } else if (/^\d{4}-\d{2}-\d{2}/.test(data_publicacao)) {
-          data_publicacao = data_publicacao.slice(0, 10);
-        }
-      }
-      const payload = { ...formData, slug, data_publicacao };
-      let result;
-      const apiUrl = `${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`;
-      if (editingId) {
-        result = await authFetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ operation: 'update', filters: [{ column: 'id', operator: 'eq', value: editingId }], payload }),
-        }, token);
-      } else {
-        result = await authFetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ operation: 'insert', payload }),
-        }, token);
-      }
-      const payloadRes = await result.json();
-      if (!result.ok) throw new Error(payloadRes.error || 'Erro ao salvar post');
-      showToastMessage('Post salvo!', 'success');
-      setFormData({ titulo: '', slug: '', resumo: '', conteudo: '', imagem_destaque: '', categoria: '', tags: '', data_publicacao: '', autor: '', publicado: false });
-      setEditingId(null);
-      fetchPosts();
-    } catch (error) {
-      showToastMessage('Erro ao salvar post', 'error');
+      const res = await fetch(`${API_URL}/api/db/posts/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ operation: op, filters, payload }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erro ao salvar o post.');
+      
+      showToastMessage(`Post ${editingId ? 'atualizado' : 'criado'} com sucesso!`, 'success');
+      resetForm();
+      await fetchPosts();
+    } catch (err) {
+      showToastMessage(err.message, 'error');
     } finally {
       setIsSubmitting(false);
     }
   };
-  const handleDelete = async (id) => {
-    try {
-      const res = await authFetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ operation: 'delete', filters: [{ column: 'id', operator: 'eq', value: id }] }),
-      }, token);
-      const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || 'Erro ao excluir post');
-      showToastMessage('Post excluído!', 'success');
-      fetchPosts();
-    } catch (error) {
-      showToastMessage('Erro ao excluir post', 'error');
+
+  const handleEdit = (post) => {
+    setEditingId(post.id);
+    // Garante que data_publicacao esteja no formato yyyy-MM-dd
+    const data_publicacao = post.data_publicacao
+      ? new Date(post.data_publicacao).toISOString().slice(0, 10)
+      : '';
+    setFormData({
+      ...initialFormState,
+      ...post,
+      autor: post.autor_id,
+      data_publicacao,
+    });
+    window.scrollTo(0, 0);
+  };
+  
+  const handleDelete = async (postId) => {
+    if (window.confirm('Tem certeza que deseja excluir este post?')) {
+      try {
+        const res = await fetch(`${API_URL}/api/db/posts/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ operation: 'delete', filters: [{ column: 'id', operator: 'eq', value: postId }]}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erro ao excluir');
+        showToastMessage('Post excluído!', 'success');
+        await fetchPosts();
+      } catch (err) {
+        showToastMessage(err.message, 'error');
+      }
     }
   };
 
-  // Cancelar edição
-  const handleCancelEdit = () => {
-    setFormData({ titulo: '', slug: '', resumo: '', conteudo: '', imagem_destaque: '', categoria: '', tags: '', data_publicacao: '', autor: '', publicado: false });
-    setPreviewMarkdown('');
-    setImagemPreview(null);
-    setEditingId(null);
-  };
-
-  // Logout
-  const handleLogout = async () => {
-    try {
-      await signOut();
-      navigate('/login');
-    } catch (error) {
-      showToastMessage('Erro ao sair', 'error');
-    }
-  };
+  const fields = [
+    { name: 'titulo', label: 'Título do post', placeholder: 'Como criar uma marca memorável', type: 'text', required: true, col: 'lg:col-span-2' },
+    { name: 'slug', label: 'Slug', placeholder: 'como-criar-marca-memoravel', type: 'text', required: true, col: 'lg:col-span-2' },
+    { name: 'autor', label: 'Autor', placeholder: 'Selecione um autor', type: 'select', required: true, options: autores.map(a => ({ value: a.id, label: a.nome })), col: 'lg:col-span-1' },
+    { name: 'categoria', label: 'Categoria', placeholder: 'Selecione uma categoria', type: 'select', required: true, options: ['Performance & Conversão', 'Estratégia de Ativos (Business & IA)', 'Engenharia de Percepção (Branding)', 'UX Design & Engenharia de Lucro'].map(c => ({ value: c, label: c})), col: 'lg:col-span-1' },
+    { name: 'data_publicacao', label: 'Data de publicação', placeholder: 'YYYY-MM-DD', type: 'date', required: true, col: 'lg:col-span-1' },
+    { name: 'tags', label: 'Tags', placeholder: 'branding, ux, design', type: 'text', required: false, col: 'lg:col-span-1' },
+  ];
 
   return (
-    <div className="bg-cream min-h-screen">
-      <main className="pt-20 pb-20 px-4 md:px-16">
-        <div className="max-w-6xl mx-auto">
-          {/* Header padrão admin */}
-          <div className="flex justify-between items-center mb-12">
-            <div>
-              <button
-                onClick={() => navigate('/admin')}
-                className="text-primary hover:underline font-medium mb-4 flex items-center gap-2"
-              >
-                <i className="fa-solid fa-arrow-left"></i>
-                Voltar ao Painel
-              </button>
-              <h1 className="font-title text-4xl font-semibold text-low-dark">
-                Gerenciar Blog
-              </h1>
+    <AdminLayout toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}>
+        <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-[32px] border border-white/8 bg-[#181818] shadow-2xl shadow-black/30">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(184,115,51,0.14),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(95,178,216,0.10),_transparent_22%)]" />
+          <div className="relative border-b border-white/8 px-6 py-6 lg:px-8">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-3xl">
+                <div className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#E9BF84]">
+                  Gerenciar Blog
+                </div>
+                <h1 className="mt-4 font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
+                  {editingId ? 'Editando Artigo' : 'Criar um novo artigo'}
+                </h1>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60 lg:text-base">
+                  Crie, edite e gerencie o conteúdo do blog do Svicero Studio.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                 <button type="button" onClick={resetForm} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/80 transition hover:bg-white/8">
+                  {editingId ? 'Cancelar Edição' : 'Limpar Campos'}
+                </button>
+                <button type="submit" className="rounded-2xl bg-[#B87333] px-5 py-3 text-sm font-semibold text-[#141414] transition hover:brightness-110" disabled={isSubmitting || isUploading}>
+                  {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Artigo' : 'Publicar Artigo')}
+                </button>
+              </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-            >
-              <i className="fa-solid fa-right-from-bracket"></i>
-              Sair
-            </button>
           </div>
 
-          {/* Toast */}
-          <Toast show={showToast} message={toastMessage} type={toastType} onClose={hideToast} />
+          <div className="relative grid gap-6 px-6 py-6 lg:grid-cols-12 lg:px-8 lg:py-8">
+            <div className="space-y-6 lg:col-span-8">
+              
+              <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
+                 <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Informações Principais</p><h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Metadados do Artigo</h2></div>
+                 <div className="grid gap-4 lg:grid-cols-2">
+                   {fields.map((field) => (
+                     <label key={field.name} className={`${field.col} block`}>
+                       <span className="mb-2 block text-sm font-medium text-white/82">
+                         {field.label}
+                         {field.required && <span className="ml-1 text-[#E9BF84]">*</span>}
+                       </span>
+                        {field.type === 'select' ? (
+                            <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40">
+                                <option value="" disabled>{field.placeholder}</option>
+                                {field.options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                            </select>
+                        ) : (
+                           <input
+                             type={field.type}
+                             name={field.name}
+                             value={formData[field.name] || ''}
+                             onChange={handleFieldChange}
+                             placeholder={field.placeholder}
+                             required={field.required}
+                             className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                           />
+                        )}
+                     </label>
+                   ))}
+                 </div>
+              </section>
 
-          {/* Formulário de Post */}
-          <form onSubmit={handleSubmit} className="bg-white rounded shadow p-8 mb-8 flex flex-col gap-4 w-full">
-            <h2 className="text-xl font-semibold mb-2">{editingId ? 'Editar Post' : 'Novo Post'}</h2>
-            <input className="border p-2 rounded w-full" name="titulo" required placeholder="Título" value={formData.titulo} onChange={handleInputChange} />
-            <input className="border p-2 rounded w-full" name="slug" required placeholder="Slug (URL)" value={formData.slug} onChange={handleInputChange} />
-            <input className="border p-2 rounded w-full" name="resumo" required placeholder="Resumo" value={formData.resumo} onChange={handleInputChange} />
-            <textarea className="border p-2 rounded w-full" name="conteudo" rows={6} required placeholder="Conteúdo (Markdown)" value={formData.conteudo} onChange={handleInputChange} onPaste={handlePaste} />
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
-                <label className="block mb-1 font-medium">Imagem de destaque</label>
-                <input className="border p-2 rounded w-full" name="imagem_destaque" placeholder="URL da imagem ou cole uma imagem" value={formData.imagem_destaque} onChange={handleInputChange} />
-                <input className="mt-2" type="file" accept="image/*" onChange={handleImageUpload} />
-                {imagemPreview && <img src={imagemPreview} alt="preview" className="mt-2 w-full max-h-40 object-contain rounded" />}
-              </div>
-              <div className="flex-1 flex flex-col gap-2">
-                <label className="block font-medium">Categoria</label>
-                <select className="border p-2 rounded w-full" name="categoria" value={formData.categoria} onChange={handleInputChange} required>
-                  <option value="">Selecione uma categoria</option>
-                  <option value="Performance & Conversão">Performance & Conversão</option>
-                  <option value="Estratégia de Ativos (Business & IA)">Estratégia de Ativos (Business & IA)</option>
-                  <option value="Engenharia de Percepção (Branding)">Engenharia de Percepção (Branding)</option>
-                  <option value="UX Design & Engenharia de Lucro">UX Design & Engenharia de Lucro</option>
-                </select>
-                <label className="block font-medium">Tags (separadas por vírgula)
-                  <input className="border p-2 rounded w-full mt-1" name="tags" placeholder="tag1, tag2" value={formData.tags} onChange={handleInputChange} />
-                </label>
-                <label className="block font-medium">Data de publicação
-                  <input className="border p-2 rounded w-full mt-1" name="data_publicacao" type="date" value={formData.data_publicacao} onChange={handleInputChange} />
-                </label>
-                <label className="block font-medium">Autor
-                  <select className="border p-2 rounded w-full mt-1" name="autor" value={formData.autor} onChange={handleInputChange} required>
-                    <option value="">Selecione</option>
-                    {autores.map(a => <option key={a.id} value={a.id}>{a.nome}</option>)}
-                  </select>
-                </label>
-                <label className="flex items-center gap-2 mt-2">
-                  <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleInputChange} /> Publicado
-                </label>
-              </div>
+              <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
+                <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Conteúdo</p><h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Corpo do Artigo</h2></div>
+                <div className="grid gap-4">
+                  <label>
+                    <span className="mb-2 block text-sm font-medium text-white/82">Resumo</span>
+                    <textarea name="resumo" value={formData.resumo} onChange={handleFieldChange} placeholder="Uma síntese para SEO e chamadas." rows={3} className="w-full resize-none rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-4 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
+                  </label>
+                  <label>
+                    <span className="mb-2 block text-sm font-medium text-white/82">Conteúdo (suporta Markdown)</span>
+                    <textarea name="conteudo" value={formData.conteudo} onChange={handleFieldChange} placeholder="Escreva o artigo aqui..." rows={15} className="w-full resize-y rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-4 text-sm leading-6 text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
+                  </label>
+                </div>
+              </section>
+              
+              <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
+                 <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Mídia</p><h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Imagem de Destaque</h2></div>
+                 <div className="grid gap-4">
+                    <ImageUploadSlot title="Imagem de capa do post" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_destaque} onUpload={handleImageUpload} isUploading={isUploading} />
+                 </div>
+              </section>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 mt-6 w-full">
-              <button type="submit" className={`w-full sm:w-auto px-4 py-3 rounded font-semibold text-lg shadow transition ${isSubmitting ? 'bg-primary/60 text-white cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-dark'}`} disabled={isSubmitting}>
-                {isSubmitting ? 'Salvando...' : 'Salvar Post'}
-              </button>
-              {editingId && (
-                <button type="button" className="w-full sm:w-auto px-4 py-3 rounded font-semibold text-lg shadow bg-gray-300 text-gray-800 hover:bg-gray-400 transition" onClick={handleCancelEdit}>Cancelar</button>
-              )}
-            </div>
-            <div className="mt-4">
-              <label className="block font-medium mb-1">Preview Markdown</label>
-              <div className="prose prose-sm bg-gray-50 rounded p-4 max-h-64 overflow-auto">
-                <Markdown>{previewMarkdown}</Markdown>
-              </div>
-            </div>
-          </form>
 
-          {/* Lista de Posts */}
-          <div className="bg-white rounded shadow p-6 w-full">
-            <h2 className="text-xl font-semibold mb-4">Posts Cadastrados</h2>
-            {isLoading ? (
-              <p>Carregando posts...</p>
-            ) : sortedPosts.length === 0 ? (
-              <p>Nenhum post cadastrado.</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-sm">
-                  <thead>
-                    <tr>
-                      <th className="p-2 cursor-pointer" onClick={() => handleSort('titulo')}>Título</th>
-                      <th className="p-2 cursor-pointer" onClick={() => handleSort('autor')}>Autor</th>
-                      <th className="p-2 cursor-pointer" onClick={() => handleSort('data_publicacao')}>Data</th>
-                      <th className="p-2 cursor-pointer" onClick={() => handleSort('publicado')}>Publicado</th>
-                      <th className="p-2">Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {sortedPosts.map(post => (
-                      <tr key={post.id} className="border-t">
-                        <td className="p-2 max-w-xs truncate">{post.titulo}</td>
-                        <td className="p-2">{autores.find(a => a.id === post.autor)?.nome || '-'}</td>
-                        <td className="p-2">{post.data_publicacao ? new Date(post.data_publicacao).toLocaleDateString() : '-'}</td>
-                                                <td className="p-2">{post.data_publicacao ? formatDate(post.data_publicacao) : '-'}</td>
-                        <td className="p-2">{post.publicado ? 'Sim' : 'Não'}</td>
-                        <td className="p-2 flex gap-2">
-                          <button className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => {
-                            setFormData({ ...post });
-                            setPreviewMarkdown(post.conteudo);
-                            setImagemPreview(post.imagem_destaque || null);
-                            setEditingId(post.id);
-                          }}>Editar</button>
-                          <button className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => handleDelete(post.id)}>Excluir</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <aside className="space-y-6 lg:col-span-4">
+              <section className="rounded-[28px] border border-white/8 bg-[#2F353B]/30 p-5 shadow-lg shadow-black/20">
+                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Configurações de Publicação</p>
+                 <div className="mt-5 grid gap-3">
+                    <label className="flex items-center justify-between rounded-2xl border border-white/8 bg-dark-bg/55 px-4 py-4">
+                      <span className="text-sm text-white/82">Publicar artigo</span>
+                      <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleFieldChange} className="sr-only" />
+                      <span className={`flex h-7 w-12 items-center rounded-full border border-[#B87333]/20  px-1 ${formData.publicado ? 'bg-[#B87333]/50' : 'bg-white/5'}`}>
+                        <span className={`h-5 w-5 rounded-full bg-[#B87333] transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
+                      </span>
+                    </label>
+                </div>
+              </section>
+              <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Preview do Conteúdo</p>
+                  <div className="prose prose-sm prose-invert mt-4 max-h-96 overflow-auto">
+                    <Markdown>{formData.conteudo || 'O preview do seu texto em Markdown aparecerá aqui.'}</Markdown>
+                  </div>
+              </section>
+            </aside>
+          </div>
+        </form>
+
+        <div className="mt-16">
+            <h2 className="text-2xl font-semibold text-white mb-6">Artigos Cadastrados</h2>
+            {isLoading && <p className="text-white/60">Carregando artigos...</p>}
+            {!isLoading && posts.length === 0 && <p className="p-6 text-white/60 bg-[#181818] rounded-2xl border border-white/8">Nenhum artigo encontrado.</p>}
+            {posts.length > 0 && (
+              <div className="bg-[#181818] rounded-2xl border border-white/8">
+                  <ul className="divide-y divide-white/8">
+                      {posts.map(post => {
+                          const autor = autores.find(a => a.id === post.autor_id);
+                          return (
+                            <li key={post.id} className="flex items-center justify-between p-4 gap-4">
+                               <img src={post.imagem_destaque || `https://via.placeholder.com/150/141414/E9BF84?text=${post.titulo.charAt(0)}`} alt={post.titulo} className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20" />
+                                <div className="flex-1 min-w-0">
+                                    <p className="font-semibold text-white truncate">{post.titulo}</p>
+                                    <p className="text-sm text-white/60 truncate">{autor?.nome || 'Autor desconhecido'} • {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
+                                </div>
+                                <div className="flex items-center gap-3 flex-shrink-0">
+                                    <span className={`px-2 py-1 text-xs rounded-full ${post.publicado ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
+                                      {post.publicado ? 'Publicado' : 'Rascunho'}
+                                    </span>
+                                    <Button variant="outline" size="sm" onClick={() => handleEdit(post)}>Editar</Button>
+                                    <Button variant="danger" size="sm" onClick={() => handleDelete(post.id)}>Excluir</Button>
+                                </div>
+                            </li>
+                          );
+                      })}
+                  </ul>
               </div>
             )}
-          </div>
         </div>
-      </main>
-    </div>
+  </AdminLayout>
   );
-}
+};
 
 export default AdminBlog;

@@ -1,8 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+    .blog-swiper .swiper-pagination {
+      position: static !important;
+      margin-top: 2rem !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      z-index: 1;
+    }
+
+    .blog-swiper .swiper-pagination-bullet {
+      background: theme('colors.cream') !important;
+      opacity: 1 !important;
+      transition: background 0.2s;
+    }
+
+    .blog-swiper .swiper-pagination-bullet-active {
+      background: theme('colors.secondary') !important;
+      opacity: 1 !important;
+    }
+  .services-swiper .swiper-pagination {
+    position: static !important;
+    margin-top: 2rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 1;
+  }
+
+  .services-swiper .swiper-pagination-bullet {
+    background: theme('colors.cream') !important;
+    opacity: 1 !important;
+    transition: background 0.2s;
+  }
+
+  .services-swiper .swiper-pagination-bullet-active {
+    background: theme('colors.secondary') !important;
+    opacity: 1 !important;
+  }
 
 @layer base {
   html {
@@ -23,8 +66,8 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: 200px 200px;
     background-repeat: repeat;
-    mix-blend-mode: multiply;
-    opacity: 0.03;
+    mix-blend-mode: overlay;
+    opacity: 0.025;
     z-index: -1;
   }
 
@@ -38,55 +81,52 @@
 @layer components {
   /* Todas as classes CSS foram migradas para Tailwind */
   /* Use classes utilitárias do Tailwind diretamente no JSX */
-  
+
   /* Swiper - Garantir mesma altura nos slides */
   .swiper-wrapper {
     @apply items-stretch;
   }
-  
+
   .swiper-slide {
     height: auto;
     display: flex;
   }
-  
-  .swiper-slide > * {
+
+  .swiper-slide>* {
     width: 100%;
   }
 
   /* Swiper - Botões de navegação */
   .swiper-button-prev,
   .swiper-button-next {
-    --swiper-navigation-size: 20px;
-    @apply w-10 h-10 bg-white/90 rounded-full shadow-lg;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    --swiper-navigation-size: 24px;
+    --swiper-navigation-color: theme('colors.cream');
   }
 
   .swiper-button-prev::after,
   .swiper-button-next::after {
-    @apply text-secondary font-bold;
-    font-size: var(--swiper-navigation-size) !important;
-    line-height: 1 !important;
+    display: none;
   }
 
   /* Depoimentos - Cards com altura controlada */
   .depoimentos-swiper .swiper-slide {
     height: auto;
-    min-height: 280px;
-    max-height: 350px;
+    min-height: 320px;
+    max-height: 400px;
     flex-shrink: 0;
   }
-  
+
   /* Forçar exatamente 3 slides no desktop */
   @media (min-width: 1024px) {
     .depoimentos-swiper .swiper-slide {
       width: calc((100% - 64px) / 3) !important;
       max-width: calc((100% - 64px) / 3) !important;
       min-width: calc((100% - 64px) / 3) !important;
+      min-height: 360px;
+      max-height: 420px;
     }
   }
-  
+
   /* Forçar exatamente 2 slides no tablet */
   @media (min-width: 768px) and (max-width: 1023px) {
     .depoimentos-swiper .swiper-slide {
@@ -95,9 +135,53 @@
       min-width: calc((100% - 32px) / 2) !important;
     }
   }
-  
+
   /* Garantir que o container não mostre overflow */
   .depoimentos-swiper {
     overflow: hidden !important;
+  }
+
+  /* Swiper Pagination Dots - garantir centralização e posição abaixo dos cards */
+  .depoimentos-swiper .swiper-pagination {
+    position: static !important;
+    margin-top: 2rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 1;
+  }
+
+  .depoimentos-swiper .swiper-pagination-bullet {
+    background: theme('colors.cream') !important;
+    opacity: 1 !important;
+    transition: background 0.2s;
+  }
+
+  .depoimentos-swiper .swiper-pagination-bullet-active {
+    background: theme('colors.secondary') !important;
+    opacity: 1 !important;
+  }
+
+
+  /* Prose dark theme overrides */
+  .prose {
+    --tw-prose-body: #BBBBBB;
+    --tw-prose-headings: #EFEFEF;
+    --tw-prose-lead: #BBBBBB;
+    --tw-prose-links: #B87333;
+    --tw-prose-bold: #EFEFEF;
+    --tw-prose-counters: #888888;
+    --tw-prose-bullets: #888888;
+    --tw-prose-hr: #333333;
+    --tw-prose-quotes: #EFEFEF;
+    --tw-prose-quote-borders: #B87333;
+    --tw-prose-captions: #888888;
+    --tw-prose-code: #B87333;
+    --tw-prose-pre-code: #EFEFEF;
+    --tw-prose-pre-bg: #1E1E1E;
+    --tw-prose-th-borders: #333333;
+    --tw-prose-td-borders: #333333;
   }
 }

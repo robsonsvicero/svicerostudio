@@ -34,7 +34,7 @@ const ServiceUIUXDesign = () => {
     ctaImage: ctaUi,
     ctaTitle: 'Quer transformar sua interface em uma experiência memorável?',
     ctaDescription: 'Vamos criar juntos uma interface intuitiva, envolvente e alinhada à identidade da sua marca.',
-    accentColor: 'primary'
+    accentColor: 'secondary'
   };
 
   return (

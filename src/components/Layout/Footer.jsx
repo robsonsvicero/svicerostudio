@@ -1,78 +1,67 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from '../UI/Button';
 
 const Footer = () => {
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
   return (
-    <footer className="w-full flex flex-col items-center justify-center bg-footer-bg text-text-primary py-16 px-4 sm:px-8 md:px-16 lg:px-24 border-t border-accent-copper/40">
-      <div className="w-full flex flex-col items-center max-w-screen-xl">
-        <div className="mb-10 text-center max-w-3xl">
-          <p className="font-serif text-2xl md:text-3xl text-text-primary mb-3">Engenharia de Percepção e Estratégia</p>
-          <p className="supporting-text text-text-primary/80">Direção visual, posicionamento e experiência para marcas que exigem precisão técnica e estética de alto padrão.</p>
+    <footer className="w-full bg-primary text-[#B2B8C6] pt-16 pb-8 px-4 md:px-16 lg:px-32">
+      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20">
+        {/* Coluna esquerda: logo, texto, redes */}
+        <div className="flex-1 min-w-[260px] flex flex-col gap-6">
+          <div className="mb-2">
+            <img src="/src/images/logo_alternativo 4.png" alt="Svicero Studio" className="h-12 mb-4" />
+            <p className="text-base leading-relaxed mb-6">Design estratégico e tecnologia para profissionalizar a presença digital de autônomos e pequenos negócios.
+              Svicero Studio, sediado em São Paulo (Brasil), atendendo clientes no Brasil e no exterior.</p>
+          </div>
+          <div className="flex flex-row gap-6 mt-2">
+            <a href="https://wa.me/5511964932007" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <i className="fa-brands fa-whatsapp text-3xl text-[#B2B8C6] hover:text-secondary transition-colors" />
+            </a>
+            <a href="https://www.instagram.com/robsonsvicero.dsgr/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <i className="fa-brands fa-instagram text-3xl text-[#B2B8C6] hover:text-secondary transition-colors" />
+            </a>
+            <a href="https://github.com/robsonsvicero" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <i className="fa-brands fa-github-alt text-3xl text-[#B2B8C6] hover:text-secondary transition-colors" />
+            </a>
+            <a href="https://www.behance.net/robsonsvicero" target="_blank" rel="noopener noreferrer" aria-label="Behance">
+              <i className="fa-brands fa-behance text-3xl text-[#B2B8C6] hover:text-secondary transition-colors" />
+            </a>
+          </div>
         </div>
-
-        <nav className="w-full flex justify-center mb-12">
-          <ul className="flex flex-row gap-6 sm:gap-8 md:gap-12">
-            <li>
-              <a href="https://wa.me/5511964932007" rel="noopener noreferrer" target="_blank" aria-label="WhatsApp">
-                <i className="fa-brands fa-whatsapp text-3xl sm:text-4xl text-text-primary hover:text-accent-copper transition-colors" />
-              </a>
-            </li>
-            <li>
-              <a href="https://www.instagram.com/robsonsvicero.dsgr/" rel="noopener noreferrer" target="_blank" aria-label="Instagram">
-                <i className="fa-brands fa-instagram text-3xl sm:text-4xl text-text-primary hover:text-accent-copper transition-colors" />
-              </a>
-            </li>
-            
-            <li>
-              <a href="https://github.com/robsonsvicero" rel="noopener noreferrer" target="_blank" aria-label="GitHub">
-                <i className="fa-brands fa-github-alt text-3xl sm:text-4xl text-text-primary hover:text-accent-copper transition-colors" />
-              </a>
-            </li>
-            <li>
-              <a href="https://www.behance.net/robsonsvicero" rel="noopener noreferrer" target="_blank" aria-label="Behance">
-                <i className="fa-brands fa-behance text-3xl sm:text-4xl text-text-primary hover:text-accent-copper transition-colors" />
-              </a>
-            </li>
-          </ul>
-        </nav>
-
-        <div className="mb-16">
-          <Button
-            onClick={scrollToTop}
-            variant="custom"
-            icon={<i className="fa-brands fa-space-awesome" />}
-            className="border-2 border-text-primary/20 text-text-primary hover:border-accent-copper hover:text-accent-copper px-6 py-2 rounded-full transition"
-          >
-            Voltar ao topo
-          </Button>
+        {/* Coluna menus */}
+        <div className="flex-[2] flex flex-row gap-16 md:gap-24 justify-end">
+          <div>
+            <h4 className="text-white font-bold text-lg mb-4">Estúdio</h4>
+            <ul className="flex flex-col gap-2">
+                 <li><Link to="/portfolio" className="hover:text-secondary transition-colors">Portfólio</Link></li>
+                 <li><Link to="/planos-pacotes" className="hover:text-secondary transition-colors">Planos & Pacotes</Link></li>
+              <li><Link to="/processos" className="hover:text-secondary transition-colors">Processos</Link></li>
+              <li><Link to="/blog" className="hover:text-secondary transition-colors">Blog</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-bold text-lg mb-4">Suporte</h4>
+            <ul className="flex flex-col gap-2">
+              <li><Link to="/contato" className="hover:text-secondary transition-colors">Contato</Link></li>
+              <li><Link to="/faq" className="hover:text-secondary transition-colors">FAQ</Link></li>
+              <li><Link to="/privacidade" className="hover:text-secondary transition-colors">Privacidade</Link></li>
+              <li><Link to="/termos" className="hover:text-secondary transition-colors">Termos</Link></li>
+            </ul>
+          </div>
         </div>
-
-        <div className="mb-20 px-6 py-2 bg-white/60 rounded text-center italic border border-text-primary/10">
-          <p>
-            Feito com <span>☕</span> em Sampa.
-          </p>
+      </div>
+      {/* Linha divisória */}
+      <hr className="my-10 border-cream/10" />
+      {/* Rodapé final */}
+      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#B2B8C6]/80">
+        <div className="flex flex-row items-center gap-2">
+          <span>© 2026 Svicero Studio. Todos os direitos reservados.</span>
         </div>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm text-text-primary gap-3 sm:gap-4 flex-wrap text-center">
-          <p>© 2026</p>
-          <span className="hidden sm:inline text-accent-copper">•</span>
-          <p className="text-text-primary/80 italic">Svicero Studio — Engenharia de Percepção e Estratégia</p>
-          <span className="hidden sm:inline text-accent-copper">•</span>
-          <Link to="/privacidade" className="text-text-primary/80 hover:text-accent-copper transition-colors">
-            Privacidade
-          </Link>
-          <span className="hidden sm:inline text-accent-copper">•</span>
-          <Link to="/exclusao-dados" className="text-text-primary/80 hover:text-accent-copper transition-colors">
-            Exclusão de Dados
-          </Link>
+        <div className="flex flex-row items-center gap-4">
+          <Link to="/privacidade" className="hover:text-secondary transition-colors">Privacidade</Link>
+          <span className="text-secondary text-lg">•</span>
+          <Link to="/exclusao-dados" className="hover:text-secondary transition-colors">Exclusão de Dados</Link>
+          <span className="text-secondary text-lg">•</span>
+          <span className="flex items-center gap-1"><i className="fa-solid fa-location-dot text-[#B2B8C6]" /> São Paulo, Brasil</span>
         </div>
       </div>
     </footer>

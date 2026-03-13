@@ -31,6 +31,7 @@ Card.Image = ({ src, alt, className = '' }) => (
       src={src}
       alt={alt}
       className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 rounded-xl"
+      loading="lazy"
     />
   </div>
 );

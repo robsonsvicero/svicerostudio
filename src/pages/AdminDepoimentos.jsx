@@ -1,559 +1,278 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import Button from '../components/UI/Button';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../hooks/useToast';
-import Toast from '../components/UI/Toast';
+import Button from '../components/UI/Button';
+import ImageUploadSlot from '../components/UI/ImageUploadSlot';
+import AdminLayout from '../components/Admin/AdminLayout';
+
+import { API_URL } from '../lib/api.js';
 
 const AdminDepoimentos = () => {
-  const { user, signOut } = useAuth()
-  const navigate = useNavigate();
-  const [depoimentos, setDepoimentos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
+    const navigate = useNavigate();
+    const { token } = useAuth();
+    const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
 
-  const [formData, setFormData] = useState({
-    nome: '',
-    cargo: '',
-    empresa: '',
-    texto: '',
-    nota: 5,
-    iniciais: '',
-    cor_avatar: 'orange',
-    ativo: true,
-    ordem: 0
-  });
-
-  const coresAvatar = [
-    { value: 'orange', label: 'Laranja', class: 'bg-orange-500/20 text-orange-500' },
-    { value: 'gold', label: 'Dourado', class: 'bg-amber-500/20 text-amber-500' },
-    { value: 'blue', label: 'Azul', class: 'bg-blue-600/20 text-blue-600' },
-    { value: 'silver', label: 'Prata', class: 'bg-gray-400/20 text-gray-400' },
-  ];
-
-  // Buscar depoimentos
-  const fetchDepoimentos = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem('svicero_admin_token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ orderBy: { ordem: 1 } }),
-      });
-      const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || 'Erro ao buscar depoimentos');
-      setDepoimentos(payload.data || []);
-    } catch (error) {
-      showToastMessage('Erro ao carregar depoimentos', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => { fetchDepoimentos(); }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      // Gerar iniciais automaticamente se não fornecidas
-      const iniciais = formData.iniciais || formData.nome
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .substring(0, 2)
-        .toUpperCase();
-
-      const dataToSave = {
-        ...formData,
-        iniciais,
-        nota: parseInt(formData.nota),
-        ordem: parseInt(formData.ordem)
-      };
-
-      const token = localStorage.getItem('svicero_admin_token');
-      if (editingId) {
-        // Atualizar depoimento
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/update`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ filters: [{ id: editingId }], data: dataToSave }),
-        });
-        const payload = await res.json();
-        if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar depoimento');
-        showToastMessage('Depoimento atualizado com sucesso!');
-      } else {
-        // Criar depoimento
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/insert`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ data: dataToSave }),
-        });
-        const payload = await res.json();
-        if (!res.ok) throw new Error(payload.error || 'Erro ao criar depoimento');
-        showToastMessage('Depoimento criado com sucesso!');
-      }
-
-      resetForm();
-      fetchDepoimentos();
-    } catch (error) {
-      // Erro ao salvar depoimento
-      showToastMessage('Erro ao salvar depoimento', 'error');
-    }
-  };
-
-  const handleEdit = (depoimento) => {
-    setFormData({
-      nome: depoimento.nome || '',
-      cargo: depoimento.cargo || '',
-      empresa: depoimento.empresa || '',
-      texto: depoimento.texto || '',
-      nota: depoimento.nota || 5,
-      iniciais: depoimento.iniciais || '',
-      cor_avatar: depoimento.cor_avatar || 'orange',
-      ativo: depoimento.ativo !== false,
-      ordem: depoimento.ordem || 0
-    });
-    setEditingId(depoimento.id);
-    setShowForm(true);
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm('Tem certeza que deseja excluir este depoimento?')) return;
-
-    try {
-      const token = localStorage.getItem('svicero_admin_token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/delete`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ filters: [{ id }] }),
-      });
-      const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || 'Erro ao excluir depoimento');
-      showToastMessage('Depoimento excluído com sucesso!');
-      fetchDepoimentos();
-    } catch (error) {
-      showToastMessage('Erro ao excluir depoimento', 'error');
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await signOut()
-      navigate('/login')
-    } catch (error) {
-      // Erro ao fazer logout
-      showToastMessage('Erro ao sair', 'error')
-    }
-  }
-
-  const toggleAtivo = async (id, ativo) => {
-    try {
-      const token = localStorage.getItem('svicero_admin_token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/depoimentos/update`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ filters: [{ id }], data: { ativo: !ativo } }),
-      });
-      const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || 'Erro ao atualizar status');
-      showToastMessage(`Depoimento ${!ativo ? 'ativado' : 'desativado'}!`);
-      fetchDepoimentos();
-    } catch (error) {
-      showToastMessage('Erro ao atualizar status', 'error');
-    }
-  };
-
-  const resetForm = () => {
-    setFormData({
-      nome: '',
-      cargo: '',
-      empresa: '',
-      texto: '',
-      nota: 5,
-      iniciais: '',
-      cor_avatar: 'orange',
-      ativo: true,
-      ordem: 0
-    });
-    setEditingId(null);
-    setShowForm(false);
-  };
-
-  const getAvatarColorClass = (cor) => {
-    const cores = {
-      orange: 'bg-orange-500/20 text-orange-500',
-      gold: 'bg-amber-500/20 text-amber-500',
-      blue: 'bg-blue-600/20 text-blue-600',
-      silver: 'bg-gray-400/20 text-gray-400',
+    const initialFormState = {
+        nome: '',
+        cargo: '',
+        empresa: '',
+        texto: '',
+        nota: 5,
+        imagem_autor_url: '',
+        ativo: true,
+        ordem: 0,
     };
-    return cores[cor] || cores.orange;
-  };
 
-  return (
-    <div className="bg-cream min-h-screen">
-      {/* Toast Notification */}
-      {showToast && (
-        <div className={`fixed top-24 right-6 z-50 px-6 py-4 rounded-lg shadow-lg transition-all duration-300 ${toastType === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white`}>
-          {toastMessage}
-        </div>
-      )}
+    const [depoimentos, setDepoimentos] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [editingId, setEditingId] = useState(null);
+    const [formData, setFormData] = useState(initialFormState);
 
-      <main className="pt-20 pb-20 px-4 md:px-16">
-        <div className="max-w-6xl mx-auto">
-          {/* Header padrão admin */}
-          <div className="flex justify-between items-center mb-12">
-            <div>
-              <button
-                onClick={() => navigate('/admin')}
-                className="text-primary hover:underline font-medium mb-4 flex items-center gap-2"
-              >
-                <i className="fa-solid fa-arrow-left"></i>
-                Voltar ao Painel
-              </button>
-              <h1 className="font-title text-4xl font-semibold text-low-dark">
-                Gerenciar Depoimentos
-              </h1>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-            >
-              <i className="fa-solid fa-right-from-bracket"></i>
-              Sair
-            </button>
-          </div>
+    const fetchDepoimentos = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/api/db/depoimentos/query`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                body: JSON.stringify({ operation: 'select', orderBy: { column: 'ordem', ascending: true } }),
+            });
+            const payload = await res.json();
+            if (!res.ok) throw new Error(payload.error || 'Erro ao buscar depoimentos');
+            setDepoimentos(payload.data || []);
+        } catch (error) {
+            showToastMessage(error.message, 'error');
+        } finally {
+            setIsLoading(false);
+        }
+    }, [token, showToastMessage]);
 
-          {/* Botão novo depoimento */}
-          <div className="w-full items-center flex justify-end mb-8">
-            <Button
-              onClick={() => {
-                resetForm();
-                setShowForm(true);
-              }}
-              variant="primary"
-              icon={<i className="fa-solid fa-plus"></i>}
-            >
-              Novo Depoimento
-            </Button>
-          </div>
+    useEffect(() => {
+        if (token) fetchDepoimentos();
+    }, [token, fetchDepoimentos]);
+    
+    const handleFieldChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    };
 
-          {/* Formulário */}
-          {showForm && (
-            <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
-              <h2 className="font-title text-2xl font-light text-low-dark mb-6">
-                {editingId ? 'Editar Depoimento' : 'Novo Depoimento'}
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Nome */}
-                  <div>
-                    <label className="block text-low-dark font-medium mb-2">
-                      Nome *
-                    </label>
-                    <input
-                      type="text"
-                      name="nome"
-                      value={formData.nome}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-low-light"
-                      placeholder="Nome do cliente"
-                    />
-                  </div>
+    const handleImageUpload = useCallback(async (file) => {
+        if (!file) {
+            setFormData(prev => ({ ...prev, imagem_autor_url: '' }));
+            return;
+        }
+        setIsUploading(true);
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+        uploadFormData.append('bucket', 'autores'); // Reusing 'autores' bucket
+        uploadFormData.append('key', `${Date.now()}_${file.name}`);
 
-                  {/* Cargo */}
-                  <div>
-                    <label className="block text-low-dark font-medium mb-2">
-                      Cargo
-                    </label>
-                    <input
-                      type="text"
-                      name="cargo"
-                      value={formData.cargo}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-low-light"
-                      placeholder="Ex: CEO, Diretor, Proprietário"
-                    />
-                  </div>
+        try {
+            const res = await fetch(`${API_URL}/api/storage/upload`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${token}` },
+                body: uploadFormData,
+            });
+            const payload = await res.json();
+            if (!res.ok) throw new Error(payload.error || 'Falha no upload');
+            
+            const imageUrl = `${API_URL}/api/storage/public/autores/${payload.data.path}`;
+            setFormData(prev => ({ ...prev, imagem_autor_url: imageUrl }));
+            showToastMessage('Imagem enviada!', 'success');
+        } catch (err) {
+            showToastMessage(err.message, 'error');
+        } finally {
+            setIsUploading(false);
+        }
+    }, [token, showToastMessage]);
+    
+    const resetForm = () => {
+        setFormData(initialFormState);
+        setEditingId(null);
+    };
 
-                  {/* Empresa */}
-                  <div>
-                    <label className="block text-low-dark font-medium mb-2">
-                      Empresa
-                    </label>
-                    <input
-                      type="text"
-                      name="empresa"
-                      value={formData.empresa}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-low-light"
-                      placeholder="Nome da empresa"
-                    />
-                  </div>
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!formData.nome || !formData.texto) {
+            showToastMessage('Nome e texto do depoimento são obrigatórios.', 'error');
+            return;
+        }
+        setIsSubmitting(true);
+        
+        const payload = { ...formData, nota: parseInt(formData.nota), ordem: parseInt(formData.ordem) };
+        const op = editingId ? 'update' : 'insert';
+        const filters = editingId ? [{ column: 'id', operator: 'eq', value: editingId }] : [];
 
-                  {/* Iniciais */}
-                  <div>
-                    <label className="block text-low-dark font-medium mb-2">
-                      Iniciais (opcional)
-                    </label>
-                    <input
-                      type="text"
-                      name="iniciais"
-                      value={formData.iniciais}
-                      onChange={handleInputChange}
-                      maxLength={2}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-low-light"
-                      placeholder="Ex: AI (gerado automaticamente se vazio)"
-                    />
-                  </div>
+        try {
+            const res = await fetch(`${API_URL}/api/db/depoimentos/query`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                body: JSON.stringify({ operation: op, filters, payload }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Erro ao salvar depoimento.');
+            
+            showToastMessage(`Depoimento ${editingId ? 'atualizado' : 'criado'}!`, 'success');
+            resetForm();
+            await fetchDepoimentos();
+        } catch (err) {
+            showToastMessage(err.message, 'error');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
-                  {/* Nota */}
-                  <div>
-                    <label className="block text-low-dark font-medium mb-2">
-                      Nota (1-5 estrelas)
-                    </label>
-                    <select
-                      name="nota"
-                      value={formData.nota}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-low-light"
-                    >
-                      {[5, 4, 3, 2, 1].map(n => (
-                        <option key={n} value={n}>{n} estrela{n > 1 ? 's' : ''}</option>
-                      ))}
-                    </select>
-                  </div>
+    const handleEdit = (depoimento) => {
+        setEditingId(depoimento.id);
+        setFormData({ ...initialFormState, ...depoimento });
+        window.scrollTo(0, 0);
+    };
 
-                  {/* Cor do Avatar */}
-                  <div>
-                    <label className="block text-low-dark font-medium mb-2">
-                      Cor do Avatar
-                    </label>
-                    <select
-                      name="cor_avatar"
-                      value={formData.cor_avatar}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-low-light"
-                    >
-                      {coresAvatar.map(cor => (
-                        <option key={cor.value} value={cor.value}>{cor.label}</option>
-                      ))}
-                    </select>
-                  </div>
+    const handleDelete = async (id) => {
+        if (window.confirm('Tem certeza que deseja excluir?')) {
+            try {
+                const res = await fetch(`${API_URL}/api/db/depoimentos/query`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                    body: JSON.stringify({ operation: 'delete', filters: [{ column: 'id', operator: 'eq', value: id }] }),
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Erro ao excluir');
+                showToastMessage('Depoimento excluído.', 'success');
+                await fetchDepoimentos();
+            } catch (err) {
+                showToastMessage(err.message, 'error');
+            }
+        }
+    };
 
-                  {/* Ordem */}
-                  <div>
-                    <label className="block text-low-dark font-medium mb-2">
-                      Ordem de exibição
-                    </label>
-                    <input
-                      type="number"
-                      name="ordem"
-                      value={formData.ordem}
-                      onChange={handleInputChange}
-                      min="0"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-low-light"
-                      placeholder="0"
-                    />
-                  </div>
+    const fields = [
+        { name: 'nome', label: 'Nome do autor', placeholder: 'Ex: João da Silva', type: 'text', required: true, col: 'lg:col-span-1' },
+        { name: 'cargo', label: 'Cargo', placeholder: 'Ex: CEO, Sócio-fundador', type: 'text', required: false, col: 'lg:col-span-1' },
+        { name: 'empresa', label: 'Empresa', placeholder: 'Ex: Inovatech', type: 'text', required: false, col: 'lg:col-span-1' },
+        { name: 'nota', label: 'Nota (1 a 5)', placeholder: '5', type: 'select', required: true, options: [5,4,3,2,1].map(n => ({ value: n, label: `${n} estrela(s)` })), col: 'lg:col-span-1' },
+    ];
 
-                  {/* Ativo */}
-                  <div className="flex items-center gap-3 pt-8">
-                    <input
-                      type="checkbox"
-                      name="ativo"
-                      id="ativo"
-                      checked={formData.ativo}
-                      onChange={handleInputChange}
-                      className="w-5 h-5 text-primary focus:ring-primary border-gray-300 rounded"
-                    />
-                    <label htmlFor="ativo" className="text-low-dark font-medium">
-                      Ativo (exibir no site)
-                    </label>
-                  </div>
-                </div>
-
-                {/* Texto do depoimento */}
-                <div>
-                  <label className="block text-low-dark font-medium mb-2">
-                    Depoimento *
-                  </label>
-                  <textarea
-                    name="texto"
-                    value={formData.texto}
-                    onChange={handleInputChange}
-                    required
-                    rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-low-light"
-                    placeholder="Texto do depoimento do cliente..."
-                  />
-                </div>
-
-                {/* Preview */}
-                <div className="bg-low-dark rounded-xl p-6">
-                  <p className="text-cream/60 text-sm mb-4">Preview:</p>
-                  <div className="bg-low-dark/50 rounded-2xl p-6 border border-low-medium/20 max-w-md">
-                    <div className="flex items-center gap-1 mb-3">
-                      {[...Array(parseInt(formData.nota) || 5)].map((_, i) => (
-                        <i key={i} className="fa-solid fa-star text-yellow-400 text-sm"></i>
-                      ))}
+    return (
+        <AdminLayout toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}>
+            <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-[32px] border border-white/8 bg-[#181818] shadow-2xl shadow-black/30">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(184,115,51,0.14),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(95,178,216,0.10),_transparent_22%)]" />
+                    <div className="relative border-b border-white/8 px-6 py-6 lg:px-8">
+                        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                            <div className="max-w-3xl">
+                                <div className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#E9BF84]">
+                                    Gerenciar Depoimentos
+                                </div>
+                                <h1 className="mt-4 font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
+                                    {editingId ? 'Editando Depoimento' : 'Adicionar Prova Social'}
+                                </h1>
+                                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60 lg:text-base">
+                                    Gerencie os feedbacks que constroem a reputação do studio.
+                                </p>
+                            </div>
+                            <div className="flex flex-col gap-3 sm:flex-row">
+                                <button type="button" onClick={resetForm} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/80 transition hover:bg-white/8">
+                                    {editingId ? 'Cancelar Edição' : 'Limpar'}
+                                </button>
+                                <button type="submit" className="rounded-2xl bg-[#B87333] px-5 py-3 text-sm font-semibold text-[#141414] transition hover:brightness-110" disabled={isSubmitting || isUploading}>
+                                    {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar' : 'Publicar')}
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <p className="text-cream/90 text-sm leading-relaxed mb-4 italic">
-                      "{formData.texto || 'Texto do depoimento...'}"
-                    </p>
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${getAvatarColorClass(formData.cor_avatar)}`}>
-                        <span className="font-semibold text-sm">
-                          {formData.iniciais || formData.nome?.substring(0, 2).toUpperCase() || 'XX'}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="text-cream font-medium text-sm">{formData.nome || 'Nome'}</p>
-                        <p className="text-cream/60 text-xs">
-                          {formData.cargo}{formData.empresa ? `, ${formData.empresa}` : ''}
-                        </p>
-                      </div>
+
+                    <div className="relative grid gap-6 px-6 py-6 lg:grid-cols-12 lg:px-8 lg:py-8">
+                        <div className="space-y-6 lg:col-span-8">
+                            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
+                                <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Informações</p><h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Dados do Autor</h2></div>
+                                <div className="grid gap-4 lg:grid-cols-2">
+                                    {fields.map((field) => (
+                                        <label key={field.name} className={`${field.col} block`}>
+                                            <span className="mb-2 block text-sm font-medium text-white/82">
+                                                {field.label}
+                                                {field.required && <span className="ml-1 text-[#E9BF84]">*</span>}
+                                            </span>
+                                            {field.type === 'select' ? (
+                                                <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40">
+                                                    <option value="" disabled>{field.placeholder}</option>
+                                                    {field.options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                                                </select>
+                                            ) : (
+                                                <input type={field.type} name={field.name} value={formData[field.name] || ''} onChange={handleFieldChange} placeholder={field.placeholder} required={field.required} className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"/>
+                                            )}
+                                        </label>
+                                    ))}
+                                </div>
+                            </section>
+
+                            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
+                                <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Conteúdo</p><h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Texto do Depoimento</h2></div>
+                                <div className="grid gap-4">
+                                    <label>
+                                        <span className="mb-2 block text-sm font-medium text-white/82">Depoimento</span>
+                                        <textarea name="texto" value={formData.texto} onChange={handleFieldChange} placeholder="Escreva o depoimento aqui..." rows={6} required className="w-full resize-y rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-4 text-sm leading-6 text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
+                                    </label>
+                                </div>
+                            </section>
+                            
+                            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
+                                <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Mídia</p><h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Foto do Autor</h2></div>
+                                <ImageUploadSlot title="Foto do autor" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_autor_url} onUpload={handleImageUpload} isUploading={isUploading} />
+                            </section>
+                        </div>
+                        <aside className="space-y-6 lg:col-span-4">
+                            <section className="rounded-[28px] border border-white/8 bg-[#2F353B]/30 p-5 shadow-lg shadow-black/20">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Configurações</p>
+                                <div className="mt-5 grid gap-3">
+                                    <label className="flex items-center justify-between rounded-2xl border border-white/8 bg-dark-bg/55 px-4 py-4">
+                                      <span className="text-sm text-white/82">Depoimento ativo</span>
+                                      <input type="checkbox" name="ativo" checked={formData.ativo} onChange={handleFieldChange} className="sr-only" />
+                                      <span className={`flex h-7 w-12 items-center rounded-full border border-[#B87333]/20  px-1 ${formData.ativo ? 'bg-[#B87333]/50' : 'bg-white/5'}`}>
+                                        <span className={`h-5 w-5 rounded-full bg-[#B87333] transition-all ${formData.ativo ? 'ml-auto' : 'ml-0'}`} />
+                                      </span>
+                                    </label>
+                                    <label className="block rounded-2xl border border-white/8 bg-dark-bg/55 px-4 py-4">
+                                      <span className="mb-2 block text-sm text-white/82">Ordem de exibição</span>
+                                      <input type="number" name="ordem" value={formData.ordem} onChange={handleFieldChange} placeholder="0" className="w-full rounded-lg border-white/10 bg-black/30 px-3 py-2 text-sm text-white outline-none" />
+                                    </label>
+                                </div>
+                            </section>
+                        </aside>
                     </div>
-                  </div>
+                </form>
+
+                <div className="mt-16">
+                    <h2 className="text-2xl font-semibold text-white mb-6">Depoimentos Cadastrados</h2>
+                    {isLoading && <p className="text-white/60">Carregando...</p>}
+                    {!isLoading && depoimentos.length === 0 && <p className="p-6 text-white/60 bg-[#181818] rounded-2xl border border-white/8">Nenhum depoimento encontrado.</p>}
+                    {depoimentos.length > 0 && (
+                        <div className="bg-[#181818] rounded-2xl border border-white/8">
+                            <ul className="divide-y divide-white/8">
+                                {depoimentos.map(depoimento => (
+                                    <li key={depoimento.id} className="flex items-center p-4 gap-4">
+                                        <img src={depoimento.imagem_autor_url || `https://via.placeholder.com/150/141414/E9BF84?text=${depoimento.nome.charAt(0)}`} alt={depoimento.nome} className="w-12 h-12 object-cover rounded-full flex-shrink-0 bg-black/20" />
+                                        <div className="flex-1 min-w-0">
+                                            <p className="font-semibold text-white truncate flex items-center gap-2">{depoimento.nome} 
+                                                <span className={`px-2 py-0.5 text-xs rounded-full ${depoimento.ativo ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
+                                                    {depoimento.ativo ? 'Ativo' : 'Inativo'}
+                                                </span>
+                                            </p>
+                                            <p className="text-sm text-white/60 truncate">"{depoimento.texto}"</p>
+                                        </div>
+                                        <div className="flex items-center gap-3 flex-shrink-0">
+                                            <Button variant="outline" size="sm" onClick={() => handleEdit(depoimento)}>Editar</Button>
+                                            <Button variant="danger" size="sm" onClick={() => handleDelete(depoimento.id)}>Excluir</Button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
-
-                {/* Botões */}
-                <div className="flex gap-4">
-                  <Button type="submit" variant="primary">
-                    {editingId ? 'Atualizar' : 'Salvar'} Depoimento
-                  </Button>
-                  <Button type="button" variant="secondary" onClick={resetForm}>
-                    Cancelar
-                  </Button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          {/* Lista de Depoimentos */}
-          {loading ? (
-            <div className="flex justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
-            </div>
-          ) : depoimentos.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-2xl">
-              <i className="fa-regular fa-comment-dots text-6xl text-gray-300 mb-4"></i>
-              <p className="text-low-medium text-lg">Nenhum depoimento cadastrado</p>
-              <p className="text-gray-400">Clique em "Novo Depoimento" para adicionar</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {depoimentos.map((depoimento) => (
-                <div
-                  key={depoimento.id}
-                  className={`bg-white rounded-2xl p-6 shadow-lg border-2 transition-all ${depoimento.ativo ? 'border-green-200' : 'border-gray-200 opacity-60'
-                    }`}
-                >
-                  {/* Status Badge */}
-                  <div className="flex justify-between items-start mb-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${depoimento.ativo ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
-                      }`}>
-                      {depoimento.ativo ? 'Ativo' : 'Inativo'}
-                    </span>
-                    <span className="text-gray-400 text-sm">Ordem: {depoimento.ordem}</span>
-                  </div>
-
-                  {/* Estrelas */}
-                  <div className="flex items-center gap-1 mb-3">
-                    {[...Array(depoimento.nota || 5)].map((_, i) => (
-                      <i key={i} className="fa-solid fa-star text-yellow-400 text-sm"></i>
-                    ))}
-                  </div>
-
-                  {/* Texto */}
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                    "{depoimento.texto}"
-                  </p>
-
-                  {/* Autor */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${getAvatarColorClass(depoimento.cor_avatar)}`}>
-                      <span className="font-semibold text-sm">{depoimento.iniciais}</span>
-                    </div>
-                    <div>
-                      <p className="text-low-dark font-medium text-sm">{depoimento.nome}</p>
-                      <p className="text-gray-400 text-xs">
-                        {depoimento.cargo}{depoimento.empresa ? `, ${depoimento.empresa}` : ''}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Ações */}
-                  <div className="flex gap-2 pt-4 border-t border-gray-100">
-                    <button
-                      onClick={() => handleEdit(depoimento)}
-                      className="flex-1 px-3 py-2 text-sm bg-secondary hover:bg-secondary/90 rounded-lg transition-colors"
-                    >
-                      <i className="fa-solid fa-pen mr-2"></i>Editar
-                    </button>
-                    <button
-                      onClick={() => toggleAtivo(depoimento.id, depoimento.ativo)}
-                      className={`px-3 py-2 text-sm rounded-lg transition-colors ${depoimento.ativo
-                          ? 'bg-yellow-100 hover:bg-yellow-200 text-yellow-700'
-                          : 'bg-green-100 hover:bg-green-200 text-green-700'
-                        }`}
-                    >
-                      <i className={`fa-solid ${depoimento.ativo ? 'fa-eye-slash' : 'fa-eye'}`}></i>
-                    </button>
-                    <button
-                      onClick={() => handleDelete(depoimento.id)}
-                      className="px-3 py-2 text-sm bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-colors"
-                    >
-                      <i className="fa-solid fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Botões de navegação */}
-          <div className="mt-12 flex flex-col sm:flex-row justify-center gap-4">
-            <Button href="/admin" variant="primary">
-              <i className="fa-solid fa-gauge-high mr-2"></i>
-              Voltar ao Dashboard
-            </Button>
-            <Button href="/" variant="secondary">
-              <i className="fa-solid fa-home mr-2"></i>
-              Ir para o Site
-            </Button>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
+    </AdminLayout>
+    );
 };
 
 export default AdminDepoimentos;

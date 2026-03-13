@@ -31,7 +31,7 @@ const Preloader = () => {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[#393d41] transition-opacity duration-600 ${
+      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-dark-bg transition-opacity duration-600 ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
@@ -45,8 +45,8 @@ const Preloader = () => {
         />
         {/* Barra de progressão animada */}
         <div className="w-[120px] h-[3px] relative overflow-hidden mt-2">
-          <div className="absolute left-0 top-0 h-full bg-[#fff8f2] rounded w-full"></div>
-          <div className="absolute left-0 top-0 h-full bg-[#B87333] rounded animate-preloader-fill" style={{ width: '0%' }}></div>
+          <div className="absolute left-0 top-0 h-full bg-white/20 rounded w-full"></div>
+          <div className="absolute left-0 top-0 h-full bg-[#E8620D] rounded animate-preloader-fill" style={{ width: '0%' }}></div>
         </div>
       </div>
       <style>{`

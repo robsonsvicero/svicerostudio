@@ -21,7 +21,7 @@ function adminAuth(req, res, next) {
 // Listar todas as perguntas (público)
 router.get('/', async (req, res) => {
   try {
-    const faqs = await FAQ.find().sort({ createdAt: -1 });
+    const faqs = await FAQ.find().sort({ ordem: 1, createdAt: -1 });
     res.json(faqs);
   } catch (err) {
     res.status(500).json({ error: 'Erro ao buscar perguntas' });
@@ -31,9 +31,9 @@ router.get('/', async (req, res) => {
 // Adicionar nova pergunta (admin)
 router.post('/', adminAuth, async (req, res) => {
   try {
-    const { pergunta, resposta } = req.body;
+    const { pergunta, resposta, ordem } = req.body;
     if (!pergunta || !resposta) return res.status(400).json({ error: 'Pergunta e resposta são obrigatórias' });
-    const faq = await FAQ.create({ pergunta, resposta });
+    const faq = await FAQ.create({ pergunta, resposta, ordem });
     res.status(201).json(faq);
   } catch (err) {
     res.status(500).json({ error: 'Erro ao adicionar pergunta' });
@@ -43,8 +43,12 @@ router.post('/', adminAuth, async (req, res) => {
 // Editar pergunta (admin)
 router.put('/:id', adminAuth, async (req, res) => {
   try {
-    const { pergunta, resposta } = req.body;
-    const faq = await FAQ.findByIdAndUpdate(req.params.id, { pergunta, resposta }, { new: true });
+    const { pergunta, resposta, ordem } = req.body;
+    const faq = await FAQ.findByIdAndUpdate(
+      req.params.id,
+      { pergunta, resposta, ordem },
+      { new: true }
+    );
     if (!faq) return res.status(404).json({ error: 'Pergunta não encontrada' });
     res.json(faq);
   } catch (err) {

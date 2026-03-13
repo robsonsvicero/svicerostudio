@@ -5,6 +5,7 @@ import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import SEOHelmet from '../components/SEOHelmet'
 import { formatDate } from '../utils/formatDate'
+import { API_URL } from '../lib/api.js'
 
 import Comments from '../components/Blog/Comments'
 
@@ -22,7 +23,7 @@ const BlogPost = () => {
     const fetchPost = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/posts/query`, {
+        const res = await fetch(`${API_URL}/api/db/posts/query`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ operation: 'select', filters: [{ column: 'slug', operator: 'eq', value: slug }], single: true }),
@@ -34,16 +35,29 @@ const BlogPost = () => {
           return;
         }
         setPost(payload.data);
-        // Buscar autor pelo nome
+        // Buscar autor por ID ou nome
         if (payload.data.autor) {
-          const resAutor = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/db/autores/query`, {
+          let resAutor, autorPayload;
+          // Tenta buscar por ID
+          resAutor = await fetch(`${API_URL}/api/db/autores/query`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ operation: 'select', filters: [{ column: 'nome', operator: 'eq', value: payload.data.autor }], single: true }),
+            body: JSON.stringify({ operation: 'select', filters: [{ column: 'id', operator: 'eq', value: payload.data.autor }], single: true }),
           });
-          const autorPayload = await resAutor.json();
+          autorPayload = await resAutor.json();
+          if (!(resAutor.ok && autorPayload.data)) {
+            // Se não achou por ID, tenta por nome
+            resAutor = await fetch(`${API_URL}/api/db/autores/query`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ operation: 'select', filters: [{ column: 'nome', operator: 'eq', value: payload.data.autor }], single: true }),
+            });
+            autorPayload = await resAutor.json();
+          }
           if (resAutor.ok && autorPayload.data) {
             setAutor(autorPayload.data);
+          } else {
+            setAutor({ nome: payload.data.autor }); // fallback para mostrar pelo menos o nome
           }
         }
       } catch {
@@ -68,9 +82,9 @@ const BlogPost = () => {
   if (isLoading) {
     return (
       <>
-        <div className="min-h-screen bg-cream flex items-center justify-center">
+        <div className="min-h-screen bg-dark-bg flex items-center justify-center">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-secondary"></div>
             <p className="mt-4 text-low-medium">Carregando post...</p>
           </div>
         </div>
@@ -89,14 +103,14 @@ const BlogPost = () => {
         ogImage={post?.imagem_capa || '/images/og-image.jpg'}
         ogType="article"
       />
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-screen bg-dark-bg">
         <Header variant="solid" />
         
         <article className="pt-[200px] pb-24 px-4 md:px-16">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb */}
             <nav className="mb-8">
-              <Link to="/blog" className="text-primary hover:underline font-medium">
+              <Link to="/blog" className="text-secondary hover:underline font-medium">
                 <i className="fa-solid fa-arrow-left mr-2"></i>
                 Voltar ao Blog
               </Link>
@@ -107,7 +121,7 @@ const BlogPost = () => {
               {/* Categoria e Data */}
               <div className="flex flex-wrap items-center gap-3 mb-6 text-sm">
                 {post.categoria && (
-                  <span className="px-4 py-2 bg-primary/10 text-primary rounded-full font-medium">
+                  <span className="px-4 py-2 bg-secondary/10 text-secondary rounded-full font-medium">
                     {post.categoria}
                   </span>
                 )}
@@ -115,10 +129,10 @@ const BlogPost = () => {
                   <i className="fa-regular fa-calendar"></i>
                   {formatDate(post.data_publicacao)}
                 </span>
-                {post.autor && (
+                {autor && autor.nome && (
                   <span className="text-low-medium flex items-center gap-2">
                     <i className="fa-regular fa-user"></i>
-                    {post.autor}
+                    {autor.nome}
                   </span>
                 )}
               </div>
@@ -130,7 +144,7 @@ const BlogPost = () => {
 
               {/* Resumo */}
               {post.resumo && (
-                <p className="text-xl text-low-medium leading-relaxed border-l-4 border-primary pl-6 py-2">
+                <p className="text-xl text-low-medium leading-relaxed border-l-4 border-secondary pl-6 py-2">
                   {post.resumo}
                 </p>
               )}
@@ -141,7 +155,7 @@ const BlogPost = () => {
                   {String(post.tags).toLowerCase().split(',').map((tag, idx) => (
                     <span
                       key={idx}
-                      className="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition-colors cursor-default"
+                      className="px-4 py-2 bg-secondary/10 text-secondary rounded-lg text-sm font-medium hover:bg-secondary hover:text-white transition-colors cursor-default"
                     >
                       <i className="fa-solid fa-tag mr-2"></i>
                       {tag.trim()}
@@ -163,26 +177,30 @@ const BlogPost = () => {
             )}
 
             {/* Conteúdo do Post */}
-            <div className="bg-white rounded-xl shadow-md p-8 md:p-12 mb-16 border border-cream/20">
+            <div className="bg-gelo rounded-xl p-8 md:p-12 mb-16 border border-white/8">
               <div className="prose prose-lg max-w-none">
                 {renderContent(post.conteudo)}
               </div>
             </div>
 
             {/* Informações do Autor */}
-            {autor && (
-              <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl p-8 md:p-12 mb-16 border border-primary/20">
+            {autor && autor.nome && (
+              <div className="bg-gelo rounded-xl p-8 md:p-12 mb-16 border border-white/8">
                 <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-                  {autor.foto_url && (
+                  {autor.foto_url ? (
                     <img
                       src={autor.foto_url}
                       alt={autor.nome}
                       className="w-20 h-20 rounded-full object-cover flex-shrink-0 border-4 border-white shadow-md"
                     />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center text-white text-3xl font-bold flex-shrink-0 border-4 border-white shadow-md">
+                      {autor.nome[0]}
+                    </div>
                   )}
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <i className="fa-solid fa-user text-primary"></i>
+                      <i className="fa-solid fa-user text-secondary"></i>
                       <h3 className="font-title text-xl font-semibold text-low-dark">
                         Sobre o Autor
                       </h3>
@@ -190,9 +208,11 @@ const BlogPost = () => {
                     <p className="font-title text-lg text-low-dark mb-1">
                       {autor.nome}
                     </p>
-                    <p className="text-primary font-medium mb-3">
-                      {autor.cargo}
-                    </p>
+                    {autor.cargo && (
+                      <p className="text-secondary font-medium mb-3">
+                        {autor.cargo}
+                      </p>
+                    )}
                     {autor.bio && (
                       <p className="text-low-medium mb-4">
                         {autor.bio}
@@ -201,7 +221,7 @@ const BlogPost = () => {
                     {autor.email && (
                       <a 
                         href={`mailto:${autor.email}`}
-                        className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
+                        className="inline-flex items-center gap-2 text-secondary hover:text-secondary/80 transition-colors font-medium"
                       >
                         <i className="fa-solid fa-envelope"></i>
                         {autor.email}
@@ -213,13 +233,13 @@ const BlogPost = () => {
             )}
 
             {/* Seção de Comentários - Isso */}
-            <div className="bg-white rounded-xl shadow-md p-8 md:p-12 mb-16 border border-cream/20">
+            <div className="bg-gelo rounded-xl p-8 md:p-12 mb-16 border border-white/8">
               <Comments slug={slug} />
             </div>
 
             {/* Posts Relacionados */}
             {relatedPosts.length > 0 && (
-              <section className="mt-16 pt-16 border-t border-cream/40">
+              <section className="mt-16 pt-16 border-t border-white/10">
                 <h2 className="font-title text-3xl font-light text-low-dark mb-8">
                   Posts Relacionados
                 </h2>
@@ -228,10 +248,10 @@ const BlogPost = () => {
                     <Link
                       key={relatedPost.id}
                       to={`/blog/${relatedPost.slug}`}
-                      className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-cream/20"
+                      className="group bg-gelo rounded-xl hover:border-secondary/30 transition-all duration-300 overflow-hidden border border-white/8"
                     >
                       {relatedPost.imagem_destaque && (
-                        <div className="aspect-video overflow-hidden bg-cream">
+                        <div className="aspect-video overflow-hidden bg-dark-bg">
                           <img
                             src={relatedPost.imagem_destaque}
                             alt={relatedPost.titulo}
@@ -240,7 +260,7 @@ const BlogPost = () => {
                         </div>
                       )}
                       <div className="p-4">
-                        <h3 className="font-title text-lg font-light text-low-dark group-hover:text-primary transition-colors line-clamp-2">
+                        <h3 className="font-title text-lg font-light text-low-dark group-hover:text-secondary transition-colors line-clamp-2">
                           {relatedPost.titulo}
                         </h3>
                         <span className="text-sm text-low-medium mt-2 block">

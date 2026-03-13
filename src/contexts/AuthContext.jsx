@@ -1,25 +1,25 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React from 'react';
 
 const resolveApiBaseUrl = () => {
-  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
-
+  // Em localhost, sempre usar o backend local
   if (typeof window !== 'undefined') {
     const host = window.location.hostname;
     if (host === 'localhost' || host === '127.0.0.1') {
-      return 'http://localhost:4000';
+      return 'http://localhost:8080';
     }
   }
-
-  return 'https://svicerostudio-production.up.railway.app';
+  // Em produção, usar a variável de ambiente
+  return import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app';
 };
 
 const API_URL = resolveApiBaseUrl();
+console.log('[AuthContext] API_URL:', API_URL);
 const TOKEN_KEY = 'svicero_admin_token';
 
-const AuthContext = createContext({})
+const AuthContext = React.createContext({})
 
 export const useAuth = () => {
-  const context = useContext(AuthContext)
+  const context = React.useContext(AuthContext)
   if (!context) {
     throw new Error('useAuth deve ser usado dentro de AuthProvider')
   }
@@ -27,11 +27,11 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = React.useState(null);
+  const [token, setToken] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) {
       setUser(null);

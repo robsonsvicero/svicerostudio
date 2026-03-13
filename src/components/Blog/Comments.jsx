@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_URL } from '../../lib/api.js';
 
 // Componente de comentários para posts do blog
 const Comments = ({ slug }) => {
@@ -12,7 +13,7 @@ const Comments = ({ slug }) => {
     const fetchComments = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/comments/${slug}`);
+        const res = await fetch(`${API_URL}/api/comments/${slug}`);
         const data = await res.json();
         setComments(Array.isArray(data) ? data : []);
       } catch {
@@ -27,7 +28,7 @@ const Comments = ({ slug }) => {
     e.preventDefault();
     setMessage('');
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app'}/api/comments`, {
+      const res = await fetch(`${API_URL}/api/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ postSlug: slug, name, content })
@@ -54,8 +55,8 @@ const Comments = ({ slug }) => {
       ) : (
         <ul className="space-y-6 mb-8">
           {comments.map((c) => (
-            <li key={c._id} className="border-b pb-4">
-              <p className="font-semibold text-primary mb-1">{c.name}</p>
+            <li key={c._id} className="border-b border-white/10 pb-4">
+              <p className="font-semibold text-secondary mb-1">{c.name}</p>
               <p className="text-low-dark mb-1">{c.content}</p>
               <span className="text-xs text-low-medium">{new Date(c.createdAt).toLocaleDateString()}</span>
             </li>
@@ -69,17 +70,17 @@ const Comments = ({ slug }) => {
           value={name}
           onChange={e => setName(e.target.value)}
           required
-          className="border rounded px-3 py-2"
+          className="border border-white/10 bg-gelo rounded px-3 py-2 text-low-dark placeholder:text-low-medium focus:border-secondary focus:outline-none transition-colors"
         />
         <textarea
           placeholder="Seu comentário"
           value={content}
           onChange={e => setContent(e.target.value)}
           required
-          className="border rounded px-3 py-2"
+          className="border border-white/10 bg-gelo rounded px-3 py-2 text-low-dark placeholder:text-low-medium focus:border-secondary focus:outline-none transition-colors"
           rows={3}
         />
-        <button type="submit" className="bg-primary text-white px-4 py-2 rounded shadow hover:bg-primary/90 transition-colors">Enviar comentário</button>
+        <button type="submit" className="bg-secondary text-white px-4 py-2 rounded shadow hover:bg-secondary/90 transition-colors">Enviar comentário</button>
         {message && <p className="text-sm mt-2">{message}</p>}
       </form>
     </div>

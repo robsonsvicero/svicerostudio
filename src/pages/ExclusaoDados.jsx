@@ -10,7 +10,7 @@ const ExclusaoDados = () => {
         title="Termos de Exclusão e Tratamento de Dados"
         description="Instruções para solicitar a exclusão de seus dados do Svicero Studio."
       />
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-screen bg-[#141414]">
         <Header variant="solid" />
         
         <div className="pt-[200px] pb-24 px-4 md:px-16">
@@ -19,7 +19,7 @@ const ExclusaoDados = () => {
               Exclusão de Dados
             </h1>
 
-            <div className="bg-white rounded-xl shadow-md p-8 md:p-12 space-y-8">
+            <div className="bg-gelo rounded-xl p-8 md:p-12 space-y-8">
               <section>
                 <h2 className="font-title text-2xl font-semibold text-low-dark mb-4">
                   Como Solicitar a Exclusão dos Seus Dados
@@ -49,23 +49,23 @@ const ExclusaoDados = () => {
                 <h2 className="font-title text-2xl font-semibold text-low-dark mb-4">
                   Processo de Exclusão
                 </h2>
-                <div className="bg-primary/5 rounded-lg p-6 mb-4">
+                <div className="bg-white/5 rounded-lg p-6 mb-4">
                   <h3 className="font-title text-lg font-semibold text-low-dark mb-3">
                     Passo 1: Entre em Contato
                   </h3>
                   <p className="text-low-medium mb-4">
                     Envie um e-mail para:
                   </p>
-                  <a 
+                  <a
                     href="mailto:hello@svicerostudio.com.br?subject=Solicitação de Exclusão de Dados"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors font-medium"
                   >
                     <i className="fa-solid fa-envelope"></i>
                     hello@svicerostudio.com.br
                   </a>
                 </div>
 
-                <div className="bg-primary/5 rounded-lg p-6 mb-4">
+                <div className="bg-white/5 rounded-lg p-6 mb-4">
                   <h3 className="font-title text-lg font-semibold text-low-dark mb-3">
                     Passo 2: Informações Necessárias
                   </h3>
@@ -80,7 +80,7 @@ const ExclusaoDados = () => {
                   </ul>
                 </div>
 
-                <div className="bg-primary/5 rounded-lg p-6">
+                <div className="bg-white/5 rounded-lg p-6">
                   <h3 className="font-title text-lg font-semibold text-low-dark mb-3">
                     Passo 3: Processamento
                   </h3>
@@ -108,7 +108,7 @@ const ExclusaoDados = () => {
                       href="https://www.facebook.com/help/contact/260749603972907" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-primary hover:underline"
+                      className="text-secondary hover:underline"
                     >
                       configurações de privacidade do Facebook
                     </a>
@@ -134,7 +134,7 @@ const ExclusaoDados = () => {
                 <p className="text-low-medium leading-relaxed">
                   Se tiver dúvidas sobre o processo de exclusão de dados, entre em contato:
                   <br />
-                  <a href="mailto:hello@svicerostudio.com.br" className="text-primary hover:underline">
+                  <a href="mailto:hello@svicerostudio.com.br" className="text-secondary hover:underline">
                     hello@svicerostudio.com.br
                   </a>
                 </p>

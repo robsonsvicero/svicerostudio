@@ -10,7 +10,7 @@ const Privacidade = () => {
         title="Política de Privacidade e Proteção de Dados"
         description="Transparência e segurança no tratamento de suas informações. Conheça a política de proteção de dados e privacidade do Svicero Studio em conformidade com a LGPD."
       />
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-screen bg-[#141414]">
         <Header variant="solid" />
         
         <div className="pt-[200px] pb-24 px-4 md:px-16">
@@ -19,7 +19,7 @@ const Privacidade = () => {
               Política de Privacidade
             </h1>
 
-            <div className="bg-white rounded-xl shadow-md p-8 md:p-12 space-y-8">
+            <div className="bg-gelo rounded-xl p-8 md:p-12 space-y-8">
               <section>
                 <h2 className="font-title text-2xl font-semibold text-low-dark mb-4">
                   1. Informações que Coletamos
@@ -57,7 +57,7 @@ const Privacidade = () => {
                     href="https://www.facebook.com/privacy/explanation" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-primary hover:underline"
+                    className="text-secondary hover:underline"
                   >
                     Política de Privacidade do Facebook
                   </a>.
@@ -116,7 +116,7 @@ const Privacidade = () => {
                 <p className="text-low-medium leading-relaxed">
                   Para questões sobre privacidade ou para exercer seus direitos, entre em contato:
                   <br />
-                  <a href="mailto:contato@svicerostudio.com.br" className="text-primary hover:underline">
+                  <a href="mailto:contato@svicerostudio.com.br" className="text-secondary hover:underline">
                     contato@svicerostudio.com.br
                   </a>
                 </p>

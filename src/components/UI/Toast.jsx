@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from './Button';
 
 const Toast = ({ show, message, type = 'success', onClose }) => {
   if (!show) return null;
@@ -9,13 +10,13 @@ const Toast = ({ show, message, type = 'success', onClose }) => {
         <i className={`fa-solid text-2xl ${type === 'success' ? 'fa-circle-check text-green-500' : 'fa-circle-exclamation text-red-500'}`}></i>
         <span className="text-neutral-900 text-base font-medium">{message}</span>
       </div>
-      <button
+      <Button
         className="bg-transparent border-none text-neutral-500 hover:text-neutral-900 transition-colors p-1 flex items-center justify-center text-xl"
         onClick={onClose}
         aria-label="Fechar notificação"
       >
         <i className="fa-solid fa-xmark"></i>
-      </button>
+      </Button>
     </div>
   );
 };

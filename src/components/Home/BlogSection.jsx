@@ -1,65 +1,78 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../utils/formatDate';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const BlogSection = ({ blogPosts }) => {
   return (
-    <section id="blog" className="bg-cream py-24 px-4 md:px-16">
+    <section id="blog" className="bg-primary py-24 px-4 md:px-16">
       <div className="max-w-screen-xl mx-auto">
-        <div className="mb-12 text-center">
-          <h2 className="font-title text-4xl md:text-5xl font-light text-dark-bg mb-4">
-            Últimas do Blog
-          </h2>
-          <p className="font-sans text-lg text-low-medium max-w-2xl mx-auto leading-relaxed">
-            Reflexões sobre design, desenvolvimento e estratégia digital
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+          <div>
+            <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
+                <span className="w-2 h-2 rounded-full bg-secondary flex-shrink-0 inline-block"></span>
+                BLOG
+              </span>
+            <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-4">Conteúdos para fortalecer sua marca</h2>
+          </div>
+          <div className="mt-4 md:mt-0">
+            <a href="/blog" className="text-secondary text-base font-normal flex items-center gap-2 hover:text-white transition-colors">
+              Ver todos os artigos
+              <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+            
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {blogPosts.map((post) => (
-            <Link
-              key={post.id}
-              to={`/blog/${post.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
-            >
-              {post.imagem_capa && (
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={post.imagem_capa}
-                    alt={post.titulo}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+        <Swiper
+          modules={[Pagination]}
+          loop={true}
+          spaceBetween={24}
+          breakpoints={{
+            1024: { slidesPerView: 3 }, // web
+            768: { slidesPerView: 2 }, // tablet
+            0:   { slidesPerView: 1 }, // mobile
+          }}
+          pagination={{ clickable: true }}
+          className="blog-swiper mb-12"
+        >
+          {[...blogPosts]
+            .sort((a, b) => new Date(b.data_publicacao) - new Date(a.data_publicacao))
+            .slice(0, 3)
+            .map((post, idx) => (
+            <SwiperSlide key={post.id}>
+              <Link
+                to={`/blog/${post.slug}`}
+                className="group rounded-2xl overflow-hidden bg-cream transition-all duration-300 hover:-translate-y-2 shadow-lg flex flex-col h-full min-h-[420px] max-h-[420px]"
+              >
+                {/* Imagem do artigo */}
+                {post.imagem_destaque && (
+                  <div className="w-full aspect-video overflow-hidden bg-[#E5E5E5]">
+                    <img
+                      src={post.imagem_destaque}
+                      alt={post.titulo}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+                <div className="flex flex-col px-6 py-6">
+                  
+                  <h3 className="font-title text-l font-semibold text-secondary mb-2 leading-snug">
+                    {post.titulo}
+                  </h3>
+                  {post.resumo && (
+                      <p className="text-low-light text-body text-sm mb-5 line-clamp-3 leading-relaxed">
+                        {post.resumo}
+                      </p>
+                    )}
                 </div>
-              )}
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-3 text-sm">
-                  <span className="px-3 py-1 bg-primary/10 text-primary rounded-full font-medium">
-                    {post.categoria}
-                  </span>
-                  <span className="text-low-medium">
-                    {formatDate(post.data_publicacao)}
-                  </span>
-                </div>
-                <h3 className="font-title text-xl font-semibold text-dark-bg mb-3 leading-snug group-hover:text-primary transition-colors">
-                  {post.titulo}
-                </h3>
-                <p className="font-sans text-low-medium leading-relaxed line-clamp-3">
-                  {post.resumo}
-                </p>
-              </div>
-            </Link>
+              </Link>
+            </SwiperSlide>
           ))}
-        </div>
-
-        <div className="text-center">
-          <Link
-            to="/blog"
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
-          >
-            Ver todos os posts
-            <i className="fa-solid fa-arrow-right"></i>
-          </Link>
-        </div>
+        </Swiper>
       </div>
     </section>
   );

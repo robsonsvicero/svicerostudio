@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Button from './UI/Button'
 
 const ConsentBanner = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -36,40 +37,40 @@ const ConsentBanner = () => {
   if (!isVisible) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-low-dark/95 backdrop-blur-sm text-cream p-4 md:p-6 z-50 border-t border-primary/30">
+    <div className="fixed bottom-0 left-0 right-0 bg-[#181818]/95 backdrop-blur-sm text-cream p-4 md:p-6 z-50 border-t border-white/10">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex-1">
             <h3 className="font-title text-lg font-semibold mb-2 text-cream">
-              <i className="fa-solid fa-shield-halved text-primary mr-2"></i>
+              <i className="fa-solid fa-shield-halved text-secondary mr-2"></i>
               Sua Privacidade é Importante
             </h3>
             <p className="text-cream/80 text-sm leading-relaxed mb-2">
-              Nós utilizamos cookies e tecnologias similares para melhorar sua experiência, 
-              analisar o uso do site e personalizar conteúdo. Ao continuar navegando, você aceita nossa 
-              <Link to="/privacidade" className="text-primary hover:underline ml-1">Política de Privacidade</Link>.
+              Nós utilizamos cookies e tecnologias similares para melhorar sua experiência,
+              analisar o uso do site e personalizar conteúdo. Ao continuar navegando, você aceita nossa
+              <Link to="/privacidade" className="text-secondary hover:underline ml-1">Política de Privacidade</Link>.
             </p>
             <p className="text-cream/60 text-xs">
-              Para exercer seus direitos de acesso, correção ou exclusão de dados, visite nossa 
-              <Link to="/exclusao-dados" className="text-primary hover:underline ml-1">página de exclusão de dados</Link>.
+              Para exercer seus direitos de acesso, correção ou exclusão de dados, visite nossa
+              <Link to="/exclusao-dados" className="text-secondary hover:underline ml-1">página de exclusão de dados</Link>.
             </p>
           </div>
 
           <div className="flex gap-3 flex-shrink-0 w-full md:w-auto">
-            <button
+            <Button
               onClick={handleReject}
-              className="flex-1 md:flex-none px-4 py-2 rounded-lg border border-cream/30 text-cream hover:bg-cream/10 transition-colors text-sm font-medium"
+              className="flex-1 md:flex-none px-4 py-2 rounded-lg border border-cream/30 text-cream hover:bg-white/10 transition-colors text-sm font-medium"
             >
               <i className="fa-solid fa-x mr-2"></i>
               Rejeitar
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleAccept}
-              className="flex-1 md:flex-none px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors text-sm font-medium"
+              className="flex-1 md:flex-none px-4 py-2 rounded-lg bg-secondary text-white hover:bg-secondary/90 transition-colors text-sm font-medium"
             >
               <i className="fa-solid fa-check mr-2"></i>
               Aceitar
-            </button>
+            </Button>
           </div>
         </div>
       </div>

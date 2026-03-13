@@ -5,40 +5,42 @@ import simbolo from '../images/simbolo.png';
 const BusinessCard = () => {
   return (
     <div className="business-card-container">
-      <div className="business-card">
+      <div className="business-card bg-cream/10 border border-white/20 rounded-2xl p-8 flex flex-col items-center text-center shadow-lg">
         {/* Logo */}
-        <div className="business-card-logo bg-white">
+        <div className="business-card-logo">
           <img src={simbolo} alt="Svicero Studio" className="logo-image" loading="lazy" />
         </div>
 
         {/* Título e Tagline */}
         <div className="business-card-title">
           <h1>SVICERO STUDIO</h1>
-          <p className="tagline">Simplicidade que posiciona</p>
+          <p className="tagline">Estratégia que eleva, design que posiciona</p>
         </div>
 
         {/* Descrição */}
         <div className="business-card-description">
           <p>
-            Criamos a fundação digital da sua marca, integrando 
-            Identidade Visual, UX/UI e Front-end para performance e 
+            Criamos a fundação digital da sua marca, integrando
+            Identidade Visual, UX/UI e Front-end para performance e
             autoridade.
           </p>
         </div>
 
         {/* Botões de Ação */}
         <div className="business-card-buttons">
-          <a 
-            href="/diagnostico" 
+          {/* Link Diagnostico removido */}
+
+          <a
+            href="/diagnostico"
             className="business-card-button"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Falar com um Estrategista
+            Falar pelo WhatsApp
           </a>
 
-          <a 
-            href="https://www.svicerostudio.com.br" 
+          <a
+            href="https://www.svicerostudio.com.br"
             className="business-card-button"
             target="_blank"
             rel="noopener noreferrer"
@@ -46,8 +48,8 @@ const BusinessCard = () => {
             Nosso Website Oficial
           </a>
 
-          <a 
-            href="https://www.instagram.com/svicerostudio" 
+          <a
+            href="https://www.instagram.com/svicerostudio"
             className="business-card-button"
             target="_blank"
             rel="noopener noreferrer"
@@ -55,8 +57,8 @@ const BusinessCard = () => {
             Acompanhe o Studio
           </a>
 
-          <a 
-            href="mailto:hello@svicerostudio.com.br" 
+          <a
+            href="mailto:hello@svicerostudio.com.br"
             className="business-card-button"
             target="_blank"
             rel="noopener noreferrer"
