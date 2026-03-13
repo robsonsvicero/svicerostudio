@@ -107,6 +107,7 @@ const projetoGaleriaSchema = new mongoose.Schema(
 
 const postSchema = new mongoose.Schema(
   {
+    _id: { type: String, required: true },
     titulo: { type: String, required: true },
     slug: { type: String, required: true, unique: true, index: true },
     resumo: String,
@@ -397,7 +398,7 @@ app.post('/api/db/:table/query', async (req, res) => {
       const items = Array.isArray(payload) ? payload : [payload];
       const now = new Date();
       let rows;
-      if (table === 'autores') {
+      if (table === 'autores' || table === 'posts') {
         rows = items.map((item) => ({
           ...item,
           _id: item._id || uuidv4(),
