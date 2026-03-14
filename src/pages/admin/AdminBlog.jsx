@@ -306,8 +306,8 @@ const AdminBlog = () => {
                                     <span className={`px-2 py-1 text-xs rounded-full ${post.publicado ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
                                       {post.publicado ? 'Publicado' : 'Rascunho'}
                                     </span>
-                                    <Button variant="outline" size="sm" onClick={() => handleEdit(post)}>Editar</Button>
-                                    <Button variant="danger" size="sm" onClick={() => handleDelete(post.id)}>Excluir</Button>
+                                    <Button variant="outline" onClick={() => handleEdit(post)}>Editar</Button>
+                                    <Button variant="danger" onClick={() => handleDelete(post.id)}>Excluir</Button>
                                 </div>
                             </li>
                           );

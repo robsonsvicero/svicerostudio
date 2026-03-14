@@ -120,7 +120,7 @@ const Blog = () => {
 
         {/* Hero */}
         <section className="relative flex items-center justify-center px-0 md:px-0 py-16 lg:py-32 mb-16 overflow-hidden min-h-[420px]" style={{ fontFamily: 'Manrope, Inter, sans-serif' }}>
-         
+
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
@@ -129,7 +129,7 @@ const Blog = () => {
           ></div>
           {/* Conteúdo principal */}
           <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center py-12 px-4 sm:px-6 lg:px-8">
-            
+
             <h1 className="font-title text-4xl lg:text-6xl font-semibold tracking-[-0.05em] text-white mb-6">
               Crônicas de Design
             </h1>
@@ -168,11 +168,10 @@ const Blog = () => {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-                    selectedCategory === category
-                      ? 'bg-secondary text-white shadow-md'
-                      : 'bg-[#181818] text-white/50 hover:text-white border border-white/10 hover:border-white/20'
-                  }`}
+                  className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === category
+                    ? 'bg-secondary text-white shadow-md'
+                    : 'bg-[#181818] text-white/50 hover:text-white border border-white/10 hover:border-white/20'
+                    }`}
                 >
                   {category}
                 </button>

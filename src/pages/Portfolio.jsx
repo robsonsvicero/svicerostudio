@@ -114,6 +114,7 @@ const Portfolio = () => {
 
       {/* Intro curta */}
       <section className="mx-auto max-w-7xl px-6 mt-20 lg:mt-36 py-16 lg:px-10 lg:py-20 text-center">
+
         <h1 className="font-title text-4xl lg:text-6xl font-semibold tracking-[-0.05em] text-white mb-6">
           Alguns trabalhos que ajudam a contar essa história
         </h1>
@@ -134,11 +135,11 @@ const Portfolio = () => {
             >
               <div className="aspect-[4/4.8] w-full relative bg-[linear-gradient(135deg,#2F353B_0%,#844219_100%)]">
                 {proj.imagem_url && (
-                  <img 
-                    src={proj.imagem_url} 
-                    alt={proj.titulo} 
-                    className="absolute inset-0 h-full w-full object-cover z-0 transition-all duration-500 grayscale group-hover:grayscale-0" 
-                    loading="lazy" 
+                  <img
+                    src={proj.imagem_url}
+                    alt={proj.titulo}
+                    className="absolute inset-0 h-full w-full object-cover z-0 transition-all duration-500 grayscale group-hover:grayscale-0"
+                    loading="lazy"
                   />
                 )}
                 {/* Overlay degradê escuro só no hover */}
@@ -160,80 +161,80 @@ const Portfolio = () => {
 
       {/* Depoimentos */}
       {depoimentos.length > 0 && (
-          <section className="bg-primary py-24 px-4 md:px-16">
-            <div className="max-w-screen-xl mx-auto">
-              <div className="mb-12 text-left">
-                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
+        <section className="bg-primary py-24 px-4 md:px-16">
+          <div className="max-w-screen-xl mx-auto">
+            <div className="mb-12 text-left">
+              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
                 <span className="w-2 h-2 rounded-full bg-secondary flex-shrink-0 inline-block"></span>
                 DEPOIMENTOS
               </span>
-                <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">O que dizem os nossos clientes</h2>
-              </div>
-              <div className="relative">
-                <div className="swiper depoimentos-swiper">
-                  <div className="swiper-wrapper">
-                    {[...depoimentos].sort((a, b) => Number(a.ordem) - Number(b.ordem)).map((depoimento) => (
-                      <div key={depoimento.id} className="swiper-slide">
-                        <div className="bg-white/5 rounded-2xl border border-secondary700 p-8 flex flex-col h-full shadow-md">
-                          {/* Estrelas */}
-                          <div className="mb-4">
-                            {Array.from({ length: 5 }).map((_, i) => (
-                              <i key={i} className={`fa-solid fa-star text-secondary text-xl mr-1 ${i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''}`}></i>
-                            ))}
-                          </div>
-                          {/* Texto */}
-                          <p className="text-[#B2B8C6] text-base font-normal leading-relaxed mb-6 italic flex-1">"{depoimento.texto}"</p>
-                          {/* Avatar, nome e cargo */}
-                          <div className="flex items-center gap-4 mt-auto">
-                            {depoimento.foto_url ? (
-                                <img src={depoimento.foto_url} alt={depoimento.nome} className="h-12 w-12 rounded-full object-cover" />
-                            ) : (
-                                <div className="w-12 h-12 flex-shrink-0 rounded-full bg-[#E5E5E5] flex items-center justify-center">
-                                    <span className="font-semibold text-lg text-secondary700">{depoimento.iniciais || depoimento.nome?.substring(0, 2).toUpperCase()}</span>
-                                </div>
-                            )}
-                            <div>
-                              <p className="text-white font-bold text-base">{depoimento.nome}</p>
-                              <p className="text-[#B2B8C6] text-sm font-normal">{depoimento.cargo}{depoimento.empresa ? `, ${depoimento.empresa}` : ''}</p>
+              <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">O que dizem os nossos clientes</h2>
+            </div>
+            <div className="relative">
+              <div className="swiper depoimentos-swiper">
+                <div className="swiper-wrapper">
+                  {[...depoimentos].sort((a, b) => Number(a.ordem) - Number(b.ordem)).map((depoimento) => (
+                    <div key={depoimento.id} className="swiper-slide">
+                      <div className="bg-white/5 rounded-2xl border border-secondary700 p-8 flex flex-col h-full shadow-md">
+                        {/* Estrelas */}
+                        <div className="mb-4">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <i key={i} className={`fa-solid fa-star text-secondary text-xl mr-1 ${i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''}`}></i>
+                          ))}
+                        </div>
+                        {/* Texto */}
+                        <p className="text-[#B2B8C6] text-base font-normal leading-relaxed mb-6 italic flex-1">"{depoimento.texto}"</p>
+                        {/* Avatar, nome e cargo */}
+                        <div className="flex items-center gap-4 mt-auto">
+                          {depoimento.foto_url ? (
+                            <img src={depoimento.foto_url} alt={depoimento.nome} className="h-12 w-12 rounded-full object-cover" />
+                          ) : (
+                            <div className="w-12 h-12 flex-shrink-0 rounded-full bg-[#E5E5E5] flex items-center justify-center">
+                              <span className="font-semibold text-lg text-secondary700">{depoimento.iniciais || depoimento.nome?.substring(0, 2).toUpperCase()}</span>
                             </div>
+                          )}
+                          <div>
+                            <p className="text-white font-bold text-base">{depoimento.nome}</p>
+                            <p className="text-[#B2B8C6] text-sm font-normal">{depoimento.cargo}{depoimento.empresa ? `, ${depoimento.empresa}` : ''}</p>
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                  
-                  <div className="swiper-button-prev"></div>
-                  <div className="swiper-button-next"></div>
-                  <div className="swiper-pagination mt-12 flex justify-center"></div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            </div>
-          </section>
-        )}
 
-      {/* CTA final */}
-      <section className="w-full bg-dark-bg py-24 px-4 flex justify-center items-center min-h-[420px]">
-          <div className="max-w-screen-xl w-full mx-auto bg-gradient-to-br from-secondary via-secondary to-secondary700 rounded-[48px] shadow-xl flex flex-col items-center justify-center px-8 py-16">
-            <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white text-center mb-6">Pronto para dar o próximo passo com sua marca?</h2>
-            <p className="text-lg md:text-xl text-white/80 font-light text-center mb-10">Se você sente que já passou da hora da sua marca acompanhar o nível do seu trabalho, o próximo passo é simples. Conte um pouco sobre seu momento para que o Svicero Studio possa te orientar com clareza.</p>
-            <div className="flex flex-col md:flex-row gap-6 mt-2">
-              <Button
-                href="/formulario-interesse"
-                variant="primary"
-                className="transition-colors"
-              >Preencher formulário de interesse
-              </Button>
-              <Button
-                href="https://wa.me/5511964932007"
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="custom"
-                className="bg-transparent text-white font-bold text-lg px-8 py-4 rounded-xl border border-white shadow-md hover:bg-white hover:text-secondary transition-colors"
-              >Falar pelo WhatsApp
-              </Button>
+                <div className="swiper-button-prev"></div>
+                <div className="swiper-button-next"></div>
+                <div className="swiper-pagination mt-12 flex justify-center"></div>
+              </div>
             </div>
           </div>
         </section>
+      )}
+
+      {/* CTA final */}
+      <section className="w-full bg-dark-bg py-24 px-4 flex justify-center items-center min-h-[420px]">
+        <div className="max-w-screen-xl w-full mx-auto bg-gradient-to-br from-secondary via-secondary to-secondary700 rounded-[48px] shadow-xl flex flex-col items-center justify-center px-8 py-16">
+          <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white text-center mb-6">Pronto para dar o próximo passo com sua marca?</h2>
+          <p className="text-lg md:text-xl text-white/80 font-light text-center mb-10">Se você sente que já passou da hora da sua marca acompanhar o nível do seu trabalho, o próximo passo é simples. Conte um pouco sobre seu momento para que o Svicero Studio possa te orientar com clareza.</p>
+          <div className="flex flex-col md:flex-row gap-6 mt-2">
+            <Button
+              href="/formulario-interesse"
+              variant="primary"
+              className="transition-colors"
+            >Preencher formulário de interesse
+            </Button>
+            <Button
+              href="https://wa.me/5511964932007"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="custom"
+              className="bg-transparent text-white font-bold text-lg px-8 py-4 rounded-xl border border-white shadow-md hover:bg-white hover:text-secondary transition-colors"
+            >Falar pelo WhatsApp
+            </Button>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </div>

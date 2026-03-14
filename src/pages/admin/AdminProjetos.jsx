@@ -434,8 +434,8 @@ const AdminProjetos = () => {
                                     <p className="text-sm text-white/60 truncate">{proj.categoria || 'Sem categoria'}</p>
                                 </div>
                                 <div className="flex items-center gap-3 flex-shrink-0">
-                                    <Button variant="outline" size="sm" onClick={() => handleEditProject(proj)}>Editar</Button>
-                                    <Button variant="danger" size="sm" onClick={() => handleDeleteProject(proj.id)}>Excluir</Button>
+                                    <Button variant="outline" onClick={() => handleEditProject(proj)}>Editar</Button>
+                                    <Button variant="danger" onClick={() => handleDeleteProject(proj.id)}>Excluir</Button>
                                 </div>
                             </li>
                         ))}

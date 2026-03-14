@@ -260,8 +260,8 @@ const AdminDepoimentos = () => {
                                             <p className="text-sm text-white/60 truncate">"{depoimento.texto}"</p>
                                         </div>
                                         <div className="flex items-center gap-3 flex-shrink-0">
-                                            <Button variant="outline" size="sm" onClick={() => handleEdit(depoimento)}>Editar</Button>
-                                            <Button variant="danger" size="sm" onClick={() => handleDelete(depoimento.id)}>Excluir</Button>
+                                            <Button variant="outline" onClick={() => handleEdit(depoimento)}>Editar</Button>
+                                            <Button variant="danger" onClick={() => handleDelete(depoimento.id)}>Excluir</Button>
                                         </div>
                                     </li>
                                 ))}

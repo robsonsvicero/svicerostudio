@@ -4,7 +4,7 @@ import './Button.css';
 const Button = ({
   children,
   variant = 'outline', // outline, primary, secondary, custom
-  size = 'md',
+  size = 'sm',
   className = '',
   icon,
   onClick,
@@ -32,8 +32,8 @@ const Button = ({
   // Classes base
   const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-300 relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-secondary';
   const sizeClasses = {
-    sm: 'px-6 py-2 text-base',
-    md: 'px-8 py-3 text-lg',
+    sm: 'px-6 py-4 text-base md:text-lg',
+    md: 'px-8 py-4 text-lg',
     lg: 'px-12 py-4 text-xl',
   };
 

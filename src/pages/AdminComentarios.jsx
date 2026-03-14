@@ -115,11 +115,11 @@ const AdminComentarios = () => {
                                             </div>
                                             <div className="mt-4 sm:mt-0 flex-shrink-0 flex items-center gap-2">
                                                 {filter === 'pending' && (
-                                                    <Button variant="primary" size="sm" onClick={() => handleUpdateStatus(comment._id, 'approved')}>
+                                                    <Button variant="primary" onClick={() => handleUpdateStatus(comment._id, 'approved')}>
                                                         Aprovar
                                                     </Button>
                                                 )}
-                                                <Button variant="danger" size="sm" onClick={() => handleUpdateStatus(comment._id, 'deleted')}>
+                                                <Button variant="danger" onClick={() => handleUpdateStatus(comment._id, 'deleted')}>
                                                     Excluir
                                                 </Button>
                                             </div>

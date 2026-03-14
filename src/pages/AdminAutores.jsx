@@ -259,8 +259,8 @@ const AdminAutores = () => {
                                             <p className="text-sm text-white/60 truncate">{autor.cargo}</p>
                                         </div>
                                         <div className="flex items-center gap-3 flex-shrink-0">
-                                            <Button variant="outline" size="sm" onClick={() => handleEdit(autor)}>Editar</Button>
-                                            <Button variant="danger" size="sm" onClick={() => handleDelete(autor.id)}>Excluir</Button>
+                                            <Button variant="outline" onClick={() => handleEdit(autor)}>Editar</Button>
+                                            <Button variant="danger" onClick={() => handleDelete(autor.id)}>Excluir</Button>
                                         </div>
                                     </li>
                                 ))}

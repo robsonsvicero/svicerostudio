@@ -16,14 +16,14 @@ const Footer = () => {
                 <img
                   src={logoBranco}
                   alt="Logo Svicero Studio"
-                  className="h-14 sm:h-16 md:h-20 w-auto transition-all duration-300"
+                  className="h-12 sm:h-14 md:h-16 w-auto mb-4 md:mb-6 transition-all duration-300"
                 />
               </a>
             </div>
             <p className="text-base leading-relaxed mb-6">Design estratégico e tecnologia para profissionalizar a presença digital de autônomos e pequenos negócios.
               Svicero Studio, sediado em São Paulo (Brasil), atendendo clientes no Brasil e no exterior.</p>
           </div>
-          <div className="flex flex-row gap-6 mt-2">
+          <div className="flex flex-row items-center justify-between mt-2">
             <a href="https://wa.me/5511964932007" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
               <i className="fa-brands fa-whatsapp text-3xl text-[#B2B8C6] hover:text-secondary transition-colors" />
             </a>

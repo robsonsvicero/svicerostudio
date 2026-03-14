@@ -41,9 +41,7 @@ const Contato = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(184,115,51,0.20),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(95,178,216,0.08),transparent_26%)]" />
 
           <div className="relative mx-auto max-w-7xl px-6 py-20 text-center lg:px-10 lg:py-24">
-            <span className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-              Contato
-            </span>
+            
 
             <h1 className="mt-6 font-title text-5xl font-semibold tracking-[-0.05em] text-white lg:text-6xl">
               Fale com o Svicero Studio
