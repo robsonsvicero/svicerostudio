@@ -6,50 +6,44 @@ import { Link } from 'react-router-dom';
 
 const pacotes = [
   {
-    nome: 'Presença Essencial',
+    nome: 'Marca Essencial',
     destaque: false,
-    descricao: 'Para quem está começando a se posicionar de forma profissional e precisa dar os primeiros passos consistentes na identidade visual, sem investir ainda em um site completo.',
+    descricao: 'Para quem está dando os primeiros passos profissionais e precisa de uma identidade visual organizada, sem investir ainda em um site completo.',
     inclui: [
       'Diagnóstico rápido de marca',
       'Logo principal + versões de uso',
-      'Paleta de cores',
-      'Tipografia básica',
-      '1–2 templates simples para redes sociais',
-      'Mini guia de uso da marca (PDF curto)'
+      'Paleta de cores + tipografia básica',
+      'Templates simples para redes sociais'
     ],
-    entrega: 'Você sai com uma identidade visual organizada, que tira a cara de amadorismo e já permite comunicar de forma mais profissional nas redes.',
-    naoInclui: 'Não inclui site, materiais mais complexos ou estratégia aprofundada.',
+    entrega: 'Ideal para tirar a cara de amadorismo e começar a comunicar com mais profissionalismo nas redes.',
+    naoInclui: '* Não inclui site, materiais mais complexos ou estratégia aprofundada.',
     cta: 'Quero este',
     subtexto: 'Indicado para quem está nos primeiros passos da marca.'
   },
   {
     nome: 'Site Estratégico',
     destaque: false,
-    descricao: 'Para quem já tem uma identidade visual definida, mas ainda não tem um site à altura ou está preso em um site amador que não ajuda a vender.',
+    descricao: 'Para quem já tem identidade visual, mas precisa de um site à altura do serviço, pensado para gerar confiança e facilitar o contato.',
     inclui: [
-      'Análise da identidade visual atual',
       'Planejamento da estrutura do site',
-      'Site de X páginas',
-      'Layout responsivo',
-      'Integração com WhatsApp, formulários e redes sociais',
-      'Boas práticas de UX',
-      'Entrega organizada + breve guia de atualização'
+      'Site responsivo de 5 a 7 páginas',
+      'Integração com WhatsApp e formulários',
+      'Boas práticas de UX'
     ],
-    entrega: 'É necessário já ter uma identidade visual minimamente estruturada. Caso não tenha, o Pacote Marca de Alto Padrão pode ser mais adequado para você.',
+    entrega: 'Indicado para quem quer transformar o site em uma ferramenta real de vendas.',
     cta: 'Quero este',
     subtexto: ''
   },
   {
-    nome: 'Marca de Alto Padrão',
+    nome: 'Posicionamento Premium',
     destaque: true,
     rotulo: 'Mais completo',
-    descricao: 'Para quem quer alinhar marca, site e materiais ao nível real do serviço, ganhar confiança para cobrar melhor e ter uma presença digital profissional de ponta a ponta.',
+    descricao: 'Para quem quer alinhar marca, site e materiais ao nível real do serviço, ganhar segurança para aumentar seus preços e ter uma presença digital profissional de ponta a ponta.',
     inclui: [
-      'Estratégia e posicionamento',
+      'Estratégia e posicionamento de marca',
       'Identidade visual completa',
-      'Site estratégico em X páginas',
-      'Kit de materiais para o dia a dia',
-      'Entrega organizada + suporte pós-projeto'
+      'Site estratégico com foco em UX',
+      'Kit de materiais + suporte pós-projeto'
     ],
     beneficio: 'Pensado para quem quer construir uma base sólida de marca e digital, e não apenas “mais um logo” ou “mais um site”.',
     cta: 'Quero este'
@@ -72,8 +66,8 @@ const tabela = [
   {
     linha: 'Site visual',
     essencial: 'Não incluído',
-    site: 'Site de X páginas',
-    altoPadrao: 'Site de X páginas, alinhado à nova marca'
+    site: 'Site de 5 páginas',
+    altoPadrao: 'Site de 5 a 7 páginas, alinhado à nova marca'
   },
   {
     linha: 'Materiais extras',
@@ -83,9 +77,9 @@ const tabela = [
   },
   {
     linha: 'Suporte pós-entrega',
-    essencial: '10 dias uteis',
-    site: '15 dias uteis',
-    altoPadrao: '20 dias uteis (pode ser maior)'
+    essencial: '10 dias úteis',
+    site: '15 dias úteis',
+    altoPadrao: '20 dias úteis (pode ser maior)'
   }
 ];
 
@@ -115,38 +109,41 @@ const PlanosPacotes = () => {
       <main className="flex-1">
         {/* HERO */}
         <section className="mx-auto max-w-7xl px-6 pt-20 lg:pt-36 pb-16 lg:px-10 lg:pb-24 text-center">
-          
+
           <h1 className="font-title text-5xl font-semibold tracking-[-0.06em] text-white lg:text-7xl">Escolha o pacote que melhor combina com o momento do seu negócio</h1>
           <p className="mt-6 max-w-3xl mx-auto text-base leading-8 text-white/72 lg:text-xl">
             Todos os pacotes foram pensados para ajudar autônomos e pequenos negócios a sair da cara de amador e ganhar mais confiança no digital – em diferentes estágios de crescimento.
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row justify-center">
-              <Button href="https://wa.me/5511964932007" variant="secondary">Falar com o Svicero Studio</Button>
-              <Button href="#comparar" variant="outline" className="px-5 py-3">Comparar pacotes</Button>
+            <Button href="https://wa.me/5511964932007" variant="secondary">Falar com o Svicero Studio</Button>
+            <Button href="#comparar" variant="outline">Comparar pacotes</Button>
           </div>
         </section>
 
         {/* DESTAQUE – Pacote principal */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-            <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             {/* Pacote principal */}
             <div className="md:col-span-1 h-full flex">
               <div className="relative rounded-[30px] border border-[#B87333]/30 bg-[#181818] p-8 shadow-lg flex flex-col h-full">
                 <span className="absolute top-4 right-4 bg-[#B87333] text-white text-xs font-bold px-4 py-1 rounded-full">Mais completo</span>
-                <h2 className="text-2xl font-semibold text-[#E9BF84] mb-2">Marca de Alto Padrão</h2>
+                <h2 className="text-2xl font-semibold text-[#E9BF84] mt-2 mb-4">Posicionamento Premium</h2>
                 <p className="text-white/80 mb-4">{pacotes[2].descricao}</p>
                 <ul className="space-y-2 mb-4">
                   {pacotes[2].inclui.map((item, idx) => (
-                    <li key={idx} className="text-white/80 text-base">{item}</li>
+                    <li key={idx} className="flex items-start gap-2 text-white/80 text-base">
+                      <span className="mt-3 h-1 w-1 flex-shrink-0 rounded-full bg-white/80 inline-block"></span>
+                      <span>{item}</span>
+                    </li>
                   ))}
                 </ul>
-                <p className="text-[#E9BF84] font-medium mb-4">{pacotes[2].beneficio}</p>
-                  <Button 
-                    href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[2].nome)}.`}
-                    variant="secondary" 
-                    className="w-full mt-auto">
-                    {pacotes[2].cta}
-                  </Button>
+                <p className="text-[#E9BF84] italic font-light mb-6">{pacotes[2].beneficio}</p>
+                <Button
+                  href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[2].nome)}.`}
+                  variant="secondary"
+                  className="w-full mt-auto">
+                  {pacotes[2].cta}
+                </Button>
               </div>
             </div>
             {/* Pacotes secundários */}
@@ -157,18 +154,21 @@ const PlanosPacotes = () => {
                 <p className="text-white/80 mb-4">{pacotes[0].descricao}</p>
                 <ul className="space-y-2 mb-4">
                   {pacotes[0].inclui.map((item, idx) => (
-                    <li key={idx} className="text-white/80 text-base">{item}</li>
+                    <li key={idx} className="flex items-start gap-2 text-white/80 text-base">
+                      <span className="mt-3 h-1 w-1 flex-shrink-0 rounded-full bg-white/80 inline-block"></span>
+                      <span>{item}</span>
+                    </li>
                   ))}
                 </ul>
-                <p className="text-white/70 mb-2">{pacotes[0].entrega}</p>
-                <p className="text-[#B87333] text-sm mb-2">{pacotes[0].naoInclui}</p>
-                  <Button 
-                    href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[0].nome)}.`}
-                    variant="outline" 
-                    className="w-full mb-2 mt-auto">
-                    {pacotes[0].cta}
-                  </Button>
-                <span className="text-xs text-white/60">{pacotes[0].subtexto}</span>
+                <p className="text-[#E9BF84] italic font-light mb-6">{pacotes[0].entrega}</p>
+                <p className="text-cyan-300 text-sm mb-2">{pacotes[0].naoInclui}</p>
+                <span className="text-xs text-white/60 my-6">{pacotes[0].subtexto}</span>
+                <Button
+                  href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[0].nome)}.`}
+                  variant="outline"
+                  className="w-full mt-auto">
+                  {pacotes[0].cta}
+                </Button>
               </div>
               {/* Site Estratégico */}
               <div className="rounded-[30px] border border-white/8 bg-[#181818] p-8 flex-1 flex flex-col h-full">
@@ -176,16 +176,19 @@ const PlanosPacotes = () => {
                 <p className="text-white/80 mb-4">{pacotes[1].descricao}</p>
                 <ul className="space-y-2 mb-4">
                   {pacotes[1].inclui.map((item, idx) => (
-                    <li key={idx} className="text-white/80 text-base">{item}</li>
+                    <li key={idx} className="flex items-start gap-2 text-white/80 text-base">
+                      <span className="mt-3 h-1 w-1 flex-shrink-0 rounded-full bg-white/80 inline-block"></span>
+                      <span>{item}</span>
+                    </li>
                   ))}
                 </ul>
-                <p className="text-white/70 mb-2">{pacotes[1].entrega}</p>
-                  <Button 
-                    href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[1].nome)}.`}
-                    variant="outline" 
-                    className="w-full mb-2 mt-auto">
-                    {pacotes[1].cta}
-                  </Button>
+                <p className="text-[#E9BF84] italic font-light mb-6">{pacotes[1].entrega}</p>
+                <Button
+                  href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[1].nome)}.`}
+                  variant="outline"
+                  className="w-full mt-auto">
+                  {pacotes[1].cta}
+                </Button>
               </div>
             </div>
           </div>
@@ -216,9 +219,9 @@ const PlanosPacotes = () => {
               </tbody>
             </table>
           </div>
-          <p className="mt-8 text-center text-white/80 text-lg">Em dúvida sobre qual pacote faz mais sentido?<br/>Me chama no WhatsApp e eu te ajudo a escolher com base no seu momento.</p>
+          <p className="mt-8 text-center text-white/80 text-lg">Em dúvida sobre qual pacote faz mais sentido?<br />Me chama no WhatsApp e eu te ajudo a escolher com base no seu momento.</p>
           <div className="mt-4 flex justify-center">
-              <Button href="https://wa.me/5511964932007" variant="custom" className="bg-[#B87333] px-6 py-3.5 text-white text-lg font-semibold">Falar com o Svicero Studio</Button>
+            <Button href="https://wa.me/5511964932007" variant="secondary">Falar com o Svicero Studio</Button>
           </div>
         </section>
 

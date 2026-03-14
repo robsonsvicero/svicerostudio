@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import capaBlog from '../images/capa-blog.jpg'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import SEOHelmet from '../components/SEOHelmet'
@@ -124,7 +125,7 @@ const Blog = () => {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `linear-gradient(90deg, rgba(35,35,35,1) 0%, rgba(35,35,35,0.85) 50%, rgba(35,35,35,0.1) 100%), url('/src/images/capa-blog.jpg')`
+              backgroundImage: `linear-gradient(90deg, rgba(35,35,35,1) 0%, rgba(35,35,35,0.85) 50%, rgba(35,35,35,0.1) 100%), url(${capaBlog})`
             }}
           ></div>
           {/* Conteúdo principal */}

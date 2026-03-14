@@ -104,19 +104,19 @@ const Processos = () => {
             Um projeto de marca e site não é só “fazer um logo bonito” ou montar uma página na internet. Ele precisa traduzir o que você faz, como você pensa e o tipo de cliente que você quer atrair. Por isso, no Svicero Studio, o processo foi pensado para: entender seu momento com profundidade, transformar isso em estratégia, e só então partir para o visual e o digital. Você não entra em um funil genérico, você entra em um processo claro, passo a passo, com começo, meio e fim.
           </p>
           <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 mb-16">
               {etapas.map((etapa, idx) => (
                 <div key={idx} className="rounded-[30px] border border-secondary/30 bg-dark-card/75 p-8 shadow-lg flex flex-col h-full text-white">
-                  <div className="text-2xl font-semibold text-secondary300 mb-2">{etapa.titulo}</div>
-                  <p className="text-lg font-normal mb-4 text-white/80">{etapa.texto}</p>
+                  <div className="text-2xl font-semibold text-secondary mb-2">{etapa.titulo}</div>
+                  <p className="text-m font-normal mb-4 text-white/80 leading-normal text-left">{etapa.texto}</p>
                   <div className="flex flex-col md:flex-row md:gap-8">
                     <div className="flex-1 mb-2 md:mb-0">
-                      <div className="text-base font-bold text-[#E9BF84] mb-1">O que você faz:</div>
-                      <div className="text-base font-normal text-white/80">{etapa.papelCliente}</div>
+                      <div className="text-base font-bold text-[#E9BF84] mb-1 ">O que você faz:</div>
+                      <div className="text-sm font-light text-white/80 leading-normal text-left">{etapa.papelCliente}</div>
                     </div>
                     <div className="flex-1">
                       <div className="text-base font-bold text-[#E9BF84] mb-1">O que você recebe:</div>
-                      <div className="text-base font-normal text-white/80">{etapa.papelEstudio}</div>
+                      <div className="text-sm font-light text-white/80 leading-normal text-left">{etapa.papelEstudio}</div>
                     </div>
                   </div>
                 </div>
@@ -141,7 +141,10 @@ const Processos = () => {
               <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">3</span><span className="text-white/80 text-base">Enviar materiais básicos (fotos, logotipos antigos, se existirem, etc.).</span></li>
               <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">4</span><span className="text-white/80 text-base">Dar feedback sincero e dentro dos prazos combinados.</span></li>
             </ul>
-            <p className="text-center text-white/60">Não se preocupe: você não precisa “saber de design” ou “entender de site”.<br />Seu papel é falar do seu negócio; o nosso é traduzir isso em marca e presença digital.</p>
+            <div className='flex justify-center'>
+              <p className="text-left text-white/60"><span className='font-semibold'>Não se preocupe:</span> você não precisa “saber de design” ou “entender de site”. Seu papel é falar do seu negócio; o nosso é traduzir isso em marca e presença digital.</p>
+            </div>
+            
           </div>
         </section>
 
@@ -173,13 +176,13 @@ const Processos = () => {
 
         {/* CTA FINAL */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <div className="rounded-[30px] border border-[#B87333]/30 bg-[#181818] p-8 shadow-lg">
+          <div className="rounded-[30px] border border-[#B87333]/30 bg-secondary p-8 shadow-lg">
             <h2 className="font-title text-3xl font-semibold tracking-[-0.04em] text-white mb-6">Pronto para dar o próximo passo com a sua marca?</h2>
             <p className="text-white/80 text-base mb-8 max-w-2xl mx-auto">Se você se identificou com esse processo e sente que é o momento de levar sua marca e presença digital a outro nível, o próximo passo é simples.</p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Button 
               href="/contato" 
-              variant='secondary'
+              variant='primary'
               >Quero falar sobre meu projeto</Button>
               <Button 
               href="/planos" 
