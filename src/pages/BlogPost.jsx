@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { marked } from 'marked'
+import Markdown from 'react-markdown'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
@@ -35,10 +35,15 @@ const BlogPost = () => {
           return;
         }
         setPost(payload.data);
-        // Buscar autor por ID ou nome
-        if (payload.data.autor) {
+        // Usar autor_nome e autor_foto do post se existirem (via $lookup do backend)
+        if (payload.data.autor_nome || payload.data.autor_foto) {
+          setAutor({
+            nome: payload.data.autor_nome || payload.data.autor || 'Autor desconhecido',
+            foto_url: payload.data.autor_foto || null,
+          });
+        } else if (payload.data.autor) {
+          // Fallback: buscar manualmente se não veio do backend
           let resAutor, autorPayload;
-          // Tenta buscar por ID
           resAutor = await fetch(`${API_URL}/api/db/autores/query`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -46,7 +51,6 @@ const BlogPost = () => {
           });
           autorPayload = await resAutor.json();
           if (!(resAutor.ok && autorPayload.data)) {
-            // Se não achou por ID, tenta por nome
             resAutor = await fetch(`${API_URL}/api/db/autores/query`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -57,7 +61,7 @@ const BlogPost = () => {
           if (resAutor.ok && autorPayload.data) {
             setAutor(autorPayload.data);
           } else {
-            setAutor({ nome: payload.data.autor }); // fallback para mostrar pelo menos o nome
+            setAutor({ nome: payload.data.autor });
           }
         }
       } catch {
@@ -72,12 +76,10 @@ const BlogPost = () => {
 
   // Renderizar conteúdo como Markdown
   const renderContent = (content) => (
-    <div
-      className="prose prose-lg max-w-none text-low-medium"
-      dangerouslySetInnerHTML={{ __html: marked.parse(content || '') }}
-    />
+    <div className="prose prose-lg prose-invert max-w-none">
+      <Markdown>{content || ''}</Markdown>
+    </div>
   )
-// Código antigo de parsing manual removido. Agora apenas renderContent baseado em marked é usado.
 
   if (isLoading) {
     return (
@@ -178,9 +180,7 @@ const BlogPost = () => {
 
             {/* Conteúdo do Post */}
             <div className="bg-gelo rounded-xl p-8 md:p-12 mb-16 border border-white/8">
-              <div className="prose prose-lg max-w-none">
-                {renderContent(post.conteudo)}
-              </div>
+              {renderContent(post.conteudo)}
             </div>
 
             {/* Informações do Autor */}

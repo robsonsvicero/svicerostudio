@@ -120,9 +120,9 @@ const AdminBlog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    const { autor, ...restOfForm } = formData;
-    const payload = { ...restOfForm, autor_id: autor };
+
+    // Envia o campo autor corretamente
+    const payload = { ...formData };
 
     const op = editingId ? 'update' : 'insert';
     const filters = editingId ? [{ column: 'id', operator: 'eq', value: editingId }] : [];
@@ -135,7 +135,7 @@ const AdminBlog = () => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro ao salvar o post.');
-      
+
       showToastMessage(`Post ${editingId ? 'atualizado' : 'criado'} com sucesso!`, 'success');
       resetForm();
       await fetchPosts();
@@ -148,7 +148,8 @@ const AdminBlog = () => {
 
   const handleEdit = (post) => {
     setEditingId(post.id);
-    setFormData({ ...initialFormState, ...post, autor: post.autor_id });
+    // Garante que o campo autor seja preenchido corretamente ao editar
+    setFormData({ ...initialFormState, ...post, autor: post.autor });
     window.scrollTo(0, 0);
   };
   
@@ -293,7 +294,7 @@ const AdminBlog = () => {
               <div className="bg-[#181818] rounded-2xl border border-white/8">
                   <ul className="divide-y divide-white/8">
                       {posts.map(post => {
-                          const autor = autores.find(a => a.id === post.autor_id);
+                          const autor = autores.find(a => a.id === post.autor);
                           return (
                             <li key={post.id} className="flex items-center justify-between p-4 gap-4">
                                <img src={post.imagem_destaque || `https://via.placeholder.com/150/141414/E9BF84?text=${post.titulo.charAt(0)}`} alt={post.titulo} className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20" />

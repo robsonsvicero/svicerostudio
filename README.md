@@ -46,12 +46,12 @@ Este é o portfólio de Robson Svicero, especialista em Identidade Visual, UI/UX
 
 ## 📂 Estrutura do Projeto
 
+
 ```
-robson-svicero/
+svicerostudio/
 ├── public/               # Arquivos estáticos
-│   ├── .htaccess        # Configuração Apache
-│   ├── robots.txt       # SEO
-│   └── sitemap.xml      # Mapa do site
+│   ├── robots.txt        # SEO
+│   └── sitemap.xml       # Mapa do site
 ├── src/
 │   ├── components/      # Componentes reutilizáveis
 │   │   ├── Layout/      # Header e Footer
@@ -59,26 +59,49 @@ robson-svicero/
 │   ├── images/          # Imagens (WebP otimizadas)
 │   ├── pages/           # Páginas da aplicação
 │   │   ├── Home.jsx
-│   │   ├── Schedule.jsx
 │   │   ├── ServiceFrontEnd.jsx
 │   │   ├── ServiceIdentidadeVisual.jsx
 │   │   ├── ServiceUIUXDesign.jsx
-│   │   └── NotFound.jsx
+│   │   ├── NotFound.jsx
+│   │   ├── Admin.jsx
+│   │   ├── AdminBlog.jsx
+│   │   ├── AdminAutores.jsx
+│   │   ├── AdminProjetos.jsx
+│   │   ├── AdminComentarios.jsx
+│   │   ├── AdminDepoimentos.jsx
+│   │   ├── Blog.jsx
+│   │   ├── BlogPost.jsx
+│   │   ├── Contato.jsx
+│   │   ├── FAQ.jsx
+│   │   ├── Portfolio.jsx
+│   │   ├── PlanosPacotes.jsx
+│   │   ├── PacoteMarca.jsx
+│   │   ├── Agradecimento.jsx
+│   │   ├── ExclusaoDados.jsx
+│   │   ├── FormularioInteresse.jsx
+│   │   ├── Processos.jsx
+│   │   ├── ServicePage.jsx
+│   │   └── BusinessCard.jsx
 │   ├── styles/          # Estilos globais
 │   ├── App.jsx          # Configuração de rotas
 │   └── main.jsx         # Entry point
+├── backend/             # Backend Node.js (caso utilize funcionalidades administrativas)
+│   ├── src/
+│   └── ...
 ├── index.html           # HTML principal
 ├── tailwind.config.js   # Configuração Tailwind
 ├── vite.config.js       # Configuração Vite
-└── package.json         # Dependências
+├── package.json         # Dependências
+└── README.md            # Documentação
 ```
 
 ## 🛠️ Instalação
 
+
 1. Clone o repositório:
 ```bash
-git clone https://github.com/robsonsvicero/portfolio.git
-cd portfolio
+git clone https://github.com/robsonsvicero/svicerostudio.git
+cd svicerostudio
 ```
 
 2. Instale as dependências:
@@ -135,7 +158,18 @@ Os arquivos otimizados serão gerados na pasta `dist/`.
    - File Manager da Hostinger
    - FTP (FileZilla)
 
-3. Siga o checklist em `DEPLOY-CHECKLIST.md`
+
+## 🖥️ Backend (opcional)
+
+O projeto possui uma pasta `backend/` com API Node.js para funcionalidades administrativas (blog, autores, projetos, comentários, etc). Para rodar o backend:
+
+```bash
+cd backend
+npm install
+node src/server.js
+```
+
+O frontend pode funcionar de forma estática, mas recursos administrativos exigem o backend em execução.
 
 ### Outros Hosts
 
@@ -151,10 +185,10 @@ Edite `tailwind.config.js`:
 
 ```js
 colors: {
-  primary: '#094C7E',    // Azul principal
-  secondary: '#800020',  // Bordô
-  cream: '#FFF8F0',      // Creme
-  'dark-bg': '#050505',  // Fundo escuro
+  primary: '#2F353B',    // Cinza escuro
+  secondary: '#B87333',  // Cobre
+  cream: '#F8F7F2',      // Creme
+  'dark-bg': '#141414',  // Fundo escuro
 }
 ```
 

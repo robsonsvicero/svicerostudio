@@ -1,15 +1,13 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import jwt from 'jsonwebtoken';
 import { tableModelMap } from '../models/index.js';
+import { decodeToken } from '../middleware/auth.js';
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET;
 
 const allowedTables = new Set(['projetos', 'projeto_galeria', 'posts', 'autores', 'depoimentos']);
 
-// TODO: Move helper functions to a dedicated utils file
 function buildMongoFilter(filters = []) {
   const mongoFilter = {};
 
@@ -29,7 +27,7 @@ function buildMongoFilter(filters = []) {
 
     if (operator === 'ilike') {
       const escaped = String(value || '')
-        .replace(/[.*+?^${}()|[\]\]/g, '\$&')
+        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
         .replace(/%/g, '.*');
       mongoFilter[key] = { $regex: `^${escaped}$`, $options: 'i' };
     }
@@ -86,15 +84,6 @@ function applyPublicReadConstraints(table, filter) {
   return filter;
 }
 
-// TODO: Move to auth middleware file
-function decodeToken(token) {
-  try {
-    return jwt.verify(token, JWT_SECRET);
-  } catch {
-    return null;
-  }
-}
-
 router.post('/:table/query', async (req, res) => {
   const { table } = req.params;
   const {
@@ -132,6 +121,34 @@ router.post('/:table/query', async (req, res) => {
       const projection = normalizeProjection(select);
       const pipeline = [];
       if (Object.keys(mongoFilter).length > 0) pipeline.push({ $match: mongoFilter });
+
+      // Para posts: $lookup para resolver UUID do autor → nome.
+      // Fallback: se o campo 'autor' for um nome direto (posts legados),
+      // usa o valor bruto como autor_nome.
+      if (table === 'posts') {
+        pipeline.push({
+          $lookup: {
+            from: 'autores',
+            localField: 'autor',
+            foreignField: '_id',
+            as: '_autor_info',
+          },
+        });
+        pipeline.push({
+          $addFields: {
+            autor_nome: {
+              $cond: {
+                if: { $gt: [{ $size: '$_autor_info' }, 0] },
+                then: { $arrayElemAt: ['$_autor_info.nome', 0] },
+                else: '$autor', // fallback para posts legados com nome direto
+              },
+            },
+            autor_foto: { $arrayElemAt: ['$_autor_info.foto_url', 0] },
+          },
+        });
+        pipeline.push({ $project: { _autor_info: 0 } });
+      }
+
       if (orderBy?.column) {
         const orderField = orderBy.column === 'id' ? '_id' : orderBy.column;
         pipeline.push({ $sort: { [orderField]: orderBy.ascending === false ? -1 : 1 } });
@@ -169,7 +186,9 @@ router.post('/:table/query', async (req, res) => {
     }
 
     if (operation === 'update') {
-      const { id, ...updateData } = payload;
+      // Remove campos que não devem ser persistidos: campos calculados ($lookup) e _id (imutável no MongoDB)
+      // eslint-disable-next-line no-unused-vars
+      const { id, _id, autor_nome, autor_foto, ...updateData } = payload;
       const updatePayload = { ...updateData, updated_at: new Date() };
 
       const updateResult = await Model.updateMany(mongoFilter, { $set: updatePayload });

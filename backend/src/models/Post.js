@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema(
     categoria: String,
     tags: String,
     data_publicacao: { type: String, required: true },
-    autor: { type: String, default: 'Robson Svicero' },
+    autor: { type: String },
     publicado: { type: Boolean, default: false, index: true },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },

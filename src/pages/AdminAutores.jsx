@@ -105,11 +105,12 @@ const AdminAutores = () => {
         const op = editingId ? 'update' : 'insert';
         const filters = editingId ? [{ column: 'id', operator: 'eq', value: editingId }] : [];
 
-        // Sempre garantir que _id seja UUID ao criar
-        if (!editingId || !payload._id) {
+        if (!editingId) {
+            // Novo autor: gera UUID como _id
             payload._id = uuidv4();
-        }
-        if (editingId) {
+        } else {
+            // Edição: nunca alterar o _id
+            delete payload._id;
             delete payload.id;
         }
 

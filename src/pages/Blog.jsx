@@ -40,25 +40,42 @@ const Blog = () => {
         const autoresMap = {};
         (autoresPayload.data || []).forEach(a => { autoresMap[a._id] = a.nome; });
 
-        // Substituir autor pelo nome correspondente
-        const postsCorrigidos = (postsPayload.data || []).map(post => ({
-          ...post,
-          autor: autoresMap[post.autor] || post.autor
-        }));
+        // Substituir autor pelo nome correspondente (garante que sempre será nome, nunca UUID)
+        const postsCorrigidos = (postsPayload.data || []).map(post => {
+          let nomeAutor = '';
+          if (autoresMap[post.autor]) {
+            nomeAutor = autoresMap[post.autor];
+          } else if (post.autor_nome) {
+            nomeAutor = post.autor_nome;
+          } else if (typeof post.autor === 'string' && !/^[0-9a-fA-F-]{36}$/.test(post.autor)) {
+            nomeAutor = post.autor;
+          } else {
+            nomeAutor = 'Autor desconhecido';
+          }
+          return {
+            ...post,
+            autor: nomeAutor
+          };
+        });
         setPosts(postsCorrigidos);
 
         // Categorias, tags e autores para filtros
         const cats = new Set(['Todos']);
         const tags = new Set();
-        // Só adicionar nomes válidos de autores (presentes no banco)
-        const nomesAutoresValidos = new Set(Object.values(autoresMap));
+        // Adiciona apenas nomes de autores dos posts publicados (resolve nome, nunca UUID)
+        const nomesAutoresPosts = new Set(postsCorrigidos.map(post => {
+          if (/^[0-9a-fA-F-]{36}$/.test(post.autor)) {
+            return autoresMap[post.autor] || post.autor_nome || 'Autor desconhecido';
+          }
+          return post.autor || post.autor_nome || 'Autor desconhecido';
+        }).filter(Boolean));
         postsCorrigidos.forEach(post => {
           if (post.categoria) cats.add(post.categoria);
           if (post.tags) post.tags.split(',').forEach(t => tags.add(t.trim().toLowerCase()));
         });
         setCategories(Array.from(cats));
         setAllTags(Array.from(tags));
-        setAuthors(Array.from(nomesAutoresValidos));
+        setAuthors(Array.from(nomesAutoresPosts));
       } catch {
         setPosts([]);
       } finally {

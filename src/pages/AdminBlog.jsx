@@ -37,10 +37,11 @@ const AdminBlog = () => {
 
   const fetchAutores = useCallback(async () => {
     try {
+      // Admin precisa ver TODOS os autores (sem filtro de publicado)
       const res = await fetch(`${API_URL}/api/db/autores/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ operation: 'select', filters: [{ column: 'publicado', operator: 'eq', value: true }], orderBy: { column: 'nome', ascending: true } }),
+        body: JSON.stringify({ operation: 'select', orderBy: { column: 'nome', ascending: true } }),
       });
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao buscar autores');
@@ -122,8 +123,11 @@ const AdminBlog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    const payload = { ...formData };
+
+    // Remove campos computados pelo $lookup e campos de controle interno
+    // eslint-disable-next-line no-unused-vars
+    const { id, autor_nome, autor_foto, ...payloadData } = formData;
+    const payload = payloadData;
 
     const op = editingId ? 'update' : 'insert';
     const filters = editingId ? [{ column: 'id', operator: 'eq', value: editingId }] : [];
@@ -149,14 +153,25 @@ const AdminBlog = () => {
 
   const handleEdit = (post) => {
     setEditingId(post.id);
-    // Garante que data_publicacao esteja no formato yyyy-MM-dd
     const data_publicacao = post.data_publicacao
       ? new Date(post.data_publicacao).toISOString().slice(0, 10)
       : '';
+
+    // Separa os campos computados pelo $lookup dos campos reais do post
+    // eslint-disable-next-line no-unused-vars
+    const { id, autor_nome, autor_foto, ...postFields } = post;
+
+    // Resolve o UUID do autor: se 'autor' for um UUID válido usa direto,
+    // caso contrário (posts legados com nome direto) tenta encontrar pelo nome na lista
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const autorId = uuidRegex.test(postFields.autor)
+      ? postFields.autor
+      : autores.find(a => a.nome === postFields.autor)?.id || '';
+
     setFormData({
       ...initialFormState,
-      ...post,
-      autor: post.autor,
+      ...postFields,
+      autor: autorId,
       data_publicacao,
     });
     window.scrollTo(0, 0);
@@ -183,7 +198,7 @@ const AdminBlog = () => {
   const fields = [
     { name: 'titulo', label: 'Título do post', placeholder: 'Como criar uma marca memorável', type: 'text', required: true, col: 'lg:col-span-2' },
     { name: 'slug', label: 'Slug', placeholder: 'como-criar-marca-memoravel', type: 'text', required: true, col: 'lg:col-span-2' },
-    { name: 'autor', label: 'Autor', placeholder: 'Selecione um autor', type: 'select', required: true, options: autores.map(a => ({ value: a.id, label: a.nome })), col: 'lg:col-span-1' },
+    { name: 'autor', label: autores.length === 0 ? 'Autor ⚠ Nenhum autor cadastrado — acesse Autores primeiro' : 'Autor', placeholder: 'Selecione um autor', type: 'select', required: true, options: autores.map(a => ({ value: a.id, label: a.nome })), col: 'lg:col-span-1' },
     { name: 'categoria', label: 'Categoria', placeholder: 'Selecione uma categoria', type: 'select', required: true, options: ['Performance & Conversão', 'Estratégia de Ativos (Business & IA)', 'Engenharia de Percepção (Branding)', 'UX Design & Engenharia de Lucro'].map(c => ({ value: c, label: c})), col: 'lg:col-span-1' },
     { name: 'data_publicacao', label: 'Data de publicação', placeholder: 'YYYY-MM-DD', type: 'date', required: true, col: 'lg:col-span-1' },
     { name: 'tags', label: 'Tags', placeholder: 'branding, ux, design', type: 'text', required: false, col: 'lg:col-span-1' },
@@ -303,13 +318,14 @@ const AdminBlog = () => {
               <div className="bg-[#181818] rounded-2xl border border-white/8">
                   <ul className="divide-y divide-white/8">
                       {posts.map(post => {
-                          const autor = autores.find(a => a.id === post.autor);
+                          const autorFallback = autores.find(a => a.id === post.autor);
+                          const autorNome = post.autor_nome || autorFallback?.nome || 'Autor desconhecido';
                           return (
                             <li key={post.id} className="flex items-center justify-between p-4 gap-4">
                                <img src={post.imagem_destaque || `https://via.placeholder.com/150/141414/E9BF84?text=${post.titulo.charAt(0)}`} alt={post.titulo} className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20" />
                                 <div className="flex-1 min-w-0">
                                     <p className="font-semibold text-white truncate">{post.titulo}</p>
-                                    <p className="text-sm text-white/60 truncate">{autor?.nome || 'Autor desconhecido'} • {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
+                                    <p className="text-sm text-white/60 truncate">{autorNome} • {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
                                 </div>
                                 <div className="flex items-center gap-3 flex-shrink-0">
                                     <span className={`px-2 py-1 text-xs rounded-full ${post.publicado ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
