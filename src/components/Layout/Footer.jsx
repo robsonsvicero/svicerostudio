@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import logoBranco from '../../images/logo_alternativo 4.png';
+
 const Footer = () => {
   return (
     <footer className="w-full bg-primary text-[#B2B8C6] pt-16 pb-8 px-4 md:px-16 lg:px-32">
@@ -8,7 +10,16 @@ const Footer = () => {
         {/* Coluna esquerda: logo, texto, redes */}
         <div className="flex-1 min-w-[260px] flex flex-col gap-6">
           <div className="mb-2">
-            <img src="/src/images/logo_alternativo 4.png" alt="Svicero Studio" className="h-12 mb-4" />
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <a href="/#inicio" onClick={(e) => handleNavigation(e, 'inicio')}>
+                <img
+                  src={logoBranco}
+                  alt="Logo Svicero Studio"
+                  className="h-14 sm:h-16 md:h-20 w-auto transition-all duration-300"
+                />
+              </a>
+            </div>
             <p className="text-base leading-relaxed mb-6">Design estratégico e tecnologia para profissionalizar a presença digital de autônomos e pequenos negócios.
               Svicero Studio, sediado em São Paulo (Brasil), atendendo clientes no Brasil e no exterior.</p>
           </div>
@@ -32,8 +43,8 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-bold text-lg mb-4">Estúdio</h4>
             <ul className="flex flex-col gap-2">
-                 <li><Link to="/portfolio" className="hover:text-secondary transition-colors">Portfólio</Link></li>
-                 <li><Link to="/planos-pacotes" className="hover:text-secondary transition-colors">Planos & Pacotes</Link></li>
+              <li><Link to="/portfolio" className="hover:text-secondary transition-colors">Portfólio</Link></li>
+              <li><Link to="/planos-pacotes" className="hover:text-secondary transition-colors">Planos & Pacotes</Link></li>
               <li><Link to="/processos" className="hover:text-secondary transition-colors">Processos</Link></li>
               <li><Link to="/blog" className="hover:text-secondary transition-colors">Blog</Link></li>
             </ul>

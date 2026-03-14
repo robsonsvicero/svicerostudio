@@ -430,8 +430,8 @@ const Home = () => {
                 href="https://wa.me/5511964932007"
                 target="_blank"
                 rel="noopener noreferrer"
-                variant="custom"
-                className="bg-transparent text-white font-bold text-lg px-8 py-4 rounded-xl border border-white shadow-md hover:bg-white hover:text-secondary transition-colors"
+                variant="outline"
+                className="transition-colors"
               >Falar pelo WhatsApp
               </Button>
             </div>

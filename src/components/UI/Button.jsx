@@ -47,7 +47,7 @@ const Button = ({
   } else if (variant === 'danger') {
     variantClasses = 'bg-red-600 border-none text-white shadow-lg hover:bg-red-700';
   } else if (variant === 'outline') {
-    variantClasses = 'bg-transparent border-2 border-white/30 text-low-dark shadow-lg outline-hover';
+    variantClasses = 'bg-transparent border-2 border-white/30 text-low-dark shadow-lg outline-hover hover:border-none';
     outlineHoverClass = 'outline-hover';
   } else if (variant === 'custom') {
     // Variante custom: não aplica estilos de cor/borda, permite controle total via className

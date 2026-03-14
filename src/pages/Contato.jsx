@@ -76,7 +76,7 @@ const Contato = () => {
             </p>
 
             <div className="mt-8">
-              <Button href="/formulario-interesse" variant="secondary" size="sm">
+              <Button href="/formulario-interesse" variant="secondary">
                 Preencher formulário de interesse
               </Button>
             </div>
@@ -162,22 +162,18 @@ const Contato = () => {
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button
                 href="/formulario-interesse"
-                variant="custom"
-                size="sm"
-                className="bg-[#F8F7F2] text-[#141414] font-semibold hover:brightness-95"
-              >
-                Preencher formulário de interesse
+                variant="primary"
+                className="transition-colors"
+              >Preencher formulário de interesse
               </Button>
 
               <Button
                 href="https://wa.me/5511964932007"
-                variant="custom"
-                size="sm"
-                className="border border-[#F8F7F2]/40 text-[#F8F7F2] bg-transparent hover:bg-white/10"
                 target="_blank"
                 rel="noopener noreferrer"
-              >
-                Falar pelo WhatsApp
+                variant="outline"
+                className="transition-colors"
+              >Falar pelo WhatsApp
               </Button>
             </div>
           </div>
