@@ -363,7 +363,7 @@ const Home = () => {
 
         {/* Depoimentos */}
         {depoimentos.length > 0 && (
-          <section className="bg-dark-bg py-24 px-4 md:px-16">
+          <section className="bg-primary py-24 px-4 md:px-16">
             <div className="max-w-screen-xl mx-auto">
               <div className="mb-12 text-left">
                 <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
@@ -415,7 +415,7 @@ const Home = () => {
         <BlogSection blogPosts={blogPosts} />
 
         {/* CTA Final */}
-        <section className="w-full bg-dark-bg py-24 px-4 flex justify-center items-center min-h-[420px]">
+        <section className="w-full bg-dark-bg pb-24 px-4 flex justify-center items-center min-h-[420px]">
           <div className="max-w-screen-xl w-full mx-auto bg-gradient-to-br from-secondary via-secondary to-secondary700 rounded-[48px] shadow-xl flex flex-col items-center justify-center px-8 py-16">
             <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white text-center mb-6">Pronto para dar o próximo passo com sua marca?</h2>
             <p className="text-lg md:text-xl text-white/80 font-light text-center mb-10">Se você sente que já passou da hora da sua marca acompanhar o nível do seu trabalho, o próximo passo é simples. Conte um pouco sobre seu momento para que o Svicero Studio possa te orientar com clareza.</p>

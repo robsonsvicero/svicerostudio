@@ -4,7 +4,7 @@ import Button from '../UI/Button';
 
 const AboutSection = () => {
   return (
-    <section id="sobre" className="bg-primary py-24 px-4 md:px-16">
+    <section id="sobre" className="bg-dark-bg py-24 px-4 md:px-16">
       <div className="max-w-screen-xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Imagem com badge */}

@@ -28,10 +28,10 @@ const Comments = ({ slug }) => {
     e.preventDefault();
     setMessage('');
     try {
-      const res = await fetch(`${API_URL}/api/comments`, {
+      const res = await fetch(`${API_URL}/api/comments/${slug}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ postSlug: slug, name, content })
+        body: JSON.stringify({ name, content })
       });
       if (res.ok) {
         setMessage('Comentário enviado! Aguarde aprovação.');

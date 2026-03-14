@@ -8,7 +8,7 @@ import 'swiper/css/pagination';
 
 const BlogSection = ({ blogPosts }) => {
   return (
-    <section id="blog" className="bg-primary py-24 px-4 md:px-16">
+    <section id="blog" className="bg-dark-bg py-24 px-4 md:px-16">
       <div className="max-w-screen-xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
