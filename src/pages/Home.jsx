@@ -10,11 +10,9 @@ import Header from '../components/Layout/Header';
 import Preloader from '../components/Preloader';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
-import ProjectModal from '../components/ProjectModal';
 import SEOHelmet from '../components/SEOHelmet';
 import Toast from '../components/UI/Toast';
 import { useToast } from '../hooks/useToast';
-import { formatDate } from '../utils/formatDate';
 import { API_URL } from '../lib/api.js';
 
 import idvDesigner from '../images/idv-deigner.webp';
@@ -23,13 +21,11 @@ import developer from '../images/developer.webp';
 
 import HeroSection from '../components/Home/HeroSection';
 import ServicesSection from '../components/Home/ServicesSection';
-
 import sviceroCta from '../images/Svicero_CTA.png';
 import AboutSection from '../components/Home/AboutSection';
 
 
 const Home = () => {
-  // Dados dos serviços principais
   const servicos = [
     {
       img: idvDesigner,
@@ -57,8 +53,6 @@ const Home = () => {
   const [whatsappVisible, setWhatsappVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [projects, setProjects] = useState([]);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [depoimentos, setDepoimentos] = useState([]);
   const [blogPosts, setBlogPosts] = useState([]);
   const { showToast, toastMessage, toastType, hideToast, showToastMessage } = useToast();
@@ -66,7 +60,6 @@ const Home = () => {
   const swipersRef = useRef([]);
   const [swipersInitialized, setSwipersInitialized] = useState(false);
 
-  // Funções de busca de dados
   const fetchProjects = async () => {
     try {
       const res = await fetch(`${API_URL}/api/db/projetos/query`, {
@@ -74,9 +67,8 @@ const Home = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           operation: 'select',
-          filters: [{ column: 'exibir_home', operator: 'eq', value: true }],
-          limit: 5,
-          orderBy: { column: 'ordem', ascending: true }
+          orderBy: { column: 'created_at', ascending: false },
+          limit: 4
         })
       });
       const payload = await res.json();
@@ -119,14 +111,12 @@ const Home = () => {
     }
   };
 
-  // Efeito para buscar todos os dados na montagem
   useEffect(() => {
     fetchProjects();
     fetchDepoimentos();
     fetchBlogPosts();
   }, []);
 
-  // Efeito para inicializar o Swiper de depoimentos
   useEffect(() => {
     if (depoimentos.length === 0) return;
 
@@ -164,8 +154,6 @@ const Home = () => {
         });
         swipersRef.current.push(depoimentosSwiperInstance);
         setSwipersInitialized(true);
-      } else {
-        console.error('Elemento .depoimentos-swiper não encontrado');
       }
     }, 200);
 
@@ -173,7 +161,7 @@ const Home = () => {
       clearTimeout(timeoutId);
       swipersRef.current.forEach(swiper => {
         if (swiper && swiper.destroy && typeof swiper.destroy === 'function') {
-          try { swiper.destroy(true, true); } catch (e) { /* ignora */ }
+          try { swiper.destroy(true, true); } catch (e) { }
         }
       });
       swipersRef.current = [];
@@ -183,19 +171,14 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     const form = e.target;
     const formData = new FormData(form);
-
     try {
       const response = await fetch('https://formspree.io/f/xdkegzaw', {
         method: 'POST',
         body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });
-
       if (response.ok) {
         showToastMessage('Mensagem enviada com sucesso! Entrarei em contato em breve.', 'success', 5000);
         form.reset();
@@ -209,27 +192,12 @@ const Home = () => {
     }
   };
 
-  // Buscar projetos do backend (últimos 5 marcados para exibir na home)
-
-
-  const handleOpenProject = (project) => {
-    setSelectedProject(project);
-    setIsProjectModalOpen(true);
-  };
-
-  const handleCloseProject = () => {
-    setIsProjectModalOpen(false);
-    setTimeout(() => setSelectedProject(null), 200);
-  };
-
-  // Função para obter a classe de cor do avatar
   const getAvatarColorClass = (cor) => {
     const cores = {
       orange: 'bg-orange-500/20 text-orange-500',
       gold: 'bg-amber-500/20 text-amber-500',
       blue: 'bg-blue-600/20 text-blue-600',
       silver: 'bg-gray-400/20 text-gray-400',
-      // Cores legadas para compatibilidade
       primary: 'bg-orange-500/20 text-orange-500',
       secondary: 'bg-amber-500/20 text-amber-500',
       accent: 'bg-blue-600/20 text-blue-600',
@@ -248,7 +216,6 @@ const Home = () => {
       <div className="bg-dark-bg min-h-screen">
         <Header />
 
-        {/* Botão flutuante WhatsApp */}
         <a
           href="https://wa.me/5511964932007"
           target="_blank"
@@ -259,10 +226,8 @@ const Home = () => {
           <i className="fa-brands fa-whatsapp text-3xl"></i>
         </a>
 
-        {/* Hero Section */}
         <HeroSection />
 
-        {/* Tríade Integrada */}
         <section id="triade" className="py-24 px-4 md:px-16 bg-dark-bg">
           <div className="max-w-screen-xl mx-auto">
             <div className="text-left mb-16">
@@ -276,7 +241,6 @@ const Home = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-8">
-              {/* 01 */}
               <div className="flex flex-col items-center text-center">
                 <span className="font-title text-7xl md:text-8xl font-extrabold text-secondary/40 leading-none mb-3">01</span>
                 <h3 className="font-title text-2xl font-bold text-white mb-4">Estratégia de marca</h3>
@@ -284,8 +248,6 @@ const Home = () => {
                   Definimos como você quer ser visto, quem quer atrair e o espaço que quer ocupar no mercado. Isso guia todas as decisões de design e site.
                 </p>
               </div>
-
-              {/* 02 */}
               <div className="flex flex-col items-center text-center">
                 <span className="font-title text-7xl md:text-8xl font-extrabold text-secondary/40 leading-none mb-3">02</span>
                 <h3 className="font-title text-2xl font-bold text-white mb-4">Identidade visual</h3>
@@ -293,8 +255,6 @@ const Home = () => {
                   Criamos uma identidade visual completa que tira a cara de amador e passa o nível de profissionalismo que você já entrega.
                 </p>
               </div>
-
-              {/* 03 */}
               <div className="flex flex-col items-center text-center">
                 <span className="font-title text-7xl md:text-8xl font-extrabold text-secondary/40 leading-none mb-3">03</span>
                 <h3 className="font-title text-2xl font-bold text-white mb-4">Presença digital</h3>
@@ -303,7 +263,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            {/* Para quem é */}
+
             <div className="bg-[#222] rounded-2xl p-8 md:p-12 mt-36 mb-8 max-w-3xl mx-auto flex flex-col items-center">
               <h2 className="font-title text-3xl md:text-4xl font-extrabold text-white mb-2 text-left w-full">Para quem é</h2>
               <div className="text-[#B2B8C6] text-base md:text-lg font-light mb-6 text-left w-full">Especialmente para psicopedagogas, personal trainers e pequenos negócios que prestam serviços.</div>
@@ -319,38 +279,22 @@ const Home = () => {
               <hr className="w-full border-t border-[#444] mb-6 mt-2" />
               <div className="text-[#B2B8C6] text-left w-full mb-6">Se você se viu em 2 ou mais pontos, vale a pena conversar com o estúdio.</div>
               <div className="flex flex-col md:flex-row gap-4">
-                <Button
-                  href="/formulario-interesse"
-                  variant="secondary"
-                >
+                <Button href="/formulario-interesse" variant="secondary">
                   Quero falar sobre minha marca
                 </Button>
-                <Button
-                  href="/processos"
-                  variant="outline"
-                >
+                <Button href="/processos" variant="outline">
                   Ver como trabalhamos
                 </Button>
               </div>
-
-
             </div>
           </div>
         </section>
 
-        {/* Projetos Selecionados / Works */}
+        {/* Projetos Selecionados */}
         <ProjectsSection projects={projects} />
 
-        {/* <ProjectModal
-          isOpen={isProjectModalOpen}
-          onClose={handleCloseProject}
-          project={selectedProject}
-        /> */}
-
-        {/* Sobre / About */}
         <AboutSection />
 
-        {/* Depoimentos */}
         {depoimentos.length > 0 && (
           <section className="bg-primary py-24 px-4 md:px-16">
             <div className="max-w-screen-xl mx-auto">
@@ -367,15 +311,12 @@ const Home = () => {
                     {[...depoimentos].sort((a, b) => Number(a.ordem) - Number(b.ordem)).map((depoimento) => (
                       <div key={depoimento.id} className="swiper-slide">
                         <div className="bg-white/5 rounded-2xl border border-secondary700 p-8 flex flex-col h-full shadow-md">
-                          {/* Estrelas */}
                           <div className="mb-4">
                             {Array.from({ length: 5 }).map((_, i) => (
                               <i key={i} className={`fa-solid fa-star text-secondary text-xl mr-1 ${i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''}`}></i>
                             ))}
                           </div>
-                          {/* Texto */}
                           <p className="text-[#B2B8C6] text-base font-normal leading-relaxed mb-6 italic flex-1">"{depoimento.texto}"</p>
-                          {/* Avatar, nome e cargo */}
                           <div className="flex items-center gap-4 mt-auto">
                             <div className="w-12 h-12 flex-shrink-0 rounded-full bg-[#E5E5E5] flex items-center justify-center">
                               <span className="font-semibold text-lg text-secondary700">{depoimento.iniciais || depoimento.nome?.substring(0, 2).toUpperCase()}</span>
@@ -389,7 +330,6 @@ const Home = () => {
                       </div>
                     ))}
                   </div>
-
                   <div className="swiper-button-prev"></div>
                   <div className="swiper-button-next"></div>
                   <div className="swiper-pagination mt-12 flex justify-center"></div>
@@ -399,42 +339,25 @@ const Home = () => {
           </section>
         )}
 
-
-        {/* Blog - Últimas Publicações */}
         <BlogSection blogPosts={blogPosts} />
 
-        {/* CTA Final */}
         <section className="w-full bg-dark-bg pb-24 px-4 flex justify-center items-center min-h-[420px]">
           <div className="max-w-screen-xl w-full mx-auto bg-gradient-to-br from-secondary via-secondary to-secondary700 rounded-[48px] shadow-xl flex flex-col items-center justify-center px-8 py-16">
             <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white text-center mb-6">Pronto para dar o próximo passo com sua marca?</h2>
             <p className="text-lg md:text-xl text-white/80 font-light text-center mb-10">Se você sente que já passou da hora da sua marca acompanhar o nível do seu trabalho, o próximo passo é simples. Conte um pouco sobre seu momento para que o Svicero Studio possa te orientar com clareza.</p>
             <div className="flex flex-col md:flex-row gap-6 mt-2">
-              <Button
-                href="/formulario-interesse"
-                variant="primary"
-                className="transition-colors"
-              >Preencher formulário de interesse
+              <Button href="/formulario-interesse" variant="primary" className="transition-colors">
+                Preencher formulário de interesse
               </Button>
-              <Button
-                href="https://wa.me/5511964932007"
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="outline"
-                className="transition-colors"
-              >Falar pelo WhatsApp
+              <Button href="https://wa.me/5511964932007" target="_blank" rel="noopener noreferrer" variant="outline" className="transition-colors">
+                Falar pelo WhatsApp
               </Button>
             </div>
           </div>
         </section>
 
-
         <Footer />
 
-
-
-
-
-        {/* Toast Notification */}
         <Toast
           show={showToast}
           message={toastMessage}
