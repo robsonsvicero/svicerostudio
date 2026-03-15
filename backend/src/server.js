@@ -44,6 +44,13 @@ const corsOriginFn = (origin, callback) => {
     }
     return callback(null, true);
   }
+  // Permite requisições sem Origin (ex: health check, scripts internos)
+  if (!origin) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.log('[CORS] Permitindo requisição sem Origin');
+    }
+    return callback(null, true);
+  }
   const allowed = env.split(',').map(o => o.trim());
   if (allowed.includes(origin)) {
     if (process.env.NODE_ENV !== 'test') {
