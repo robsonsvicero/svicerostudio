@@ -150,40 +150,40 @@ const Header = ({ variant = 'transparent' }) => {
           <a
             href="/#inicio"
             onClick={(e) => handleNavigation(e, 'inicio')}
-            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-primary hover:text-secondary`}
+            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-cream hover:text-secondary`}
           >
             Início
           </a>
           <a
             href="/#sobre"
             onClick={(e) => handleNavigation(e, 'sobre')}
-            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-primary hover:text-secondary`}
+            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-cream hover:text-secondary`}
           >
             Sobre
           </a>
           <a
             href="/portfolio"
-            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-primary hover:text-secondary`}
+            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-cream hover:text-secondary`}
           >
             Projetos
           </a>
           <a
             href="/planos-pacotes"
-            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-primary hover:text-secondary`}
+            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-cream hover:text-secondary`}
           >
             Planos & Pacotes
           </a>
           <a
             href="/blog"
             onClick={closeMenu}
-            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-primary hover:text-secondary`}
+            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-cream hover:text-secondary`}
           >
             Blog
           </a>
           <a
             href="/blog"
             onClick={closeMenu}
-            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-primary hover:text-secondary`}
+            className={`font-title text-2xl mb-6 transition-colors duration-200 px-4 py-2 text-text-cream hover:text-secondary`}
           >
             Blog
           </a>

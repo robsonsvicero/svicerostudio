@@ -26,7 +26,7 @@ const HeroSection = () => {
             <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
             INOVAÇÃO DIGITAL
           </span>
-          <h1 className="font-extrabold text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.08] mb-6 drop-shadow-xl" style={{ letterSpacing: '-0.02em' }}>
+          <h1 className="font-extrabold text-cream text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.08] mb-6 drop-shadow-xl" style={{ letterSpacing: '-0.02em' }}>
             Marca e site à altura de quem você é
             {/* Design,<br />
             Tecnologia e um <br />
