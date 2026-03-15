@@ -19,7 +19,7 @@ export function buildMongoFilter(filters = []) {
 
     if (operator === 'ilike') {
       const escaped = String(value || '')
-        .replace(/[.*+?^${}()|[\]\]/g, '\$&')
+        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
         .replace(/%/g, '.*');
       mongoFilter[key] = { $regex: `^${escaped}$`, $options: 'i' };
     }
