@@ -79,7 +79,7 @@ const FormularioInteresse = () => {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8080/api/interesse', {
+      const res = await fetch(`${API_URL}/api/interesse`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
