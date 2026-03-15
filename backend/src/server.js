@@ -35,19 +35,24 @@ const app = express();
 app.use(express.json({ limit: '20mb' }));
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
-// Lê e normaliza CORS_ORIGIN — vazio ou ausente permite qualquer origem
-const rawCorsOrigin = process.env.CORS_ORIGIN || '';
-const corsOrigins = rawCorsOrigin.split(',').map((o) => o.trim()).filter(Boolean);
-const corsOriginValue = corsOrigins.length === 0 || corsOrigins[0] === '*' ? true : corsOrigins;
-console.log(`[cors] CORS_ORIGIN raw="${rawCorsOrigin}" → origin=${JSON.stringify(corsOriginValue)}`);
-
+// CORS robusto: aceita qualquer origem se CORS_ORIGIN não estiver definida ou vazia
 app.use(
   cors({
-    origin: corsOriginValue,
+    origin: (origin, callback) => {
+      const env = process.env.CORS_ORIGIN;
+      if (!env || env.trim() === '' || env.includes('*')) {
+        return callback(null, true); // Permite qualquer origem
+      }
+      const allowed = env.split(',').map(o => o.trim());
+      if (allowed.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-  }),
+  })
 );
 
 // Rotas públicas e modularizadas
