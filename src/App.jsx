@@ -7,7 +7,6 @@ import ErrorBoundary from './components/ErrorBoundary';
 import ConsentBanner from './components/ConsentBanner';
 
 const Home = lazy(() => import('./pages/Home'));
-// const Schedule = lazy(() => import('./pages/Schedule'));
 const ServiceFrontEnd = lazy(() => import('./pages/ServiceFrontEnd'));
 const ServiceIdentidadeVisual = lazy(() => import('./pages/ServiceIdentidadeVisual'));
 const ServiceUIUXDesign = lazy(() => import('./pages/ServiceUIUXDesign'));
