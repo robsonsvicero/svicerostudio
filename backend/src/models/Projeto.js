@@ -3,6 +3,7 @@ import { baseSchemaOptions } from './baseSchema.js';
 
 const projetoSchema = new mongoose.Schema(
   {
+    _id: { type: String, required: true },
     titulo: { type: String, required: true },
     descricao: { type: String, required: true },
     descricao_longa: String,

@@ -10,8 +10,8 @@ export function buildMongoFilter(filters = []) {
     const key = column === 'id' ? '_id' : column;
 
     if (operator === 'eq') {
-      if (key === '_id' && mongoose.Types.ObjectId.isValid(value)) {
-        mongoFilter[key] = new mongoose.Types.ObjectId(value);
+      if (key === '_id') {
+        mongoFilter[key] = value;
       } else {
         mongoFilter[key] = value;
       }
