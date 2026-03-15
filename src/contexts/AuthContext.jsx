@@ -1,18 +1,6 @@
 import React from 'react';
 
-const resolveApiBaseUrl = () => {
-  // Em localhost, sempre usar o backend local
-  if (typeof window !== 'undefined') {
-    const host = window.location.hostname;
-    if (host === 'localhost' || host === '127.0.0.1') {
-      return 'http://localhost:8080';
-    }
-  }
-  // Em produção, usar a variável de ambiente
-  return import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app';
-};
-
-const API_URL = resolveApiBaseUrl();
+const API_URL = import.meta.env.VITE_API_URL || 'https://svicerostudio-production.up.railway.app';
 console.log('[AuthContext] API_URL:', API_URL);
 const TOKEN_KEY = 'svicero_admin_token';
 
