@@ -74,11 +74,9 @@ const Home = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           operation: 'select',
-          options: {
-            where: { exibir_home: true },
-            limit: 5,
-            orderBy: { column: 'ordem', ascending: true }
-          }
+          filters: [{ column: 'exibir_home', operator: 'eq', value: true }],
+          limit: 5,
+          orderBy: { column: 'ordem', ascending: true }
         })
       });
       const payload = await res.json();
@@ -109,11 +107,9 @@ const Home = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           operation: 'select',
-          options: {
-            where: { publicado: true },
-            limit: 3,
-            orderBy: { column: 'data_publicacao', ascending: false }
-          }
+          filters: [{ column: 'publicado', operator: 'eq', value: true }],
+          limit: 3,
+          orderBy: { column: 'data_publicacao', ascending: false }
         })
       });
       const payload = await res.json();

@@ -22,7 +22,6 @@ import dbRouter from './routes/database.js';
 
 const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
@@ -36,11 +35,18 @@ const app = express();
 app.use(express.json({ limit: '20mb' }));
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
-const corsOrigins = CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean);
+// Lê e normaliza CORS_ORIGIN — vazio ou ausente permite qualquer origem
+const rawCorsOrigin = process.env.CORS_ORIGIN || '';
+const corsOrigins = rawCorsOrigin.split(',').map((o) => o.trim()).filter(Boolean);
+const corsOriginValue = corsOrigins.length === 0 || corsOrigins[0] === '*' ? true : corsOrigins;
+console.log(`[cors] CORS_ORIGIN raw="${rawCorsOrigin}" → origin=${JSON.stringify(corsOriginValue)}`);
+
 app.use(
   cors({
-    origin: corsOrigins.length === 1 && corsOrigins[0] === '*' ? true : corsOrigins,
+    origin: corsOriginValue,
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   }),
 );
 
