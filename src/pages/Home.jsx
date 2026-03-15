@@ -327,34 +327,27 @@ const Home = () => {
                 </Button>
                 <Button
                   href="/processos"
-                  variant="outline"                  
+                  variant="outline"
                 >
                   Ver como trabalhamos
                 </Button>
               </div>
-              
+
 
             </div>
           </div>
         </section>
 
         {/* Projetos Selecionados / Works */}
-        <ProjectsSection
-          projects={projects.map(p => ({
-            image: p.imagem_url,
-            title: p.titulo,
-            description: p.descricao,
-            ...p
-          }))}
-        />
+        <ProjectsSection projects={projects} />
 
-        <ProjectModal
+        {/* <ProjectModal
           isOpen={isProjectModalOpen}
           onClose={handleCloseProject}
           project={selectedProject}
-        />
+        /> */}
 
-             {/* Sobre / About */}
+        {/* Sobre / About */}
         <AboutSection />
 
         {/* Depoimentos */}
@@ -363,9 +356,9 @@ const Home = () => {
             <div className="max-w-screen-xl mx-auto">
               <div className="mb-12 text-left">
                 <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
-                FEEDBACK
-              </span>
+                  <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                  FEEDBACK
+                </span>
                 <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">O que diz quem passa pelo nosso processo</h2>
               </div>
               <div className="relative">
