@@ -36,19 +36,29 @@ app.use(express.json({ limit: '20mb' }));
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
 // CORS robusto: aceita qualquer origem se CORS_ORIGIN não estiver definida ou vazia
+const corsOriginFn = (origin, callback) => {
+  const env = process.env.CORS_ORIGIN;
+  if (!env || env.trim() === '' || env.includes('*')) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.log('[CORS] Permitindo qualquer origem (CORS_ORIGIN não definida ou contém *)');
+    }
+    return callback(null, true);
+  }
+  const allowed = env.split(',').map(o => o.trim());
+  if (allowed.includes(origin)) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.log(`[CORS] Permitindo origem: ${origin}`);
+    }
+    return callback(null, true);
+  }
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(`[CORS] Bloqueando origem: ${origin}`);
+  }
+  return callback(new Error('Not allowed by CORS'));
+};
 app.use(
   cors({
-    origin: (origin, callback) => {
-      const env = process.env.CORS_ORIGIN;
-      if (!env || env.trim() === '' || env.includes('*')) {
-        return callback(null, true); // Permite qualquer origem
-      }
-      const allowed = env.split(',').map(o => o.trim());
-      if (allowed.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error('Not allowed by CORS'));
-    },
+    origin: corsOriginFn,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
