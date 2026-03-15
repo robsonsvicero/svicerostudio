@@ -75,6 +75,9 @@ function applyPublicReadConstraints(table, filter) {
   if (table === 'posts') {
     return { ...filter, publicado: true };
   }
+  if (table === 'projetos') {
+    return { ...filter, publicado: true };
+  }
   if (table === 'autores') {
     return { ...filter, publicado: true };
   }
