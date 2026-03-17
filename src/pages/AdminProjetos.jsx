@@ -11,6 +11,7 @@ const AdminProjetos = () => {
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [uploadError, setUploadError] = useState('');
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
 
   const initialFormState = {
@@ -39,7 +40,6 @@ const AdminProjetos = () => {
   const [submitting, setSubmitting] = useState(false);
   const [editing, setEditing] = useState(null);
 
-  // Gera slug a partir de qualquer texto
   const slugify = (text) =>
     text
       .toString()
@@ -58,17 +58,12 @@ const AdminProjetos = () => {
 
     setForm((prev) => {
       const updated = { ...prev, [name]: newValue };
-
-      // Auto-gera slug ao digitar o título,
-      // exceto em modo edição ou se o usuário já editou o slug manualmente
       if (name === 'titulo' && !editing && !slugManuallyEdited) {
         updated.slug = slugify(value);
       }
-
       return updated;
     });
 
-    // Marca que o usuário editou o slug manualmente
     if (name === 'slug') {
       setSlugManuallyEdited(value.trim() !== '');
     }
@@ -80,7 +75,16 @@ const AdminProjetos = () => {
         setForm((prev) => ({ ...prev, [fieldName]: '' }));
         return;
       }
+
+      if (!token) {
+        signOut();
+        navigate('/login');
+        return;
+      }
+
+      setUploadError('');
       setIsUploading(true);
+
       const formData = new FormData();
       formData.append('file', file);
       formData.append('bucket', 'projetos');
@@ -93,28 +97,50 @@ const AdminProjetos = () => {
           body: formData,
         });
         const payload = await res.json();
-        if (res.ok && payload.data?.path) {
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            signOut();
+            navigate('/login');
+            return;
+          }
+          setUploadError(`Erro no upload (${res.status}): ${payload.error || 'tente novamente'}`);
+          return;
+        }
+
+        if (payload.data?.path) {
           const imageUrl = `${API_URL}/api/storage/public/projetos/${payload.data.path}`;
           setForm((prev) => ({ ...prev, [fieldName]: imageUrl }));
+        } else {
+          setUploadError('Upload concluído mas URL não retornada pelo servidor.');
         }
       } catch (err) {
-        console.error(`Falha no upload para o campo ${fieldName}:`, err);
+        setUploadError(`Falha no upload: ${err.message}`);
       } finally {
         setIsUploading(false);
       }
     },
-    [token],
+    [token, signOut, navigate],
   );
 
   const handleGalleryUpload = useCallback(
     async (files) => {
+      if (!token) {
+        signOut();
+        navigate('/login');
+        return;
+      }
+
+      setUploadError('');
       setIsUploading(true);
       const uploadedUrls = [];
+
       for (const file of files) {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('bucket', 'projetos');
         formData.append('key', `${Date.now()}_${file.name}`);
+
         try {
           const res = await fetch(`${API_URL}/api/storage/upload`, {
             method: 'POST',
@@ -122,18 +148,25 @@ const AdminProjetos = () => {
             body: formData,
           });
           const payload = await res.json();
-          if (res.ok && payload.data?.path) {
+
+          if (!res.ok) {
+            setUploadError(`Erro no upload de "${file.name}": ${payload.error || res.status}`);
+            continue;
+          }
+
+          if (payload.data?.path) {
             const imageUrl = `${API_URL}/api/storage/public/projetos/${payload.data.path}`;
             uploadedUrls.push({ url: imageUrl });
           }
         } catch (err) {
-          console.error(`Falha no upload da imagem da galeria: ${file.name}`, err);
+          setUploadError(`Falha no upload de "${file.name}": ${err.message}`);
         }
       }
+
       setGallery((prev) => [...prev, ...uploadedUrls]);
       setIsUploading(false);
     },
-    [token],
+    [token, signOut, navigate],
   );
 
   const handleRemoveFromGallery = (indexToRemove) => {
@@ -150,7 +183,10 @@ const AdminProjetos = () => {
     try {
       const res = await fetch(`${API_URL}/api/db/projetos/query`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           operation: 'select',
           orderBy: { column: 'data_projeto', ascending: false },
@@ -180,35 +216,59 @@ const AdminProjetos = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setUploadError('');
+
+    if (!token) {
+      signOut();
+      navigate('/login');
+      return;
+    }
+
+    // Validação frontend
+    const validationErrors = [];
+    if (!form.titulo?.trim()) validationErrors.push('Título é obrigatório.');
+    if (!form.slug?.trim()) validationErrors.push('Slug é obrigatório.');
+    if (!form.descricao?.trim()) validationErrors.push('Resumo curto é obrigatório.');
+    if (!form.imagem_url?.trim()) validationErrors.push('Faça o upload da imagem de capa antes de salvar.');
+
+    if (validationErrors.length > 0) {
+      setError(validationErrors.join(' '));
+      return;
+    }
+
     setSubmitting(true);
 
     const formPayload = { ...form };
     const op = editing ? 'update' : 'insert';
     const filters = editing ? [{ column: 'id', operator: 'eq', value: editing }] : [];
 
-    // Gera _id para novos projetos usando o slug
     if (!editing) {
-      if (!formPayload.slug || formPayload.slug.trim() === '') {
-        setError('O campo Slug é obrigatório para criar um projeto.');
-        setSubmitting(false);
-        return;
-      }
       formPayload._id = formPayload.slug.trim();
     }
 
-    // Garante que link tenha valor (usa slug como fallback)
-    if (!formPayload.link || formPayload.link.trim() === '') {
+    if (!formPayload.link?.trim()) {
       formPayload.link = formPayload.slug.trim();
     }
 
     try {
       const res = await fetch(`${API_URL}/api/db/projetos/query`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ operation: op, filters, payload: formPayload }),
       });
       const resData = await res.json();
-      if (!res.ok) throw new Error(resData.error || 'Erro ao salvar projeto');
+
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          signOut();
+          navigate('/login');
+          return;
+        }
+        throw new Error(resData.error || 'Erro ao salvar projeto');
+      }
 
       const projetoId = editing || (resData.data && resData.data[0]?.id);
       if (!projetoId) throw new Error('Não foi possível obter o ID do projeto.');
@@ -216,7 +276,10 @@ const AdminProjetos = () => {
       // Sincroniza galeria
       await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           operation: 'delete',
           filters: [{ column: 'projeto_id', operator: 'eq', value: projetoId }],
@@ -226,10 +289,17 @@ const AdminProjetos = () => {
       for (const [index, img] of gallery.entries()) {
         await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             operation: 'insert',
-            payload: { projeto_id: projetoId, imagem_url: img.url, ordem: index },
+            payload: {
+              projeto_id: projetoId,
+              imagem_url: img.url || img.imagem_url,
+              ordem: index,
+            },
           }),
         });
       }
@@ -249,13 +319,18 @@ const AdminProjetos = () => {
   const handleEditProject = useCallback(
     async (proj) => {
       setEditing(proj.id);
-      setSlugManuallyEdited(true); // bloqueia auto-geração no modo edição
+      setSlugManuallyEdited(true);
+      setError('');
+      setUploadError('');
       setForm({ ...initialFormState, ...proj });
 
       try {
         const res = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             operation: 'select',
             filters: [{ column: 'projeto_id', operator: 'eq', value: proj.id }],
@@ -264,7 +339,11 @@ const AdminProjetos = () => {
         });
         const galleryData = await res.json();
         if (res.ok && Array.isArray(galleryData.data)) {
-          setGallery(galleryData.data);
+          const normalized = galleryData.data.map((img) => ({
+            ...img,
+            url: img.url || img.imagem_url,
+          }));
+          setGallery(normalized);
         } else {
           setGallery([]);
         }
@@ -278,11 +357,19 @@ const AdminProjetos = () => {
   );
 
   const handleDeleteProject = async (projectId) => {
+    if (!token) {
+      signOut();
+      navigate('/login');
+      return;
+    }
     if (window.confirm('Tem certeza? Esta ação removerá o projeto e sua galeria.')) {
       try {
         await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             operation: 'delete',
             filters: [{ column: 'projeto_id', operator: 'eq', value: projectId }],
@@ -290,7 +377,10 @@ const AdminProjetos = () => {
         });
         await fetch(`${API_URL}/api/db/projetos/query`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             operation: 'delete',
             filters: [{ column: 'id', operator: 'eq', value: projectId }],
@@ -386,8 +476,7 @@ const AdminProjetos = () => {
                     : 'Novo projeto com menos ruído, mais direção.'}
                 </h1>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60 lg:text-base">
-                  Uma página de cadastro com aparência mais premium, blocos bem definidos e uma
-                  experiência de preenchimento mais limpa, focada em clareza editorial.
+                  Preencha os campos obrigatórios e faça o upload da imagem de capa antes de salvar.
                 </p>
               </div>
 
@@ -399,6 +488,7 @@ const AdminProjetos = () => {
                     setGallery([]);
                     setEditing(null);
                     setError('');
+                    setUploadError('');
                     setSlugManuallyEdited(false);
                   }}
                   className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/80 transition hover:bg-white/8"
@@ -407,14 +497,16 @@ const AdminProjetos = () => {
                 </button>
                 <button
                   type="submit"
-                  className="rounded-2xl bg-[#B87333] px-5 py-3 text-sm font-semibold text-[#141414] transition hover:brightness-110"
+                  className="rounded-2xl bg-[#B87333] px-5 py-3 text-sm font-semibold text-[#141414] transition hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={submitting || isUploading}
                 >
                   {submitting
                     ? 'Salvando...'
-                    : editing
-                      ? 'Atualizar Projeto'
-                      : 'Publicar Projeto'}
+                    : isUploading
+                      ? 'Aguarde o upload...'
+                      : editing
+                        ? 'Atualizar Projeto'
+                        : 'Publicar Projeto'}
                 </button>
               </div>
             </div>
@@ -422,6 +514,11 @@ const AdminProjetos = () => {
             {error && (
               <div className="mt-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
                 {error}
+              </div>
+            )}
+            {uploadError && (
+              <div className="mt-3 rounded-2xl border border-orange-500/30 bg-orange-500/10 px-4 py-3 text-sm text-orange-400">
+                ⚠️ {uploadError}
               </div>
             )}
           </div>
@@ -432,9 +529,7 @@ const AdminProjetos = () => {
               {/* Informações principais */}
               <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
                 <div className="mb-6">
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                    Base do projeto
-                  </p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Base do projeto</p>
                   <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">
                     Informações principais
                   </h2>
@@ -453,13 +548,9 @@ const AdminProjetos = () => {
                           onChange={handleFieldChange}
                           className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
                         >
-                          <option value="" disabled>
-                            {field.placeholder}
-                          </option>
+                          <option value="" disabled>{field.placeholder}</option>
                           {field.options.map((opt) => (
-                            <option key={opt} value={opt}>
-                              {opt}
-                            </option>
+                            <option key={opt} value={opt}>{opt}</option>
                           ))}
                         </select>
                       ) : (
@@ -503,7 +594,7 @@ const AdminProjetos = () => {
                 <div className="grid gap-4">
                   <label>
                     <span className="mb-2 block text-sm font-medium text-white/82">
-                      Resumo curto (para cards)
+                      Resumo curto (para cards) <span className="text-[#E9BF84]">*</span>
                     </span>
                     <textarea
                       name="descricao"
@@ -557,7 +648,7 @@ const AdminProjetos = () => {
                 <div className="grid gap-4 lg:grid-cols-2">
                   <label className="block lg:col-span-2">
                     <span className="mb-2 block text-sm font-medium text-white/82">
-                      Link principal <span className="ml-1 text-[#E9BF84]">*</span>
+                      Link principal
                     </span>
                     <input
                       type="text"
@@ -582,9 +673,7 @@ const AdminProjetos = () => {
                     />
                   </label>
                   <label className="block">
-                    <span className="mb-2 block text-sm font-medium text-white/82">
-                      URL do site
-                    </span>
+                    <span className="mb-2 block text-sm font-medium text-white/82">URL do site</span>
                     <input
                       type="text"
                       name="site_url"
@@ -631,6 +720,18 @@ const AdminProjetos = () => {
                     Galeria visual
                   </h2>
                 </div>
+
+                {/* Indicador de status da imagem de capa */}
+                {form.imagem_url ? (
+                  <div className="mb-4 rounded-2xl border border-green-500/20 bg-green-900/10 px-4 py-2 text-sm text-green-400">
+                    ✓ Imagem de capa carregada com sucesso.
+                  </div>
+                ) : (
+                  <div className="mb-4 rounded-2xl border border-orange-500/20 bg-orange-900/10 px-4 py-2 text-sm text-orange-400">
+                    ⚠️ Imagem de capa obrigatória — faça o upload antes de salvar.
+                  </div>
+                )}
+
                 <div className="grid gap-4">
                   <ImageUploadSlot
                     title="Imagem de capa"
@@ -652,7 +753,7 @@ const AdminProjetos = () => {
                       </p>
                     </div>
                     <label className="cursor-pointer rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/80 transition hover:bg-white/8">
-                      Adicionar Imagens
+                      {isUploading ? 'Enviando...' : 'Adicionar Imagens'}
                       <input
                         type="file"
                         multiple
@@ -668,7 +769,7 @@ const AdminProjetos = () => {
                       {gallery.map((img, index) => (
                         <div key={index} className="group relative aspect-square">
                           <img
-                            src={img.url}
+                            src={img.url || img.imagem_url}
                             alt={`Galeria ${index + 1}`}
                             className="h-full w-full rounded-xl object-cover"
                           />
@@ -690,9 +791,7 @@ const AdminProjetos = () => {
               {/* Configurações */}
               <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
                 <div className="mb-6">
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                    Configurações
-                  </p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Configurações</p>
                   <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">
                     Exibição e comportamento
                   </h2>
@@ -751,9 +850,7 @@ const AdminProjetos = () => {
                 </p>
                 <div className="mt-5 space-y-3">
                   <div className="rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-4">
-                    <p className="text-xs uppercase tracking-[0.18em] text-white/35">
-                      Status Atual
-                    </p>
+                    <p className="text-xs uppercase tracking-[0.18em] text-white/35">Status Atual</p>
                     <p className="mt-2 text-sm font-medium capitalize text-white/88">
                       {form.status}
                     </p>
@@ -764,6 +861,12 @@ const AdminProjetos = () => {
                       {form.slug || (
                         <span className="italic text-white/30">não definido</span>
                       )}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-4">
+                    <p className="text-xs uppercase tracking-[0.18em] text-white/35">Imagem de capa</p>
+                    <p className={`mt-2 text-sm font-medium ${form.imagem_url ? 'text-green-400' : 'text-orange-400'}`}>
+                      {form.imagem_url ? '✓ Carregada' : '⚠️ Pendente'}
                     </p>
                   </div>
                 </div>
@@ -781,11 +884,17 @@ const AdminProjetos = () => {
               <ul className="divide-y divide-white/8">
                 {projects.map((proj) => (
                   <li key={proj.id} className="flex items-center gap-4 p-4">
-                    <img
-                      src={proj.imagem_url}
-                      alt={proj.titulo}
-                      className="h-10 w-16 flex-shrink-0 rounded-lg object-cover"
-                    />
+                    {proj.imagem_url ? (
+                      <img
+                        src={proj.imagem_url}
+                        alt={proj.titulo}
+                        className="h-10 w-16 flex-shrink-0 rounded-lg object-cover"
+                      />
+                    ) : (
+                      <div className="h-10 w-16 flex-shrink-0 rounded-lg bg-white/5 flex items-center justify-center text-white/20 text-xs">
+                        sem img
+                      </div>
+                    )}
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-semibold text-white">{proj.titulo}</p>
                       <p className="truncate text-sm text-white/60">

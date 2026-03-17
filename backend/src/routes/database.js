@@ -61,7 +61,7 @@ function normalizeDoc(doc) {
   } else {
     plain = { ...doc };
   }
-  
+
   if (plain._id) {
     plain.id = plain._id.toString();
     delete plain._id;
@@ -76,8 +76,8 @@ function applyPublicReadConstraints(table, filter) {
     return { ...filter, publicado: true };
   }
   if (table === 'projetos') {
-  return { ...filter, mostrar_home: true };
-}
+    return { ...filter, mostrar_home: true };
+  }
   if (table === 'autores') {
     return { ...filter, publicado: true };
   }
@@ -173,17 +173,12 @@ router.post('/:table/query', async (req, res) => {
     if (operation === 'insert') {
       const items = Array.isArray(payload) ? payload : [payload];
       const now = new Date();
-      let rows;
-      if (table === 'autores' || table === 'posts' || table === 'depoimentos') {
-        rows = items.map((item) => ({
-          ...item,
-          _id: item.id || item._id || uuidv4(),
-          created_at: item.created_at || now,
-          updated_at: now
-        }));
-      } else {
-        rows = items.map((item) => ({ ...item, created_at: item.created_at || now, updated_at: now }));
-      }
+      const rows = items.map((item) => ({
+        ...item,
+        _id: item.id || item._id || uuidv4(),
+        created_at: item.created_at || now,
+        updated_at: now,
+      }));
       const inserted = await Model.insertMany(rows);
       return res.json({ data: normalizeDoc(inserted), error: null });
     }
@@ -195,7 +190,7 @@ router.post('/:table/query', async (req, res) => {
       const updatePayload = { ...updateData, updated_at: new Date() };
 
       const updateResult = await Model.updateMany(mongoFilter, { $set: updatePayload });
-      
+
       const updated = await Model.find(mongoFilter).lean();
       return res.json({ data: normalizeDoc(updated), error: null, matchedCount: updateResult.matchedCount, modifiedCount: updateResult.modifiedCount });
     }
