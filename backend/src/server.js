@@ -86,28 +86,33 @@ app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'svicerostud
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
 app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (req, res) => {
-  const { bucket, key } = req.body || {};
-  const file = req.file;
+  try {
+    const { bucket, key } = req.body || {};
+    const file = req.file;
 
-  if (!bucket || !key || !file) {
-    return res.status(400).json({ error: 'bucket, key e file são obrigatórios' });
+    if (!bucket || !key || !file) {
+      return res.status(400).json({ error: 'bucket, key e file são obrigatórios' });
+    }
+
+    await Upload.findOneAndUpdate(
+      { bucket, storageKey: key },
+      {
+        bucket,
+        storageKey: key,
+        originalName: file.originalname,
+        mimeType: file.mimetype,
+        size: file.size,
+        data: file.buffer,
+        created_at: new Date(),
+      },
+      { upsert: true, new: true },
+    );
+
+    return res.json({ data: { path: key }, error: null });
+  } catch (err) {
+    console.error('[UPLOAD ERROR]', err.message, err.stack);
+    return res.status(500).json({ error: err.message || 'Erro ao salvar arquivo' });
   }
-
-  await Upload.findOneAndUpdate(
-    { bucket, storageKey: key },
-    {
-      bucket,
-      storageKey: key,
-      originalName: file.originalname,
-      mimeType: file.mimetype,
-      size: file.size,
-      data: file.buffer,
-      created_at: new Date(),
-    },
-    { upsert: true, new: true },
-  );
-
-  return res.json({ data: { path: key }, error: null });
 });
 
 // Storage — servir arquivos públicos
