@@ -86,34 +86,35 @@ const AdminBlog = () => {
   };
 
   const handleImageUpload = useCallback(async (file) => {
-    if (!file) {
-      setFormData(prev => ({ ...prev, imagem_destaque: '' }));
-      return;
-    }
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('bucket', 'posts'); // Assuming 'posts' bucket
-    formData.append('key', `${Date.now()}_${file.name}`);
+  if (!file) {
+    setFormData(prev => ({ ...prev, imagem_destaque: '' }));
+    return;
+  }
+  setIsUploading(true);
+  const uploadFormData = new FormData();
+  uploadFormData.append('file', file);
+  uploadFormData.append('bucket', 'posts');
+  uploadFormData.append('key', `${Date.now()}_${file.name}`);
 
-    try {
-      const res = await fetch(`${API_URL}/api/storage/upload`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-      const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || 'Falha no upload');
-      
-      const imageUrl = `${API_URL}/api/storage/public/posts/${payload.data.path}`;
-      setFormData(prev => ({ ...prev, imagem_destaque: imageUrl }));
-      showToastMessage('Imagem enviada com sucesso!', 'success');
-    } catch (err) {
-      showToastMessage(err.message, 'error');
-    } finally {
-      setIsUploading(false);
-    }
-  }, [token, showToastMessage]);
+  try {
+    const res = await fetch(`${API_URL}/api/storage/upload`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: uploadFormData,
+    });
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || 'Falha no upload');
+
+    const imageUrl = payload.data?.url
+      || `${API_URL}/api/storage/public/posts/${payload.data.path}`;
+    setFormData(prev => ({ ...prev, imagem_destaque: imageUrl }));
+    showToastMessage('Imagem enviada com sucesso!', 'success');
+  } catch (err) {
+    showToastMessage(err.message, 'error');
+  } finally {
+    setIsUploading(false);
+  }
+}, [token, showToastMessage]);
   
   const resetForm = () => {
     setFormData(initialFormState);

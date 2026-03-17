@@ -108,8 +108,8 @@ const AdminProjetos = () => {
           return;
         }
 
-        if (payload.data?.path) {
-          const imageUrl = `${API_URL}/api/storage/public/projetos/${payload.data.path}`;
+        if (payload.data?.url || payload.data?.path) {
+          const imageUrl = payload.data.url || `${API_URL}/api/storage/public/projetos/${payload.data.path}`;
           setForm((prev) => ({ ...prev, [fieldName]: imageUrl }));
         } else {
           setUploadError('Upload concluído mas URL não retornada pelo servidor.');
@@ -154,8 +154,8 @@ const AdminProjetos = () => {
             continue;
           }
 
-          if (payload.data?.path) {
-            const imageUrl = `${API_URL}/api/storage/public/projetos/${payload.data.path}`;
+          if (payload.data?.url || payload.data?.path) {
+            const imageUrl = payload.data.url || `${API_URL}/api/storage/public/projetos/${payload.data.path}`;
             uploadedUrls.push({ url: imageUrl });
           }
         } catch (err) {

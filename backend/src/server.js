@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 // Modelos
 import { AdminUser, Upload } from './models/index.js';
@@ -31,36 +32,29 @@ if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET não configurada');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Cliente R2
+const r2 = new S3Client({
+  region: 'auto',
+  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+  },
+});
+
 const app = express();
 app.use(express.json({ limit: '20mb' }));
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
-// CORS robusto: aceita qualquer origem se CORS_ORIGIN não estiver definida ou vazia
+// CORS
 const corsOriginFn = (origin, callback) => {
   const env = process.env.CORS_ORIGIN;
   if (!env || env.trim() === '' || env.includes('*')) {
-    if (process.env.NODE_ENV !== 'test') {
-      console.log('[CORS] Permitindo qualquer origem (CORS_ORIGIN não definida ou contém *)');
-    }
     return callback(null, true);
   }
-  // Permite requisições sem Origin (ex: health check, scripts internos)
-  if (!origin) {
-    if (process.env.NODE_ENV !== 'test') {
-      console.log('[CORS] Permitindo requisição sem Origin');
-    }
-    return callback(null, true);
-  }
-  const allowed = env.split(',').map(o => o.trim());
-  if (allowed.includes(origin)) {
-    if (process.env.NODE_ENV !== 'test') {
-      console.log(`[CORS] Permitindo origem: ${origin}`);
-    }
-    return callback(null, true);
-  }
-  if (process.env.NODE_ENV !== 'test') {
-    console.log(`[CORS] Bloqueando origem: ${origin}`);
-  }
+  if (!origin) return callback(null, true);
+  const allowed = env.split(',').map((o) => o.trim());
+  if (allowed.includes(origin)) return callback(null, true);
   return callback(new Error('Not allowed by CORS'));
 };
 app.use(
@@ -69,10 +63,10 @@ app.use(
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-  })
+  }),
 );
 
-// Rotas públicas e modularizadas
+// Rotas
 app.use('/api/comments', commentsRouter);
 app.use('/api/interesse', interesseRouter);
 app.use('/api/faq', faqRouter);
@@ -82,8 +76,11 @@ app.use('/api/db', dbRouter);
 // Health check
 app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'svicerostudio-backend' }));
 
-// Storage — upload de arquivos (requer autenticação)
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
+// Upload — agora vai para o R2
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 8 * 1024 * 1024 },
+});
 
 app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (req, res) => {
   try {
@@ -94,48 +91,41 @@ app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (re
       return res.status(400).json({ error: 'bucket, key e file são obrigatórios' });
     }
 
-    await Upload.findOneAndUpdate(
-      { bucket, storageKey: key },
-      {
-        bucket,
-        storageKey: key,
-        originalName: file.originalname,
-        mimeType: file.mimetype,
-        size: file.size,
-        data: file.buffer,
-        created_at: new Date(),
-      },
-      { upsert: true, new: true },
+    await r2.send(
+      new PutObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: key,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+      }),
     );
 
-    return res.json({ data: { path: key }, error: null });
+    const publicUrl = `${process.env.R2_PUBLIC_URL}/${key}`;
+    return res.json({ data: { path: key, url: publicUrl }, error: null });
   } catch (err) {
     console.error('[UPLOAD ERROR]', err.message, err.stack);
-    return res.status(500).json({ error: err.message || 'Erro ao salvar arquivo' });
+    return res.status(500).json({ error: err.message || 'Erro ao fazer upload' });
   }
 });
 
-// Storage — servir arquivos públicos
+// Servir arquivos legados que ainda estão no MongoDB
 app.get('/api/storage/public/:bucket/:key', async (req, res) => {
-  const { bucket, key } = req.params;
-
-  const doc = await Upload.findOne({ bucket, storageKey: key });
-  if (!doc) {
-    return res.status(404).send('Arquivo não encontrado');
+  try {
+    const { bucket, key } = req.params;
+    const doc = await Upload.findOne({ bucket, storageKey: key });
+    if (!doc) return res.status(404).send('Arquivo não encontrado');
+    res.setHeader('Content-Type', doc.mimeType || 'application/octet-stream');
+    return res.send(doc.data);
+  } catch (err) {
+    return res.status(500).send('Erro ao buscar arquivo');
   }
-
-  res.setHeader('Content-Type', doc.mimeType || 'application/octet-stream');
-  return res.send(doc.data);
 });
 
-// Cria o usuário admin a partir das variáveis de ambiente (se não existir)
 async function ensureAdminFromEnv() {
   if (!ADMIN_EMAIL || !ADMIN_PASSWORD) return;
-
   const email = String(ADMIN_EMAIL).toLowerCase().trim();
   const existing = await AdminUser.findOne({ email });
   if (existing) return;
-
   const password_hash = await bcrypt.hash(ADMIN_PASSWORD, 12);
   await AdminUser.create({ email, password_hash });
   console.log(`[boot] Usuário admin criado: ${email}`);
@@ -144,7 +134,6 @@ async function ensureAdminFromEnv() {
 async function bootstrap() {
   await mongoose.connect(MONGODB_URI);
   await ensureAdminFromEnv();
-
   app.listen(PORT, () => {
     console.log(`[server] API Mongo rodando na porta ${PORT}`);
   });
