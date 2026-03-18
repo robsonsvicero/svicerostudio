@@ -4,9 +4,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from "../../contexts/AuthContext";
 import { API_URL } from "../../lib/api.js"; // Certifique-se de que este caminho está correto
 import { useToast } from "../../hooks/useToast"; // Certifique-se de que este caminho está correto
-import Button from "../../components/UI/Button"; // Certifique-se de que este caminho está correto
-import ImageUploadSlot from "../../components/ImageUploadSlot"; // Certifique-se de que este caminho está correto
-import AdminLayout from "../../components/AdminLayout"; // Certifique-se de que este caminho está correto
+import Button from "../../components/UI/Button.jsx"; // Certifique-se de que este caminho está correto
+import ImageUploadSlot from "../../components/UI/ImageUploadSlot.jsx"; // Certifique-se de que este caminho está correto
+import AdminLayout from "../../components/Admin/AdminLayout.jsx"; // Certifique-se de que este caminho está correto
 import { generateSlug } from '../../utils/slugGenerator'; // Importa a função de slug
 
 const AdminAutores = () => {

@@ -561,8 +561,8 @@ const AdminProjetos = () => {
                             value={form[field.name] || ''}
                             onChange={handleFieldChange}
                             placeholder={field.placeholder}
-                            disabled={field.name === 'slug' && !!editing}
-                            className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40 disabled:opacity-40 disabled:cursor-not-allowed"
+                            readOnly={field.name === 'slug' && !!editing}
+                            className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40 "
                           />
                           {field.name === 'slug' && !editing && (
                             <p className="mt-1.5 text-xs text-white/40">
