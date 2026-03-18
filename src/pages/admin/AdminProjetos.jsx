@@ -266,10 +266,6 @@ const AdminProjetos = () => {
         delete formPayload.updated_at;
     }
 
-    if (!editing) {
-      formPayload._id = formPayload.slug.trim();
-    }
-
     if (!formPayload.link?.trim()) {
       formPayload.link = formPayload.slug.trim();
     }
@@ -894,7 +890,6 @@ const AdminProjetos = () => {
           </aside>
         </div>
 
-        {/* Botões movidos para o rodapé do formulário */}
         <div className="relative border-t border-white/8 px-6 py-6 lg:px-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
             <button
@@ -952,7 +947,7 @@ const AdminProjetos = () => {
                     <p className="truncate text-sm text-white/60">
                       {proj.categoria || 'Sem categoria'}
                     </p>
-                    <p className="truncate text-xs text-white/30">ID: {proj.id}</p>
+                    <p className="truncate text-xs text-white/30">Data do projeto: {proj.data_projeto}</p>
                   </div>
                   <div className="flex flex-shrink-0 items-center gap-3">
                     <Button variant="outline" onClick={() => handleEditProject(proj)}>

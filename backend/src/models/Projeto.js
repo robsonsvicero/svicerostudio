@@ -2,8 +2,7 @@ import mongoose from 'mongoose';
 import { baseSchemaOptions } from './baseSchema.js';
 
 const projetoSchema = new mongoose.Schema(
-  {
-    _id:              { type: String, required: true },
+  {    
     titulo:           { type: String, required: true },
     slug:             { type: String, required: true, unique: true }, // Adicionado: slug
     categoria:        { type: String, default: '' },                 // Adicionado: categoria
