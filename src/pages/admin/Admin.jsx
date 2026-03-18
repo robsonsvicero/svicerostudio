@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { API_URL } from '../../lib/api.js';
+import { useAuth } from '../contexts/AuthContext';
+import { API_URL } from '../lib/api.js';
 
 const Admin = () => {
   const { user, signOut } = useAuth();
@@ -121,9 +121,6 @@ const Admin = () => {
     {
       title: 'Comentários', badge: 'MODERAÇÃO', description: 'Faça a moderação com mais clareza, filtros e contexto.', icon: 'fa-solid fa-comments', link: '/admin/comentarios', color: 'bg-gradient-to-br from-[#0C2A1A] via-[#2B6B4A] to-[#1A3A2A]', stats: '5 pendentes',
     },
-    {
-      title: 'FAQ', badge: 'PERGUNTAS', description: 'Adicione, edite e remova perguntas frequentes do site.', icon: 'fa-solid fa-circle-question', link: '/admin/faq', color: 'bg-gradient-to-br from-[#2A1B3A] via-[#4A2C6B] to-[#1A0C2A]', stats: 'dinâmico',
-    },
   ];
 
   // Atalhos
@@ -135,7 +132,7 @@ const Admin = () => {
   ];
 
   return (
-    <div className="bg-[#141414] min-h-screen flex items-center justify-center px-4 md:px-36">
+    <div className="bg-dark-bg min-h-screen flex items-center justify-center px-4 md:px-36">
       <div className="w-full bg-gradient-to-br from-[#181818] via-[#232323] to-[#1A1207] rounded-3xl shadow-2xl p-8 md:p-12 lg:p-16 mx-auto mt-12 mb-12">
         {/* Header superior: badge acima do título, título centralizado, subtítulo abaixo, botão sair à direita */}
         <div className="mb-8">
@@ -184,40 +181,122 @@ const Admin = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Cards de acesso */}
           <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Renderização dinâmica dos cards do painel, incluindo FAQ */}
-            {adminPages.map((page, idx) => (
-              <div key={page.title} className={`relative rounded-2xl shadow-xl border border-white/10 p-8 flex flex-col h-full min-h-[220px] ${page.color} transition-all`}>
-                <div className="absolute top-6 left-6">
-                  <div className="w-10 h-10 bg-black/20 rounded-lg flex items-center justify-center">
-                    <i className={`${page.icon} text-2xl text-white`}></i>
-                  </div>
-                </div>
-                <div className="absolute top-6 right-6">
-                  <span className="text-xs font-semibold bg-white/10 text-white px-3 py-1 rounded-full tracking-widest border border-white/20">{page.badge}</span>
-                </div>
-                <div className="flex flex-col flex-1 justify-between mt-10">
-                  <div>
-                    <h2 className="font-title text-2xl font-bold text-white mb-2">{page.title}</h2>
-                    <p className="text-white/80 text-sm mb-4">{page.description}</p>
-                  </div>
-                  <div className="flex items-end justify-between mt-auto">
-                    {/* Stats dinâmicos para cada card */}
-                    <span className="text-white/70 text-xs">
-                      {page.title === 'Projetos' && projectCount !== null ? `${projectCount} ativos` :
-                        page.title === 'Blog' && postCount !== null ? `${postCount} artigos` :
-                        page.title === 'Depoimentos' && testimonialCount !== null ? `${testimonialCount} publicados` :
-                        page.title === 'Autores' && authorCount !== null ? `${authorCount} perfis` :
-                        page.title === 'Comentários' && pendingCount !== null ? `${pendingCount} pendentes` :
-                        page.title === 'FAQ' ? 'dinâmico' : '---'}
-                    </span>
-                    <Link to={page.link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
-                      Acessar
-                      <i className="fa-solid fa-arrow-right text-xs"></i>
-                    </Link>
-                  </div>
+            {/* Cards do painel com stats reais */}
+            <div key="projetos" className={`relative rounded-2xl shadow-xl border border-white/10 p-8 flex flex-col h-full min-h-[220px] ${adminPages[0].color} transition-all`}>
+              <div className="absolute top-6 left-6">
+                <div className="w-10 h-10 bg-black/20 rounded-lg flex items-center justify-center">
+                  <i className={`${adminPages[0].icon} text-2xl text-white`}></i>
                 </div>
               </div>
-            ))}
+              <div className="absolute top-6 right-6">
+                <span className="text-xs font-semibold bg-white/10 text-white px-3 py-1 rounded-full tracking-widest border border-white/20">{adminPages[0].badge}</span>
+              </div>
+              <div className="flex flex-col flex-1 justify-between mt-10">
+                <div>
+                  <h2 className="font-title text-2xl font-bold text-white mb-2">{adminPages[0].title}</h2>
+                  <p className="text-white/80 text-sm mb-4">{adminPages[0].description}</p>
+                </div>
+                <div className="flex items-end justify-between mt-auto">
+                  <span className="text-white/70 text-xs">{projectCount !== null ? `${projectCount} ativos` : '---'}</span>
+                  <Link to={adminPages[0].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
+                    Acessar
+                    <i className="fa-solid fa-arrow-right text-xs"></i>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div key="blog" className={`relative rounded-2xl shadow-xl border border-white/10 p-8 flex flex-col h-full min-h-[220px] ${adminPages[1].color} transition-all`}>
+              <div className="absolute top-6 left-6">
+                <div className="w-10 h-10 bg-black/20 rounded-lg flex items-center justify-center">
+                  <i className={`${adminPages[1].icon} text-2xl text-white`}></i>
+                </div>
+              </div>
+              <div className="absolute top-6 right-6">
+                <span className="text-xs font-semibold bg-white/10 text-white px-3 py-1 rounded-full tracking-widest border border-white/20">{adminPages[1].badge}</span>
+              </div>
+              <div className="flex flex-col flex-1 justify-between mt-10">
+                <div>
+                  <h2 className="font-title text-2xl font-bold text-white mb-2">{adminPages[1].title}</h2>
+                  <p className="text-white/80 text-sm mb-4">{adminPages[1].description}</p>
+                </div>
+                <div className="flex items-end justify-between mt-auto">
+                  <span className="text-white/70 text-xs">{postCount !== null ? `${postCount} artigos` : '---'}</span>
+                  <Link to={adminPages[1].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
+                    Acessar
+                    <i className="fa-solid fa-arrow-right text-xs"></i>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div key="depoimentos" className={`relative rounded-2xl shadow-xl border border-white/10 p-8 flex flex-col h-full min-h-[220px] ${adminPages[2].color} transition-all`}>
+              <div className="absolute top-6 left-6">
+                <div className="w-10 h-10 bg-black/20 rounded-lg flex items-center justify-center">
+                  <i className={`${adminPages[2].icon} text-2xl text-white`}></i>
+                </div>
+              </div>
+              <div className="absolute top-6 right-6">
+                <span className="text-xs font-semibold bg-white/10 text-white px-3 py-1 rounded-full tracking-widest border border-white/20">{adminPages[2].badge}</span>
+              </div>
+              <div className="flex flex-col flex-1 justify-between mt-10">
+                <div>
+                  <h2 className="font-title text-2xl font-bold text-white mb-2">{adminPages[2].title}</h2>
+                  <p className="text-white/80 text-sm mb-4">{adminPages[2].description}</p>
+                </div>
+                <div className="flex items-end justify-between mt-auto">
+                  <span className="text-white/70 text-xs">{testimonialCount !== null ? `${testimonialCount} publicados` : '---'}</span>
+                  <Link to={adminPages[2].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
+                    Acessar
+                    <i className="fa-solid fa-arrow-right text-xs"></i>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div key="autores" className={`relative rounded-2xl shadow-xl border border-white/10 p-8 flex flex-col h-full min-h-[220px] ${adminPages[3].color} transition-all`}>
+              <div className="absolute top-6 left-6">
+                <div className="w-10 h-10 bg-black/20 rounded-lg flex items-center justify-center">
+                  <i className={`${adminPages[3].icon} text-2xl text-white`}></i>
+                </div>
+              </div>
+              <div className="absolute top-6 right-6">
+                <span className="text-xs font-semibold bg-white/10 text-white px-3 py-1 rounded-full tracking-widest border border-white/20">{adminPages[3].badge}</span>
+              </div>
+              <div className="flex flex-col flex-1 justify-between mt-10">
+                <div>
+                  <h2 className="font-title text-2xl font-bold text-white mb-2">{adminPages[3].title}</h2>
+                  <p className="text-white/80 text-sm mb-4">{adminPages[3].description}</p>
+                </div>
+                <div className="flex items-end justify-between mt-auto">
+                  <span className="text-white/70 text-xs">{authorCount !== null ? `${authorCount} perfis` : '---'}</span>
+                  <Link to={adminPages[3].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
+                    Acessar
+                    <i className="fa-solid fa-arrow-right text-xs"></i>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div key="comentarios" className={`relative rounded-2xl shadow-xl border border-white/10 p-8 flex flex-col h-full min-h-[220px] ${adminPages[4].color} transition-all`}>
+              <div className="absolute top-6 left-6">
+                <div className="w-10 h-10 bg-black/20 rounded-lg flex items-center justify-center">
+                  <i className={`${adminPages[4].icon} text-2xl text-white`}></i>
+                </div>
+              </div>
+              <div className="absolute top-6 right-6">
+                <span className="text-xs font-semibold bg-white/10 text-white px-3 py-1 rounded-full tracking-widest border border-white/20">{adminPages[4].badge}</span>
+              </div>
+              <div className="flex flex-col flex-1 justify-between mt-10">
+                <div>
+                  <h2 className="font-title text-2xl font-bold text-white mb-2">{adminPages[4].title}</h2>
+                  <p className="text-white/80 text-sm mb-4">{adminPages[4].description}</p>
+                </div>
+                <div className="flex items-end justify-between mt-auto">
+                  <span className="text-white/70 text-xs">{pendingCount !== null ? `${pendingCount} pendentes` : '---'}</span>
+                  <Link to={adminPages[4].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
+                    Acessar
+                    <i className="fa-solid fa-arrow-right text-xs"></i>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
           {/* Atalhos */}
           <div className="flex flex-col gap-4">

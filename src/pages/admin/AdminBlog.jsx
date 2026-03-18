@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useToast } from '../../hooks/useToast';
-import Button from '../../components/UI/Button';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../hooks/useToast';
+import Button from '../components/UI/Button';
 import Markdown from 'react-markdown';
-import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
-import AdminLayout from '../../components/Admin/AdminLayout';
+import ImageUploadSlot from '../components/UI/ImageUploadSlot';
+import AdminLayout from '../components/Admin/AdminLayout';
 
-import { API_URL } from '../../lib/api.js';
+import { API_URL } from '../lib/api.js';
 
 const AdminBlog = () => {
+  const navigate = useNavigate();
   const { token, signOut } = useAuth();
   const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
 
@@ -35,10 +37,11 @@ const AdminBlog = () => {
 
   const fetchAutores = useCallback(async () => {
     try {
+      // Admin precisa ver TODOS os autores (sem filtro de publicado)
       const res = await fetch(`${API_URL}/api/db/autores/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ operation: 'select', filters: [{ column: 'publicado', operator: 'eq', value: true }], orderBy: { column: 'nome', ascending: true } }),
+        body: JSON.stringify({ operation: 'select', orderBy: { column: 'nome', ascending: true } }),
       });
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao buscar autores');
@@ -83,34 +86,35 @@ const AdminBlog = () => {
   };
 
   const handleImageUpload = useCallback(async (file) => {
-    if (!file) {
-      setFormData(prev => ({ ...prev, imagem_destaque: '' }));
-      return;
-    }
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('bucket', 'posts'); // Assuming 'posts' bucket
-    formData.append('key', `${Date.now()}_${file.name}`);
+  if (!file) {
+    setFormData(prev => ({ ...prev, imagem_destaque: '' }));
+    return;
+  }
+  setIsUploading(true);
+  const uploadFormData = new FormData();
+  uploadFormData.append('file', file);
+  uploadFormData.append('bucket', 'posts');
+  uploadFormData.append('key', `${Date.now()}_${file.name}`);
 
-    try {
-      const res = await fetch(`${API_URL}/api/storage/upload`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-      const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || 'Falha no upload');
-      
-      const imageUrl = `${API_URL}/api/storage/public/posts/${payload.data.path}`;
-      setFormData(prev => ({ ...prev, imagem_destaque: imageUrl }));
-      showToastMessage('Imagem enviada com sucesso!', 'success');
-    } catch (err) {
-      showToastMessage(err.message, 'error');
-    } finally {
-      setIsUploading(false);
-    }
-  }, [token, showToastMessage]);
+  try {
+    const res = await fetch(`${API_URL}/api/storage/upload`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: uploadFormData,
+    });
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || 'Falha no upload');
+
+    const imageUrl = payload.data?.url
+      || `${API_URL}/api/storage/public/posts/${payload.data.path}`;
+    setFormData(prev => ({ ...prev, imagem_destaque: imageUrl }));
+    showToastMessage('Imagem enviada com sucesso!', 'success');
+  } catch (err) {
+    showToastMessage(err.message, 'error');
+  } finally {
+    setIsUploading(false);
+  }
+}, [token, showToastMessage]);
   
   const resetForm = () => {
     setFormData(initialFormState);
@@ -121,8 +125,10 @@ const AdminBlog = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Envia o campo autor corretamente
-    const payload = { ...formData };
+    // Remove campos computados pelo $lookup e campos de controle interno
+    // eslint-disable-next-line no-unused-vars
+    const { id, autor_nome, autor_foto, ...payloadData } = formData;
+    const payload = payloadData;
 
     const op = editingId ? 'update' : 'insert';
     const filters = editingId ? [{ column: 'id', operator: 'eq', value: editingId }] : [];
@@ -135,7 +141,7 @@ const AdminBlog = () => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro ao salvar o post.');
-
+      
       showToastMessage(`Post ${editingId ? 'atualizado' : 'criado'} com sucesso!`, 'success');
       resetForm();
       await fetchPosts();
@@ -148,8 +154,27 @@ const AdminBlog = () => {
 
   const handleEdit = (post) => {
     setEditingId(post.id);
-    // Garante que o campo autor seja preenchido corretamente ao editar
-    setFormData({ ...initialFormState, ...post, autor: post.autor });
+    const data_publicacao = post.data_publicacao
+      ? new Date(post.data_publicacao).toISOString().slice(0, 10)
+      : '';
+
+    // Separa os campos computados pelo $lookup dos campos reais do post
+    // eslint-disable-next-line no-unused-vars
+    const { id, autor_nome, autor_foto, ...postFields } = post;
+
+    // Resolve o UUID do autor: se 'autor' for um UUID válido usa direto,
+    // caso contrário (posts legados com nome direto) tenta encontrar pelo nome na lista
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const autorId = uuidRegex.test(postFields.autor)
+      ? postFields.autor
+      : autores.find(a => a.nome === postFields.autor)?.id || '';
+
+    setFormData({
+      ...initialFormState,
+      ...postFields,
+      autor: autorId,
+      data_publicacao,
+    });
     window.scrollTo(0, 0);
   };
   
@@ -174,7 +199,7 @@ const AdminBlog = () => {
   const fields = [
     { name: 'titulo', label: 'Título do post', placeholder: 'Como criar uma marca memorável', type: 'text', required: true, col: 'lg:col-span-2' },
     { name: 'slug', label: 'Slug', placeholder: 'como-criar-marca-memoravel', type: 'text', required: true, col: 'lg:col-span-2' },
-    { name: 'autor', label: 'Autor', placeholder: 'Selecione um autor', type: 'select', required: true, options: autores.map(a => ({ value: a.id, label: a.nome })), col: 'lg:col-span-1' },
+    { name: 'autor', label: autores.length === 0 ? 'Autor ⚠ Nenhum autor cadastrado — acesse Autores primeiro' : 'Autor', placeholder: 'Selecione um autor', type: 'select', required: true, options: autores.map(a => ({ value: a.id, label: a.nome })), col: 'lg:col-span-1' },
     { name: 'categoria', label: 'Categoria', placeholder: 'Selecione uma categoria', type: 'select', required: true, options: ['Performance & Conversão', 'Estratégia de Ativos (Business & IA)', 'Engenharia de Percepção (Branding)', 'UX Design & Engenharia de Lucro'].map(c => ({ value: c, label: c})), col: 'lg:col-span-1' },
     { name: 'data_publicacao', label: 'Data de publicação', placeholder: 'YYYY-MM-DD', type: 'date', required: true, col: 'lg:col-span-1' },
     { name: 'tags', label: 'Tags', placeholder: 'branding, ux, design', type: 'text', required: false, col: 'lg:col-span-1' },
@@ -221,7 +246,7 @@ const AdminBlog = () => {
                          {field.required && <span className="ml-1 text-[#E9BF84]">*</span>}
                        </span>
                         {field.type === 'select' ? (
-                            <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40">
+                            <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40">
                                 <option value="" disabled>{field.placeholder}</option>
                                 {field.options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                             </select>
@@ -233,7 +258,7 @@ const AdminBlog = () => {
                              onChange={handleFieldChange}
                              placeholder={field.placeholder}
                              required={field.required}
-                             className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                             className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
                            />
                         )}
                      </label>
@@ -246,11 +271,11 @@ const AdminBlog = () => {
                 <div className="grid gap-4">
                   <label>
                     <span className="mb-2 block text-sm font-medium text-white/82">Resumo</span>
-                    <textarea name="resumo" value={formData.resumo} onChange={handleFieldChange} placeholder="Uma síntese para SEO e chamadas." rows={3} className="w-full resize-none rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-4 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
+                    <textarea name="resumo" value={formData.resumo} onChange={handleFieldChange} placeholder="Uma síntese para SEO e chamadas." rows={3} className="w-full resize-none rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-4 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
                   </label>
                   <label>
                     <span className="mb-2 block text-sm font-medium text-white/82">Conteúdo (suporta Markdown)</span>
-                    <textarea name="conteudo" value={formData.conteudo} onChange={handleFieldChange} placeholder="Escreva o artigo aqui..." rows={15} className="w-full resize-y rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-4 text-sm leading-6 text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
+                    <textarea name="conteudo" value={formData.conteudo} onChange={handleFieldChange} placeholder="Escreva o artigo aqui..." rows={15} className="w-full resize-y rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-4 text-sm leading-6 text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
                   </label>
                 </div>
               </section>
@@ -267,7 +292,7 @@ const AdminBlog = () => {
               <section className="rounded-[28px] border border-white/8 bg-[#2F353B]/30 p-5 shadow-lg shadow-black/20">
                 <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Configurações de Publicação</p>
                  <div className="mt-5 grid gap-3">
-                    <label className="flex items-center justify-between rounded-2xl border border-white/8 bg-[#141414]/55 px-4 py-4">
+                    <label className="flex items-center justify-between rounded-2xl border border-white/8 bg-dark-bg/55 px-4 py-4">
                       <span className="text-sm text-white/82">Publicar artigo</span>
                       <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleFieldChange} className="sr-only" />
                       <span className={`flex h-7 w-12 items-center rounded-full border border-[#B87333]/20  px-1 ${formData.publicado ? 'bg-[#B87333]/50' : 'bg-white/5'}`}>
@@ -294,13 +319,14 @@ const AdminBlog = () => {
               <div className="bg-[#181818] rounded-2xl border border-white/8">
                   <ul className="divide-y divide-white/8">
                       {posts.map(post => {
-                          const autor = autores.find(a => a.id === post.autor);
+                          const autorFallback = autores.find(a => a.id === post.autor);
+                          const autorNome = post.autor_nome || autorFallback?.nome || 'Autor desconhecido';
                           return (
                             <li key={post.id} className="flex items-center justify-between p-4 gap-4">
                                <img src={post.imagem_destaque || `https://via.placeholder.com/150/141414/E9BF84?text=${post.titulo.charAt(0)}`} alt={post.titulo} className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20" />
                                 <div className="flex-1 min-w-0">
                                     <p className="font-semibold text-white truncate">{post.titulo}</p>
-                                    <p className="text-sm text-white/60 truncate">{autor?.nome || 'Autor desconhecido'} • {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
+                                    <p className="text-sm text-white/60 truncate">{autorNome} • {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
                                 </div>
                                 <div className="flex items-center gap-3 flex-shrink-0">
                                     <span className={`px-2 py-1 text-xs rounded-full ${post.publicado ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>

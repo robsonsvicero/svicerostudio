@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useToast } from '../../hooks/useToast';
-import Button from '../../components/UI/Button';
-import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
-import AdminLayout from '../../components/Admin/AdminLayout';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../hooks/useToast';
+import Button from '../components/UI/Button';
+import ImageUploadSlot from '../components/UI/ImageUploadSlot';
+import AdminLayout from '../components/Admin/AdminLayout';
 
-import { API_URL } from '../../lib/api.js';
+import { API_URL } from '../lib/api.js';
 
 const AdminDepoimentos = () => {
+    const navigate = useNavigate();
     const { token } = useAuth();
     const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
 
@@ -193,12 +195,12 @@ const AdminDepoimentos = () => {
                                                 {field.required && <span className="ml-1 text-[#E9BF84]">*</span>}
                                             </span>
                                             {field.type === 'select' ? (
-                                                <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40">
+                                                <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40">
                                                     <option value="" disabled>{field.placeholder}</option>
                                                     {field.options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                                                 </select>
                                             ) : (
-                                                <input type={field.type} name={field.name} value={formData[field.name] || ''} onChange={handleFieldChange} placeholder={field.placeholder} required={field.required} className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"/>
+                                                <input type={field.type} name={field.name} value={formData[field.name] || ''} onChange={handleFieldChange} placeholder={field.placeholder} required={field.required} className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"/>
                                             )}
                                         </label>
                                     ))}
@@ -210,7 +212,7 @@ const AdminDepoimentos = () => {
                                 <div className="grid gap-4">
                                     <label>
                                         <span className="mb-2 block text-sm font-medium text-white/82">Depoimento</span>
-                                        <textarea name="texto" value={formData.texto} onChange={handleFieldChange} placeholder="Escreva o depoimento aqui..." rows={6} required className="w-full resize-y rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-4 text-sm leading-6 text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
+                                        <textarea name="texto" value={formData.texto} onChange={handleFieldChange} placeholder="Escreva o depoimento aqui..." rows={6} required className="w-full resize-y rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-4 text-sm leading-6 text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
                                     </label>
                                 </div>
                             </section>
@@ -224,14 +226,14 @@ const AdminDepoimentos = () => {
                             <section className="rounded-[28px] border border-white/8 bg-[#2F353B]/30 p-5 shadow-lg shadow-black/20">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Configurações</p>
                                 <div className="mt-5 grid gap-3">
-                                    <label className="flex items-center justify-between rounded-2xl border border-white/8 bg-[#141414]/55 px-4 py-4">
+                                    <label className="flex items-center justify-between rounded-2xl border border-white/8 bg-dark-bg/55 px-4 py-4">
                                       <span className="text-sm text-white/82">Depoimento ativo</span>
                                       <input type="checkbox" name="ativo" checked={formData.ativo} onChange={handleFieldChange} className="sr-only" />
                                       <span className={`flex h-7 w-12 items-center rounded-full border border-[#B87333]/20  px-1 ${formData.ativo ? 'bg-[#B87333]/50' : 'bg-white/5'}`}>
                                         <span className={`h-5 w-5 rounded-full bg-[#B87333] transition-all ${formData.ativo ? 'ml-auto' : 'ml-0'}`} />
                                       </span>
                                     </label>
-                                    <label className="block rounded-2xl border border-white/8 bg-[#141414]/55 px-4 py-4">
+                                    <label className="block rounded-2xl border border-white/8 bg-dark-bg/55 px-4 py-4">
                                       <span className="mb-2 block text-sm text-white/82">Ordem de exibição</span>
                                       <input type="number" name="ordem" value={formData.ordem} onChange={handleFieldChange} placeholder="0" className="w-full rounded-lg border-white/10 bg-black/30 px-3 py-2 text-sm text-white outline-none" />
                                     </label>
