@@ -3,25 +3,24 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import Button from '../../components/UI/Button.jsx';
 import { API_URL } from '../../lib/api.js';
-import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
-import AdminLayout from '../../components/Admin/AdminLayout.jsx'; // Importa AdminLayout
-import { useToast } from '../../hooks/useToast.js'; // Importa useToast
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'; // Importa D&D
+import ImageUploadSlot from '../../components/UI/ImageUploadSlot.jsx';
+import AdminLayout from '../../components/Admin/AdminLayout.jsx';
+import { useToast } from '../../hooks/useToast.js';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const AdminProjetos = () => {
   const navigate = useNavigate();
   const { token, signOut } = useAuth();
-  const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast(); // Inicializa useToast
+  const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
 
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [uploadError, setUploadError] = useState('');
-  // Removendo slugManuallyEdited, pois o slug será sempre gerado
 
   const initialFormState = {
     titulo: '',
-    slug: '', // O slug será gerado
+    slug: '',
     categoria: '',
     cliente: '',
     data_projeto: '',
@@ -45,7 +44,6 @@ const AdminProjetos = () => {
   const [submitting, setSubmitting] = useState(false);
   const [editing, setEditing] = useState(null);
 
-  // Mantendo a função slugify
   const slugify = (text) =>
     text
       .toString()
@@ -64,7 +62,6 @@ const AdminProjetos = () => {
 
     setForm((prev) => {
       const updated = { ...prev, [name]: newValue };
-      // Lógica de geração de slug: sempre gera a partir do título
       if (name === 'titulo') {
         updated.slug = slugify(value);
       }
@@ -114,7 +111,7 @@ const AdminProjetos = () => {
         if (payload.data?.url || payload.data?.path) {
           const imageUrl = payload.data.url || `${API_URL}/api/storage/public/projetos/${payload.data.path}`;
           setForm((prev) => ({ ...prev, [fieldName]: imageUrl }));
-          showToastMessage('Imagem de capa enviada com sucesso!', 'success'); // Toast de sucesso
+          showToastMessage('Imagem de capa enviada com sucesso!', 'success');
         } else {
           setUploadError('Upload concluído mas URL não retornada pelo servidor.');
         }
@@ -170,7 +167,7 @@ const AdminProjetos = () => {
       setGallery((prev) => [...prev, ...uploadedUrls]);
       setIsUploading(false);
       if (uploadedUrls.length > 0) {
-        showToastMessage(`${uploadedUrls.length} imagem(ns) adicionada(s) à galeria!`, 'success'); // Toast de sucesso
+        showToastMessage(`${uploadedUrls.length} imagem(ns) adicionada(s) à galeria!`, 'success');
       }
     },
     [token, signOut, navigate, showToastMessage],
@@ -178,7 +175,7 @@ const AdminProjetos = () => {
 
   const handleRemoveFromGallery = (indexToRemove) => {
     setGallery((prev) => prev.filter((_, index) => index !== indexToRemove));
-    showToastMessage('Imagem removida da galeria.', 'info'); // Toast de informação
+    showToastMessage('Imagem removida da galeria.', 'info');
   };
 
   const fetchProjects = useCallback(async () => {
@@ -212,7 +209,7 @@ const AdminProjetos = () => {
       setProjects(payload.data || []);
     } catch (err) {
       setError(err.message || 'Erro ao buscar projetos');
-      showToastMessage(err.message || 'Erro ao buscar projetos', 'error'); // Toast de erro
+      showToastMessage(err.message || 'Erro ao buscar projetos', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -222,7 +219,7 @@ const AdminProjetos = () => {
     fetchProjects();
   }, [fetchProjects]);
 
-  const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setUploadError('');
@@ -241,13 +238,16 @@ const AdminProjetos = () => {
 
     if (validationErrors.length > 0) {
       setError(validationErrors.join(' '));
-      showToastMessage(validationErrors.join(' '), 'error'); // Toast de erro
+      showToastMessage(validationErrors.join(' '), 'error');
       return;
     }
 
     setSubmitting(true);
 
-    const formPayload = { ...form };
+    // --- CORREÇÃO AQUI: MUDAR 'const' PARA 'let' ---
+    let formPayload = { ...form };
+    // --- FIM DA CORREÇÃO ---
+
     const op = editing ? 'update' : 'insert';
     const filters = editing ? [{ column: 'id', operator: 'eq', value: editing }] : [];
 
@@ -255,6 +255,15 @@ const AdminProjetos = () => {
     // ou se o título foi alterado e o slug precisa ser atualizado.
     if (formPayload.titulo && (!formPayload.slug || (editing && formPayload.titulo !== projects.find(p => p.id === editing)?.titulo))) {
         formPayload.slug = slugify(formPayload.titulo);
+    }
+
+    // Remove id e _id do payload se for atualização para evitar problemas com o DB
+    if (editing) {
+        // Não precisamos mais de payloadForUpdate, podemos modificar formPayload diretamente
+        delete formPayload.id;
+        delete formPayload._id; // Se o seu DB usa _id como PK, remova também
+        delete formPayload.created_at;
+        delete formPayload.updated_at;
     }
 
     if (!editing) {
@@ -313,20 +322,20 @@ const AdminProjetos = () => {
             payload: {
               projeto_id: projetoId,
               imagem_url: img.url || img.imagem_url,
-              ordem: index, // Garante que a ordem seja salva
+              ordem: index,
             },
           }),
         });
       }
 
-      showToastMessage(`Projeto ${editing ? 'atualizado' : 'publicado'} com sucesso!`, 'success'); // Toast de sucesso
+      showToastMessage(`Projeto ${editing ? 'atualizado' : 'publicado'} com sucesso!`, 'success');
       setForm(initialFormState);
       setGallery([]);
       setEditing(null);
       await fetchProjects();
     } catch (err) {
       setError(err.message);
-      showToastMessage(err.message, 'error'); // Toast de erro
+      showToastMessage(err.message, 'error');
     } finally {
       setSubmitting(false);
     }
@@ -401,16 +410,15 @@ const AdminProjetos = () => {
             filters: [{ column: 'id', operator: 'eq', value: projectId }],
           }),
         });
-        showToastMessage('Projeto excluído com sucesso.', 'success'); // Toast de sucesso
+        showToastMessage('Projeto excluído com sucesso.', 'success');
         await fetchProjects();
       } catch (err) {
         setError(err.message);
-        showToastMessage(err.message, 'error'); // Toast de erro
+        showToastMessage(err.message, 'error');
       }
     }
   };
 
-  // Função para lidar com o fim do arrasto
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;
@@ -560,10 +568,10 @@ const AdminProjetos = () => {
                           value={form[field.name] || ''}
                           onChange={handleFieldChange}
                           placeholder={field.placeholder}
-                          readOnly={field.name === 'slug'} // <--- Sempre readOnly para o slug
+                          readOnly={field.name === 'slug'}
                           className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40 read-only:opacity-60 read-only:cursor-not-allowed"
                         />
-                        {field.name === 'slug' && ( // <--- Mensagem única para o slug
+                        {field.name === 'slug' && (
                           <p className="mt-1.5 text-xs text-white/40">
                             O slug é gerado automaticamente a partir do título.
                           </p>
