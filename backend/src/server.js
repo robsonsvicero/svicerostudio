@@ -20,7 +20,8 @@ import interesseRouter from './routes/interesse.js';
 import faqRouter from './routes/faq.js';
 import authRouter from './routes/auth.js';
 import dbRouter from './routes/database.js';
-import projetosRoutes from './routes/projetosRoutes.js'; // Já importado, ótimo!
+import projetosRoutes from './routes/projetoRoutes.js';
+
 
 const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI;

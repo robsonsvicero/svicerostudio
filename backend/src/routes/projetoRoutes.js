@@ -2,7 +2,7 @@
 
 import express from 'express';
 import mongoose from 'mongoose';
-import Projeto from '../models/Projeto.js'; // Ajuste o caminho se necessário
+import Projeto from '../models/Projeto.js';
 import ProjetoGaleria from '../models/ProjetoGaleria.js'; // Ajuste o caminho se necessário
 import { authMiddleware } from '../middleware/auth.js'; // Importe seu middleware de autenticação
 
