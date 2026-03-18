@@ -67,14 +67,24 @@ const Home = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           operation: 'select',
-          orderBy: { column: 'created_at', ascending: false },
-          limit: 4
+          orderBy: { column: 'data_projeto', ascending: false }, // Ordena por 'data_projeto' em ordem decrescente
+          filters: [{ column: 'mostrar_home', operator: 'eq', value: true }], // <--- FILTRO CORRIGIDO para 'mostrar_home'
+          limit: 4 // Mantém o limite de 4 projetos, se for para a Home ou seção destacada
         })
       });
+
+      // É uma boa prática verificar se a resposta da API foi bem-sucedida (status 2xx)
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || `Erro HTTP: ${res.status}`);
+      }
+
       const payload = await res.json();
       setProjects(payload.data || []);
     } catch (error) {
       console.error("Failed to fetch projects:", error);
+      // Você pode adicionar um estado para exibir o erro na UI, se desejar
+      // setError(error.message);
     }
   };
 
