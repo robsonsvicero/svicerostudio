@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../hooks/useToast';
-import Button from '../components/UI/Button';
-import ImageUploadSlot from '../components/UI/ImageUploadSlot';
-import AdminLayout from '../components/Admin/AdminLayout';
+import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../hooks/useToast';
+import Button from '../../components/UI/Button';
+import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
+import AdminLayout from '../../components/Admin/AdminLayout';
 
-import { API_URL } from '../lib/api.js';
+import { API_URL } from '../../lib/api.js';
 
 const AdminDepoimentos = () => {
     const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../hooks/useToast';
-import Button from '../components/UI/Button';
-import AdminLayout from '../components/Admin/AdminLayout';
+import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../hooks/useToast';
+import Button from '../../components/UI/Button';
+import AdminLayout from '../../components/Admin/AdminLayout';
 
-import { API_URL } from '../lib/api.js';
+import { API_URL } from '../../lib/api.js';
 
 const AdminComentarios = () => {
     const { token } = useAuth();

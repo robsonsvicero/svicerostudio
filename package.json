@@ -7,7 +7,7 @@
     "dev": "vite",
     "dev:api": "npm --prefix backend run dev",
     "start:api": "npm --prefix backend run start",
-    "build": "vite build",
+    "build": "vite build --mode production",
     "postbuild": "node scripts/create-htaccess.mjs",
     "preview": "vite preview"
   },

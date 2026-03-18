@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { API_URL } from '../lib/api.js';
+import { useAuth } from '../../contexts/AuthContext';
+import { API_URL } from '../../lib/api.js';
 
 const Admin = () => {
   const { user, signOut } = useAuth();
