@@ -3,16 +3,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { API_URL } from '../../config';
-import { showToastMessage } from '../../components/Toast';
-import slugify from 'slugify'; // Certifique-se de que slugify está importado
-import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa'; // Ícones
-
-// ... (seus outros imports e código existente)
+import { API_URL } from '../../lib/api';
+import { useToast } from '../../hooks/useToast';
+import slugify from 'slugify';
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 
 const AdminProjetos = () => {
   const { token, signOut } = useAuth();
   const navigate = useNavigate();
+
+  // CHAME O HOOK useToast AQUI DENTRO DO COMPONENTE
+  const { showToastMessage, showToast, toastMessage, toastType } = useToast();
 
   const initialFormState = {
     titulo: '',
@@ -60,11 +61,11 @@ const AdminProjetos = () => {
       setProjects(data.data || []);
     } catch (err) {
       setError(err.message);
-      showToastMessage(err.message, 'error');
+      showToastMessage(err.message, 'error'); // Agora funciona
     } finally {
       setLoading(false);
     }
-  }, [token, signOut]);
+  }, [token, signOut, showToastMessage]); // Adicione showToastMessage às dependências
 
   useEffect(() => {
     if (token) {
@@ -118,7 +119,7 @@ const AdminProjetos = () => {
 
     if (validationErrors.length > 0) {
       setError(validationErrors.join(' '));
-      showToastMessage(validationErrors.join(' '), 'error');
+      showToastMessage(validationErrors.join(' '), 'error'); // Agora funciona
       return;
     }
 
@@ -138,11 +139,6 @@ const AdminProjetos = () => {
     // Remove id e _id do payload se for atualização para evitar problemas com o DB
     if (editing) {
         delete formPayload.id;
-        // Não delete formPayload._id aqui se você o está usando para identificar o documento na atualização
-        // A API genérica pode precisar dele no payload para update, ou no filtro.
-        // Como estamos usando filters: [{ column: '_id', operator: 'eq', value: editing }],
-        // o _id no payload não é estritamente necessário para a identificação, mas pode ser incluído.
-        // Para evitar conflitos, é mais seguro não enviá-lo no payload se já está no filtro.
         delete formPayload._id;
         delete formPayload.created_at;
         delete formPayload.updated_at;
@@ -169,12 +165,12 @@ const AdminProjetos = () => {
         const errorData = await res.json();
         throw new Error(errorData.error || `HTTP error! status: ${res.status}`);
       }
-      showToastMessage(`Projeto ${editing ? 'atualizado' : 'criado'} com sucesso.`, 'success');
+      showToastMessage(`Projeto ${editing ? 'atualizado' : 'criado'} com sucesso.`, 'success'); // Agora funciona
       handleCancelEdit();
       await fetchProjects();
     } catch (err) {
       setError(err.message);
-      showToastMessage(err.message, 'error');
+      showToastMessage(err.message, 'error'); // Agora funciona
     } finally {
       setSubmitting(false);
     }
@@ -237,12 +233,12 @@ const AdminProjetos = () => {
         console.log('Projeto principal excluído com sucesso via endpoint personalizado.');
 
 
-        showToastMessage('Projeto excluído com sucesso.', 'success');
+        showToastMessage('Projeto excluído com sucesso.', 'success'); // Agora funciona
         await fetchProjects(); // Re-carrega os projetos para atualizar a lista
       } catch (err) {
         console.error('Erro durante a exclusão do projeto:', err);
         setError(err.message);
-        showToastMessage(err.message, 'error');
+        showToastMessage(err.message, 'error'); // Agora funciona
       }
     }
   };
@@ -253,6 +249,13 @@ const AdminProjetos = () => {
       <h1>{editing ? 'Editar Projeto' : 'Adicionar Novo Projeto'}</h1>
       {error && <p className="error-message">{error}</p>}
       {uploadError && <p className="error-message">{uploadError}</p>}
+
+      {/* Renderiza o Toast se showToast for true */}
+      {showToast && (
+        <div className={`toast-notification toast-${toastType}`}>
+          {toastMessage}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="admin-form">
         {/* ... Seus campos de formulário ... */}
