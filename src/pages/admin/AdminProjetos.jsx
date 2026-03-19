@@ -292,26 +292,82 @@ const AdminProjetos = () => {
   // Enviar formulário (criar / atualizar)
   // ---------------------------------------------------------------------------
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!token) return;
+  e.preventDefault();
+  if (!token) return;
 
-    // Valida campos obrigatórios (schema do Projeto)
-    if (!form.titulo || !form.slug || !form.descricao) {
-      showToastMessage(
-        'Preencha pelo menos Título, Slug e Descrição antes de salvar.',
-        'error',
-      );
-      return;
-    }
+  // Garantir campos obrigatórios antes de bater no backend
+  const trimmedTitulo = (form.titulo || '').trim();
+  const trimmedDescricao = (form.descricao || '').trim();
 
-    setIsSaving(true);
+  // Se slug estiver vazio, gera a partir do título
+  const ensuredSlug =
+    (form.slug && form.slug.trim()) || generateSlug(trimmedTitulo);
 
-    try {
-      if (!editingId) {
-        // ----------------------------
-        // INSERT (novo projeto)
-        // ----------------------------
-        const insertRes = await fetch(`${API_URL}/api/db/projetos/query`, {
+  if (!trimmedTitulo || !trimmedDescricao || !ensuredSlug) {
+    showToastMessage(
+      'Preencha pelo menos Título, Slug e Descrição antes de publicar.',
+      'error',
+    );
+    return;
+  }
+
+  setIsSaving(true);
+
+  try {
+    // base comum do projeto
+    const projetoPayload = {
+      titulo: trimmedTitulo,
+      slug: ensuredSlug,
+      categoria: form.categoria || '',
+      cliente: form.cliente || '',
+      data_projeto: form.data_projeto || '',
+      status: form.status || 'draft',
+      descricao: trimmedDescricao,
+      descricao_longa: form.descricao_longa || '',
+      descricao_longa_en: form.descricao_longa_en || '',
+      imagem_url: form.imagem_url || '',
+      site_url: form.site_url || '',
+      link: form.link || '',
+      button_text: form.button_text || 'Ver Projeto',
+      link2: form.link2 || '',
+      button_text2: form.button_text2 || '',
+      mostrar_home: form.mostrar_home ?? true,
+    };
+
+    if (!editingId) {
+      // ------------ INSERT (novo projeto) ------------
+      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          operation: 'insert',
+          payload: projetoPayload,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 401) signOut();
+        throw new Error(data.error || `Erro ao criar projeto (status ${res.status})`);
+      }
+
+      const created = data.data && data.data[0] ? data.data[0] : null;
+      const newProjectId = created?.id;
+
+      // Se deu tudo certo, agora inserimos a galeria
+      if (newProjectId && gallery.length > 0) {
+        const galeriaPayload = gallery.map((img, index) => ({
+          projeto_id: newProjectId,
+          imagem_url: img.imagem_url,
+          ordem: index,
+          legenda: img.legenda || '',
+        }));
+
+        const resGal = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -319,128 +375,53 @@ const AdminProjetos = () => {
           },
           body: JSON.stringify({
             operation: 'insert',
-            payload: {
-              titulo: form.titulo,
-              slug: form.slug,
-              categoria: form.categoria,
-              cliente: form.cliente,
-              data_projeto: form.data_projeto,
-              status: form.status,
-              descricao: form.descricao,
-              descricao_longa: form.descricao_longa,
-              descricao_longa_en: form.descricao_longa_en,
-              imagem_url: form.imagem_url,
-              site_url: form.site_url,
-              link: form.link,
-              button_text: form.button_text,
-              link2: form.link2,
-              button_text2: form.button_text2,
-              mostrar_home: form.mostrar_home,
-            },
+            payload: galeriaPayload,
           }),
         });
 
-        const insertData = await insertRes.json();
-
-        if (!insertRes.ok) {
-          throw new Error(insertData.error || `Erro ao criar projeto (status ${insertRes.status})`);
+        const galData = await resGal.json();
+        if (!resGal.ok) {
+          if (resGal.status === 401) signOut();
+          throw new Error(galData.error || `Erro ao salvar galeria (status ${resGal.status})`);
         }
-
-        const createdArray = Array.isArray(insertData.data)
-          ? insertData.data
-          : [insertData.data];
-        const created = createdArray[0];
-        const newId = created?.id;
-
-        if (!newId) {
-          throw new Error('Projeto criado, mas resposta não contém id.');
-        }
-
-        // Persistir galeria (se houver imagens)
-        if (gallery.length > 0) {
-          const galleryPayload = gallery.map((img, idx) => ({
-            projeto_id: newId,
-            imagem_url: img.imagem_url,
-            ordem: typeof img.ordem === 'number' ? img.ordem : idx,
-            legenda: img.legenda || '',
-          }));
-
-          const galRes = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              operation: 'insert',
-              payload: galleryPayload,
-            }),
-          });
-
-          const galData = await galRes.json();
-          if (!galRes.ok) {
-            throw new Error(
-              galData.error ||
-                `Erro ao salvar galeria (status ${galRes.status})`,
-            );
-          }
-        }
-
-        showToastMessage('Projeto criado com sucesso!', 'success');
-        resetForm();
-        fetchProjects();
-        navigate('/admin/projetos');
-      } else {
-        // ----------------------------
-        // UPDATE (projeto existente)
-        // ----------------------------
-        const updateRes = await fetch(`${API_URL}/api/db/projetos/query`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            operation: 'update',
-            filters: [{ column: 'id', operator: 'eq', value: editingId }],
-            payload: {
-              titulo: form.titulo,
-              slug: form.slug,
-              categoria: form.categoria,
-              cliente: form.cliente,
-              data_projeto: form.data_projeto,
-              status: form.status,
-              descricao: form.descricao,
-              descricao_longa: form.descricao_longa,
-              descricao_longa_en: form.descricao_longa_en,
-              imagem_url: form.imagem_url,
-              site_url: form.site_url,
-              link: form.link,
-              button_text: form.button_text,
-              link2: form.link2,
-              button_text2: form.button_text2,
-              mostrar_home: form.mostrar_home,
-            },
-          }),
-        });
-
-        const updateData = await updateRes.json();
-
-        if (!updateRes.ok) {
-          throw new Error(updateData.error || `Erro ao atualizar projeto (status ${updateRes.status})`);
-        }
-
-        showToastMessage('Projeto atualizado com sucesso!', 'success');
-        resetForm();
-        fetchProjects();
       }
-    } catch (err) {
-      console.error(err);
-      showToastMessage(err.message || 'Erro ao salvar projeto', 'error');
-    } finally {
-      setIsSaving(false);
+
+      showToastMessage('Projeto criado com sucesso!', 'success');
+      await fetchProjects();
+      setForm(initialFormState);
+      setGallery([]);
+      setEditingId(null);
+    } else {
+      // ------------ UPDATE (projeto existente) ------------
+      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          operation: 'update',
+          filters: [{ column: 'id', operator: 'eq', value: editingId }],
+          payload: projetoPayload,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 401) signOut();
+        throw new Error(data.error || `Erro ao atualizar projeto (status ${res.status})`);
+      }
+
+      showToastMessage('Projeto atualizado com sucesso!', 'success');
+      await fetchProjects();
     }
-  };
+  } catch (err) {
+    showToastMessage(err.message, 'error');
+  } finally {
+    setIsSaving(false);
+  }
+};
 
   // ---------------------------------------------------------------------------
   // Editar / excluir
