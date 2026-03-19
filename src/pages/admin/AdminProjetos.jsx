@@ -15,7 +15,6 @@ import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
 const generateSlug = (title) =>
   slugify(title || '', { lower: true, strict: true });
 
-// gera um id string local (poderia usar uuid, mas isso aqui já evita colisão)
 const generateLocalId = (titulo = '') => {
   const base = slugify(titulo || 'projeto', { lower: true, strict: true }) || 'projeto';
   return `${base}-${Date.now()}`;
@@ -50,16 +49,12 @@ const AdminProjetos = () => {
 
   const [projects, setProjects] = useState([]);
   const [form, setForm] = useState(initialFormState);
-  const [editingId, setEditingId] = useState(null); // sempre string do id normalizado vindo da API
+  const [editingId, setEditingId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isUploadingGallery, setIsUploadingGallery] = useState(false);
-
-  // Galeria
-  // - Novo projeto: só em memória (R2 + estado)
-  // - Edição: carregada de projeto_galeria e novas imagens podem ser persistidas
-  const [gallery, setGallery] = useState([]); // [{ id?, projeto_id?, imagem_url, ordem, legenda }]
+  const [gallery, setGallery] = useState([]); // [{ id?, projeto_id?, imagem_url, ordem, legenda? }]
 
   // ---------------------------------------------------------------------------
   // Carregar projetos
@@ -99,7 +94,7 @@ const AdminProjetos = () => {
   }, [token, fetchProjects]);
 
   // ---------------------------------------------------------------------------
-  // Carregar galeria de um projeto (edição)
+  // Carregar galeria de um projeto existente
   // ---------------------------------------------------------------------------
   const fetchGallery = useCallback(
     async (projetoId) => {
@@ -211,172 +206,70 @@ const AdminProjetos = () => {
   );
 
   // ---------------------------------------------------------------------------
-  // Upload de imagem da galeria (R2 + estado / opcionalmente banco em edição)
+  // Upload de imagens da galeria (R2 + estado; grava em banco só em edição)
   // ---------------------------------------------------------------------------
   const handleGalleryImageUpload = useCallback(
-    async (filesOrFile) => {
-      if (!filesOrFile) return;
+    async (files) => {
+      if (!files || files.length === 0) return;
 
-      const files = Array.isArray(filesOrFile) ? filesOrFile : [filesOrFile];
-      if (files.length === 0) return;
-
+      const fileArray = Array.isArray(files) ? files : Array.from(files);
       setIsUploadingGallery(true);
 
       try {
-        const newImages = [];
+        const uploadedImages = [];
 
-        for (const file of files) {
-          // 1) Upload para R2
+        for (const file of fileArray) {
           const uploadFormData = new FormData();
           uploadFormData.append('file', file);
-          uploadFormData.append('bucket', 'projetos_galeria');
+          uploadFormData.append('bucket', 'projetos');
           uploadFormData.append('key', `${Date.now()}_${file.name}`);
 
-          const resUpload = await fetch(`${API_URL}/api/storage/upload`, {
+          const res = await fetch(`${API_URL}/api/storage/upload`, {
             method: 'POST',
             headers: { Authorization: `Bearer ${token}` },
             body: uploadFormData,
           });
+          const payload = await res.json();
 
-          const payloadUpload = await resUpload.json();
-
-          if (!resUpload.ok) {
-            throw new Error(payloadUpload.error || 'Erro ao fazer upload da imagem da galeria');
+          if (!res.ok) {
+            throw new Error(payload.error || 'Falha no upload de imagem da galeria');
           }
 
-          let imageUrl = payloadUpload.data?.url;
-          if (!imageUrl && payloadUpload.data?.path) {
-            imageUrl = `${API_URL}/api/storage/public/projetos/${payloadUpload.data.path}`;
+          let imageUrl = payload.data?.url;
+          if (!imageUrl && payload.data?.path) {
+            imageUrl = `${API_URL}/api/storage/public/projetos/${payload.data.path}`;
           }
           if (!imageUrl || imageUrl.trim() === '') {
-            throw new Error('Backend retornou URL vazia para imagem da galeria');
+            throw new Error('Backend retornou URL vazia para imagem da galeria.');
           }
 
-          const baseImage = {
-            imagem_url: imageUrl,
-            legenda: '',
-          };
-
-          // 2) Se estiver editando um projeto já existente, podemos opcionalmente persistir no banco agora
-          if (editingId) {
-            const ordem = gallery.length + newImages.length;
-
-            const resInsert = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                operation: 'insert',
-                payload: {
-                  projeto_id: editingId,
-                  imagem_url: imageUrl,
-                  ordem,
-                  legenda: '',
-                },
-              }),
-            });
-
-            const insertPayload = await resInsert.json();
-
-            if (!resInsert.ok) {
-              if (resInsert.status === 401) signOut();
-              throw new Error(insertPayload.error || 'Erro ao salvar imagem da galeria.');
-            }
-
-            const saved = insertPayload.data?.[0] || insertPayload.data || {};
-            newImages.push({
-              id: saved.id,
-              projeto_id: editingId,
-              imagem_url: imageUrl,
-              ordem,
-              legenda: '',
-            });
-          } else {
-            // 3) Novo projeto: só em memória
-            newImages.push({
-              tempId: `${Date.now()}-${Math.random()}`,
-              imagem_url: imageUrl,
-              ordem: gallery.length + newImages.length,
-              legenda: '',
-            });
-          }
+          uploadedImages.push({ imagem_url: imageUrl });
         }
 
-        setGallery((prev) => [...prev, ...newImages]);
-        showToastMessage('Imagens da galeria enviadas com sucesso!', 'success');
-      } catch (err) {
-        showToastMessage(err.message, 'error');
-      } finally {
-        setIsUploadingGallery(false);
-      }
-    },
-    [API_URL, token, showToastMessage, editingId, gallery.length, signOut],
-  );
-
-  // ---------------------------------------------------------------------------
-  // Salvar projeto (insert/update + salvar galeria em novo projeto)
-  // ---------------------------------------------------------------------------
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSaving(true);
-
-    try {
-      const payloadProjeto = {
-        titulo: form.titulo,
-        slug: form.slug,
-        categoria: form.categoria,
-        cliente: form.cliente,
-        data_projeto: form.data_projeto,
-        status: form.status,
-        descricao: form.descricao,
-        descricao_longa: form.descricao_longa,
-        descricao_longa_en: form.descricao_longa_en,
-        imagem_url: form.imagem_url,
-        site_url: form.site_url,
-        link: form.link,
-        button_text: form.button_text,
-        link2: form.link2,
-        button_text2: form.button_text2,
-        mostrar_home: form.mostrar_home,
-      };
-
-      if (!form.titulo || !form.slug || !form.descricao) {
-        throw new Error('Preencha pelo menos título, slug e descrição curta.');
-      }
-
-      if (!editingId) {
-        // --------------------------- INSERT ---------------------------
-        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            operation: 'insert',
-            payload: payloadProjeto,
-          }),
+        // Atualiza estado (sempre)
+        setGallery((prev) => {
+          const base = prev.length;
+          return [
+            ...prev,
+            ...uploadedImages.map((img, idx) => ({
+              tempId: `temp-${Date.now()}-${idx}`,
+              imagem_url: img.imagem_url,
+              ordem: base + idx,
+              legenda: '',
+            })),
+          ];
         });
 
-        const data = await res.json();
+        // Se já está editando um projeto existente, grava também em projeto_galeria
+        if (editingId) {
+          const payload = uploadedImages.map((img, idx) => ({
+            projeto_id: editingId,
+            imagem_url: img.imagem_url,
+            ordem: gallery.length + idx,
+            legenda: '',
+          }));
 
-        if (!res.ok) {
-          if (res.status === 401) signOut();
-          throw new Error(data.error || 'Erro ao criar projeto.');
-        }
-
-        const created = Array.isArray(data.data) ? data.data[0] : data.data;
-        const projetoId = created?.id;
-
-        if (!projetoId) {
-          throw new Error('API não retornou id do projeto criado.');
-        }
-
-        // Se tiver galeria em memória, salvar tudo agora
-        if (gallery.length > 0) {
-          const resGallery = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+          const res = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -384,65 +277,30 @@ const AdminProjetos = () => {
             },
             body: JSON.stringify({
               operation: 'insert',
-              payload: gallery.map((img, idx) => ({
-                projeto_id: projetoId,
-                imagem_url: img.imagem_url,
-                ordem: idx,
-                legenda: img.legenda || '',
-              })),
+              payload,
             }),
           });
 
-          const gData = await resGallery.json();
-          if (!resGallery.ok) {
-            if (resGallery.status === 401) signOut();
-            throw new Error(gData.error || 'Erro ao salvar galeria do projeto.');
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || 'Erro ao salvar imagens da galeria no banco.');
           }
         }
 
-        showToastMessage('Projeto criado com sucesso!', 'success');
-      } else {
-        // --------------------------- UPDATE ---------------------------
-        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            operation: 'update',
-            filters: [{ column: 'id', operator: 'eq', value: editingId }],
-            payload: payloadProjeto,
-          }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          if (res.status === 401) signOut();
-          throw new Error(data.error || 'Erro ao atualizar projeto.');
-        }
-
-        showToastMessage('Projeto atualizado com sucesso!', 'success');
+        showToastMessage('Imagens da galeria enviadas!', 'success');
+      } catch (err) {
+        showToastMessage(err.message, 'error');
+      } finally {
+        setIsUploadingGallery(false);
       }
-
-      await fetchProjects();
-      setForm(initialFormState);
-      setGallery([]);
-      setEditingId(null);
-    } catch (err) {
-      showToastMessage(err.message, 'error');
-    } finally {
-      setIsSaving(false);
-    }
-  };
+    },
+    [API_URL, token, editingId, gallery.length, showToastMessage],
+  );
 
   // ---------------------------------------------------------------------------
-  // Editar / excluir projeto
+  // Editar projeto
   // ---------------------------------------------------------------------------
   const handleEditProject = async (proj) => {
-    // proj.id já vem da API genérica
-    setEditingId(proj.id);
     setForm({
       _id: proj.id || '',
       titulo: proj.titulo || '',
@@ -460,12 +318,16 @@ const AdminProjetos = () => {
       button_text: proj.button_text || 'Ver Projeto',
       link2: proj.link2 || '',
       button_text2: proj.button_text2 || '',
-      mostrar_home: typeof proj.mostrar_home === 'boolean' ? proj.mostrar_home : true,
+      mostrar_home: proj.mostrar_home ?? true,
     });
-
+    setEditingId(proj.id);
     await fetchGallery(proj.id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // ---------------------------------------------------------------------------
+  // Deletar projeto
+  // ---------------------------------------------------------------------------
   const handleDeleteProject = async (id) => {
     if (!window.confirm('Tem certeza que deseja excluir este projeto?')) return;
 
@@ -485,242 +347,378 @@ const AdminProjetos = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        if (res.status === 401) signOut();
-        throw new Error(data.error || 'Erro ao excluir projeto.');
-      }
-
-      // opcional: apagar galeria associada
-      try {
-        await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            operation: 'delete',
-            filters: [{ column: 'projeto_id', operator: 'eq', value: id }],
-          }),
-        });
-      } catch (inner) {
-        console.warn('Falha ao excluir galeria do projeto:', inner.message);
+        throw new Error(data.error || 'Erro ao excluir projeto');
       }
 
       showToastMessage('Projeto excluído com sucesso!', 'success');
       fetchProjects();
+      if (editingId === id) {
+        handleCancelEdit();
+      }
     } catch (err) {
       showToastMessage(err.message, 'error');
     }
   };
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Salvar projeto (novo ou edição) + galeria (jeito A)
+  // ---------------------------------------------------------------------------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!form.titulo || !form.slug || !form.descricao) {
+      showToastMessage('Preencha pelo menos título, slug e descrição.', 'error');
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      if (!editingId) {
+        // NOVO PROJETO: INSERT
+        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            operation: 'insert',
+            payload: {
+              titulo: form.titulo,
+              slug: form.slug,
+              categoria: form.categoria,
+              cliente: form.cliente,
+              data_projeto: form.data_projeto,
+              status: form.status,
+              descricao: form.descricao,
+              descricao_longa: form.descricao_longa,
+              descricao_longa_en: form.descricao_longa_en,
+              imagem_url: form.imagem_url,
+              site_url: form.site_url,
+              link: form.link,
+              button_text: form.button_text,
+              link2: form.link2,
+              button_text2: form.button_text2,
+              mostrar_home: form.mostrar_home,
+            },
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Erro ao criar projeto');
+        }
+
+        const created = data.data?.[0];
+        const newProjectId = created?.id;
+
+        if (!newProjectId) {
+          throw new Error('API não retornou o id do novo projeto.');
+        }
+
+        // SALVAR GALERIA (se houver)
+        if (gallery.length > 0) {
+          const payloadGallery = gallery.map((img, index) => ({
+            projeto_id: newProjectId,
+            imagem_url: img.imagem_url,
+            ordem: index,
+            legenda: img.legenda || '',
+          }));
+
+          const resGallery = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              operation: 'insert',
+              payload: payloadGallery,
+            }),
+          });
+
+          const galData = await resGallery.json();
+          if (!resGallery.ok) {
+            throw new Error(galData.error || 'Erro ao salvar imagens da galeria.');
+          }
+        }
+
+        showToastMessage('Projeto criado com sucesso!', 'success');
+      } else {
+        // EDIÇÃO: UPDATE
+        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            operation: 'update',
+            filters: [{ column: 'id', operator: 'eq', value: editingId }],
+            payload: {
+              titulo: form.titulo,
+              slug: form.slug,
+              categoria: form.categoria,
+              cliente: form.cliente,
+              data_projeto: form.data_projeto,
+              status: form.status,
+              descricao: form.descricao,
+              descricao_longa: form.descricao_longa,
+              descricao_longa_en: form.descricao_longa_en,
+              imagem_url: form.imagem_url,
+              site_url: form.site_url,
+              link: form.link,
+              button_text: form.button_text,
+              link2: form.link2,
+              button_text2: form.button_text2,
+              mostrar_home: form.mostrar_home,
+            },
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Erro ao atualizar projeto');
+        }
+
+        showToastMessage('Projeto atualizado com sucesso!', 'success');
+      }
+
+      await fetchProjects();
+      setForm(initialFormState);
+      setGallery([]);
+      setEditingId(null);
+    } catch (err) {
+      showToastMessage(err.message, 'error');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // JSX
   // ---------------------------------------------------------------------------
   return (
     <AdminLayout
       title="Projetos"
-      description="Gerencie os projetos exibidos no portfólio."
+      description="Gerencie os projetos exibidos no site."
       primaryAction={
-        <button
+        <Button
+          size="sm"
           onClick={() => {
-            setForm(initialFormState);
-            setEditingId(null);
-            setGallery([]);
+            handleCancelEdit();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-medium text-white hover:bg-white/15"
         >
-          <FaPlus className="h-3 w-3" />
-          Novo Projeto
-        </button>
+          <FaPlus className="mr-2" /> Novo Projeto
+        </Button>
       }
     >
-      <form onSubmit={handleSubmit} className="space-y-10">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,2.3fr)_minmax(0,1.3fr)]">
-          {/* Coluna esquerda -------------------------------------------------- */}
-          <main className="space-y-6">
-            {/* Cabeçalho do Formulário */}
-            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                    Projeto
-                  </p>
-                  <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">
-                    {editingId ? 'Editar Projeto' : 'Novo Projeto'}
-                  </h2>
-                  <p className="mt-1 text-sm text-white/60">
-                    Preencha as informações abaixo para criar ou atualizar um projeto.
-                  </p>
-                </div>
-                <div className="flex gap-3">
-                  <div className="rounded-full bg-white/5 px-3 py-1 text-xs text-white/70">
-                    {editingId ? 'Modo edição' : 'Modo criação'}
-                  </div>
-                </div>
-              </div>
-            </section>
+      {/* Formulário */}
+      <form
+        onSubmit={handleSubmit}
+        className="mt-8 grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(260px,1fr)] gap-8 items-start"
+      >
+        {/* Coluna principal */}
+        <div className="space-y-8">
+          {/* Card: Informações básicas */}
+          <section className="rounded-3xl border border-white/8 bg-[#181818] px-6 py-6 lg:px-8 lg:py-7 shadow-[0_18px_45px_rgba(0,0,0,0.55)]">
+            <h2 className="text-sm font-semibold tracking-[0.18em] text-white/60 uppercase mb-1">
+              Informações Básicas
+            </h2>
+            <p className="text-sm text-white/60 mb-6">
+              Defina título, slug, categoria, cliente e data do projeto.
+            </p>
+            <div className="grid gap-4 md:grid-cols-2">
+              <label className="block md:col-span-2">
+                <span className="mb-2 block text-sm font-medium text-white/82">Título</span>
+                <input
+                  type="text"
+                  name="titulo"
+                  value={form.titulo}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="Nome do projeto"
+                />
+              </label>
 
-            {/* Informações principais */}
-            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-              <div className="grid gap-4 md:grid-cols-2">
-                <label className="block md:col-span-2">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Título do Projeto
-                  </span>
-                  <input
-                    type="text"
-                    name="titulo"
-                    value={form.titulo}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Ex: Rebranding da Marca X"
-                  />
-                </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">Slug</span>
+                <input
+                  type="text"
+                  name="slug"
+                  value={form.slug}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="meu-projeto-incrivel"
+                />
+              </label>
 
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">Slug</span>
-                  <input
-                    type="text"
-                    name="slug"
-                    value={form.slug}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="meu-projeto-incrivel"
-                  />
-                </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">Categoria</span>
+                <select
+                  name="categoria"
+                  value={form.categoria}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-[13px] text-sm text-white outline-none transition focus:border-[#B87333]/40"
+                >
+                  <option value="">Selecione uma categoria</option>
+                  {CATEGORIAS.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Cliente
-                  </span>
-                  <input
-                    type="text"
-                    name="cliente"
-                    value={form.cliente}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Nome do cliente"
-                  />
-                </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">Cliente</span>
+                <input
+                  type="text"
+                  name="cliente"
+                  value={form.cliente}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="Nome do cliente"
+                />
+              </label>
 
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Categoria
-                  </span>
-                  <select
-                    name="categoria"
-                    value={form.categoria}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
-                  >
-                    <option value="">Selecione uma categoria</option>
-                    {CATEGORIAS.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Data do Projeto
+                </span>
+                <input
+                  type="text"
+                  name="data_projeto"
+                  value={form.data_projeto}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="2024 ou 03/2024"
+                />
+              </label>
 
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Data do Projeto
-                  </span>
-                  <input
-                    type="text"
-                    name="data_projeto"
-                    value={form.data_projeto}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="2024-01, 2024 ou outro formato que você usa"
-                  />
-                </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">Status</span>
+                <select
+                  name="status"
+                  value={form.status}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-[13px] text-sm text-white outline-none transition focus:border-[#B87333]/40"
+                >
+                  <option value="draft">Rascunho</option>
+                  <option value="published">Publicado</option>
+                </select>
+              </label>
 
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">Status</span>
-                  <select
-                    name="status"
-                    value={form.status}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
-                  >
-                    <option value="draft">Rascunho</option>
-                    <option value="published">Publicado</option>
-                    <option value="archived">Arquivado</option>
-                  </select>
-                </label>
-              </div>
+              <label className="inline-flex items-center gap-2 md:col-span-2 mt-2">
+                <input
+                  type="checkbox"
+                  name="mostrar_home"
+                  checked={form.mostrar_home}
+                  onChange={handleFieldChange}
+                  className="h-4 w-4 rounded border-white/40 bg-[#141414] text-[#B87333] focus:ring-[#B87333]"
+                />
+                <span className="text-sm text-white/82">Exibir na página inicial</span>
+              </label>
+            </div>
+          </section>
 
-              <div className="mt-6 space-y-4">
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Descrição curta
-                  </span>
-                  <textarea
-                    name="descricao"
-                    value={form.descricao}
-                    onChange={handleFieldChange}
-                    rows={3}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Resumo breve do projeto para cards e listagens."
-                  />
-                </label>
+          {/* Descrição */}
+          <section className="rounded-3xl border border-white/8 bg-[#181818] px-6 py-6 lg:px-8 lg:py-7">
+            <h2 className="text-sm font-semibold tracking-[0.18em] text-white/60 uppercase mb-1">
+              Descrição
+            </h2>
+            <p className="text-sm text-white/60 mb-6">
+              Breve resumo e descrição detalhada do projeto.
+            </p>
+            <div className="space-y-4">
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Descrição Curta
+                </span>
+                <textarea
+                  name="descricao"
+                  value={form.descricao}
+                  onChange={handleFieldChange}
+                  rows={3}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40 resize-none"
+                  placeholder="Resumo rápido do projeto."
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Descrição Longa (PT)
+                </span>
+                <textarea
+                  name="descricao_longa"
+                  value={form.descricao_longa}
+                  onChange={handleFieldChange}
+                  rows={5}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40 resize-none"
+                  placeholder="Conte em detalhes como o projeto foi desenvolvido."
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Descrição Longa (EN)
+                </span>
+                <textarea
+                  name="descricao_longa_en"
+                  value={form.descricao_longa_en}
+                  onChange={handleFieldChange}
+                  rows={5}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40 resize-none"
+                  placeholder="Project description in English (optional)."
+                />
+              </label>
+            </div>
+          </section>
 
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Descrição longa (PT)
-                  </span>
-                  <textarea
-                    name="descricao_longa"
-                    value={form.descricao_longa}
-                    onChange={handleFieldChange}
-                    rows={5}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Detalhes do projeto em português."
-                  />
-                </label>
+          {/* IMAGEM DE CAPA */}
+          <section className="rounded-3xl border border-white/8 bg-[#181818] px-6 py-6 lg:px-8 lg:py-7">
+            <h2 className="text-sm font-semibold tracking-[0.18em] text-white/60 uppercase mb-1">
+              Imagem de Capa
+            </h2>
+            <p className="text-sm text-white/60 mb-6">
+              Esta imagem aparece como destaque do projeto no site.
+            </p>
 
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Descrição longa (EN)
-                  </span>
-                  <textarea
-                    name="descricao_longa_en"
-                    value={form.descricao_longa_en}
-                    onChange={handleFieldChange}
-                    rows={5}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Project details in English."
-                  />
-                </label>
-              </div>
-            </section>
+            <ImageUploadSlot
+              title="Capa do Projeto"
+              description="Upload da imagem de capa"
+              onUpload={handleImageUpload}
+              isUploading={isUploading}
+              currentImageUrl={form.imagem_url}
+            />
 
-            {/* Galeria de Imagens */}
-            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-              <div className="mb-4 flex items-center justify-between gap-2">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                    Galeria
-                  </p>
-                  <h2 className="mt-2 font-[Manrope] text-xl font-semibold text-white">
-                    Imagens do Projeto
-                  </h2>
-                  <p className="mt-1 text-xs text-white/60">
-                    Adicione múltiplas imagens para compor a galeria do projeto.
-                  </p>
-                </div>
-              </div>
+            {form.imagem_url && (
+              <p className="mt-3 text-xs text-white/50 break-all">
+                URL atual: {form.imagem_url}
+              </p>
+            )}
+          </section>
 
-              <ImageUploadSlot
-                title="Galeria do projeto"
-                description="Arraste ou clique para enviar imagens (pode selecionar várias)"
-                onUpload={handleGalleryImageUpload}
-                isUploading={isUploadingGallery}
-                multiple={true}
-              />
+          {/* GALERIA */}
+          <section className="rounded-3xl border border-white/8 bg-[#181818] px-6 py-6 lg:px-8 lg:py-7">
+            <h2 className="text-sm font-semibold tracking-[0.18em] text-white/60 uppercase mb-1">
+              Galeria
+            </h2>
+            <p className="text-sm text-white/60 mb-6">
+              Adicione múltiplas imagens que compõem a galeria deste projeto.
+            </p>
 
-              {/* Grid da galeria */}
+            <ImageUploadSlot
+              title="Imagens"
+              description="Arraste ou clique para enviar (você pode selecionar várias imagens)"
+              onUpload={handleGalleryImageUpload}
+              isUploading={isUploadingGallery}
+              multiple={true}
+            />
+
+            {gallery.length > 0 && (
               <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {gallery.map((img, index) => (
                   <div
@@ -737,158 +735,89 @@ const AdminProjetos = () => {
                     </div>
                   </div>
                 ))}
-                {gallery.length === 0 && (
-                  <p className="text-xs text-white/50">
-                    Nenhuma imagem adicionada à galeria ainda.
-                  </p>
-                )}
               </div>
-            </section>
-          </main>
-
-          {/* Coluna direita --------------------------------------------------- */}
-          <aside className="space-y-6">
-            {/* Imagem de Capa */}
-            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-              <div className="mb-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                  Capa
-                </p>
-                <h2 className="mt-2 font-[Manrope] text-xl font-semibold text-white">
-                  Imagem principal
-                </h2>
-                <p className="mt-1 text-xs text-white/60">
-                  Esta imagem será usada como capa do projeto na listagem.
-                </p>
-              </div>
-
-              <ImageUploadSlot
-                title="Upload da imagem de capa"
-                description="Arraste ou clique para enviar"
-                onUpload={handleImageUpload}
-                isUploading={isUploading}
-                currentImageUrl={form.imagem_url}
-              />
-            </section>
-
-            {/* Configurações de Destaque */}
-            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-              <div className="mb-6 flex items-center justify-between gap-2">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                    Destaque
-                  </p>
-                  <h2 className="mt-2 font-[Manrope] text-xl font-semibold text-white">
-                    Exibição
-                  </h2>
-                </div>
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-sm text-white/80">Mostrar na página inicial</span>
-                <label className="inline-flex cursor-pointer items-center">
-                  <input
-                    type="checkbox"
-                    name="mostrar_home"
-                    checked={form.mostrar_home}
-                    onChange={handleFieldChange}
-                    className="sr-only"
-                  />
-                  <span
-                    className={`flex h-7 w-12 items-center rounded-full border border-[#B87333]/20 px-1 transition-all ${
-                      form.mostrar_home ? 'bg-[#B87333]/50' : 'bg-white/5'
-                    }`}
-                  >
-                    <span
-                      className={`h-5 w-5 rounded-full bg-[#B87333] transition-all ${
-                        form.mostrar_home ? 'ml-auto' : 'ml-0'
-                      }`}
-                    />
-                  </span>
-                </label>
-              </div>
-            </section>
-
-            {/* Links e Botões */}
-            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-              <div className="mb-6">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                  Links
-                </p>
-                <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">
-                  Ações
-                </h2>
-              </div>
-              <div className="space-y-4">
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    URL do Site
-                  </span>
-                  <input
-                    type="text"
-                    name="site_url"
-                    value={form.site_url}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="https://exemplo.com"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Link (Behance)
-                  </span>
-                  <input
-                    type="text"
-                    name="link"
-                    value={form.link}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="https://www.behance.net/..."
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Texto do Botão
-                  </span>
-                  <input
-                    type="text"
-                    name="button_text"
-                    value={form.button_text}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Ver Projeto"
-                  />
-                </label>
-                <hr className="border-white/10" />
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Segundo Link
-                  </span>
-                  <input
-                    type="text"
-                    name="link2"
-                    value={form.link2}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="https://..."
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Texto do Segundo Botão
-                  </span>
-                  <input
-                    type="text"
-                    name="button_text2"
-                    value={form.button_text2}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Texto alternativo"
-                  />
-                </label>
-              </div>
-            </section>
-          </aside>
+            )}
+          </section>
         </div>
+
+        {/* SIDEBAR */}
+        <aside className="space-y-6">
+          <section className="rounded-3xl border border-white/8 bg-[#181818] px-6 py-6 lg:px-7 lg:py-7">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold tracking-[0.18em] text-white/60 uppercase">
+                Ações
+              </h2>
+            </div>
+            <div className="space-y-4">
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  URL do Site
+                </span>
+                <input
+                  type="text"
+                  name="site_url"
+                  value={form.site_url}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="https://exemplo.com"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Link (Behance)
+                </span>
+                <input
+                  type="text"
+                  name="link"
+                  value={form.link}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="https://www.behance.net/..."
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Texto do Botão
+                </span>
+                <input
+                  type="text"
+                  name="button_text"
+                  value={form.button_text}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="Ver Projeto"
+                />
+              </label>
+              <hr className="border-white/10" />
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Segundo Link
+                </span>
+                <input
+                  type="text"
+                  name="link2"
+                  value={form.link2}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="https://..."
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Texto do Segundo Botão
+                </span>
+                <input
+                  type="text"
+                  name="button_text2"
+                  value={form.button_text2}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="Texto alternativo"
+                />
+              </label>
+            </div>
+          </section>
+        </aside>
 
         {/* Botões de Ação */}
         <div className="relative border-t border-white/8 px-6 py-6 lg:px-8 flex justify-end gap-3">
