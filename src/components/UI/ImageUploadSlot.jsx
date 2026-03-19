@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 const ImageUploadSlot = ({ title, description, onUpload, currentImageUrl, isUploading }) => {
   const [fileName, setFileName] = useState('');
 
+   console.log('ImageUploadSlot currentImageUrl:', currentImageUrl);
+
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
