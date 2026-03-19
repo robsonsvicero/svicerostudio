@@ -7,7 +7,7 @@ const ImageUploadSlot = ({
   onUpload,
   currentImageUrl,
   isUploading,
-  multiple = false,   // <-- nova prop
+  multiple = false,   // 1) nova prop
 }) => {
   const [fileName, setFileName] = useState('');
 
@@ -16,15 +16,14 @@ const ImageUploadSlot = ({
     if (files.length === 0) return;
 
     if (multiple) {
-      // envia uma lista de arquivos para o handler
       setFileName(
         files.length === 1 ? files[0].name : `${files.length} arquivos selecionados`
       );
-      await onUpload(files);
+      await onUpload(files);   // 2) passa array
     } else {
       const file = files[0];
       setFileName(file.name);
-      await onUpload(file);
+      await onUpload(file);    // 2) passa um arquivo
     }
   };
 
@@ -44,7 +43,7 @@ const ImageUploadSlot = ({
         onChange={handleFileChange}
         disabled={isUploading}
         accept="image/*"
-        multiple={multiple}   // <-- aqui libera múltipla seleção
+        multiple={multiple}  // 3) aqui é fundamental
       />
 
       {hasImage ? (

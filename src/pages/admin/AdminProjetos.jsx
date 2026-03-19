@@ -168,96 +168,93 @@ const AdminProjetos = () => {
     // Upload de imagem da galeria (R2 + projeto_galeria)
     // ---------------------------------------------------------------------------
     const handleGalleryImageUpload = useCallback(
-        async (filesOrFile) => {
-            if (!filesOrFile) return;
-            if (!editingId) {
-                showToastMessage('Salve o projeto antes de adicionar imagens à galeria.', 'error');
-                return;
-            }
+  async (filesOrFile) => {
+    if (!filesOrFile) return;
+    if (!editingId) {
+      showToastMessage('Salve o projeto antes de adicionar imagens à galeria.', 'error');
+      return;
+    }
 
-            // Normalizar para array
-            const files = Array.isArray(filesOrFile) ? filesOrFile : [filesOrFile];
-            if (files.length === 0) return;
+    const files = Array.isArray(filesOrFile) ? filesOrFile : [filesOrFile];
+    if (files.length === 0) return;
 
-            setIsUploadingGallery(true);
+    setIsUploadingGallery(true);
 
-            try {
-                const newImages = [];
+    try {
+      const newImages = [];
 
-                for (const file of files) {
-                    // 1) Upload para R2
-                    const uploadFormData = new FormData();
-                    uploadFormData.append('file', file);
-                    uploadFormData.append('bucket', 'projetos_galeria');
-                    uploadFormData.append('key', `${Date.now()}_${file.name}`);
+      for (const file of files) {
+        // upload para R2
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+        uploadFormData.append('bucket', 'projetos_galeria');
+        uploadFormData.append('key', `${Date.now()}_${file.name}`);
 
-                    const resUpload = await fetch(`${API_URL}/api/storage/upload`, {
-                        method: 'POST',
-                        headers: { Authorization: `Bearer ${token}` },
-                        body: uploadFormData,
-                    });
+        const resUpload = await fetch(`${API_URL}/api/storage/upload`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+          body: uploadFormData,
+        });
 
-                    const uploadPayload = await resUpload.json();
-                    if (!resUpload.ok) {
-                        throw new Error(uploadPayload.error || 'Falha no upload de uma das imagens da galeria');
-                    }
+        const uploadPayload = await resUpload.json();
+        if (!resUpload.ok) {
+          throw new Error(uploadPayload.error || 'Falha no upload de uma das imagens da galeria');
+        }
 
-                    let imageUrl = uploadPayload.data?.url;
-                    if (!imageUrl && uploadPayload.data?.path) {
-                        imageUrl = `${API_URL}/api/storage/public/projetos_galeria/${uploadPayload.data.path}`;
-                    }
-                    if (!imageUrl || imageUrl.trim() === '') {
-                        throw new Error('Backend retornou URL vazia para uma das imagens.');
-                    }
+        let imageUrl = uploadPayload.data?.url;
+        if (!imageUrl && uploadPayload.data?.path) {
+          imageUrl = `${API_URL}/api/storage/public/projetos_galeria/${uploadPayload.data.path}`;
+        }
+        if (!imageUrl || imageUrl.trim() === '') {
+          throw new Error('Backend retornou URL vazia para uma das imagens.');
+        }
 
-                    // 2) Inserir registro no projeto_galeria
-                    const ordem = gallery.length + newImages.length;
+        const ordem = gallery.length + newImages.length;
 
-                    const resInsert = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`,
-                        },
-                        body: JSON.stringify({
-                            operation: 'insert',
-                            payload: {
-                                projeto_id: editingId,
-                                imagem_url: imageUrl,
-                                ordem,
-                            },
-                        }),
-                    });
+        const resInsert = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            operation: 'insert',
+            payload: {
+              projeto_id: editingId,
+              imagem_url: imageUrl,
+              ordem,
+            },
+          }),
+        });
 
-                    const insertPayload = await resInsert.json();
-                    if (!resInsert.ok) {
-                        throw new Error(insertPayload.error || 'Falha ao salvar uma imagem da galeria no banco');
-                    }
+        const insertPayload = await resInsert.json();
+        if (!resInsert.ok) {
+          throw new Error(insertPayload.error || 'Falha ao salvar uma imagem da galeria no banco');
+        }
 
-                    const inserted = Array.isArray(insertPayload.data)
-                        ? insertPayload.data[0]
-                        : insertPayload.data;
+        const inserted = Array.isArray(insertPayload.data)
+          ? insertPayload.data[0]
+          : insertPayload.data;
 
-                    newImages.push(inserted);
-                }
+        newImages.push(inserted);
+      }
 
-                // 3) Atualizar galeria local com todas as novas imagens
-                setGallery((prev) => [...prev, ...newImages]);
+      setGallery((prev) => [...prev, ...newImages]);
 
-                showToastMessage(
-                    newImages.length > 1
-                        ? `${newImages.length} imagens da galeria enviadas com sucesso!`
-                        : 'Imagem da galeria enviada com sucesso!',
-                    'success'
-                );
-            } catch (err) {
-                showToastMessage(err.message, 'error');
-            } finally {
-                setIsUploadingGallery(false);
-            }
-        },
-        [API_URL, token, editingId, gallery.length, showToastMessage]
-    );
+      showToastMessage(
+        newImages.length > 1
+          ? `${newImages.length} imagens da galeria enviadas com sucesso!`
+          : 'Imagem da galeria enviada com sucesso!',
+        'success'
+      );
+    } catch (err) {
+      showToastMessage(err.message, 'error');
+    } finally {
+      setIsUploadingGallery(false);
+    }
+  },
+  [API_URL, token, editingId, gallery.length, showToastMessage]
+);
 
     // ---------------------------------------------------------------------------
     // Remover imagem da galeria (projeto_galeria)
@@ -556,12 +553,11 @@ const AdminProjetos = () => {
                                 <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Capa do Projeto</h2>
                             </div>
                             <ImageUploadSlot
-                                title="Upload da imagem de capa"
-                                description="Arraste ou clique para enviar"
-                                onUpload={handleImageUpload}
-                                isUploading={isUploading}
-                                currentImageUrl={form.imagem_url}
-                                multiple={true}
+                                title="Adicionar à galeria"
+                                description="Arraste ou clique para enviar (pode selecionar várias imagens)"
+                                onUpload={handleGalleryImageUpload}
+                                isUploading={isUploadingGallery}
+                                multiple={true}   // <- aqui é o gatilho
                             />
                             {form.imagem_url && (
                                 <p className="mt-2 text-xs text-white/50 break-all">
