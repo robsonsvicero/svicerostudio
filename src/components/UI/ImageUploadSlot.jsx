@@ -1,24 +1,52 @@
+// src/components/UI/ImageUploadSlot.jsx
 import React, { useState } from 'react';
 
-const ImageUploadSlot = ({ title, description, onUpload, currentImageUrl, isUploading }) => {
+const ImageUploadSlot = ({
+  title,
+  description,
+  onUpload,
+  currentImageUrl,
+  isUploading,
+  multiple = false,   // <-- nova prop
+}) => {
   const [fileName, setFileName] = useState('');
 
-   console.log('ImageUploadSlot currentImageUrl:', currentImageUrl);
-
   const handleFileChange = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setFileName(file.name);
-    await onUpload(file);
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    if (multiple) {
+      // envia uma lista de arquivos para o handler
+      setFileName(
+        files.length === 1 ? files[0].name : `${files.length} arquivos selecionados`
+      );
+      await onUpload(files);
+    } else {
+      const file = files[0];
+      setFileName(file.name);
+      await onUpload(file);
+    }
   };
 
   const hasImage = currentImageUrl && currentImageUrl !== '';
 
   return (
     <div
-      className={`relative rounded-[24px] border border-dashed  p-5 transition  ${hasImage ? 'border-green-500/30 bg-green-900/10' : 'border-white/12 bg-dark-bg/55 hover:border-[#B87333]/35 hover:bg-dark-bg/75'}`}
+      className={`relative rounded-[24px] border border-dashed p-5 transition ${
+        hasImage
+          ? 'border-green-500/30 bg-green-900/10'
+          : 'border-white/12 bg-dark-bg/55 hover:border-[#B87333]/35 hover:bg-dark-bg/75'
+      }`}
     >
-      <input type="file" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={handleFileChange} disabled={isUploading} accept="image/*" />
+      <input
+        type="file"
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        onChange={handleFileChange}
+        disabled={isUploading}
+        accept="image/*"
+        multiple={multiple}   // <-- aqui libera múltipla seleção
+      />
+
       {hasImage ? (
         <div className="flex items-center gap-4">
           <img src={currentImageUrl} alt={title} className="w-16 h-16 object-cover rounded-xl" />
@@ -28,10 +56,15 @@ const ImageUploadSlot = ({ title, description, onUpload, currentImageUrl, isUplo
               {fileName || 'Imagem carregada.'}
             </p>
             <button
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); onUpload(null); setFileName(''); }}
-                className="text-xs text-red-400 hover:underline mt-1"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onUpload(null);
+                setFileName('');
+              }}
+              className="text-xs text-red-400 hover:underline mt-1"
             >
-                Remover
+              Remover
             </button>
           </div>
         </div>

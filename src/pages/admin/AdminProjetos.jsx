@@ -167,75 +167,97 @@ const AdminProjetos = () => {
     // ---------------------------------------------------------------------------
     // Upload de imagem da galeria (R2 + projeto_galeria)
     // ---------------------------------------------------------------------------
-    const handleGalleryImageUpload = useCallback(async (file) => {
-        if (!file) return;
-
-        if (!editingId) {
-            showToastMessage('Salve o projeto antes de adicionar imagens à galeria.', 'error');
-            return;
-        }
-
-        setIsUploadingGallery(true);
-        const uploadFormData = new FormData();
-        uploadFormData.append('file', file);
-        uploadFormData.append('bucket', 'projetos_galeria');
-        uploadFormData.append('key', `${Date.now()}_${file.name}`);
-
-        try {
-            // 1) Upload para R2
-            const resUpload = await fetch(`${API_URL}/api/storage/upload`, {
-                method: 'POST',
-                headers: { Authorization: `Bearer ${token}` },
-                body: uploadFormData,
-            });
-            const uploadPayload = await resUpload.json();
-
-            if (!resUpload.ok) {
-                throw new Error(uploadPayload.error || 'Falha no upload da imagem da galeria');
+    const handleGalleryImageUpload = useCallback(
+        async (filesOrFile) => {
+            if (!filesOrFile) return;
+            if (!editingId) {
+                showToastMessage('Salve o projeto antes de adicionar imagens à galeria.', 'error');
+                return;
             }
 
-            let imageUrl = uploadPayload.data?.url;
-            if (!imageUrl && uploadPayload.data?.path) {
-                imageUrl = `${API_URL}/api/storage/public/projetos_galeria/${uploadPayload.data.path}`;
+            // Normalizar para array
+            const files = Array.isArray(filesOrFile) ? filesOrFile : [filesOrFile];
+            if (files.length === 0) return;
+
+            setIsUploadingGallery(true);
+
+            try {
+                const newImages = [];
+
+                for (const file of files) {
+                    // 1) Upload para R2
+                    const uploadFormData = new FormData();
+                    uploadFormData.append('file', file);
+                    uploadFormData.append('bucket', 'projetos_galeria');
+                    uploadFormData.append('key', `${Date.now()}_${file.name}`);
+
+                    const resUpload = await fetch(`${API_URL}/api/storage/upload`, {
+                        method: 'POST',
+                        headers: { Authorization: `Bearer ${token}` },
+                        body: uploadFormData,
+                    });
+
+                    const uploadPayload = await resUpload.json();
+                    if (!resUpload.ok) {
+                        throw new Error(uploadPayload.error || 'Falha no upload de uma das imagens da galeria');
+                    }
+
+                    let imageUrl = uploadPayload.data?.url;
+                    if (!imageUrl && uploadPayload.data?.path) {
+                        imageUrl = `${API_URL}/api/storage/public/projetos_galeria/${uploadPayload.data.path}`;
+                    }
+                    if (!imageUrl || imageUrl.trim() === '') {
+                        throw new Error('Backend retornou URL vazia para uma das imagens.');
+                    }
+
+                    // 2) Inserir registro no projeto_galeria
+                    const ordem = gallery.length + newImages.length;
+
+                    const resInsert = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            operation: 'insert',
+                            payload: {
+                                projeto_id: editingId,
+                                imagem_url: imageUrl,
+                                ordem,
+                            },
+                        }),
+                    });
+
+                    const insertPayload = await resInsert.json();
+                    if (!resInsert.ok) {
+                        throw new Error(insertPayload.error || 'Falha ao salvar uma imagem da galeria no banco');
+                    }
+
+                    const inserted = Array.isArray(insertPayload.data)
+                        ? insertPayload.data[0]
+                        : insertPayload.data;
+
+                    newImages.push(inserted);
+                }
+
+                // 3) Atualizar galeria local com todas as novas imagens
+                setGallery((prev) => [...prev, ...newImages]);
+
+                showToastMessage(
+                    newImages.length > 1
+                        ? `${newImages.length} imagens da galeria enviadas com sucesso!`
+                        : 'Imagem da galeria enviada com sucesso!',
+                    'success'
+                );
+            } catch (err) {
+                showToastMessage(err.message, 'error');
+            } finally {
+                setIsUploadingGallery(false);
             }
-            if (!imageUrl || imageUrl.trim() === '') {
-                throw new Error('Backend retornou URL vazia.');
-            }
-
-            // 2) Inserir registro na coleção projeto_galeria
-            const ordem = gallery.length; // simples: incrementa ao final
-
-            const resInsert = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                body: JSON.stringify({
-                    operation: 'insert',
-                    payload: {
-                        projeto_id: editingId,
-                        imagem_url: imageUrl,
-                        ordem,
-                    },
-                }),
-            });
-
-            const insertPayload = await resInsert.json();
-
-            if (!resInsert.ok) {
-                throw new Error(insertPayload.error || 'Falha ao salvar imagem da galeria no banco');
-            }
-
-            const inserted = Array.isArray(insertPayload.data)
-                ? insertPayload.data[0]
-                : insertPayload.data;
-
-            setGallery(prev => [...prev, inserted]);
-            showToastMessage('Imagem da galeria enviada com sucesso!', 'success');
-        } catch (err) {
-            showToastMessage(err.message, 'error');
-        } finally {
-            setIsUploadingGallery(false);
-        }
-    }, [API_URL, token, editingId, gallery.length, showToastMessage]);
+        },
+        [API_URL, token, editingId, gallery.length, showToastMessage]
+    );
 
     // ---------------------------------------------------------------------------
     // Remover imagem da galeria (projeto_galeria)
@@ -539,6 +561,7 @@ const AdminProjetos = () => {
                                 onUpload={handleImageUpload}
                                 isUploading={isUploading}
                                 currentImageUrl={form.imagem_url}
+                                multiple={true}
                             />
                             {form.imagem_url && (
                                 <p className="mt-2 text-xs text-white/50 break-all">
@@ -728,10 +751,10 @@ const AdminProjetos = () => {
                                             {proj.titulo}
                                             <span
                                                 className={`px-2 py-0.5 text-xs rounded-full capitalize ${proj.status === 'published'
-                                                        ? 'bg-green-500/10 text-green-400'
-                                                        : proj.status === 'draft'
-                                                            ? 'bg-yellow-500/10 text-yellow-400'
-                                                            : 'bg-gray-500/10 text-gray-400'
+                                                    ? 'bg-green-500/10 text-green-400'
+                                                    : proj.status === 'draft'
+                                                        ? 'bg-yellow-500/10 text-yellow-400'
+                                                        : 'bg-gray-500/10 text-gray-400'
                                                     }`}
                                             >
                                                 {proj.status === 'published' ? 'Publicado' : proj.status}
