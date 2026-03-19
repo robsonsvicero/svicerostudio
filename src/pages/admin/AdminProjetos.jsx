@@ -8,6 +8,8 @@ import { useToast } from '../../hooks/useToast';
 import slugify from 'slugify';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 import AdminLayout from '../../components/Admin/AdminLayout';
 import Button from '../../components/UI/Button';
 import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
@@ -296,6 +298,51 @@ const AdminProjetos = () => {
   );
 
   // ---------------------------------------------------------------------------
+  // Reordenar galeria (drag & drop)
+  // ---------------------------------------------------------------------------
+  const handleGalleryDragEnd = useCallback(
+    async (result) => {
+      const { source, destination } = result;
+      if (!destination) return;
+      if (source.index === destination.index) return;
+
+      // Reordenar array localmente
+      const newOrder = Array.from(gallery);
+      const [moved] = newOrder.splice(source.index, 1);
+      newOrder.splice(destination.index, 0, moved);
+
+      // Atualizar campo "ordem" localmente
+      const reordered = newOrder.map((img, index) => ({ ...img, ordem: index }));
+
+      setGallery(reordered);
+
+      try {
+        // Persistir ordem no backend
+        const updates = reordered.map((img) =>
+          fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              operation: 'update',
+              filters: [{ column: 'id', operator: 'eq', value: img.id }],
+              payload: { ordem: img.ordem },
+            }),
+          })
+        );
+
+        await Promise.all(updates);
+        showToastMessage('Ordem da galeria atualizada.', 'success');
+      } catch (err) {
+        showToastMessage('Falha ao salvar nova ordem da galeria.', 'error');
+      }
+    },
+    [gallery, API_URL, token, showToastMessage]
+  );
+
+  // ---------------------------------------------------------------------------
   // Edição de projeto
   // ---------------------------------------------------------------------------
   const handleEditProject = (proj) => {
@@ -331,7 +378,6 @@ const AdminProjetos = () => {
     const op = editingId ? 'update' : 'insert';
     const filters = editingId ? [{ column: 'id', operator: 'eq', value: editingId }] : [];
 
-    // Garantir que não estamos enviando nada extra
     delete formPayload.id;
     delete formPayload._id;
     delete formPayload.created_at;
@@ -357,7 +403,6 @@ const AdminProjetos = () => {
       const data = await res.json().catch(() => null);
       showToastMessage(`Projeto ${editingId ? 'atualizado' : 'criado'} com sucesso.`, 'success');
 
-      // Se acabou de criar, podemos pegar o id retornado
       if (!editingId && data?.data) {
         const created = Array.isArray(data.data) ? data.data[0] : data.data;
         if (created?.id) {
@@ -576,33 +621,54 @@ const AdminProjetos = () => {
               )}
             </section>
 
-            {/* Galeria */}
+            {/* Galeria com drag & drop */}
             <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
               <div className="mb-6">
                 <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Galeria</p>
                 <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Imagens</h2>
+                <p className="mt-1 text-xs text-white/50">
+                  Arraste as miniaturas para reorganizar a ordem da galeria.
+                </p>
               </div>
 
-              {gallery.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-                  {gallery.map((img) => (
-                    <div key={img.id} className="relative group">
-                      <img
-                        src={img.imagem_url}
-                        alt={img.legenda || 'Imagem da galeria'}
-                        className="w-full h-32 object-cover rounded-lg bg-[#141414]"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveGalleryImage(img)}
-                        className="absolute top-2 right-2 bg-red-600 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <FaPlus className="rotate-45 text-sm" />
-                      </button>
+              <DragDropContext onDragEnd={handleGalleryDragEnd}>
+                <Droppable droppableId="gallery-droppable" direction="horizontal">
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6"
+                    >
+                      {gallery.map((img, index) => (
+                        <Draggable key={img.id} draggableId={img.id} index={index}>
+                          {(draggableProvided) => (
+                            <div
+                              ref={draggableProvided.innerRef}
+                              {...draggableProvided.draggableProps}
+                              {...draggableProvided.dragHandleProps}
+                              className="relative group cursor-move"
+                            >
+                              <img
+                                src={img.imagem_url}
+                                alt={img.legenda || 'Imagem da galeria'}
+                                className="w-full h-32 object-cover rounded-lg bg-[#141414]"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveGalleryImage(img)}
+                                className="absolute top-2 right-2 bg-red-600 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                <FaPlus className="rotate-45 text-sm" />
+                              </button>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
                     </div>
-                  ))}
-                </div>
-              )}
+                  )}
+                </Droppable>
+              </DragDropContext>
 
               <ImageUploadSlot
                 title="Adicionar à galeria"
