@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import ConsentBanner from './components/ConsentBanner';
+import './styles/global.css';
 
 const Home = lazy(() => import('./pages/Home'));
 const ServiceFrontEnd = lazy(() => import('./pages/ServiceFrontEnd'));

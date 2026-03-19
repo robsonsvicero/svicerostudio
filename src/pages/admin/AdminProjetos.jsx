@@ -51,7 +51,7 @@ const AdminProjetos = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ operation: 'find', filters: [], sort: { created_at: -1 } }),
+        body: JSON.stringify({ operation: 'select', filters: [], sort: { created_at: -1 } }),
       });
       if (!res.ok) {
         if (res.status === 401) signOut();
