@@ -43,12 +43,12 @@ const AdminProjetos = () => {
 
   const [projects, setProjects] = useState([]);
   const [form, setForm] = useState(initialFormState);
-  const [editingId, setEditingId] = useState(null); // id vindo do backend (string)
+  const [editingId, setEditingId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isUploadingGallery, setIsUploadingGallery] = useState(false);
-  const [gallery, setGallery] = useState([]); // [{ id?, projeto_id?, imagem_url, ordem, legenda? }]
+  const [gallery, setGallery] = useState([]);
 
   // ---------------------------------------------------------------------------
   // Carregar projetos
@@ -134,299 +134,29 @@ const AdminProjetos = () => {
   // ---------------------------------------------------------------------------
   const handleFieldChange = (e) => {
     const { name, value, type, checked } = e.target;
-
     setForm((prevForm) => {
-      const newState = {
-        ...prevForm,
-        [name]: type === 'checkbox' ? checked : value,
-      };
+      const newState = { ...prevForm, [name]: type === 'checkbox' ? checked : value };
+
+      // Atualiza automaticamente o slug ao digitar o título, se o usuário
+      // ainda não mexeu manualmente no slug.
       if (name === 'titulo') {
-        newState.slug = generateSlug(value);
+        if (!prevForm.slug || prevForm.slug === generateSlug(prevForm.titulo)) {
+          newState.slug = generateSlug(value);
+        }
       }
+
       return newState;
     });
   };
 
-  const resetForm = () => {
-    setForm(initialFormState);
+  const handleCancelEdit = () => {
     setEditingId(null);
+    setForm(initialFormState);
     setGallery([]);
   };
 
-  // ---------------------------------------------------------------------------
-  // Upload da imagem de capa
-  // ---------------------------------------------------------------------------
-  const handleImageUpload = async (file) => {
-    try {
-      setIsUploading(true);
-
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('bucket', 'projetos');
-      const ext = file.name.split('.').pop() || 'jpg';
-      const key = `projetos/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-      formData.append('key', key);
-
-      const res = await fetch(`${API_URL}/api/storage/upload`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Erro ao fazer upload da imagem de capa');
-      }
-
-      const imageUrl = data?.data?.url;
-      if (!imageUrl) {
-        throw new Error('Resposta inválida do servidor ao fazer upload da imagem de capa');
-      }
-
-      setForm((prev) => ({ ...prev, imagem_url: imageUrl }));
-      showToastMessage('Imagem de capa atualizada com sucesso!', 'success');
-    } catch (err) {
-      console.error(err);
-      showToastMessage(err.message || 'Erro ao fazer upload da imagem de capa', 'error');
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  // ---------------------------------------------------------------------------
-  // Upload da galeria ("Jeito A")
-  // ---------------------------------------------------------------------------
-  const handleGalleryImageUpload = async (files) => {
-    try {
-      setIsUploadingGallery(true);
-
-      const fileArray = Array.isArray(files) ? files : [files];
-
-      for (const file of fileArray) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('bucket', 'projetos');
-        const ext = file.name.split('.').pop() || 'jpg';
-        const key = `projetos/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-        formData.append('key', key);
-
-        const res = await fetch(`${API_URL}/api/storage/upload`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || 'Erro ao fazer upload da imagem da galeria');
-        }
-
-        const imageUrl = data?.data?.url;
-        if (!imageUrl) {
-          throw new Error('Resposta inválida ao enviar imagem da galeria');
-        }
-
-        // Sempre adiciona ao estado da galeria
-        setGallery((prev) => {
-          const nextOrdem =
-            prev.length > 0 ? Math.max(...prev.map((g) => g.ordem ?? 0)) + 1 : 0;
-          return [
-            ...prev,
-            {
-              imagem_url: imageUrl,
-              ordem: nextOrdem,
-            },
-          ];
-        });
-
-        // Se já estamos editando um projeto (já existe no banco), podemos persistir de imediato
-        if (editingId) {
-          try {
-            const imgRes = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                operation: 'insert',
-                payload: {
-                  projeto_id: editingId,
-                  imagem_url: imageUrl,
-                  ordem: 0, // a ordem definitiva pode ser reordenada depois
-                  legenda: '',
-                },
-              }),
-            });
-
-            const imgData = await imgRes.json();
-            if (!imgRes.ok) {
-              throw new Error(imgData.error || 'Erro ao salvar imagem da galeria no banco');
-            }
-          } catch (err) {
-            console.error(err);
-            showToastMessage(
-              err.message || 'Erro ao salvar registro da galeria no banco',
-              'error',
-            );
-          }
-        }
-      }
-
-      showToastMessage('Imagens da galeria processadas com sucesso!', 'success');
-    } catch (err) {
-      console.error(err);
-      showToastMessage(err.message || 'Erro ao processar imagens da galeria', 'error');
-    } finally {
-      setIsUploadingGallery(false);
-    }
-  };
-
-  // ---------------------------------------------------------------------------
-  // Enviar formulário (criar / atualizar)
-  // ---------------------------------------------------------------------------
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!token) return;
-
-  // Garantir campos obrigatórios antes de bater no backend
-  const trimmedTitulo = (form.titulo || '').trim();
-  const trimmedDescricao = (form.descricao || '').trim();
-
-  // Se slug estiver vazio, gera a partir do título
-  const ensuredSlug =
-    (form.slug && form.slug.trim()) || generateSlug(trimmedTitulo);
-
-  if (!trimmedTitulo || !trimmedDescricao || !ensuredSlug) {
-    showToastMessage(
-      'Preencha pelo menos Título, Slug e Descrição antes de publicar.',
-      'error',
-    );
-    return;
-  }
-
-  setIsSaving(true);
-
-  try {
-    // base comum do projeto
-    const projetoPayload = {
-      titulo: trimmedTitulo,
-      slug: ensuredSlug,
-      categoria: form.categoria || '',
-      cliente: form.cliente || '',
-      data_projeto: form.data_projeto || '',
-      status: form.status || 'draft',
-      descricao: trimmedDescricao,
-      descricao_longa: form.descricao_longa || '',
-      descricao_longa_en: form.descricao_longa_en || '',
-      imagem_url: form.imagem_url || '',
-      site_url: form.site_url || '',
-      link: form.link || '',
-      button_text: form.button_text || 'Ver Projeto',
-      link2: form.link2 || '',
-      button_text2: form.button_text2 || '',
-      mostrar_home: form.mostrar_home ?? true,
-    };
-
-    if (!editingId) {
-      // ------------ INSERT (novo projeto) ------------
-      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          operation: 'insert',
-          payload: projetoPayload,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 401) signOut();
-        throw new Error(data.error || `Erro ao criar projeto (status ${res.status})`);
-      }
-
-      const created = data.data && data.data[0] ? data.data[0] : null;
-      const newProjectId = created?.id;
-
-      // Se deu tudo certo, agora inserimos a galeria
-      if (newProjectId && gallery.length > 0) {
-        const galeriaPayload = gallery.map((img, index) => ({
-          projeto_id: newProjectId,
-          imagem_url: img.imagem_url,
-          ordem: index,
-          legenda: img.legenda || '',
-        }));
-
-        const resGal = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            operation: 'insert',
-            payload: galeriaPayload,
-          }),
-        });
-
-        const galData = await resGal.json();
-        if (!resGal.ok) {
-          if (resGal.status === 401) signOut();
-          throw new Error(galData.error || `Erro ao salvar galeria (status ${resGal.status})`);
-        }
-      }
-
-      showToastMessage('Projeto criado com sucesso!', 'success');
-      await fetchProjects();
-      setForm(initialFormState);
-      setGallery([]);
-      setEditingId(null);
-    } else {
-      // ------------ UPDATE (projeto existente) ------------
-      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          operation: 'update',
-          filters: [{ column: 'id', operator: 'eq', value: editingId }],
-          payload: projetoPayload,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 401) signOut();
-        throw new Error(data.error || `Erro ao atualizar projeto (status ${res.status})`);
-      }
-
-      showToastMessage('Projeto atualizado com sucesso!', 'success');
-      await fetchProjects();
-    }
-  } catch (err) {
-    showToastMessage(err.message, 'error');
-  } finally {
-    setIsSaving(false);
-  }
-};
-
-  // ---------------------------------------------------------------------------
-  // Editar / excluir
-  // ---------------------------------------------------------------------------
   const handleEditProject = (proj) => {
+    setEditingId(proj.id);
     setForm({
       titulo: proj.titulo || '',
       slug: proj.slug || '',
@@ -443,402 +173,579 @@ const AdminProjetos = () => {
       button_text: proj.button_text || 'Ver Projeto',
       link2: proj.link2 || '',
       button_text2: proj.button_text2 || '',
-      mostrar_home: proj.mostrar_home ?? true,
+      mostrar_home: typeof proj.mostrar_home === 'boolean' ? proj.mostrar_home : true,
     });
-    setEditingId(proj.id);
     fetchGallery(proj.id);
   };
 
-  const handleDeleteProject = async (id) => {
-    if (!window.confirm('Tem certeza que deseja excluir este projeto?')) return;
-
+  // ---------------------------------------------------------------------------
+  // Upload da capa
+  // ---------------------------------------------------------------------------
+  const handleImageUpload = async (file) => {
+    if (!file) return;
+    setIsUploading(true);
     try {
-      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+      const formData = new FormData();
+      const key = `projetos/${Date.now()}_${file.name}`;
+      formData.append('file', file);
+      formData.append('bucket', 'projetos');
+      formData.append('key', key);
+
+      const res = await fetch(`${API_URL}/api/storage/upload`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          operation: 'delete',
-          filters: [{ column: 'id', operator: 'eq', value: id }],
-        }),
+        body: formData,
       });
 
       const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || 'Erro ao excluir projeto');
+        throw new Error(data.error || 'Erro ao fazer upload da imagem');
       }
 
-      // Também removemos as imagens da galeria relacionadas
-      try {
-        await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+      setForm((prev) => ({ ...prev, imagem_url: data.data.url }));
+    } catch (err) {
+      showToastMessage(err.message, 'error');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // Upload da galeria (jeito A)
+  // ---------------------------------------------------------------------------
+  const handleGalleryImageUpload = async (files) => {
+    if (!files || files.length === 0) return;
+    const fileList = Array.isArray(files) ? files : Array.from(files);
+
+    setIsUploadingGallery(true);
+    try {
+      const uploadedItems = [];
+
+      for (const file of fileList) {
+        const formData = new FormData();
+        const key = `projetos/${Date.now()}_${file.name}`;
+        formData.append('file', file);
+        formData.append('bucket', 'projetos');
+        formData.append('key', key);
+
+        const res = await fetch(`${API_URL}/api/storage/upload`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || 'Erro ao fazer upload de imagem da galeria');
+        }
+
+        uploadedItems.push({
+          imagem_url: data.data.url,
+        });
+      }
+
+      // Jeito A: sempre adiciona ao estado; persistência só ocorre no submit
+      setGallery((prev) => {
+        const startIndex = prev.length;
+        const withOrder = uploadedItems.map((item, idx) => ({
+          ...item,
+          ordem: startIndex + idx,
+        }));
+        return [...prev, ...withOrder];
+      });
+    } catch (err) {
+      showToastMessage(err.message, 'error');
+    } finally {
+      setIsUploadingGallery(false);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // Submit (criar / atualizar projeto + salvar galeria se novo)
+  // ---------------------------------------------------------------------------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!token) return;
+
+    // Garante campos obrigatórios
+    const titulo = form.titulo?.trim();
+    const descricao = form.descricao?.trim();
+    let slug = form.slug?.trim();
+
+    if (!titulo || !descricao) {
+      showToastMessage('Preencha pelo menos título e descrição.', 'error');
+      return;
+    }
+
+    if (!slug) {
+      slug = generateSlug(titulo);
+    }
+
+    setIsSaving(true);
+    try {
+      // Monta payload do projeto
+      const projetoPayload = {
+        titulo,
+        slug,
+        categoria: form.categoria || '',
+        cliente: form.cliente || '',
+        data_projeto: form.data_projeto || '',
+        status: form.status || 'draft',
+        descricao,
+        descricao_longa: form.descricao_longa || '',
+        descricao_longa_en: form.descricao_longa_en || '',
+        imagem_url: form.imagem_url || '',
+        site_url: form.site_url || '',
+        link: form.link || '',
+        button_text: form.button_text || 'Ver Projeto',
+        link2: form.link2 || '',
+        button_text2: form.button_text2 || '',
+        mostrar_home: !!form.mostrar_home,
+      };
+
+      console.log('SUBMIT PAYLOAD', { editingId, projetoPayload });
+
+      let projetoId = editingId;
+
+      if (!editingId) {
+        // INSERT
+        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            operation: 'delete',
-            filters: [{ column: 'projeto_id', operator: 'eq', value: id }],
+            operation: 'insert',
+            payload: projetoPayload,
           }),
         });
-      } catch (err) {
-        console.error('Erro ao excluir galeria do projeto', err);
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || `Erro ao criar projeto (status ${res.status})`);
+        }
+
+        const created = (data.data && Array.isArray(data.data) ? data.data[0] : data.data) || null;
+        if (!created || !created.id) {
+          throw new Error('Projeto criado, mas resposta não contém id.');
+        }
+        projetoId = created.id;
+
+        // Se houver galeria no estado, insere agora
+        if (gallery.length > 0) {
+          const galeriaPayload = gallery.map((img, idx) => ({
+            projeto_id: projetoId,
+            imagem_url: img.imagem_url,
+            ordem: typeof img.ordem === 'number' ? img.ordem : idx,
+            legenda: img.legenda || '',
+          }));
+
+          const resGal = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              operation: 'insert',
+              payload: galeriaPayload,
+            }),
+          });
+
+          const dataGal = await resGal.json();
+          if (!resGal.ok) {
+            throw new Error(dataGal.error || `Erro ao salvar galeria (status ${resGal.status})`);
+          }
+        }
+
+        showToastMessage('Projeto criado com sucesso!', 'success');
+      } else {
+        // UPDATE
+        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            operation: 'update',
+            filters: [{ column: 'id', operator: 'eq', value: editingId }],
+            payload: projetoPayload,
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || `Erro ao atualizar projeto (status ${res.status})`);
+        }
+
+        showToastMessage('Projeto atualizado com sucesso!', 'success');
       }
 
-      showToastMessage('Projeto excluído com sucesso.', 'success');
-      fetchProjects();
+      // Reload lista e reset se era novo
+      await fetchProjects();
+
+      if (!editingId) {
+        setForm(initialFormState);
+        setGallery([]);
+        setEditingId(null);
+      }
     } catch (err) {
-      console.error(err);
-      showToastMessage(err.message || 'Erro ao excluir projeto', 'error');
+      showToastMessage(err.message, 'error');
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  const handleCancelEdit = () => {
-    resetForm();
+  // ---------------------------------------------------------------------------
+  // Excluir projeto
+  // ---------------------------------------------------------------------------
+  const handleDeleteProject = async (id) => {
+    if (!window.confirm('Tem certeza que deseja excluir este projeto?')) return;
+    try {
+      const res = await fetch(`${API_URL}/api/projetos/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || `Erro ao excluir projeto (status ${res.status})`);
+      }
+
+      showToastMessage('Projeto e galeria excluídos com sucesso!', 'success');
+      await fetchProjects();
+
+      if (editingId === id) {
+        setEditingId(null);
+        setForm(initialFormState);
+        setGallery([]);
+      }
+    } catch (err) {
+      showToastMessage(err.message, 'error');
+    }
   };
 
   // ---------------------------------------------------------------------------
-  // Render
+  // RENDER
   // ---------------------------------------------------------------------------
   return (
-    <AdminLayout title="Projetos">
+    <AdminLayout>
+      <div className="mb-8 flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight text-white">
+            Projetos
+          </h1>
+          <p className="mt-1 text-sm text-white/60">
+            Cadastre e gerencie os projetos exibidos no site.
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          onClick={() => {
+            setEditingId(null);
+            setForm(initialFormState);
+            setGallery([]);
+          }}
+        >
+          <FaPlus className="mr-2 h-4 w-4" />
+          Novo Projeto
+        </Button>
+      </div>
+
       <form
         onSubmit={handleSubmit}
-        className="rounded-3xl bg-[#101010] border border-white/10 shadow-xl shadow-black/60 overflow-hidden"
+        className="grid grid-cols-1 gap-8 rounded-3xl border border-white/10 bg-[#111111]/90 p-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)] lg:p-10"
       >
-        {/* Header do formulário */}
-        <div className="border-b border-white/8 px-6 py-5 lg:px-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-xl font-semibold text-white">
-              {editingId ? 'Editar Projeto' : 'Novo Projeto'}
-            </h1>
-            <p className="text-sm text-white/55 mt-1">
-              Preencha os detalhes do projeto, capa e imagens da galeria antes de publicar.
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => navigate('/')}
-            >
-              Ver Site
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={resetForm}
-              disabled={isSaving || isUploading || isUploadingGallery}
-            >
-              Limpar
-            </Button>
-          </div>
-        </div>
-
-        {/* Conteúdo principal */}
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr,1.1fr] gap-0 lg:gap-6">
-          {/* Coluna Esquerda */}
-          <section className="border-b border-white/8 lg:border-b-0 lg:border-r border-white/8 px-6 py-6 lg:px-8 lg:py-8 flex flex-col gap-8">
-            {/* Informações principais */}
-            <div className="space-y-6">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Título do Projeto *
-                  </span>
-                  <input
-                    type="text"
-                    name="titulo"
-                    value={form.titulo}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Ex: Landing page para agência criativa"
-                  />
-                </label>
-
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Slug *
-                  </span>
-                  <input
-                    type="text"
-                    name="slug"
-                    value={form.slug}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="exemplo-de-projeto"
-                  />
-                </label>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Categoria
-                  </span>
-                  <select
-                    name="categoria"
-                    value={form.categoria}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
-                  >
-                    <option value="">Selecione...</option>
-                    {CATEGORIAS.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Cliente
-                  </span>
-                  <input
-                    type="text"
-                    name="cliente"
-                    value={form.cliente}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Nome do cliente"
-                  />
-                </label>
-
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Data do Projeto
-                  </span>
-                  <input
-                    type="text"
-                    name="data_projeto"
-                    value={form.data_projeto}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Mar/2024"
-                  />
-                </label>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Status
-                  </span>
-                  <select
-                    name="status"
-                    value={form.status}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
-                  >
-                    <option value="draft">Rascunho</option>
-                    <option value="published">Publicado</option>
-                    <option value="archived">Arquivado</option>
-                  </select>
-                </label>
-
-                <label className="flex items-center gap-3 mt-7">
-                  <input
-                    type="checkbox"
-                    name="mostrar_home"
-                    checked={form.mostrar_home}
-                    onChange={handleFieldChange}
-                    className="h-4 w-4 rounded border-white/30 bg-transparent text-[#B87333] focus:ring-[#B87333]"
-                  />
-                  <span className="text-sm text-white/80">Exibir na Home</span>
-                </label>
-              </div>
-            </div>
-
-            {/* Descrição */}
-            <div className="space-y-4">
+        {/* Coluna esquerda */}
+        <div className="space-y-8">
+          {/* Título e slug */}
+          <section className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)]">
               <label className="block">
                 <span className="mb-2 block text-sm font-medium text-white/82">
-                  Descrição curta *
-                </span>
-                <textarea
-                  name="descricao"
-                  value={form.descricao}
-                  onChange={handleFieldChange}
-                  rows={3}
-                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="Resumo do projeto para cards e destaques."
-                />
-              </label>
-
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Descrição longa
-                </span>
-                <textarea
-                  name="descricao_longa"
-                  value={form.descricao_longa}
-                  onChange={handleFieldChange}
-                  rows={5}
-                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="Detalhes do projeto para a página interna."
-                />
-              </label>
-
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Descrição longa (EN)
-                </span>
-                <textarea
-                  name="descricao_longa_en"
-                  value={form.descricao_longa_en}
-                  onChange={handleFieldChange}
-                  rows={5}
-                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="Versão em inglês da descrição longa."
-                />
-              </label>
-            </div>
-
-            {/* Links */}
-            <div className="space-y-4">
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  URL do site / projeto
+                  Título do Projeto
                 </span>
                 <input
                   type="text"
-                  name="site_url"
-                  value={form.site_url}
+                  name="titulo"
+                  value={form.titulo}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="Ex: Redesign do site da Empresa X"
+                  required
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Slug
+                </span>
+                <input
+                  type="text"
+                  name="slug"
+                  value={form.slug}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="redesign-site-empresa-x"
+                  required
+                />
+              </label>
+            </div>
+          </section>
+
+          {/* Metadados */}
+          <section className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-3">
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Categoria
+                </span>
+                <select
+                  name="categoria"
+                  value={form.categoria}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
+                >
+                  <option value="">Selecione</option>
+                  {CATEGORIAS.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Cliente
+                </span>
+                <input
+                  type="text"
+                  name="cliente"
+                  value={form.cliente}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="Nome do cliente"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Data do Projeto
+                </span>
+                <input
+                  type="text"
+                  name="data_projeto"
+                  value={form.data_projeto}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="2025, 2º semestre…"
+                />
+              </label>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Status
+                </span>
+                <select
+                  name="status"
+                  value={form.status}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
+                >
+                  <option value="draft">Rascunho</option>
+                  <option value="published">Publicado</option>
+                  <option value="archived">Arquivado</option>
+                </select>
+              </label>
+              <label className="flex items-center gap-3 pt-6">
+                <input
+                  type="checkbox"
+                  name="mostrar_home"
+                  checked={form.mostrar_home}
+                  onChange={handleFieldChange}
+                  className="h-4 w-4 rounded border-white/20 bg-transparent text-[#B87333] focus:ring-[#B87333]"
+                />
+                <span className="text-sm text-white/80">Mostrar na Home</span>
+              </label>
+            </div>
+          </section>
+
+          {/* Descrições */}
+          <section className="space-y-4">
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium text-white/82">
+                Descrição curta
+              </span>
+              <textarea
+                name="descricao"
+                value={form.descricao}
+                onChange={handleFieldChange}
+                className="min-h-[80px] w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                placeholder="Resumo breve do projeto"
+                required
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium text-white/82">
+                Descrição longa (PT)
+              </span>
+              <textarea
+                name="descricao_longa"
+                value={form.descricao_longa}
+                onChange={handleFieldChange}
+                className="min-h-[120px] w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                placeholder="Detalhes do projeto, desafios, soluções..."
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium text-white/82">
+                Descrição longa (EN)
+              </span>
+              <textarea
+                name="descricao_longa_en"
+                value={form.descricao_longa_en}
+                onChange={handleFieldChange}
+                className="min-h-[120px] w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                placeholder="Long description in English (optional)"
+              />
+            </label>
+          </section>
+        </div>
+
+        {/* Coluna direita */}
+        <aside className="space-y-8">
+          {/* Links & CTAs */}
+          <section className="space-y-4 rounded-2xl border border-white/10 bg-[#141414]/80 p-5">
+            <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
+              Links do Projeto
+            </h2>
+            <div className="space-y-4">
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Link Principal
+                </span>
+                <input
+                  type="text"
+                  name="link"
+                  value={form.link}
                   onChange={handleFieldChange}
                   className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
                   placeholder="https://..."
                 />
               </label>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Primeiro Link
-                  </span>
-                  <input
-                    type="text"
-                    name="link"
-                    value={form.link}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="https://..."
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Texto do Primeiro Botão
-                  </span>
-                  <input
-                    type="text"
-                    name="button_text"
-                    value={form.button_text}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Ver Projeto"
-                  />
-                </label>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Segundo Link
-                  </span>
-                  <input
-                    type="text"
-                    name="link2"
-                    value={form.link2}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="https://..."
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Texto do Segundo Botão
-                  </span>
-                  <input
-                    type="text"
-                    name="button_text2"
-                    value={form.button_text2}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Texto alternativo"
-                  />
-                </label>
-              </div>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Texto do Botão Principal
+                </span>
+                <input
+                  type="text"
+                  name="button_text"
+                  value={form.button_text}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="Ver Projeto"
+                />
+              </label>
+              <hr className="border-white/10" />
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Segundo Link
+                </span>
+                <input
+                  type="text"
+                  name="link2"
+                  value={form.link2}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="https://..."
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-white/82">
+                  Texto do Segundo Botão
+                </span>
+                <input
+                  type="text"
+                  name="button_text2"
+                  value={form.button_text2}
+                  onChange={handleFieldChange}
+                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                  placeholder="Texto alternativo"
+                />
+              </label>
             </div>
           </section>
 
-          {/* Coluna Direita */}
-          <aside className="px-6 py-6 lg:px-8 lg:py-8 flex flex-col gap-8 bg-[#0b0b0b]/80">
-            {/* Capa do Projeto */}
-            <section className="space-y-4">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-                  Capa do Projeto
-                </h2>
-              </div>
-              <ImageUploadSlot
-                label="Imagem de capa"
-                helperText="Recomendado: 1600x900px"
-                onUpload={handleImageUpload}
-                isUploading={isUploading}
-                currentImageUrl={form.imagem_url}
-              />
-            </section>
+          {/* Capa */}
+          <section className="space-y-4 rounded-2xl border border-white/10 bg-[#141414]/80 p-5">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
+                Capa do Projeto
+              </h2>
+            </div>
+            <ImageUploadSlot
+              label="Imagem de capa"
+              helperText="Recomendado: 1600x900px"
+              onUpload={handleImageUpload}
+              isUploading={isUploading}
+              currentImageUrl={form.imagem_url}
+            />
+          </section>
 
-            {/* Galeria */}
-            <section className="space-y-4">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-                  Galeria de Imagens
-                </h2>
-                <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/70">
-                  <FaPlus className="h-3 w-3 text-[#B87333]" />
-                  <span>{gallery.length} imagens</span>
-                </span>
-              </div>
-              <p className="text-xs text-white/55">
-                Envie múltiplas imagens para compor a galeria do projeto. Você pode organizar a
-                ordem depois.
-              </p>
+          {/* Galeria */}
+          <section className="space-y-4 rounded-2xl border border-white/10 bg-[#141414]/80 p-5">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
+                Galeria de Imagens
+              </h2>
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/70">
+                <FaPlus className="h-3 w-3 text-[#B87333]" />
+                <span>{gallery.length} imagens</span>
+              </span>
+            </div>
+            <p className="text-xs text-white/55">
+              Envie múltiplas imagens para compor a galeria do projeto. Você pode organizar a
+              ordem depois.
+            </p>
 
-              <ImageUploadSlot
-                label="Imagens da galeria"
-                helperText="Arraste ou selecione múltiplas imagens"
-                onUpload={handleGalleryImageUpload}
-                isUploading={isUploadingGallery}
-                multiple={true}
-              />
+            <ImageUploadSlot
+              label="Imagens da galeria"
+              helperText="Arraste ou selecione múltiplas imagens"
+              onUpload={handleGalleryImageUpload}
+              isUploading={isUploadingGallery}
+              multiple={true}
+            />
 
-              {/* Grid da galeria */}
-              {gallery.length > 0 && (
-                <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {gallery.map((img, index) => (
-                    <div
-                      key={img.id || img.imagem_url || index}
-                      className="relative rounded-xl overflow-hidden border border-white/10 bg-black/30"
-                    >
-                      <img
-                        src={img.imagem_url}
-                        alt={`Imagem ${index + 1}`}
-                        className="w-full h-32 object-cover"
-                      />
-                      <div className="absolute inset-x-0 bottom-0 bg-black/70 px-2 py-1 text-[10px] text-white/80 flex justify-between items-center">
-                        <span>#{index + 1}</span>
-                      </div>
+            {gallery.length > 0 && (
+              <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {gallery.map((img, index) => (
+                  <div
+                    key={img.id || img.imagem_url || index}
+                    className="relative rounded-xl overflow-hidden border border-white/10 bg-black/30"
+                  >
+                    <img
+                      src={img.imagem_url}
+                      alt={`Imagem ${index + 1}`}
+                      className="w-full h-32 object-cover"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-black/70 px-2 py-1 text-[10px] text-white/80 flex justify-between items-center">
+                      <span>#{index + 1}</span>
                     </div>
-                  ))}
-                </div>
-              )}
-            </section>
-          </aside>
-        </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        </aside>
 
         {/* Botões de Ação */}
         <div className="relative border-t border-white/8 px-6 py-6 lg:px-8 flex justify-end gap-3">
