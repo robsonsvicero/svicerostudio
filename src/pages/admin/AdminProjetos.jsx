@@ -15,12 +15,6 @@ import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
 const generateSlug = (title) =>
   slugify(title || '', { lower: true, strict: true });
 
-// gera um id string local (poderia usar uuid, mas isso aqui já evita colisão)
-const generateLocalId = (titulo = '') => {
-  const base = slugify(titulo || 'projeto', { lower: true, strict: true }) || 'projeto';
-  return `${base}-${Date.now()}`;
-};
-
 const CATEGORIAS = ['Web Design', 'UX Design', 'Branding', 'Posicionamento'];
 
 const AdminProjetos = () => {
@@ -29,7 +23,6 @@ const AdminProjetos = () => {
   const { showToastMessage } = useToast();
 
   const initialFormState = {
-    _id: '',                 // *** vamos controlar o id localmente
     titulo: '',
     slug: '',
     categoria: '',
@@ -50,14 +43,16 @@ const AdminProjetos = () => {
 
   const [projects, setProjects] = useState([]);
   const [form, setForm] = useState(initialFormState);
-  const [editingId, setEditingId] = useState(null); // sempre string do _id
+  const [editingId, setEditingId] = useState(null); // id do projeto (string normalizada)
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isUploadingGallery, setIsUploadingGallery] = useState(false);
 
-  // Galeria (tabela projeto_galeria)
-  const [gallery, setGallery] = useState([]); // [{ id, projeto_id, imagem_url, ordem, legenda }]
+  // Galeria:
+  // - novo projeto: apenas em memória
+  // - edição: sincronizada com projeto_galeria
+  const [gallery, setGallery] = useState([]); // [{ id?, imagem_url, ordem, legenda }]
 
   // ---------------------------------------------------------------------------
   // Carregar projetos
@@ -97,7 +92,7 @@ const AdminProjetos = () => {
   }, [token, fetchProjects]);
 
   // ---------------------------------------------------------------------------
-  // Carregar galeria de um projeto
+  // Carregar galeria de um projeto (em edição)
   // ---------------------------------------------------------------------------
   const fetchGallery = useCallback(
     async (projetoId) => {
@@ -122,7 +117,12 @@ const AdminProjetos = () => {
           throw new Error(payload.error || `Erro ao carregar galeria (status ${res.status})`);
         }
 
-        setGallery(payload.data || []);
+        setGallery((payload.data || []).map((img) => ({
+          id: img.id,
+          imagem_url: img.imagem_url,
+          ordem: img.ordem ?? 0,
+          legenda: img.legenda || '',
+        })));
       } catch (err) {
         showToastMessage(err.message, 'error');
       }
@@ -139,10 +139,6 @@ const AdminProjetos = () => {
       const newState = { ...prevForm, [name]: type === 'checkbox' ? checked : value };
       if (name === 'titulo') {
         newState.slug = generateSlug(value);
-        // se ainda não temos _id na criação, regeneramos um id local mais amigável
-        if (!prevForm._id || prevForm._id.startsWith('projeto-')) {
-          newState._id = generateLocalId(value);
-        }
       }
       return newState;
     });
@@ -196,21 +192,11 @@ const AdminProjetos = () => {
   );
 
   // ---------------------------------------------------------------------------
-  // Upload de imagem da galeria (R2 + projeto_galeria)
+  // Upload de imagem da galeria (Jeito A)
   // ---------------------------------------------------------------------------
   const handleGalleryImageUpload = useCallback(
     async (filesOrFile) => {
       if (!filesOrFile) return;
-
-      // *** agora SEM exigência de "salvar antes":
-      // se não temos editingId, geramos aqui um id local
-      let projetoId = editingId;
-      if (!projetoId) {
-        const newId = form._id && form._id.trim() ? form._id : generateLocalId(form.titulo);
-        setEditingId(newId);
-        setForm((prev) => ({ ...prev, _id: newId }));
-        projetoId = newId;
-      }
 
       const files = Array.isArray(filesOrFile) ? filesOrFile : [filesOrFile];
       if (files.length === 0) return;
@@ -218,7 +204,7 @@ const AdminProjetos = () => {
       setIsUploadingGallery(true);
 
       try {
-        const newImages = [];
+        const uploadedImages = [];
 
         for (const file of files) {
           // 1) Upload para R2
@@ -246,142 +232,106 @@ const AdminProjetos = () => {
             throw new Error('Backend retornou URL vazia para uma imagem da galeria.');
           }
 
-          // 2) Inserir na tabela projeto_galeria
-          const ordem =
-            gallery.length + newImages.length; // adiciona em sequência depois das já existentes
-
-          const resInsert = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              operation: 'insert',
-              payload: {
-                projeto_id: projetoId,
-                imagem_url: imageUrl,
-                ordem,
-                legenda: '',
-              },
-            }),
-          });
-
-          const insertPayload = await resInsert.json();
-          if (!resInsert.ok) {
-            throw new Error(insertPayload.error || 'Erro ao salvar imagem da galeria no banco.');
-          }
-
-          const inserted = Array.isArray(insertPayload.data)
-            ? insertPayload.data[0]
-            : insertPayload.data;
-
-          newImages.push(inserted);
+          uploadedImages.push(imageUrl);
         }
 
-        setGallery((prev) => [...prev, ...newImages]);
+        // 2) Atualizar estado local da galeria (SEM mexer no banco ainda)
+        setGallery((prev) => {
+          const base = prev.length;
+          const newItems = uploadedImages.map((url, idx) => ({
+            tempId: `${Date.now()}-${idx}`,
+            imagem_url: url,
+            ordem: base + idx,
+            legenda: '',
+          }));
+          return [...prev, ...newItems];
+        });
 
-        showToastMessage(
-          newImages.length > 1
-            ? `${newImages.length} imagens da galeria enviadas com sucesso!`
-            : 'Imagem da galeria enviada com sucesso!',
-          'success'
-        );
+        showToastMessage('Imagens da galeria enviadas com sucesso!', 'success');
       } catch (err) {
         showToastMessage(err.message, 'error');
       } finally {
         setIsUploadingGallery(false);
       }
     },
-    [API_URL, token, gallery.length, editingId, form._id, form.titulo, showToastMessage]
+    [API_URL, token, showToastMessage]
   );
 
   // ---------------------------------------------------------------------------
-  // Remover imagem da galeria
+  // Editar / Cancelar / Deletar projeto
   // ---------------------------------------------------------------------------
-  const handleRemoveGalleryImage = useCallback(
-    async (imageId) => {
-      try {
-        await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            operation: 'delete',
-            filters: [{ column: 'id', operator: 'eq', value: imageId }],
-          }),
-        });
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setGallery((prev) => prev.filter((img) => img.id !== imageId));
-      }
-    },
-    [API_URL, token]
-  );
+  const handleEditProject = async (proj) => {
+    setEditingId(proj.id);
+    setForm({
+      titulo: proj.titulo || '',
+      slug: proj.slug || '',
+      categoria: proj.categoria || '',
+      cliente: proj.cliente || '',
+      data_projeto: proj.data_projeto || '',
+      status: proj.status || 'draft',
+      descricao: proj.descricao || '',
+      descricao_longa: proj.descricao_longa || '',
+      descricao_longa_en: proj.descricao_longa_en || '',
+      imagem_url: proj.imagem_url || '',
+      site_url: proj.site_url || '',
+      link: proj.link || '',
+      button_text: proj.button_text || 'Ver Projeto',
+      link2: proj.link2 || '',
+      button_text2: proj.button_text2 || '',
+      mostrar_home: proj.mostrar_home ?? true,
+    });
+    await fetchGallery(proj.id);
+  };
 
-  // ---------------------------------------------------------------------------
-  // Editar projeto
-  // ---------------------------------------------------------------------------
-  const handleEditProject = useCallback(
-    async (proj) => {
-      // proj.id é o id normalizado pelo backend
-      setEditingId(proj.id);
-      setForm({
-        _id: proj.id,
-        titulo: proj.titulo || '',
-        slug: proj.slug || '',
-        categoria: proj.categoria || '',
-        cliente: proj.cliente || '',
-        data_projeto: proj.data_projeto || '',
-        status: proj.status || 'draft',
-        descricao: proj.descricao || '',
-        descricao_longa: proj.descricao_longa || '',
-        descricao_longa_en: proj.descricao_longa_en || '',
-        imagem_url: proj.imagem_url || '',
-        site_url: proj.site_url || '',
-        link: proj.link || '',
-        button_text: proj.button_text || 'Ver Projeto',
-        link2: proj.link2 || '',
-        button_text2: proj.button_text2 || '',
-        mostrar_home: typeof proj.mostrar_home === 'boolean' ? proj.mostrar_home : true,
-      });
-      await fetchGallery(proj.id);
-    },
-    [fetchGallery]
-  );
-
-  // ---------------------------------------------------------------------------
-  // Cancelar edição
-  // ---------------------------------------------------------------------------
   const handleCancelEdit = () => {
     setEditingId(null);
     setForm(initialFormState);
     setGallery([]);
   };
 
+  const handleDeleteProject = async (id) => {
+    if (!window.confirm('Tem certeza que deseja excluir este projeto?')) return;
+    try {
+      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          operation: 'delete',
+          filters: [{ column: 'id', operator: 'eq', value: id }],
+        }),
+      });
+
+      const payload = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 401) signOut();
+        throw new Error(payload.error || 'Erro ao excluir projeto');
+      }
+
+      showToastMessage('Projeto excluído com sucesso!', 'success');
+      fetchProjects();
+      if (editingId === id) {
+        handleCancelEdit();
+      }
+    } catch (err) {
+      showToastMessage(err.message, 'error');
+    }
+  };
+
   // ---------------------------------------------------------------------------
-  // Salvar projeto (insert / update)
+  // Salvar projeto (insert/update) + persistir galeria se necessário
   // ---------------------------------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
 
     try {
-      // garante que temos um id para o projeto
-      let projetoId = editingId || form._id;
-      if (!projetoId) {
-        projetoId = generateLocalId(form.titulo);
-        setEditingId(projetoId);
-      }
-
-      // monta payload do projeto
-      const projectPayload = {
-        _id: projetoId, // *** string
+      const payloadProjeto = {
         titulo: form.titulo,
-        slug: form.slug || generateSlug(form.titulo),
+        slug: form.slug,
         categoria: form.categoria,
         cliente: form.cliente,
         data_projeto: form.data_projeto,
@@ -398,41 +348,90 @@ const AdminProjetos = () => {
         mostrar_home: form.mostrar_home,
       };
 
-      const operation = editingId ? 'update' : 'insert';
+      let savedProjectId = editingId;
 
-      const body = {
-        operation,
-        payload: operation === 'insert' ? projectPayload : { $set: projectPayload },
-        ...(operation === 'update'
-          ? {
-              filters: [{ column: 'id', operator: 'eq', value: projetoId }],
-              single: true,
-            }
-          : {}),
-      };
+      if (editingId) {
+        // UPDATE
+        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            operation: 'update',
+            filters: [{ column: 'id', operator: 'eq', value: editingId }],
+            payload: payloadProjeto,
+          }),
+        });
 
-      const res = await fetch(`${API_URL}/api/db/projetos/query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-      });
+        const payload = await res.json();
+        if (!res.ok) {
+          if (res.status === 401) signOut();
+          throw new Error(payload.error || 'Erro ao atualizar projeto');
+        }
+        savedProjectId = editingId;
+      } else {
+        // INSERT
+        const res = await fetch(`${API_URL}/api/db/projetos/query`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            operation: 'insert',
+            payload: payloadProjeto,
+          }),
+        });
 
-      const data = await res.json();
+        const payload = await res.json();
+        if (!res.ok) {
+          if (res.status === 401) signOut();
+          throw new Error(payload.error || 'Erro ao criar projeto');
+        }
 
-      if (!res.ok) {
-        throw new Error(data.error || `Erro ao salvar projeto (status ${res.status})`);
+        const created = Array.isArray(payload.data) ? payload.data[0] : payload.data;
+        if (!created || !created.id) {
+          throw new Error('Resposta de criação de projeto não retornou id.');
+        }
+        savedProjectId = created.id;
       }
 
-      if (!editingId) {
-        // inserção bem-sucedida
-        setEditingId(projetoId);
+      // Persistir galeria caso existam imagens não persistidas (Jeito A):
+      // Aqui vamos fazer um insertMany na tabela projeto_galeria
+      if (gallery.length > 0) {
+        const payloadGaleria = gallery.map((img, index) => ({
+          projeto_id: savedProjectId,
+          imagem_url: img.imagem_url,
+          ordem: index,
+          legenda: img.legenda || '',
+        }));
+
+        const resGal = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            operation: 'insert',
+            payload: payloadGaleria,
+          }),
+        });
+
+        const payloadGal = await resGal.json();
+        if (!resGal.ok) {
+          if (resGal.status === 401) signOut();
+          throw new Error(payloadGal.error || 'Erro ao salvar galeria do projeto');
+        }
       }
 
       showToastMessage('Projeto salvo com sucesso!', 'success');
-      await fetchProjects();
+      setForm(initialFormState);
+      setGallery([]);
+      setEditingId(null);
+      fetchProjects();
     } catch (err) {
       showToastMessage(err.message, 'error');
     } finally {
@@ -441,86 +440,63 @@ const AdminProjetos = () => {
   };
 
   // ---------------------------------------------------------------------------
-  // Excluir projeto
-  // ---------------------------------------------------------------------------
-  const handleDeleteProject = useCallback(
-    async (id) => {
-      if (!window.confirm('Tem certeza que deseja excluir este projeto?')) return;
-      try {
-        const res = await fetch(`${API_URL}/api/projetos/${id}`, {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || `Erro ao excluir projeto (status ${res.status})`);
-        }
-
-        showToastMessage('Projeto excluído com sucesso!', 'success');
-        setProjects((prev) => prev.filter((p) => p.id !== id));
-
-        if (editingId === id) {
-          handleCancelEdit();
-        }
-      } catch (err) {
-        showToastMessage(err.message, 'error');
-      }
-    },
-    [API_URL, token, editingId, showToastMessage]
-  );
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
   return (
-    <AdminLayout title="Projetos">
-      <div className="mb-8 flex items-center justify-between gap-4">
-        <div>
-          <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-            Administração
-          </p>
-          <h1 className="mt-2 font-[Manrope] text-3xl font-semibold text-white">
-            Projetos
-          </h1>
-          <p className="mt-1 text-sm text-white/60">
-            Crie, edite e organize os projetos do seu portfólio.
-          </p>
+    <AdminLayout
+      title="Projetos"
+      description="Gerencie o portfólio de projetos apresentados no site."
+      activeRoute="/admin/projetos"
+    >
+      <form onSubmit={handleSubmit} className="overflow-hidden rounded-[28px] border border-white/10 bg-[#050509] text-white shadow-[0_32px_120px_rgba(0,0,0,0.55)]">
+        {/* Cabeçalho do Formulário */}
+        <div className="border-b border-white/8 bg-gradient-to-r from-[#12101F] via-[#0B0813] to-[#0A070F] px-6 py-5 lg:px-8 lg:py-6">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Projetos</p>
+              <h1 className="mt-1.5 font-[Manrope] text-2xl font-semibold text-white">
+                {editingId ? 'Editar Projeto' : 'Novo Projeto'}
+              </h1>
+              <p className="mt-1 text-sm text-white/60">
+                Crie e gerencie os projetos exibidos na página de portfólio.
+              </p>
+            </div>
+            <div className="hidden items-center gap-3 md:flex">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => navigate('/')}
+                className="!px-3 text-sm text-white/70 hover:text-white"
+              >
+                Ver site
+              </Button>
+              <Button type="submit" disabled={isSaving || isUploading || isUploadingGallery}>
+                {isSaving ? 'Salvando...' : editingId ? 'Atualizar' : 'Publicar'}
+              </Button>
+            </div>
+          </div>
         </div>
-        <Button
-          onClick={handleCancelEdit}
-          className="inline-flex items-center gap-2"
-        >
-          <FaPlus className="h-4 w-4" />
-          Novo Projeto
-        </Button>
-      </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="rounded-[32px] border border-white/10 bg-gradient-to-br from-[#0A0A0A] via-[#090909] to-[#10141B] shadow-xl shadow-black/40"
-      >
-        <div className="grid gap-6 border-b border-white/8 px-4 py-5 md:grid-cols-12 md:px-6 lg:px-8">
-          {/* Coluna esquerda */}
-          <div className="md:col-span-8 space-y-6">
-            {/* Dados principais */}
-            <section className="rounded-[28px] border border-white/8 bg-[#0F1012]/80 p-5 lg:p-6">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+        {/* Conteúdo do Formulário */}
+        <div className="grid gap-6 p-6 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1.05fr)] lg:p-8">
+          {/* Coluna Esquerda */}
+          <div className="space-y-6">
+            {/* Informações Básicas */}
+            <section className="rounded-[24px] border border-white/8 bg-white/[0.02] p-5 lg:p-6">
+              <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                    Informações principais
+                    Informações
                   </p>
-                  <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">
-                    {editingId ? 'Editar Projeto' : 'Novo Projeto'}
+                  <h2 className="mt-1 font-[Manrope] text-lg font-semibold text-white">
+                    Dados principais
                   </h2>
                 </div>
               </div>
-
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <label className="md:col-span-2 block">
+              <div className="grid gap-4 md:grid-cols-2">
+                <label className="md:col-span-2">
                   <span className="mb-2 block text-sm font-medium text-white/82">
-                    Título
+                    Título do Projeto
                   </span>
                   <input
                     type="text"
@@ -528,12 +504,12 @@ const AdminProjetos = () => {
                     value={form.titulo}
                     onChange={handleFieldChange}
                     className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Nome do projeto"
+                    placeholder="Ex: Rebranding Svícero Studio"
                     required
                   />
                 </label>
 
-                <label className="block">
+                <label>
                   <span className="mb-2 block text-sm font-medium text-white/82">
                     Categoria
                   </span>
@@ -543,7 +519,7 @@ const AdminProjetos = () => {
                     onChange={handleFieldChange}
                     className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
                   >
-                    <option value="">Selecione uma categoria</option>
+                    <option value="">Selecione...</option>
                     {CATEGORIAS.map((cat) => (
                       <option key={cat} value={cat}>
                         {cat}
@@ -552,7 +528,7 @@ const AdminProjetos = () => {
                   </select>
                 </label>
 
-                <label className="block">
+                <label>
                   <span className="mb-2 block text-sm font-medium text-white/82">
                     Cliente
                   </span>
@@ -566,20 +542,21 @@ const AdminProjetos = () => {
                   />
                 </label>
 
-                <label className="block">
+                <label>
                   <span className="mb-2 block text-sm font-medium text-white/82">
                     Data do Projeto
                   </span>
                   <input
-                    type="date"
+                    type="text"
                     name="data_projeto"
                     value={form.data_projeto}
                     onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
+                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                    placeholder="Ex: 2025"
                   />
                 </label>
 
-                <label className="block">
+                <label>
                   <span className="mb-2 block text-sm font-medium text-white/82">
                     Status
                   </span>
@@ -595,9 +572,22 @@ const AdminProjetos = () => {
                   </select>
                 </label>
               </div>
+            </section>
 
-              <div className="mt-6 space-y-4">
-                <label className="block">
+            {/* Descrição */}
+            <section className="rounded-[24px] border border-white/8 bg-white/[0.02] p-5 lg:p-6">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
+                    Descrição
+                  </p>
+                  <h2 className="mt-1 font-[Manrope] text-lg font-semibold text-white">
+                    Conteúdo do projeto
+                  </h2>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <label>
                   <span className="mb-2 block text-sm font-medium text-white/82">
                     Descrição curta
                   </span>
@@ -605,13 +595,13 @@ const AdminProjetos = () => {
                     name="descricao"
                     value={form.descricao}
                     onChange={handleFieldChange}
-                    rows={3}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Resumo do projeto"
+                    rows={2}
+                    className="w-full resize-none rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                    placeholder="Resumo breve do projeto..."
+                    required
                   />
                 </label>
-
-                <label className="block">
+                <label>
                   <span className="mb-2 block text-sm font-medium text-white/82">
                     Descrição longa (PT)
                   </span>
@@ -619,13 +609,12 @@ const AdminProjetos = () => {
                     name="descricao_longa"
                     value={form.descricao_longa}
                     onChange={handleFieldChange}
-                    rows={6}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Detalhes do projeto em português"
+                    rows={4}
+                    className="w-full resize-none rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                    placeholder="Detalhes do projeto, processo criativo, desafios, etc."
                   />
                 </label>
-
-                <label className="block">
+                <label>
                   <span className="mb-2 block text-sm font-medium text-white/82">
                     Descrição longa (EN)
                   </span>
@@ -633,138 +622,148 @@ const AdminProjetos = () => {
                     name="descricao_longa_en"
                     value={form.descricao_longa_en}
                     onChange={handleFieldChange}
-                    rows={6}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Project details in English"
+                    rows={4}
+                    className="w-full resize-none rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
+                    placeholder="Long description in English..."
                   />
                 </label>
               </div>
             </section>
 
-            {/* Imagem de capa */}
-            <section className="rounded-[28px] border border-white/8 bg-[#0F1012]/80 p-5 lg:p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                    Imagem de Capa
-                  </p>
-                  <h2 className="mt-2 font-[Manrope] text-xl font-semibold text-white">
-                    Capa do Projeto
-                  </h2>
-                </div>
-              </div>
-
-              <ImageUploadSlot
-                title="Upload da imagem de capa"
-                description="Arraste ou clique para enviar a capa"
-                onUpload={handleImageUpload}
-                isUploading={isUploading}
-                currentImageUrl={form.imagem_url}
-              />
-
-              {form.imagem_url && (
-                <p className="mt-2 text-xs text-white/50 break-all">
-                  URL atual: {form.imagem_url}
-                </p>
-              )}
-            </section>
-
             {/* Galeria */}
-            <section className="rounded-[28px] border border-white/8 bg-[#0F1012]/80 p-5 lg:p-6">
+            <section className="rounded-[24px] border border-white/8 bg-white/[0.02] p-5 lg:p-6">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
                     Galeria
                   </p>
-                  <h2 className="mt-2 font-[Manrope] text-xl font-semibold text-white">
-                    Imagens do Projeto
+                  <h2 className="mt-1 font-[Manrope] text-lg font-semibold text-white">
+                    Imagens adicionais
                   </h2>
+                  <p className="mt-1 text-sm text-white/60">
+                    Adicione as imagens que serão exibidas na página detalhada do projeto.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {/* Slot de upload da galeria (multi) */}
+                <ImageUploadSlot
+                  title="Adicionar à galeria"
+                  description="Arraste ou clique para enviar (várias imagens)"
+                  onUpload={handleGalleryImageUpload}
+                  isUploading={isUploadingGallery}
+                  multiple={true}
+                />
+
+                {/* Grade de imagens da galeria */}
+                {gallery.length > 0 && (
+                  <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                    {gallery
+                      .slice()
+                      .sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0))
+                      .map((img, index) => (
+                        <div
+                          key={img.id || img.tempId || index}
+                          className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black/40"
+                        >
+                          <img
+                            src={img.imagem_url}
+                            alt={`Imagem ${index + 1}`}
+                            className="h-32 w-full object-cover transition duration-200 group-hover:scale-[1.02]"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setGallery((prev) =>
+                                prev.filter(
+                                  (g, i) =>
+                                    i !== index &&
+                                    g.imagem_url !== img.imagem_url
+                                )
+                              );
+                            }}
+                            className="absolute right-2 top-2 rounded-full bg-black/60 px-2 py-1 text-xs text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100"
+                          >
+                            Remover
+                          </button>
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          </div>
+
+          {/* Coluna Direita */}
+          <aside className="space-y-6">
+            {/* Capa do Projeto */}
+            <section className="rounded-[24px] border border-white/8 bg-white/[0.02] p-5 lg:p-6">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
+                    Imagem de capa
+                  </p>
+                  <h2 className="mt-1 font-[Manrope] text-lg font-semibold text-white">
+                    Capa do projeto
+                  </h2>
+                  <p className="mt-1 text-sm text-white/60">
+                    Esta imagem será usada como destaque do projeto na listagem.
+                  </p>
                 </div>
               </div>
 
               <ImageUploadSlot
-                title="Adicionar à galeria"
-                description="Arraste ou clique para enviar (pode selecionar várias imagens)"
-                onUpload={handleGalleryImageUpload}
-                isUploading={isUploadingGallery}
-                multiple={true}
+                title="Upload da imagem de capa"
+                description="Arraste ou clique para enviar"
+                onUpload={handleImageUpload}
+                isUploading={isUploading}
+                currentImageUrl={form.imagem_url}
               />
+            </section>
 
-              {gallery.length > 0 && (
-                <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                  {gallery.map((img) => (
-                    <div
-                      key={img.id}
-                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#141414]"
-                    >
-                      <img
-                        src={img.imagem_url}
-                        alt={img.legenda || 'Imagem da galeria'}
-                        className="h-32 w-full object-cover transition duration-200 group-hover:scale-[1.02] group-hover:brightness-110"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveGalleryImage(img.id)}
-                        className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-xs text-white opacity-0 shadow-md transition group-hover:opacity-100"
-                        title="Remover imagem"
-                      >
-                        <FaTrash className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ))}
+            {/* Visibilidade */}
+            <section className="rounded-[24px] border border-white/8 bg-white/[0.02] p-5 lg:p-6">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
+                    Destaque
+                  </p>
+                  <h2 className="mt-1 font-[Manrope] text-lg font-semibold text-white">
+                    Exibição na home
+                  </h2>
                 </div>
-              )}
-
-              {gallery.length === 0 && (
-                <p className="mt-3 text-sm text-white/45">
-                  Nenhuma imagem na galeria ainda. As imagens são vinculadas ao projeto
-                  assim que o upload é concluído.
-                </p>
-              )}
-            </section>
-          </div>
-
-          {/* Coluna direita */}
-          <aside className="space-y-6 md:col-span-4">
-            {/* Configurações */}
-            <section className="rounded-[28px] border border-white/8 bg-[#2F353B]/30 p-5 shadow-lg shadow-black/20">
-              <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                Configurações
-              </p>
-              <div className="mt-5 grid gap-3">
-                <label className="flex items-center justify-between rounded-2xl border border-white/8 bg-[#141414]/55 px-4 py-4">
-                  <span className="text-sm text-white/82">Mostrar na Home?</span>
-                  <input
-                    type="checkbox"
-                    name="mostrar_home"
-                    checked={form.mostrar_home}
-                    onChange={handleFieldChange}
-                    className="sr-only"
-                  />
-                  <span
-                    className={`flex h-7 w-12 items-center rounded-full border border-[#B87333]/20 px-1 transition-all ${
-                      form.mostrar_home ? 'bg-[#B87333]/50' : 'bg-white/5'
-                    }`}
-                  >
-                    <span
-                      className={`h-5 w-5 rounded-full bg-[#B87333] transition-all ${
-                        form.mostrar_home ? 'ml-auto' : 'ml-0'
-                      }`}
-                    />
-                  </span>
-                </label>
               </div>
+              <label className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  name="mostrar_home"
+                  checked={form.mostrar_home}
+                  onChange={handleFieldChange}
+                  className="mt-1 h-4 w-4 rounded border-white/30 bg-[#141414] text-[#E9BF84] focus:ring-[#E9BF84]"
+                />
+                <div>
+                  <p className="text-sm font-medium text-white/90">
+                    Mostrar este projeto na seção de destaques da página inicial
+                  </p>
+                  <p className="text-xs text-white/55">
+                    Ideal para projetos recentes ou estratégicos.
+                  </p>
+                </div>
+              </label>
             </section>
 
-            {/* Links e Botões */}
-            <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-              <div className="mb-6">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-                  Links
-                </p>
-                <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">
-                  Ações
-                </h2>
+            {/* Links / Ações */}
+            <section className="rounded-[24px] border border-white/8 bg-white/[0.02] p-5 lg:p-6">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
+                    Links
+                  </p>
+                  <h2 className="mt-1 font-[Manrope] text-lg font-semibold text-white">
+                    Ações
+                  </h2>
+                </div>
               </div>
               <div className="space-y-4">
                 <label className="block">
@@ -838,8 +837,8 @@ const AdminProjetos = () => {
           </aside>
         </div>
 
-        {/* Botões de Ação */}
-        <div className="relative border-t border-white/8 px-6 py-6 lg:px-8 flex justify-end gap-3">
+        {/* Botões de Ação (responsivo) */}
+        <div className="border-t border-white/8 px-6 py-6 lg:px-8 flex justify-end gap-3 md:hidden">
           {editingId && (
             <Button
               type="button"
