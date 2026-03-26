@@ -1,15 +1,15 @@
+import { Check } from "lucide-react";
 import BlogSection from '../components/Home/BlogSection';
 import ProjectsSection from '../components/Home/ProjectsSection';
 import React, { useEffect, useState, useRef } from 'react';
 import Swiper from 'swiper/bundle';
 import { Pagination } from 'swiper/modules';
-Swiper.use([Pagination]);
 import 'swiper/css/bundle';
 import 'swiper/css/pagination';
 import Header from '../components/Layout/Header';
 import Preloader from '../components/Preloader';
 import Footer from '../components/Layout/Footer';
-import Button from '../components/UI/Button';
+import Button from '../components/UI/Button.jsx';
 import SEOHelmet from '../components/SEOHelmet';
 import Toast from '../components/UI/Toast';
 import { useToast } from '../hooks/useToast';
@@ -23,6 +23,7 @@ import HeroSection from '../components/Home/HeroSection';
 import ServicesSection from '../components/Home/ServicesSection';
 import sviceroCta from '../images/Svicero_CTA.png';
 import AboutSection from '../components/Home/AboutSection';
+import CTAFinal from '../components/CTAFinal';
 
 
 const Home = () => {
@@ -238,59 +239,76 @@ const Home = () => {
 
         <HeroSection />
 
-        <section id="triade" className="py-24 px-4 md:px-16 bg-dark-bg">
+        <section id="triade" className="py-24 px-4 md:px-16 bg-dark-bg font-body">
           <div className="max-w-screen-xl mx-auto">
-            <div className="text-left mb-16">
+            <div className="container max-w-5xl text-left mb-16">
               <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                <span className="w-2 h-2 -rotate-45 bg-secondary" />
                 METODOLOGIA
               </span>
-              <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">O que o Svicero Studio faz por você</h2>
-              <p className="font-sans text-lg md:text-xl text-[#B2B8C6] max-w-3xl leading-relaxed">
-                Unimos <span className='font-semibold'>estratégia de marca</span>, <span className='font-semibold'>design</span> e <span className='font-semibold'>tecnologia</span> para tirar sua marca da cara de amadora e dar base para você se posicionar com mais segurança.
+              <h2 className="reveal stagger-1 text-4xl md:text-5xl font-bold text-text-primary text-left">
+                O que o Svicero Studio faz por você
+              </h2>
+              <p className="mt-4 text-low-medium  text-left text-lg md:text-xl leading-relaxed">
+                Unimos <span className="font-bold">estratégia de marca</span>, <span className="font-bold">design</span> e <span className="font-bold">tecnologia</span> para tirar sua marca
+                da cara de amadora e dar base para você se posicionar com mais
+                segurança.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-8">
+            {/* Cards de serviço */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
               <div className="flex flex-col items-center text-center">
-                <span className="font-title text-7xl md:text-8xl font-extrabold text-secondary/40 leading-none mb-3">01</span>
-                <h3 className="font-title text-2xl font-bold text-white mb-4">Estratégia de marca</h3>
-                <p className="text-[#B2B8C6] leading-relaxed max-w-xs">
+                <span className="font-title text-[6rem] md:text-8xl font-normal text-secondary/30 leading-none mb-4">01</span>
+                <h3 className="text-g font-bold text-text-primary mt-4">Estratégia de marca</h3>
+                <p className="text-low-medium mt-3 text-m leading-relaxed">
                   Definimos como você quer ser visto, quem quer atrair e o espaço que quer ocupar no mercado. Isso guia todas as decisões de design e site.
                 </p>
               </div>
               <div className="flex flex-col items-center text-center">
-                <span className="font-title text-7xl md:text-8xl font-extrabold text-secondary/40 leading-none mb-3">02</span>
-                <h3 className="font-title text-2xl font-bold text-white mb-4">Identidade visual</h3>
-                <p className="text-[#B2B8C6] leading-relaxed max-w-xs">
+                <span className="font-title text-[6rem] md:text-8xl font-normal text-secondary/30 leading-none mb-4">02</span>
+                <h3 className="text-g font-bold text-text-primary mt-4">Identidade visual</h3>
+                <p className="text-low-medium mt-3 text-m leading-relaxed">
                   Criamos uma identidade visual completa que tira a cara de amador e passa o nível de profissionalismo que você já entrega.
                 </p>
               </div>
               <div className="flex flex-col items-center text-center">
-                <span className="font-title text-7xl md:text-8xl font-extrabold text-secondary/40 leading-none mb-3">03</span>
-                <h3 className="font-title text-2xl font-bold text-white mb-4">Presença digital</h3>
-                <p className="text-[#B2B8C6] leading-relaxed max-w-xs">
+                <span className="font-title text-[6rem] md:text-8xl font-normal text-secondary/30 leading-none mb-4">03</span>
+                <h3 className="text-g font-bold text-text-primary mt-4">Presença digital</h3>
+                <p className="text-low-medium mt-3 text-m leading-relaxed">
                   Construímos um site e materiais digitais que facilitam o contato e ajudam a transformar visitas em clientes.
                 </p>
               </div>
             </div>
 
             <div className="bg-[#222] rounded-2xl p-8 md:p-12 mt-36 mb-8 max-w-3xl mx-auto flex flex-col items-center">
-              <h2 className="font-title text-3xl md:text-4xl font-extrabold text-white mb-2 text-left w-full">Para quem é</h2>
-              <div className="text-[#B2B8C6] text-base md:text-lg font-light mb-6 text-left w-full">Especialmente para psicopedagogas, personal trainers e pequenos negócios que prestam serviços.</div>
-              <h3 className="font-title text-xl md:text-2xl font-bold text-white mb-4 text-left w-full">É para você se:</h3>
+              <h2 className="font-title text-3xl md:text-4xl font-bold text-white mb-2 text-left w-full">Para quem é</h2>
+              <div className="text-[#B2B8C6] text-base md:text-lg font-light mb-6 text-left w-full">Os projetos do <span className="font-semibold">Svicero Studio</span> são para empreendedores e profissionais que levam seu negócio a sério.</div>
+              <h3 className="font-title text-xl md:text-2xl font-semibold text-white mb-4 text-left w-full">É para você se:</h3>
               <ul className="text-[#B2B8C6] text-base md:text-lg font-light mb-8 w-full">
-                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Você atende bem, mas sente que sua imagem não acompanha o nível do seu trabalho.</li>
-                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Tem vergonha de indicar seu site ou perfil quando alguém pede "o link para te conhecer melhor".</li>
-                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Quer cobrar melhor pelos seus serviços, mas sente que a aparência da sua marca ainda puxa para baixo.</li>
-                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Se perde tentando fazer "arte" no Canva e sente que cada peça parece de um lugar diferente.</li>
-                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Quer um processo organizado, sem precisar entender de design ou tecnologia.</li>
-                <li className="flex items-start gap-2 mb-2"><span className="text-white text-lg mt-1">✓</span>Você for, especialmente, MEI, autônomo ou negócios locais.</li>
+                <li className="flex items-start gap-2 mb-2"><span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
+                  <Check size={12} className="text-secondary" />
+                </span> Você atende bem, mas sente que sua imagem não acompanha o nível do seu trabalho.</li>
+                <li className="flex items-start gap-2 mb-2"><span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
+                  <Check size={12} className="text-secondary" />
+                </span> Tem vergonha de indicar seu site ou perfil quando alguém pede "o link para te conhecer melhor".</li>
+                <li className="flex items-start gap-2 mb-2"><span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
+                  <Check size={12} className="text-secondary" />
+                </span> Quer cobrar melhor pelos seus serviços, mas sente que a aparência da sua marca ainda puxa para baixo.</li>
+                <li className="flex items-start gap-2 mb-2"><span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
+                  <Check size={12} className="text-secondary" />
+                </span> Se perde tentando fazer "arte" no Canva e sente que cada peça parece de um lugar diferente.</li>
+                <li className="flex items-start gap-2 mb-2"><span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
+                  <Check size={12} className="text-secondary" />
+                </span> Quer um processo organizado, sem precisar entender de design ou tecnologia.</li>
+                <li className="flex items-start gap-2 mb-2"><span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
+                  <Check size={12} className="text-secondary" />
+                </span> Você for, especialmente, MEI, autônomo ou negócios locais.</li>
               </ul>
               <hr className="w-full border-t border-[#444] mb-6 mt-2" />
               <div className="text-[#B2B8C6] text-left w-full mb-6">Se você se viu em 2 ou mais pontos, vale a pena conversar com o estúdio.</div>
               <div className="flex flex-col md:flex-row gap-4">
                 <Button href="/formulario-interesse" variant="secondary">
-                  Quero falar sobre minha marca
+                  Quero fortalecer minha marca
                 </Button>
                 <Button href="/processos" variant="outline">
                   Ver como trabalhamos
@@ -351,20 +369,8 @@ const Home = () => {
 
         <BlogSection blogPosts={blogPosts} />
 
-        <section className="w-full bg-dark-bg pb-24 px-4 flex justify-center items-center min-h-[420px]">
-          <div className="max-w-screen-xl w-full mx-auto bg-gradient-to-br from-secondary via-secondary to-secondary700 rounded-[48px] shadow-xl flex flex-col items-center justify-center px-8 py-16">
-            <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white text-center mb-6">Pronto para dar o próximo passo com sua marca?</h2>
-            <p className="text-lg md:text-xl text-white/80 font-light text-center mb-10">Se você sente que já passou da hora da sua marca acompanhar o nível do seu trabalho, o próximo passo é simples. Conte um pouco sobre seu momento para que o Svicero Studio possa te orientar com clareza.</p>
-            <div className="flex flex-col md:flex-row gap-6 mt-2">
-              <Button href="/formulario-interesse" variant="primary" className="transition-colors">
-                Preencher formulário de interesse
-              </Button>
-              <Button href="https://wa.me/5511964932007" target="_blank" rel="noopener noreferrer" variant="outline" className="transition-colors">
-                Falar pelo WhatsApp
-              </Button>
-            </div>
-          </div>
-        </section>
+        {/* CTA Final */}
+        <CTAFinal />
 
         <Footer />
 

@@ -111,7 +111,7 @@ const AdminFAQ = () => {
 
   return (
     <AdminLayout title="Admin FAQ">
-      <div className="w-full mx-auto py-20 lg:py-36 px-20 lg:px-36">
+      <div className="w-full mx-auto py-20 lg:py-36 px-20 lg:px-36 font-body">
         <h1 className="text-3xl font-bold mb-6">Gerenciar Perguntas Frequentes (FAQ)</h1>
         <form onSubmit={handleAdd} className="bg-[#181818] p-6 rounded-xl mb-8 shadow">
           <div className="mb-4">

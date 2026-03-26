@@ -184,7 +184,7 @@ const PacoteMarca = () => {
   }, [depoimentos]);
 
   return (
-    <div className="bg-[#141414] min-h-screen flex flex-col text-[#EFEFEF] font-sans py-20 md:py-36">
+    <div className="bg-[#141414] min-h-screen flex flex-col text-[#EFEFEF] font-body py-20 md:py-36">
       <Header variant="solid" />
       <main className="flex-1">
         {/* HERO */}
@@ -200,7 +200,7 @@ const PacoteMarca = () => {
 
         {/* PARA QUEM É */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
+          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
             Esse pacote é para você se…
           </h2>
           <ul className="space-y-4">
@@ -218,7 +218,7 @@ const PacoteMarca = () => {
 
         {/* O QUE ESTÁ INCLUÍDO */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white mb-8">
+          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-8">
             O que está incluído no Pacote Marca de Alto Padrão
           </h2>
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
@@ -242,7 +242,7 @@ const PacoteMarca = () => {
 
         {/* PROCESSO */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
+          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
             Como vamos trabalhar juntos
           </h2>
           <ol className="space-y-4 list-decimal list-inside">
@@ -256,7 +256,7 @@ const PacoteMarca = () => {
 
         {/* BENEFÍCIOS */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
+          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
             O que muda para o seu negócio com esse pacote
           </h2>
           <ul className="space-y-4">
@@ -273,7 +273,7 @@ const PacoteMarca = () => {
 
         {/* PARA QUEM NÃO É */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
+          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
             Esse pacote não é para você se…
           </h2>
           <ul className="space-y-4">
@@ -291,7 +291,7 @@ const PacoteMarca = () => {
 
         {/* INVESTIMENTO E CTA */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <h2 className="font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
+          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
             Investimento
           </h2>
           <p className="text-white/80 text-base mb-6">

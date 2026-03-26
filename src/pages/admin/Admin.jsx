@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../lib/api.js';
 
 const Admin = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, token } = useAuth();
 
   // Estado para horário de acesso
   const [lastAccess, setLastAccess] = React.useState('');
@@ -15,81 +15,129 @@ const Admin = () => {
   const [pendingCount, setPendingCount] = React.useState(null);
     // Buscar número de projetos
     React.useEffect(() => {
+      if (!token) {
+        setProjectCount(0);
+        return;
+      }
       const fetchProjects = async () => {
         try {
           const res = await fetch(`${API_URL}/api/db/projetos/query`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ operation: 'select', limit: 100 }),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              operation: 'select',
+              limit: 100,
+              filters: [{ column: 'status', operator: 'eq', value: 'published' }]
+            }),
           });
           const payload = await res.json();
           setProjectCount(Array.isArray(payload.data) ? payload.data.length : 0);
-        } catch (e) { setProjectCount(0); }
+        } catch (e) {
+          console.error('Erro ao buscar projetos:', e);
+          setProjectCount(0);
+        }
       };
       fetchProjects();
-    }, []);
+    }, [token, API_URL]);
 
-    // Buscar número de depoimentos
     React.useEffect(() => {
+      if (!token) {
+        setTestimonialCount(0);
+        return;
+      }
       const fetchTestimonials = async () => {
         try {
-          const res = await fetch(`${API_URL}/api/db/depoimentos/query`, {
+          const res = await fetch(`${API_URL}/api/db/depoimentos/query`, {      
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({ operation: 'select', limit: 100 }),
           });
           const payload = await res.json();
           setTestimonialCount(Array.isArray(payload.data) ? payload.data.length : 0);
-        } catch (e) { setTestimonialCount(0); }
+        } catch (e) {
+          console.error('Erro ao buscar depoimentos:', e);
+          setTestimonialCount(0);
+        }
       };
       fetchTestimonials();
-    }, []);
-
-    // Buscar número de autores
+    }, [token, API_URL]);
     React.useEffect(() => {
+      if (!token) {
+        setAuthorCount(0);
+        return;
+      }
       const fetchAuthors = async () => {
         try {
           const res = await fetch(`${API_URL}/api/db/autores/query`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({ operation: 'select', limit: 100 }),
           });
           const payload = await res.json();
           setAuthorCount(Array.isArray(payload.data) ? payload.data.length : 0);
-        } catch (e) { setAuthorCount(0); }
+        } catch (e) {
+          console.error('Erro ao buscar autores:', e);
+          setAuthorCount(0);
+        }
       };
       fetchAuthors();
-    }, []);
+    }, [token, API_URL]);
   // Buscar número de posts
   React.useEffect(() => {
+    if (!token) {
+      setPostCount(0);
+      return;
+    }
     const fetchPosts = async () => {
       try {
         const res = await fetch(`${API_URL}/api/db/posts/query`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify({ operation: 'select', limit: 100 }),
         });
         const payload = await res.json();
-        setPostCount(Array.isArray(payload.data) ? payload.data.length : 0);
-      } catch (e) { setPostCount(0); }
+        setPostCount(Array.isArray(payload.data) ? payload.data.length : 0);    
+      } catch (e) {
+        console.error('Erro ao buscar posts:', e);
+        setPostCount(0);
+      }
     };
     fetchPosts();
-  }, []);
-
-  // Buscar número de comentários pendentes
+  }, [token, API_URL]);
   React.useEffect(() => {
+    if (!token) {
+      setPendingCount(0);
+      return;
+    }
     const fetchPending = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/comments?approved=false`, {
+        const res = await fetch(`${API_URL}/api/comments?approved=false`, {     
           method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
         const payload = await res.json();
         setPendingCount(Array.isArray(payload) ? payload.length : 0);
-      } catch (e) { setPendingCount(0); }
+      } catch (e) {
+        console.error('Erro ao buscar comentários:', e);
+        setPendingCount(0);
+      }
     };
     fetchPending();
-  }, []);
-
+  }, [token, API_URL]);
   React.useEffect(() => {
     const now = new Date();
     const formatted = now.toLocaleString('pt-BR', {
@@ -132,7 +180,7 @@ const Admin = () => {
   ];
 
   return (
-    <div className="bg-dark-bg min-h-screen flex items-center justify-center px-4 md:px-36">
+    <div className="bg-dark-bg min-h-screen flex items-center justify-center px-4 md:px-36 font-body">
       <div className="w-full bg-gradient-to-br from-[#181818] via-[#232323] to-[#1A1207] rounded-3xl shadow-2xl p-8 md:p-12 lg:p-16 mx-auto mt-12 mb-12">
         {/* Header superior: badge acima do título, título centralizado, subtítulo abaixo, botão sair à direita */}
         <div className="mb-8">
@@ -197,7 +245,7 @@ const Admin = () => {
                   <p className="text-white/80 text-sm mb-4">{adminPages[0].description}</p>
                 </div>
                 <div className="flex items-end justify-between mt-auto">
-                  <span className="text-white/70 text-xs">{projectCount !== null ? `${projectCount} ativos` : '---'}</span>
+                  <span className="text-white/70 text-xs">{(projectCount ?? 0)} ativos</span>
                   <Link to={adminPages[0].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
                     Acessar
                     <i className="fa-solid fa-arrow-right text-xs"></i>
@@ -220,7 +268,7 @@ const Admin = () => {
                   <p className="text-white/80 text-sm mb-4">{adminPages[1].description}</p>
                 </div>
                 <div className="flex items-end justify-between mt-auto">
-                  <span className="text-white/70 text-xs">{postCount !== null ? `${postCount} artigos` : '---'}</span>
+                  <span className="text-white/70 text-xs">{(postCount ?? 0)} artigos</span>
                   <Link to={adminPages[1].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
                     Acessar
                     <i className="fa-solid fa-arrow-right text-xs"></i>
@@ -243,7 +291,7 @@ const Admin = () => {
                   <p className="text-white/80 text-sm mb-4">{adminPages[2].description}</p>
                 </div>
                 <div className="flex items-end justify-between mt-auto">
-                  <span className="text-white/70 text-xs">{testimonialCount !== null ? `${testimonialCount} publicados` : '---'}</span>
+                  <span className="text-white/70 text-xs">{(testimonialCount ?? 0)} publicados</span>
                   <Link to={adminPages[2].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
                     Acessar
                     <i className="fa-solid fa-arrow-right text-xs"></i>
@@ -266,7 +314,7 @@ const Admin = () => {
                   <p className="text-white/80 text-sm mb-4">{adminPages[3].description}</p>
                 </div>
                 <div className="flex items-end justify-between mt-auto">
-                  <span className="text-white/70 text-xs">{authorCount !== null ? `${authorCount} perfis` : '---'}</span>
+                  <span className="text-white/70 text-xs">{(authorCount ?? 0)} perfis</span>
                   <Link to={adminPages[3].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
                     Acessar
                     <i className="fa-solid fa-arrow-right text-xs"></i>
@@ -289,7 +337,7 @@ const Admin = () => {
                   <p className="text-white/80 text-sm mb-4">{adminPages[4].description}</p>
                 </div>
                 <div className="flex items-end justify-between mt-auto">
-                  <span className="text-white/70 text-xs">{pendingCount !== null ? `${pendingCount} pendentes` : '---'}</span>
+                  <span className="text-white/70 text-xs">{(pendingCount ?? 0)} pendentes</span>
                   <Link to={adminPages[4].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
                     Acessar
                     <i className="fa-solid fa-arrow-right text-xs"></i>

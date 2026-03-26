@@ -30,11 +30,13 @@ const Button = ({
   }, [className]); // Removido btnRef.current e size das dependências
 
   // Classes base
-  const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-300 relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-secondary';
+  const baseClasses = 'inline-flex items-center justify-center font-medium font-body transition-all duration-300 relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-secondary';
   const sizeClasses = {
     sm: 'px-6 py-4 text-base md:text-lg',
     md: 'px-8 py-4 text-lg',
     lg: 'px-12 py-4 text-xl',
+    icon: 'p-2',
+    bar: 'w-full h-full',
   };
 
   // Variações de estilo
@@ -49,6 +51,8 @@ const Button = ({
   } else if (variant === 'outline') {
     variantClasses = 'bg-transparent border-2 border-white/30 text-low-dark shadow-lg outline-hover hover:border-none';
     outlineHoverClass = 'outline-hover';
+  } else if (variant === 'ghost') {
+    variantClasses = 'bg-transparent border-none shadow-none';
   } else if (variant === 'custom') {
     // Variante custom: não aplica estilos de cor/borda, permite controle total via className
     variantClasses = '';
@@ -80,7 +84,7 @@ const Button = ({
   if (variant === 'secondary') fillColor = '#844219'; // deeper orange on orange
   else if (variant === 'danger') fillColor = '#dc2626'; // vermelho
   else if (variant === 'outline') fillColor = '#F8F7F280'; // hover fill on outline
-  else if (variant === 'custom') fillColor = '#EFEFEF'; // cor clara padrão para custom
+  else if (variant === 'custom') fillColor = ''; // cor clara padrão para custom
 
   // Permite sobrescrever com prop customFillColor
   if (customFillColor) fillColor = customFillColor;

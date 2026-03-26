@@ -34,15 +34,15 @@ if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET não configurada');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Cliente R2
-const r2 = new S3Client({
+// Cliente R2 (opcional - apenas se configurado)
+const r2 = process.env.R2_ACCOUNT_ID ? new S3Client({
   region: 'auto',
   endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
   credentials: {
     accessKeyId: process.env.R2_ACCESS_KEY_ID,
     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
   },
-});
+}) : null;
 
 const app = express();
 app.use(express.json({ limit: '20mb' }));
@@ -74,7 +74,7 @@ app.use('/api/interesse', interesseRouter);
 app.use('/api/faq', faqRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/db', dbRouter);
-app.use('/api', projetosRoutes); 
+app.use('/api', projetosRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'svicerostudio-backend' }));
@@ -94,17 +94,39 @@ app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (re
       return res.status(400).json({ error: 'bucket, key e file são obrigatórios' });
     }
 
-    await r2.send(
-      new PutObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME,
-        Key: key,
-        Body: file.buffer,
-        ContentType: file.mimetype,
-      }),
-    );
+    // Se R2 está configurado, usar R2
+    if (r2 && process.env.R2_BUCKET_NAME && process.env.R2_PUBLIC_URL) {
+      try {
+        await r2.send(
+          new PutObjectCommand({
+            Bucket: process.env.R2_BUCKET_NAME,
+            Key: key,
+            Body: file.buffer,
+            ContentType: file.mimetype,
+          }),
+        );
+        const publicUrl = `${process.env.R2_PUBLIC_URL}/${key}`;
+        return res.json({ data: { path: key, url: publicUrl }, error: null });
+      } catch (r2Error) {
+        console.error('[UPLOAD R2 ERROR]', r2Error.message);
+        // Fallback: salvar no MongoDB
+      }
+    }
 
-    const publicUrl = `${process.env.R2_PUBLIC_URL}/${key}`;
-    return res.json({ data: { path: key, url: publicUrl }, error: null });
+    // Fallback: salvar no MongoDB
+    console.log('[UPLOAD] R2 não configurado, salvando no MongoDB');
+    const uploadDoc = await Upload.create({
+      bucket,
+      storageKey: key,
+      originalName: file.originalname,
+      mimeType: file.mimetype,
+      size: file.size,
+      data: file.buffer,
+    });
+
+    // Retornar URL HTTP válida para servir a imagem
+    const publicUrl = `${process.env.API_BASE_URL || `http://localhost:${PORT}`}/api/storage/${uploadDoc._id}`;
+    return res.json({ data: { path: key, url: publicUrl, id: uploadDoc._id }, error: null });
   } catch (err) {
     console.error('[UPLOAD ERROR]', err.message, err.stack);
     return res.status(500).json({ error: err.message || 'Erro ao fazer upload' });
@@ -118,8 +140,26 @@ app.get('/api/storage/public/:bucket/:key', async (req, res) => {
     const doc = await Upload.findOne({ bucket, storageKey: key });
     if (!doc) return res.status(404).send('Arquivo não encontrado');
     res.setHeader('Content-Type', doc.mimeType || 'application/octet-stream');
+    res.setHeader('Content-Length', doc.size || 0);
     return res.send(doc.data);
   } catch (err) {
+    console.error('[STORAGE ERROR]', err.message);
+    return res.status(500).send('Erro ao buscar arquivo');
+  }
+});
+
+// Servir arquivo por ID MongoDB
+app.get('/api/storage/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const doc = await Upload.findById(id);
+    if (!doc) return res.status(404).send('Arquivo não encontrado');
+    res.setHeader('Content-Type', doc.mimeType || 'application/octet-stream');
+    res.setHeader('Content-Length', doc.size || 0);
+    res.setHeader('Content-Disposition', `inline; filename="${doc.originalName || 'file'}"`);
+    return res.send(doc.data);
+  } catch (err) {
+    console.error('[STORAGE ERROR]', err.message);
     return res.status(500).send('Erro ao buscar arquivo');
   }
 });

@@ -10,7 +10,7 @@ const Privacidade = () => {
         title="Política de Privacidade e Proteção de Dados"
         description="Transparência e segurança no tratamento de suas informações. Conheça a política de proteção de dados e privacidade do Svicero Studio em conformidade com a LGPD."
       />
-      <div className="min-h-screen bg-[#141414]">
+      <div className="min-h-screen bg-[#141414] font-body">
         <Header variant="solid" />
         
         <div className="pt-[200px] pb-24 px-4 md:px-16">

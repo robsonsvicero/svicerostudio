@@ -1,0 +1,127 @@
+/* Customização do react-datepicker para tema escuro */
+
+/* Container do datepicker */
+.react-datepicker {
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+/* Header do datepicker */
+.react-datepicker__header {
+  background-color: #141414;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px 12px 0 0;
+  padding: 12px;
+}
+
+/* Título (mês/ano) */
+.react-datepicker__current-month,
+.react-datepicker__current-month-aria-live {
+  color: #B87333;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Dias da semana */
+.react-datepicker__day-name {
+  color: #888;
+  font-size: 12px;
+  font-weight: 500;
+  width: 2.5rem;
+  line-height: 2.5rem;
+}
+
+/* Dias do mês */
+.react-datepicker__day {
+  width: 2.5rem;
+  line-height: 2.5rem;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.react-datepicker__day:hover {
+  background-color: rgba(184, 115, 51, 0.2);
+  color: #B87333;
+}
+
+/* Dia selecionado */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #B87333;
+  color: white;
+  border-radius: 8px;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: #d4923f;
+}
+
+/* Dia anterior/próximo mês */
+.react-datepicker__day--outside-month {
+  color: #555;
+  opacity: 0.5;
+}
+
+/* Dia de hoje */
+.react-datepicker__day--today {
+  color: #B87333;
+  font-weight: bold;
+}
+
+/* Botões de navegação */
+.react-datepicker__navigation-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #B87333;
+  height: 30px;
+  width: 30px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.react-datepicker__navigation-button:hover {
+  background-color: rgba(184, 115, 51, 0.1);
+}
+
+/* Input do datepicker */
+.react-datepicker__input-container {
+  position: relative;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+/* Meses/anos */
+.react-datepicker__month {
+  padding: 10px;
+  background-color: #1a1a1a;
+}
+
+.react-datepicker__week {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+/* Dropdown de mês/ano */
+.react-datepicker__year-read-view,
+.react-datepicker__month-read-view {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 4px 8px;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.react-datepicker__year-read-view:hover,
+.react-datepicker__month-read-view:hover {
+  background-color: rgba(184, 115, 51, 0.1);
+}

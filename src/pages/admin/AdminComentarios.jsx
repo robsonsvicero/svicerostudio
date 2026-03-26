@@ -71,7 +71,7 @@ const AdminComentarios = () => {
                                 <div className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#E9BF84]">
                                     Moderação
                                 </div>
-                                <h1 className="mt-4 font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
+                                <h1 className="mt-4 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
                                     Gerenciar Comentários
                                 </h1>
                                 <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60 lg:text-base">

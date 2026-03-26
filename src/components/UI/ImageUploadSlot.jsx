@@ -50,7 +50,7 @@ const ImageUploadSlot = ({
         <div className="flex items-center gap-4">
           <img src={currentImageUrl} alt={title} className="w-16 h-16 object-cover rounded-xl" />
           <div>
-            <h3 className="font-[Manrope] text-lg font-semibold text-white">{title}</h3>
+            <h3 className="font-[DM Sans] text-lg font-semibold text-white">{title}</h3>
             <p className="mt-1 text-sm leading-6 text-white/55 truncate">
               {fileName || 'Imagem carregada.'}
             </p>
@@ -72,7 +72,7 @@ const ImageUploadSlot = ({
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white/80">
             {isUploading ? '...' : '⊕'}
           </div>
-          <h3 className="mt-5 font-[Manrope] text-lg font-semibold text-white">{title}</h3>
+          <h3 className="mt-5 font-[DM Sans] text-lg font-semibold text-white">{title}</h3>
           <p className="mt-2 text-sm leading-6 text-white/55">
             {isUploading ? `Enviando ${fileName}...` : description}
           </p>

@@ -1,204 +1,88 @@
-# Svicero Studio - Backend API
+# Svicero Studio - Backend
 
-API Node.js/Express com MongoDB para o portfólio Svicero Studio.
+API Node.js/Express para o portfólio Svicero Studio com suporte a Mongoose (MongoDB), JWT, AWS S3, e-mail e muito mais.
 
-## Stack
+## Instalação
 
-- **Runtime**: Node.js 18+
-- **Framework**: Express.js
-- **Database**: MongoDB (via Mongoose)
-- **Auth**: JWT (jsonwebtoken)
-- **Password**: bcryptjs
-- **Upload**: multer
-
-## Setup Local
-
-### 1. Instalar dependências
 ```bash
-cd backend
 npm install
 ```
 
-### 2. Configurar variáveis de ambiente
+## Configuração
+
+Crie um arquivo `.env` na raiz com base em `.env.example`:
+
 ```bash
 cp .env.example .env
-# Edite .env com suas credenciais
 ```
 
-### 3. Rodar em desenvolvimento
+Configure as variáveis de ambiente necessárias (MongoDB, JWT_SECRET, SMTP, etc.).
+
+## Executar
+
+### Desenvolvimento
 ```bash
 npm run dev
 ```
 
-API disponível em `http://localhost:4000`
-
-## Variáveis de Ambiente
-
-| Variável | Descrição | Obrigatória |
-|----------|-----------|-------------|
-| `PORT` | Porta da API (default: 4000) | Não |
-| `MONGODB_URI` | String de conexão MongoDB Atlas | Sim |
-| `JWT_SECRET` | Segredo para tokens JWT (32+ chars) | Sim |
-| `CORS_ORIGIN` | Domínios permitidos (separados por vírgula) | Não |
-| `ADMIN_EMAIL` | Email do admin inicial | Não |
-| `ADMIN_PASSWORD` | Senha do admin inicial | Não |
-
-## Endpoints
-
-### Health Check
+### Produção
+```bash
+npm start
 ```
-GET /health
-Response: { "ok": true, "timestamp": "..." }
+
+## Estrutura
+
 ```
+src/
+├── middleware/       # Middlewares (autenticação, etc)
+├── models/          # Modelos Mongoose
+├── routes/          # Rotas da API
+├── utils/           # Funções utilitárias
+└── server.js        # Arquivo principal
+```
+
+## API Endpoints
 
 ### Autenticação
-```
-POST /api/auth/login
-Body: { "email": "admin@email.com", "password": "senha" }
-Response: { "token": "jwt...", "user": { "id": "...", "email": "..." } }
-```
+- `POST /api/auth/login` - Login
+- `GET /api/auth/session` - Verificar sessão
 
-### CRUD Genérico
+### Banco de Dados
+- `POST /api/db/:table/query` - Executar queries (select, insert, update, delete)
 
-**Query (buscar)**
-```
-POST /api/db/:table/query
-Headers: Authorization: Bearer <token> (opcional para algumas tabelas)
-Body: {
-  "filters": { "publicado": true },
-  "order": { "created_at": "desc" },
-  "limit": 10
-}
-```
+### Comentários
+- `GET /api/comments/:slug` - Listar comentários de um post
+- `POST /api/comments/:slug` - Criar comentário
+- `GET /api/comments/` - Listar todos (admin)
+- `PATCH /api/comments/:id/approve` - Aprovar comentário (admin)
+- `DELETE /api/comments/:id` - Deletar comentário (admin)
 
-**Insert (criar)**
-```
-POST /api/db/:table/insert
-Headers: Authorization: Bearer <token>
-Body: { "data": { "titulo": "...", "descricao": "..." } }
-```
+### FAQ
+- `GET /api/faq` - Listar FAQs
+- `POST /api/faq` - Criar FAQ (admin)
+- `PUT /api/faq/:id` - Editar FAQ (admin)
+- `DELETE /api/faq/:id` - Deletar FAQ (admin)
 
-**Update (atualizar)**
-```
-POST /api/db/:table/update
-Headers: Authorization: Bearer <token>
-Body: {
-  "filters": { "id": "..." },
-  "data": { "titulo": "Novo título" }
-}
-```
+### Interesse
+- `POST /api/interesse` - Enviar formulário de interesse
 
-**Delete (excluir)**
-```
-POST /api/db/:table/delete
-Headers: Authorization: Bearer <token>
-Body: { "filters": { "id": "..." } }
-```
+### Projetos
+- `DELETE /api/projetos/:id` - Deletar projeto e galeria (admin)
 
-### Tabelas Disponíveis
+### Health Check
+- `GET /api/health` - Verificar status da API
 
-| Tabela | Descrição |
-|--------|-----------|
-| `projetos` | Projetos do portfólio |
-| `projeto_galeria` | Imagens da galeria de projetos |
-| `posts` | Artigos do blog |
-| `autores` | Autores dos artigos |
-| `depoimentos` | Depoimentos de clientes |
+## Dependências Principais
 
-### Upload de Imagens
-```
-POST /api/storage/upload
-Headers: Authorization: Bearer <token>
-Body: FormData com campo "file"
-Response: { "url": "/api/storage/files/..." }
-```
+- **express** 5.1.0 - Framework web
+- **mongoose** 8.19.2 - MongoDB ODM
+- **jsonwebtoken** 9.0.2 - JWT para autenticação
+- **@aws-sdk/client-s3** 3.1011.0 - AWS S3 client
+- **nodemailer** 8.0.2 - Envio de emails
+- **multer** 2.0.2 - Upload de arquivos
+- **sharp** 0.34.5 - Processamento de imagens
+- **bcryptjs** 3.0.2 - Hashing de senhas
 
-**Download de imagem**
-```
-GET /api/storage/files/:id
-Response: Imagem (binary)
-```
+## Autores
 
-## Schemas
-
-### Projeto
-```javascript
-{
-  titulo: String,          // obrigatório
-  descricao: String,       // obrigatório
-  descricao_longa: String,
-  descricao_longa_en: String,
-  imagem_url: String,      // obrigatório
-  site_url: String,
-  link: String,            // obrigatório
-  button_text: String,
-  link2: String,
-  button_text2: String,
-  data_projeto: String,
-  mostrar_home: Boolean
-}
-```
-
-### Post
-```javascript
-{
-  titulo: String,          // obrigatório
-  slug: String,            // obrigatório, único
-  resumo: String,
-  conteudo: String,        // obrigatório
-  imagem_destaque: String,
-  categoria: String,
-  tags: String,
-  data_publicacao: String, // obrigatório
-  autor: String,
-  publicado: Boolean
-}
-```
-
-### Autor
-```javascript
-{
-  nome: String,            // obrigatório
-  cargo: String,           // obrigatório
-  foto_url: String,        // base64
-  bio: String,
-  email: String,
-  publicado: Boolean
-}
-```
-
-### Depoimento
-```javascript
-{
-  nome: String,            // obrigatório
-  cargo: String,
-  empresa: String,
-  texto: String,           // obrigatório
-  nota: Number,            // 1-5
-  iniciais: String,
-  cor_avatar: String,
-  ativo: Boolean,
-  ordem: Number
-}
-```
-
-## Deploy no Railway
-
-1. Conectar repositório no Railway
-2. Configurar **Root Directory**: `backend`
-3. Adicionar variáveis de ambiente
-4. Deploy automático via push
-
-## Scripts
-
-```bash
-npm run dev    # Desenvolvimento com nodemon
-npm start      # Produção
-```
-
-## Segurança
-
-- Tokens JWT expiram em 7 dias
-- Senhas hasheadas com bcrypt (10 rounds)
-- CORS configurável por domínio
-- Rotas de escrita protegidas por autenticação
+Robson Svicero

@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
 }
 
 .business-card {
@@ -45,7 +45,7 @@
 }
 
 .business-card-title h1 {
-  font-family: 'Manrope', 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 28px;
   font-weight: 700;
   color: var(--cream);
@@ -54,7 +54,7 @@
 }
 
 .business-card-title .tagline {
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-style: italic;
   color: var(--cream);
@@ -70,7 +70,7 @@
 }
 
 .business-card-description p {
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   line-height: 1.6;
   letter-spacing: 0.75px;
@@ -93,7 +93,7 @@
   justify-content: center;
   background-color: #B87333;
   color: #FFFFFF;
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 15px;
   font-weight: 500;
   padding: 16px 24px;
@@ -131,7 +131,7 @@
 }
 
 .business-card-footer p {
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 12px;
   color: #666666;
   margin: 0;

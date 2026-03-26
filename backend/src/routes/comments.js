@@ -24,50 +24,25 @@ router.get('/', adminAuth, async (req, res) => {
     const { slug, approved } = req.query;
     const filter = {};
     if (slug) filter.postSlug = slug;
-    if (approved === 'true') filter.approved = true
-    if (approved === 'false') filter.approved = false
-    const comments = await Comment.find(filter).sort({ createdAt: -1 })
-    res.json(comments)
+    if (approved === 'true') filter.approved = true;
+    if (approved === 'false') filter.approved = false;
+    const comments = await Comment.find(filter).sort({ createdAt: -1 });
+    res.json(comments);
   } catch (err) {
-    res.status(500).json({ error: 'Erro ao buscar comentários' })
+    res.status(500).json({ error: 'Erro ao buscar comentários' });
   }
-})
-
-// Aprovar comentário (admin)
-router.patch('/:id/approve', adminAuth, async (req, res) => {
-  try {
-    const comment = await Comment.findByIdAndUpdate(req.params.id, { approved: true }, { new: true })
-    if (!comment) return res.status(404).json({ error: 'Comentário não encontrado' })
-    res.json(comment)
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao aprovar comentário' })
-  }
-})
-
-// Excluir comentário (admin)
-router.delete('/:id', adminAuth, async (req, res) => {
-  try {
-    const comment = await Comment.findByIdAndDelete(req.params.id)
-    if (!comment) return res.status(404).json({ error: 'Comentário não encontrado' })
-    res.json({ success: true })
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao excluir comentário' })
-  }
-})
-// ...existing code...
-
-// ...existing code...
+});
 
 // Listar comentários de um post
 router.get('/:slug', async (req, res) => {
   try {
     const comments = await Comment.find({ postSlug: req.params.slug, approved: true })
-      .sort({ createdAt: 1 })
-    res.json(comments)
+      .sort({ createdAt: 1 });
+    res.json(comments);
   } catch (err) {
-    res.status(500).json({ error: 'Erro ao buscar comentários' })
+    res.status(500).json({ error: 'Erro ao buscar comentários' });
   }
-})
+});
 
 // Criar novo comentário
 router.post('/:slug', async (req, res) => {
@@ -91,4 +66,26 @@ router.post('/:slug', async (req, res) => {
   }
 });
 
-export default router
+// Aprovar comentário (admin)
+router.patch('/:id/approve', adminAuth, async (req, res) => {
+  try {
+    const comment = await Comment.findByIdAndUpdate(req.params.id, { approved: true }, { new: true });
+    if (!comment) return res.status(404).json({ error: 'Comentário não encontrado' });
+    res.json(comment);
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao aprovar comentário' });
+  }
+});
+
+// Excluir comentário (admin)
+router.delete('/:id', adminAuth, async (req, res) => {
+  try {
+    const comment = await Comment.findByIdAndDelete(req.params.id);
+    if (!comment) return res.status(404).json({ error: 'Comentário não encontrado' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao excluir comentário' });
+  }
+});
+
+export default router;

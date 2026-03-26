@@ -22,7 +22,7 @@ const ServicePage = ({
       <Header variant="solid" />
       <main className="flex-1">
         {/* HERO */}
-        <section className="relative overflow-hidden border-b border-white/8">
+        <section className="relative overflow-hidden border-b border-white/8 font-body">
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,20,20,0.55)_0%,rgba(20,20,20,0.76)_50%,#141414_100%),radial-gradient(circle_at_top_right,rgba(184,115,51,0.22),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(95,178,216,0.10),transparent_24%)]" />
           <div className="absolute inset-0 bg-[linear-gradient(135deg,#2F353B_0%,#171F2A_45%,#844219_140%)] opacity-50" />
 
@@ -55,7 +55,7 @@ const ServicePage = ({
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="rounded-[30px] border border-white/8 bg-white/[0.03] p-6 backdrop-blur lg:p-8">
               <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Escopo</p>
-              <h2 className="mt-3 font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white">
+              <h2 className="mt-3 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white">
                 O que inclui
               </h2>
               <div className="mt-8 space-y-4">
@@ -72,7 +72,7 @@ const ServicePage = ({
 
             <div className="rounded-[30px] border border-white/8 bg-white/[0.03] p-6 backdrop-blur lg:p-8">
               <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Método</p>
-              <h2 className="mt-3 font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white">
+              <h2 className="mt-3 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white">
                 Processo de criação
               </h2>
               <div className="mt-8 space-y-4">
@@ -92,7 +92,7 @@ const ServicePage = ({
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Portfólio</p>
-              <h2 className="mt-3 font-[Manrope] text-4xl font-semibold tracking-[-0.05em] text-white">
+              <h2 className="mt-3 font-[DM Sans] text-4xl font-semibold tracking-[-0.05em] text-white">
                 Projetos entregues
               </h2>
             </div>
@@ -126,7 +126,7 @@ const ServicePage = ({
                       <div className="inline-flex rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white/65 backdrop-blur">
                         Case selecionado
                       </div>
-                      <h3 className="mt-4 font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white">
+                      <h3 className="mt-4 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white">
                         {example.title}
                       </h3>
                       <p className="mt-2 text-sm text-white/70">{example.alt}</p>
@@ -147,7 +147,7 @@ const ServicePage = ({
               <div className="flex items-center p-8 lg:p-12">
                 <div className="max-w-xl">
                   <p className="text-xs uppercase tracking-[0.18em] text-[#F8F7F2]/70">Convite estratégico</p>
-                  <h2 className="mt-4 font-[Manrope] text-4xl font-semibold tracking-[-0.05em] text-[#F8F7F2] lg:text-5xl">
+                  <h2 className="mt-4 font-[DM Sans] text-4xl font-semibold tracking-[-0.05em] text-[#F8F7F2] lg:text-5xl">
                     {ctaTitle}
                   </h2>
                   <p className="mt-5 max-w-lg text-base leading-8 text-[#F8F7F2]/78">

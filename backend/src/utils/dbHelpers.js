@@ -17,6 +17,10 @@ export function buildMongoFilter(filters = []) {
       }
     }
 
+    if (operator === 'in') {
+      mongoFilter[key] = { $in: Array.isArray(value) ? value : [value] };
+    }
+
     if (operator === 'ilike') {
       const escaped = String(value || '')
         .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -53,7 +57,7 @@ export function normalizeDoc(doc) {
   } else {
     plain = { ...doc };
   }
-  
+
   if (plain._id) {
     plain.id = plain._id.toString();
     delete plain._id;
@@ -66,6 +70,9 @@ export function normalizeDoc(doc) {
 export function applyPublicReadConstraints(table, filter) {
   if (table === 'posts') {
     return { ...filter, publicado: true };
+  }
+  if (table === 'projetos') {
+    return { ...filter, mostrar_home: true };
   }
   if (table === 'autores') {
     return { ...filter, publicado: true };

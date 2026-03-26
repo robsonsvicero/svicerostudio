@@ -3,7 +3,6 @@ import { baseSchemaOptions } from './baseSchema.js';
 
 const postSchema = new mongoose.Schema(
   {
-    _id: { type: String, required: true },
     titulo: { type: String, required: true },
     slug: { type: String, required: true, unique: true, index: true },
     resumo: String,

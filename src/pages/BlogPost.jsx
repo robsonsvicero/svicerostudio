@@ -105,7 +105,7 @@ const BlogPost = () => {
         ogImage={post?.imagem_capa || '/images/og-image.jpg'}
         ogType="article"
       />
-      <div className="min-h-screen bg-dark-bg">
+      <div className="min-h-screen bg-dark-bg font-body">
         <Header variant="solid" />
         
         <article className="pt-[200px] pb-24 px-4 md:px-16">

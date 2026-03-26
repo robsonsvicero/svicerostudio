@@ -9,7 +9,7 @@ const NotFound = () => {
   return (
     <>
       <SEOHelmet title="Página não encontrada" description="A página que você procura não existe ou foi movida." />
-      <div className="bg-dark-bg min-h-screen flex flex-col">
+      <div className="bg-dark-bg min-h-screen flex flex-col font-body">
         <main className="flex-1 flex flex-col items-center justify-center px-4 py-24 text-center">
           <div className="flex justify-center mb-8">
             <dotlottie-player

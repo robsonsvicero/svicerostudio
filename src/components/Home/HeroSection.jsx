@@ -1,86 +1,105 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from '../UI/Button';
-import heroBkg from '../../images/hero_bkg.png';
-import imageHero from '../../images/image_hero.png';
+import Button from "../UI/Button.jsx";
+import { useState, useEffect } from "react";
 
-const HeroSection = () => {
-  const navigate = useNavigate();
+// Importe todas as imagens de background
+import heroBg1 from "../../assets/hero-bg1.png";
+import heroBg2 from "../../assets/hero-bg2.png";
+import heroBg3 from "../../assets/hero-bg3.png";
+import heroBg4 from "../../assets/hero-bg4.png";
+
+const backgroundImages = [heroBg1, heroBg2, heroBg3, heroBg4];
+
+const Hero = () => {
+  const [currentBgIndex, setCurrentBgIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBgIndex((prevIndex) =>
+        (prevIndex + 1) % backgroundImages.length
+      );
+    }, 5000); // Muda a imagem a cada 5 segundos
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleDotClick = (index) => {
+    setCurrentBgIndex(index);
+  };
+
   return (
-    <section
-      className="relative flex items-center justify-center px-0 md:px-0 pt-20 lg:pt-32 pb-20 overflow-hidden"
-      style={{ fontFamily: 'Manrope, Inter, sans-serif' }}
-    >
-      {/* Background com overlay */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `linear-gradient(90deg, rgba(35,35,35,1) 0%, rgba(35,35,35,0.85) 50%, rgba(35,35,35,0.1) 100%), url(${heroBkg})`
-        }}
-      ></div>
-      {/* Conteúdo principal */}
-      <div className="relative z-20 w-full max-w-[1280px] mx-auto flex flex-col lg:flex-row items-stretch justify-between py-16 pb-24 px-4 sm:px-6 lg:px-8">
-        {/* Coluna esquerda: badge, título, texto, botões */}
-        <div className="flex-1 flex flex-col justify-center lg:items-start items-center text-left lg:text-left">
-          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-            <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
-            INOVAÇÃO DIGITAL
-          </span>
-          <h1 className="font-extrabold text-cream text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.08] mb-6 drop-shadow-xl" style={{ letterSpacing: '-0.02em' }}>
-            Marca e site à altura de quem você é
-            {/* Design,<br />
-            Tecnologia e um <br />
-            <span>pouco de <span className="text-secondary font-" style={{ fontWeight: 800, letterSpacing: '-0.03em' }}>mágica</span></span> */}
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl text-white/85 mb-10 leading-relaxed max-w-lg" style={{ fontWeight: 500 }}>
-            Criamos, com você, uma presença digital que combina estratégia, estética e um pouco de magia, para o seu trabalho ser reconhecido antes mesmo do primeiro contato.
-          </p>
-          <div className="flex flex-col md:flex-row gap-4 mt-2">
-            <Button
-              variant="secondary"
-              className="shadow-lg transition w-full sm:w-full md:w-auto"
-              style={{ boxShadow: '0 4px 24px 0 rgba(249,162,91,0.33)' }}
-              onClick={() => navigate('/formulario-interesse')}
-            >
-              Revisar presença digital
-            </Button>
-            <Button
-              variant="outline"
-              className="hover:text-primary transition w-full sm:w-full md:w-auto"
-              onClick={() => navigate('/processos')}
-            >
-              Ver como funciona
-            </Button>
-          </div>
-        </div>
-        {/* Coluna direita: apenas imagem */}
-        {/* Coluna direita: apenas imagem (web), tablet imagem abaixo do texto, mobile sem imagem) */}
-        <div className="flex-1 flex items-center justify-center w-full relative z-30 px-6 md:px-0 mt-10 md:mt-8 lg:mt-0">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-0 font-body">
+      {/* Carrossel de Background */}
+      <div className="absolute inset-0">
+        {backgroundImages.map((bg, index) => (
           <img
-            src={imageHero}
-            alt="Notebook com site Aura Studio"
-            className="hidden md:block lg:block max-w-[500px] w-[480px] rounded-3xl shadow-2xl mx-auto"
-            style={{ boxShadow: '0 16px 64px 0 rgba(0,0,0,0.45)' }}
-            loading="lazy"
+            key={index}
+            src={bg}
+            alt={`Background ${index + 1}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              index === currentBgIndex ? "opacity-100" : "opacity-0"
+            }`}
           />
+        ))}
+        {/* Overlay de gradiente */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 via-[#1A1A1A]/40 to-transparent" />
+      </div>
+
+      {/* Conteúdo do Hero */}
+      <div className="relative z-10 container text-center pt-20 pb-32 px-4 md:px-0">
+        {/* Badge "Branding" - Alinhado à esquerda e com estilo off-white */}
+        <div className="reveal flex justify-start max-w-4xl mx-auto mb-6">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#F8F7F2]/70 text-[#F8F7F2] text-xs font-medium tracking-wider uppercase bg-[#F8F7F2]/10 backdrop-blur-sm">
+            <span className="w-2 h-2 bg-[#F8F7F2] -rotate-45" />
+            Branding
+          </span>
+        </div>
+
+        {/* Título - Centralizado e em uma linha */}
+        <h1 className="reveal stagger-1 text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.1] max-w-4xl mx-auto mt-32 text-white whitespace-nowrap">
+          Marca e site à altura de quem você é
+        </h1>
+
+        {/* Parágrafo */}
+        <p className="reveal stagger-2 mt-6 text-white/80 text-lg max-w-2xl mx-auto leading-relaxed">
+          Criamos, com você, uma presença digital que combina estratégia,
+          estética e um pouco de magia, para o seu trabalho ser reconhecido
+          antes mesmo do primeiro contato.
+        </p>
+
+        {/* Botões - Com bordas arredondadas (rounded-2xl) */}
+        <div className="reveal stagger-3 mt-10 flex flex-wrap items-center justify-center gap-4">
+          <Button variant="secondary" size="lg" href="#contato">
+            Revisar presença digital
+          </Button>
+          <Button variant="outline" size="lg" href="#projetos">
+            Ver como funciona
+          </Button>
         </div>
       </div>
-      {/* Scroll Indicator Mouse */}
-      <div className="absolute left-1/2 bottom-8 -translate-x-1/2 z-30 flex flex-col items-center">
-        <svg width="28" height="44" viewBox="0 0 28 44" fill="none" xmlns="http://www.w3.org/2000/svg" className="animate-[pulse_2s_infinite]">
-          <rect x="2" y="2" width="24" height="40" rx="12" stroke="white" strokeWidth="2.5" fill="none" />
-          <circle cx="14" cy="12" r="3" fill="white" />
-        </svg>
-        <style>{`
-          @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.25); }
-            100% { opacity: 1; transform: scale(1); }
-          }
-        `}</style>
+
+      {/* Paginação do Carrossel - Barras grandes e só mudam de cor */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-4 w-full max-w-4xl px-4">
+        {backgroundImages.map((_, index) => (
+          <div
+            key={index}
+            onClick={() => handleDotClick(index)}
+            className={`flex-1 h-[2px] rounded-full transition-colors duration-300 cursor-pointer ${
+              index === currentBgIndex ? "bg-white" : "bg-white/50 hover:bg-white/70"
+            }`}
+            role="button"
+            aria-label={`Mudar para imagem ${index + 1}`}
+          />
+        ))}
+      </div>
+
+      {/* Ícone de scroll (seta para baixo) */}
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+        <div className="w-6 h-10 rounded-full border-2 border-white/30 flex justify-center pt-2">
+          <div className="w-1 h-2 bg-white/50 rounded-full" />
+        </div>
       </div>
     </section>
   );
 };
 
-export default HeroSection;
+export default Hero;

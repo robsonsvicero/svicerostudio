@@ -2,9 +2,13 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../../styles/datepicker.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../lib/api';
 import { useToast } from '../../hooks/useToast';
+import { getPlaceholderImage } from '../../utils/placeholders';
 import slugify from 'slugify';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 
@@ -192,14 +196,22 @@ const AdminProjetos = () => {
   // ---------------------------------------------------------------------------
   const handleImageUpload = useCallback(
     async (uploadedFiles) => {
-      if (!uploadedFiles || uploadedFiles.length === 0) return;
+      // Se foi removida a imagem
+      if (uploadedFiles === null) {
+        setForm((prevForm) => ({ ...prevForm, imagem_url: '' }));
+        return;
+      }
+
+      // Aceita um arquivo único ou array
+      const files = Array.isArray(uploadedFiles) ? uploadedFiles : [uploadedFiles];
+      if (!files || files.length === 0) return;
 
       setIsUploading(true);
       try {
-        const file = uploadedFiles[0];
+        const file = files[0];
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('bucket', 'svicerostudio'); // Seu bucket R2
+        formData.append('bucket', 'svicerostudio');
         formData.append('key', `projetos/${form.slug || generateSlug(form.titulo)}/capa-${file.name}`);
 
         const res = await fetch(`${API_URL}/api/storage/upload`, {
@@ -230,12 +242,14 @@ const AdminProjetos = () => {
 
   const handleGalleryImageUpload = useCallback(
     async (uploadedFiles) => {
-      if (!uploadedFiles || uploadedFiles.length === 0) return;
+      // Aceita um arquivo único ou array
+      const files = Array.isArray(uploadedFiles) ? uploadedFiles : [uploadedFiles];
+      if (!files || files.length === 0) return;
 
       setIsUploadingGallery(true);
       try {
         const newGalleryItems = [];
-        for (const file of uploadedFiles) {
+        for (const file of files) {
           const formData = new FormData();
           formData.append('file', file);
           formData.append('bucket', 'svicerostudio');
@@ -498,13 +512,18 @@ const AdminProjetos = () => {
                 <span className="mb-2 block text-sm font-medium text-white/82">
                   Data do Projeto
                 </span>
-                <input
-                  type="text"
-                  name="data_projeto"
-                  value={form.data_projeto}
-                  onChange={handleFieldChange}
+                <DatePicker
+                  selected={form.data_projeto ? new Date(form.data_projeto) : null}
+                  onChange={(date) => {
+                    if (date) {
+                      const formatted = date.toISOString().split('T')[0];
+                      handleFieldChange({ target: { name: 'data_projeto', value: formatted } });
+                    }
+                  }}
+                  dateFormat="dd/MM/yyyy"
+                  placeholderText="Selecione a data"
                   className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="Ex: 2023-01-15"
+                  calendarClassName="bg-[#1a1a1a] text-white border-white/10"
                 />
               </label>
               <label className="block">
@@ -588,8 +607,8 @@ const AdminProjetos = () => {
                 Imagem de Capa
               </h2>
               <ImageUploadSlot
-                label="Imagem de capa"
-                helperText="JPG, PNG até 8MB"
+                title="Imagem de capa"
+                description="JPG, PNG até 8MB"
                 onUpload={handleImageUpload}
                 isUploading={isUploading}
                 currentImageUrl={form.imagem_url}
@@ -658,7 +677,7 @@ const AdminProjetos = () => {
             </section>
 
             {/* Galeria */}
-            <section className="rounded-2xl bg-[#141414]/80 border border-white/8 p-6 lg:p-8 space-y-4">
+            <section className="rounded-2xl bg-[#141414]/80 border border-white/8 p-6 lg:p-8 space-y-4 font-body">
               <div className="flex items-center justify-between gap-3">
                 <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
                   Galeria de Imagens
@@ -673,8 +692,8 @@ const AdminProjetos = () => {
               </p>
 
               <ImageUploadSlot
-                label="Imagens da galeria"
-                helperText="Arraste ou selecione múltiplas imagens"
+                title="Imagens da galeria"
+                description="Arraste ou selecione múltiplas imagens"
                 onUpload={handleGalleryImageUpload}
                 isUploading={isUploadingGallery}
                 multiple={true}
@@ -738,7 +757,7 @@ const AdminProjetos = () => {
                   <img
                     src={
                       proj.imagem_url ||
-                      `https://via.placeholder.com/150/141414/E9BF84?text=${proj.titulo?.charAt(0) || 'P'}`
+                      getPlaceholderImage(proj.titulo?.charAt(0) || 'P', '141414', 150)
                     }
                     alt={proj.titulo}
                     className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20"

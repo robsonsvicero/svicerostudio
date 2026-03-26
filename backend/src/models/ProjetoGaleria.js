@@ -3,7 +3,6 @@ import { baseSchemaOptions } from './baseSchema.js';
 
 const projetoGaleriaSchema = new mongoose.Schema(
   {
-     _id: { type: String, required: true },
     projeto_id: { type: String, required: true, index: true },
     imagem_url: { type: String, required: true },
     ordem: { type: Number, default: 0 },

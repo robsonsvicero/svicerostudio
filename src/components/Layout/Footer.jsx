@@ -5,7 +5,7 @@ import logoBranco from '../../images/logo_alternativo 4.png';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-primary text-[#B2B8C6] pt-16 pb-8 px-4 md:px-16 lg:px-32">
+    <footer className="w-full bg-footer-bg text-[#B2B8C6] pt-16 pb-8 px-4 md:px-16 lg:px-32 font-body">
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20">
         {/* Coluna esquerda: logo, texto, redes */}
         <div className="flex-1 min-w-[260px] flex flex-col gap-6">

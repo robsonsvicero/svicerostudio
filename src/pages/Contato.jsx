@@ -33,7 +33,7 @@ const Contato = () => {
         description="Fale com o Svicero Studio pelo canal que preferir: e-mail, WhatsApp ou Instagram. Para projetos de marca e site, preencha nosso formulário de interesse."
         keywords="contato svicero studio, falar com designer, whatsapp designer"
       />
-      <div className="bg-[#141414] min-h-screen text-[#EFEFEF] font-sans">
+      <div className="bg-[#141414] min-h-screen text-[#EFEFEF] font-body">
         <Header variant="solid" />
 
         {/* HERO */}

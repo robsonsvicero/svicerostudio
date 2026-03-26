@@ -26,7 +26,7 @@ const FAQ = () => {
   }, []);
 
   return (
-    <div className="bg-dark-bg min-h-screen flex flex-col text-[#EFEFEF] font-sans">
+    <div className="bg-dark-bg min-h-screen flex flex-col text-[#EFEFEF] font-body">
       <Header variant="solid" />
       <main className="flex-1">
         <section className="mx-auto max-w-7xl px-6 pt-12 pb-16 lg:px-10 lg:pb-24 text-center mt-20 lg:mt-36">

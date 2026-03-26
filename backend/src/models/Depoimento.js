@@ -3,7 +3,6 @@ import { baseSchemaOptions } from './baseSchema.js';
 
 const depoimentoSchema = new mongoose.Schema(
   {
-    _id: { type: String, required: true }, // UUID como chave primária
     nome: { type: String, required: true },
     cargo: String,
     empresa: String,

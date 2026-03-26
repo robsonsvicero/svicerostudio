@@ -99,7 +99,7 @@ const FormularioInteresse = () => {
 
   if (success) {
     return (
-      <div className="bg-[#141414] flex flex-col text-[#EFEFEFE] font-sans">
+      <div className="bg-[#141414] flex flex-col text-[#EFEFEFE] font-body">
         <Header variant="solid" />
         <main className="flex-1 flex items-center justify-center">
           <div className="max-w-xl mx-auto bg-cream/20 rounded-2xl p-8 border border-white/10 text-center mt-20 mb-20 lg:mt-36 lg:mb-36">

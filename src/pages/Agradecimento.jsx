@@ -4,7 +4,7 @@ import logo from "../images/logo_alternativo 1.png";
 import Button from "../components/UI/Button";
 
 const Agradecimento = () => (
-  <div className="min-h-screen flex items-center justify-center bg-dark-bg px-2 py-8">
+  <div className="min-h-screen flex items-center justify-center bg-dark-bg px-2 py-8 font-body">
     <div className="max-w-lg w-full bg-gelo rounded-2xl p-8 text-left border border-white/10">
       <img
         src={logo}

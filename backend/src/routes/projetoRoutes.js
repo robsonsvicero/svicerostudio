@@ -1,10 +1,8 @@
-// backend/routes/projetosRoutes.js
-
 import express from 'express';
 import mongoose from 'mongoose';
 import Projeto from '../models/Projeto.js';
-import ProjetoGaleria from '../models/ProjetoGaleria.js'; // Ajuste o caminho se necessário
-import { authMiddleware } from '../middleware/auth.js'; // Importe seu middleware de autenticação
+import ProjetoGaleria from '../models/ProjetoGaleria.js';
+import { authMiddleware } from '../middleware/auth.js';
 
 const router = express.Router();
 

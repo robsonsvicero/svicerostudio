@@ -8,12 +8,12 @@ import 'swiper/css/pagination';
 
 const BlogSection = ({ blogPosts }) => {
   return (
-    <section id="blog" className="bg-dark-bg py-24 px-4 md:px-16">
+    <section id="blog" className="bg-primary py-24 px-4 md:px-16 font-body">
       <div className="max-w-screen-xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
             <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                <span className="w-2 h-2 rounded-full bg-secondary flex-shrink-0 inline-block"></span>
+                <span className="w-2 h-2 -rotate-45 bg-secondary flex-shrink-0 inline-block"></span>
                 BLOG
               </span>
             <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-4">Conteúdos para fortalecer sua marca</h2>

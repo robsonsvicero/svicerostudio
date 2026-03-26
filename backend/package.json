@@ -6,7 +6,11 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "node --watch src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "seed": "node scripts/seed.js",
+    "setup-admin": "node scripts/create-admin.js",
+    "reset-admin": "node scripts/reset-admin.js",
+    "test-login": "node scripts/test-login.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1011.0",

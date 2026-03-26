@@ -18,3 +18,8 @@
 	background-color: #2F353B !important;
 	color: #f8f7f2 !important;
 }
+/* Sobrescrever hover para variant custom */
+button[class*="bg-cream"]:hover,
+a[class*="bg-cream"]:hover {
+    background-color: var(--color-secondary, #E9BF84) !important;
+}

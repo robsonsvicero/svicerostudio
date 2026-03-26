@@ -10,7 +10,7 @@ const ExclusaoDados = () => {
         title="Termos de Exclusão e Tratamento de Dados"
         description="Instruções para solicitar a exclusão de seus dados do Svicero Studio."
       />
-      <div className="min-h-screen bg-[#141414]">
+      <div className="min-h-screen bg-[#141414] font-body">
         <Header variant="solid" />
         
         <div className="pt-[200px] pb-24 px-4 md:px-16">

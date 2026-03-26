@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import logoPreloader from '../images/simbolo 3.png';
+import logoPreloader from '../assets/svicero-simbolo.png';
 
 
 const Preloader = () => {
@@ -21,7 +21,7 @@ const Preloader = () => {
 
     const timer = setTimeout(() => {
       setFadeOut(true);
-      setTimeout(() => setIsLoading(false), 600);
+      setTimeout(() => setIsLoading(false), 700);
     }, 1500);
 
     return () => clearTimeout(timer);
@@ -31,7 +31,7 @@ const Preloader = () => {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-dark-bg transition-opacity duration-600 ${
+      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-cream transition-opacity duration-600 ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
@@ -40,13 +40,13 @@ const Preloader = () => {
         <img
           src={logoPreloader}
           alt="Logo Svicero Studio"
-          className="w-[140px] h-auto mb-8"
+          className="w-[160px] h-auto mb-8"
           style={{ filter: 'drop-shadow(0 10px 30px rgba(9,76,126,0.15))' }}
         />
         {/* Barra de progressão animada */}
-        <div className="w-[120px] h-[3px] relative overflow-hidden mt-2">
+        <div className="w-[140px] h-[3px] relative overflow-hidden mt-2">
           <div className="absolute left-0 top-0 h-full bg-white/20 rounded w-full"></div>
-          <div className="absolute left-0 top-0 h-full bg-[#E8620D] rounded animate-preloader-fill" style={{ width: '0%' }}></div>
+          <div className="absolute left-0 top-0 h-full bg-secondary rounded animate-preloader-fill" style={{ width: '0%' }}></div>
         </div>
       </div>
       <style>{`

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import capaBlog from '../images/capa-blog.jpg'
+import capaBlog from '../assets/capa-blog.jpg'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import SEOHelmet from '../components/SEOHelmet'
@@ -116,11 +116,11 @@ const Blog = () => {
         description="Artigos e insights sobre UX Design, Estratégia de Marca e Engenharia de Percepção. O conteúdo exclusivo do Svicero Studio para quem busca o topo do mercado digital."
         keywords="blog design, tendências design, desenvolvimento web, ui ux, design thinking"
       />
-      <div className="bg-dark-bg min-h-screen text-[#EFEFEF] font-sans">
+      <div className="bg-dark-bg min-h-screen text-[#EFEFEF] font-body">
         <Header variant="solid" />
 
         {/* Hero */}
-        <section className="relative flex items-center justify-center px-0 md:px-0 py-16 lg:py-32 mb-16 overflow-hidden min-h-[420px]" style={{ fontFamily: 'Manrope, Inter, sans-serif' }}>
+        <section className="relative flex items-center justify-center px-0 md:px-0 py-16 lg:py-32 mb-16 overflow-hidden min-h-[420px]" style={{ fontFamily: 'DM Sans, sans-serif' }}>
 
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"

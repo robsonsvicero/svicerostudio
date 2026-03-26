@@ -84,7 +84,7 @@ const Processos = () => {
       });
   }, []);
   return (
-    <div className="bg-dark-bg min-h-screen flex flex-col text-[#EFEFEF] font-sans">
+    <div className="bg-dark-bg min-h-screen flex flex-col text-[#EFEFEF] font-body">
       <Header variant="solid" />
       <main className="flex-1">
         <SEOHelmet title="Processo Svicero Studio" description="Veja como funciona o processo de criação de marca e site no Svicero Studio." />

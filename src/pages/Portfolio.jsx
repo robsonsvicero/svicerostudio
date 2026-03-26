@@ -34,6 +34,7 @@ const fetchDepoimentos = async () => {
 };
 
 import ProjectModal from '../components/ProjectModal';
+import CTAFinal from '../components/CTAFinal';
 
 const Portfolio = () => {
   const [projects, setProjects] = useState([]);
@@ -109,7 +110,7 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="bg-dark-bg min-h-screen text-[#EFEFEF] font-sans">
+    <div className="bg-dark-bg min-h-screen text-[#EFEFEF] font-body">
       <Header variant="solid" />
 
       {/* Intro curta */}
@@ -146,7 +147,7 @@ const Portfolio = () => {
                 <div className="absolute inset-0 z-10 pointer-events-none transition-all duration-500 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                 {/* Título só no hover */}
                 <div className="absolute bottom-0 left-0 w-full flex items-end justify-center p-6 z-20 transition-all duration-500 opacity-0 group-hover:opacity-100">
-                  <h3 className="font-[Manrope] text-2xl font-semibold tracking-[-0.04em] text-white text-center drop-shadow-lg">
+                  <h3 className="font-[DM Sans] text-2xl font-semibold tracking-[-0.04em] text-white text-center drop-shadow-lg">
                     {proj.titulo}
                   </h3>
                 </div>
@@ -213,28 +214,7 @@ const Portfolio = () => {
       )}
 
       {/* CTA final */}
-      <section className="w-full bg-dark-bg py-24 px-4 flex justify-center items-center min-h-[420px]">
-        <div className="max-w-screen-xl w-full mx-auto bg-gradient-to-br from-secondary via-secondary to-secondary700 rounded-[48px] shadow-xl flex flex-col items-center justify-center px-8 py-16">
-          <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white text-center mb-6">Pronto para dar o próximo passo com sua marca?</h2>
-          <p className="text-lg md:text-xl text-white/80 font-light text-center mb-10">Se você sente que já passou da hora da sua marca acompanhar o nível do seu trabalho, o próximo passo é simples. Conte um pouco sobre seu momento para que o Svicero Studio possa te orientar com clareza.</p>
-          <div className="flex flex-col md:flex-row gap-6 mt-2">
-            <Button
-              href="/formulario-interesse"
-              variant="primary"
-              className="transition-colors"
-            >Preencher formulário de interesse
-            </Button>
-            <Button
-              href="https://wa.me/5511964932007"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="custom"
-              className="bg-transparent text-white font-bold text-lg px-8 py-4 rounded-xl border border-white shadow-md hover:bg-white hover:text-secondary transition-colors"
-            >Falar pelo WhatsApp
-            </Button>
-          </div>
-        </div>
-      </section>
+      <CTAFinal />
 
       <Footer />
     </div>

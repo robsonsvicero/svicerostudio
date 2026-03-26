@@ -195,8 +195,8 @@ const PlanosPacotes = () => {
         </section>
 
         {/* TABELA DE COMPARAÇÃO */}
-        <section id="comparar" className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white mb-8 text-center">Compare os pacotes e veja qual faz mais sentido para você</h2>
+        <section id="comparar" className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 font-body">
+          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-8 text-center">Compare os pacotes e veja qual faz mais sentido para você</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full border-separate border-spacing-y-2">
               <thead>
@@ -227,7 +227,7 @@ const PlanosPacotes = () => {
 
         {/* FAQ */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white mb-8 text-center">Perguntas frequentes sobre pacotes</h2>
+          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-8 text-center">Perguntas frequentes sobre pacotes</h2>
           <div className="grid gap-8 md:grid-cols-2">
             {faq.map((item, idx) => (
               <div key={idx} className="rounded-[30px] border border-white/8 bg-[#181818] p-6">
@@ -240,7 +240,7 @@ const PlanosPacotes = () => {
 
         {/* CTA FINAL */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <h2 className="font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">Vamos descobrir qual pacote é o ideal para o seu momento?</h2>
+          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">Vamos descobrir qual pacote é o ideal para o seu momento?</h2>
           <p className="text-white/80 text-base mb-6">Me chama no WhatsApp ou preencha o formulário que eu te ajudo a entender qual opção faz mais sentido para o seu negócio hoje.</p>
           <div className="flex flex-col gap-3 sm:flex-row justify-center">
             <Button href="https://wa.me/5511964932007" variant="secondary" >Falar com o Svicero Studio</Button>

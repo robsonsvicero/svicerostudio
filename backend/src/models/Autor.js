@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import { baseSchemaOptions } from './baseSchema.js';
 
 const autorSchema = new mongoose.Schema({
-  _id: { type: String, required: true }, // UUID como chave primária
   nome: { type: String, required: true },
   cargo: { type: String, required: true },
   foto_url: String,

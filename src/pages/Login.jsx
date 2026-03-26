@@ -42,7 +42,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#141414] flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-[#141414] flex flex-col items-center justify-center px-4 font-body">
       <div className="w-full max-w-md flex flex-col gap-6">
         {/* Logo */}
         <div className="text-center">

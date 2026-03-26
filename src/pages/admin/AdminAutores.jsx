@@ -8,6 +8,7 @@ import Button from "../../components/UI/Button.jsx"; // Certifique-se de que est
 import ImageUploadSlot from "../../components/UI/ImageUploadSlot.jsx"; // Certifique-se de que este caminho está correto
 import AdminLayout from "../../components/Admin/AdminLayout.jsx"; // Certifique-se de que este caminho está correto
 import { generateSlug } from '../../utils/slugGenerator'; // Importa a função de slug
+import { getAvatarPlaceholder } from '../../utils/placeholders';
 
 const AdminAutores = () => {
     const { token } = useAuth();
@@ -207,7 +208,7 @@ const AdminAutores = () => {
                 onClose: hideToast
             }}
         >
-            <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-[32px] border border-white/8 bg-[#181818] shadow-2xl shadow-black/30">
+            <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-[32px] border border-white/8 bg-[#181818] shadow-2xl shadow-black/30 font-body">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(184,115,51,0.14),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(95,178,216,0.10),_transparent_22%)]"></div>
                 <div className="relative border-b border-white/8 px-6 py-6 lg:px-8">
                     <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -215,7 +216,7 @@ const AdminAutores = () => {
                             <div className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#E9BF84]">
                                 Gerenciar Autores
                             </div>
-                            <h1 className="mt-4 font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
+                            <h1 className="mt-4 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
                                 {editingAuthorId ? 'Editando Perfil de Autor' : 'Adicionar Novo Autor'}
                             </h1>
                             <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60 lg:text-base">
@@ -245,7 +246,7 @@ const AdminAutores = () => {
                         <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
                             <div className="mb-6">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Identificação</p>
-                                <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Informações do Autor</h2>
+                                <h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Informações do Autor</h2>
                             </div>
                             <div className="grid gap-4 lg:grid-cols-2">
                                 {/* Campo Nome */}
@@ -304,7 +305,7 @@ const AdminAutores = () => {
                         <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
                             <div className="mb-6">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Conteúdo</p>
-                                <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Biografia</h2>
+                                <h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Biografia</h2>
                             </div>
                             <div className="grid gap-4">
                                 <label>
@@ -324,7 +325,7 @@ const AdminAutores = () => {
                         <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
                             <div className="mb-6">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Mídia</p>
-                                <h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Foto de Perfil</h2>
+                                <h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Foto de Perfil</h2>
                             </div>
                             <ImageUploadSlot
                                 title="Foto de perfil do autor"
@@ -371,7 +372,7 @@ const AdminAutores = () => {
                             {autores.map(author => (
                                 <li key={author.id} className="flex items-center p-4 gap-4">
                                     <img
-                                        src={author.foto_url || `https://via.placeholder.com/150/141414/E9BF84?text=${author.nome.charAt(0)}`}
+                                        src={author.foto_url || getAvatarPlaceholder(author.nome.charAt(0), '141414', 150)}
                                         alt={author.nome}
                                         className="w-12 h-12 object-cover rounded-full flex-shrink-0 bg-black/20"
                                     />

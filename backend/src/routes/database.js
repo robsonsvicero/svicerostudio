@@ -3,89 +3,16 @@ import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { tableModelMap } from '../models/index.js';
 import { decodeToken } from '../middleware/auth.js';
+import {
+  buildMongoFilter,
+  normalizeProjection,
+  normalizeDoc,
+  applyPublicReadConstraints
+} from '../utils/dbHelpers.js';
 
 const router = express.Router();
 
 const allowedTables = new Set(['projetos', 'projeto_galeria', 'posts', 'autores', 'depoimentos']);
-
-function buildMongoFilter(filters = []) {
-  const mongoFilter = {};
-
-  for (const filter of filters) {
-    const { column, operator, value } = filter;
-    if (!column || !operator) continue;
-
-    const key = column === 'id' ? '_id' : column;
-
-    if (operator === 'eq') {
-      if (key === '_id') {
-        mongoFilter[key] = value;
-      } else {
-        mongoFilter[key] = value;
-      }
-    }
-
-    if (operator === 'ilike') {
-      const escaped = String(value || '')
-        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-        .replace(/%/g, '.*');
-      mongoFilter[key] = { $regex: `^${escaped}$`, $options: 'i' };
-    }
-  }
-
-  return mongoFilter;
-}
-
-function normalizeProjection(select) {
-  if (!select || select === '*') return null;
-
-  const projection = {};
-  String(select)
-    .split(',')
-    .map((field) => field.trim())
-    .filter(Boolean)
-    .forEach((field) => {
-      projection[field === 'id' ? '_id' : field] = 1;
-    });
-
-  return projection;
-}
-
-function normalizeDoc(doc) {
-  if (!doc) return null;
-  if (Array.isArray(doc)) return doc.map((item) => normalizeDoc(item));
-
-  let plain = doc;
-  if (typeof doc.toObject === 'function') {
-    plain = doc.toObject();
-  } else {
-    plain = { ...doc };
-  }
-
-  if (plain._id) {
-    plain.id = plain._id.toString();
-    delete plain._id;
-  } else if (!plain.id && doc.id) {
-    plain.id = doc.id;
-  }
-  return plain;
-}
-
-function applyPublicReadConstraints(table, filter) {
-  if (table === 'posts') {
-    return { ...filter, publicado: true };
-  }
-  if (table === 'projetos') {
-    return { ...filter, mostrar_home: true };
-  }
-  if (table === 'autores') {
-    return { ...filter, publicado: true };
-  }
-  if (table === 'depoimentos') {
-    return { ...filter, ativo: true };
-  }
-  return filter;
-}
 
 router.post('/:table/query', async (req, res) => {
   const { table } = req.params;
@@ -173,14 +100,39 @@ router.post('/:table/query', async (req, res) => {
     if (operation === 'insert') {
       const items = Array.isArray(payload) ? payload : [payload];
       const now = new Date();
-      const rows = items.map((item) => ({
-        ...item,
-        _id: item.id || item._id || uuidv4(),
-        created_at: item.created_at || now,
-        updated_at: now,
-      }));
-      const inserted = await Model.insertMany(rows);
-      return res.json({ data: normalizeDoc(inserted), error: null });
+      const rows = items.map((item) => {
+        const doc = {
+          ...item,
+          created_at: item.created_at || now,
+          updated_at: now,
+        };
+        // NÃO gerar _id manualmente - deixar MongoDB gerar ObjectId
+        delete doc._id;
+        delete doc.id;
+        return doc;
+      });
+      try {
+        const inserted = await Model.insertMany(rows);
+        return res.json({ data: normalizeDoc(inserted), error: null });
+      } catch (insertError) {
+        console.error('[INSERT ERROR]', {
+          table,
+          error: insertError.message,
+          code: insertError.code,
+          keyPattern: insertError.keyPattern
+        });
+        
+        // Erro de chave duplicada (unique index)
+        if (insertError.code === 11000) {
+          const dupKey = Object.keys(insertError.keyPattern || {})[0];
+          return res.status(409).json({
+            error: `Duplicate key: ${dupKey} já existe`,
+            field: dupKey,
+            existing: insertError.keyValue
+          });
+        }
+        throw insertError;
+      }
     }
 
     if (operation === 'update') {

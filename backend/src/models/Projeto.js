@@ -2,13 +2,13 @@ import mongoose from 'mongoose';
 import { baseSchemaOptions } from './baseSchema.js';
 
 const projetoSchema = new mongoose.Schema(
-  {    
+  {
     titulo:           { type: String, required: true },
-    slug:             { type: String, required: true, unique: true }, // Adicionado: slug
-    categoria:        { type: String, default: '' },                 // Adicionado: categoria
-    cliente:          { type: String, default: '' },                 // Adicionado: cliente
+    slug:             { type: String, required: true, unique: true },
+    categoria:        { type: String, default: '' },
+    cliente:          { type: String, default: '' },
     data_projeto:     String,
-    status:           { type: String, default: 'draft' },             // Adicionado: status (com default 'draft')
+    status:           { type: String, default: 'draft' },
     descricao:        { type: String, required: true },
     descricao_longa:  String,
     descricao_longa_en: String,

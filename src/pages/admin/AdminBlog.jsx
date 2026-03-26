@@ -8,6 +8,7 @@ import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
 import AdminLayout from '../../components/Admin/AdminLayout';
 
 import { API_URL } from '../../lib/api.js';
+import { getPlaceholderImage } from '../../utils/placeholders';
 
 const AdminBlog = () => {
   const navigate = useNavigate();
@@ -207,7 +208,7 @@ const AdminBlog = () => {
 
   return (
     <AdminLayout toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}>
-        <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-[32px] border border-white/8 bg-[#181818] shadow-2xl shadow-black/30">
+        <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-[32px] border border-white/8 bg-[#181818] shadow-2xl shadow-black/30 font-body">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(184,115,51,0.14),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(95,178,216,0.10),_transparent_22%)]" />
           <div className="relative border-b border-white/8 px-6 py-6 lg:px-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -215,7 +216,7 @@ const AdminBlog = () => {
                 <div className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#E9BF84]">
                   Gerenciar Blog
                 </div>
-                <h1 className="mt-4 font-[Manrope] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
+                <h1 className="mt-4 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
                   {editingId ? 'Editando Artigo' : 'Criar um novo artigo'}
                 </h1>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60 lg:text-base">
@@ -237,7 +238,7 @@ const AdminBlog = () => {
             <div className="space-y-6 lg:col-span-8">
               
               <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-                 <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Informações Principais</p><h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Metadados do Artigo</h2></div>
+                 <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Informações Principais</p><h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Metadados do Artigo</h2></div>
                  <div className="grid gap-4 lg:grid-cols-2">
                    {fields.map((field) => (
                      <label key={field.name} className={`${field.col} block`}>
@@ -267,7 +268,7 @@ const AdminBlog = () => {
               </section>
 
               <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-                <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Conteúdo</p><h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Corpo do Artigo</h2></div>
+                <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Conteúdo</p><h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Corpo do Artigo</h2></div>
                 <div className="grid gap-4">
                   <label>
                     <span className="mb-2 block text-sm font-medium text-white/82">Resumo</span>
@@ -281,7 +282,7 @@ const AdminBlog = () => {
               </section>
               
               <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-                 <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Mídia</p><h2 className="mt-2 font-[Manrope] text-2xl font-semibold text-white">Imagem de Destaque</h2></div>
+                 <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Mídia</p><h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Imagem de Destaque</h2></div>
                  <div className="grid gap-4">
                     <ImageUploadSlot title="Imagem de capa do post" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_destaque} onUpload={handleImageUpload} isUploading={isUploading} />
                  </div>
@@ -323,7 +324,7 @@ const AdminBlog = () => {
                           const autorNome = post.autor_nome || autorFallback?.nome || 'Autor desconhecido';
                           return (
                             <li key={post.id} className="flex items-center justify-between p-4 gap-4">
-                               <img src={post.imagem_destaque || `https://via.placeholder.com/150/141414/E9BF84?text=${post.titulo.charAt(0)}`} alt={post.titulo} className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20" />
+                               <img src={post.imagem_destaque || getPlaceholderImage(post.titulo.charAt(0), '141414', 150)} alt={post.titulo} className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20" />
                                 <div className="flex-1 min-w-0">
                                     <p className="font-semibold text-white truncate">{post.titulo}</p>
                                     <p className="text-sm text-white/60 truncate">{autorNome} • {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>

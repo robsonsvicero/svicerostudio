@@ -7,11 +7,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const ServicesSection = ({ servicos }) => (
-  <section id="servicos" className="py-24 px-4 md:px-16 bg-dark-bg">
+  <section id="servicos" className="py-24 px-4 md:px-16 bg-dark-bg font-body">
     <div className="max-w-screen-xl mx-auto">
       <div className="mb-12 text-left">
         <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                <span className="w-2 h-2 -rotate-45 bg-secondary inline-block"></span>
                 ESPECIALIDADES
               </span>
         <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-4">Nossos Serviços</h2>

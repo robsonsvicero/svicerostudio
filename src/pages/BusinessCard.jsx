@@ -1,10 +1,10 @@
 import React from 'react';
 import '../styles/BusinessCard.css';
-import simbolo from '../images/simbolo.png';
+import simbolo from '../assets/simbolo1.png';
 
 const BusinessCard = () => {
   return (
-    <div className="business-card-container">
+    <div className="business-card-container font-body">
       <div className="business-card bg-cream/10 border border-white/20 rounded-2xl p-8 flex flex-col items-center text-center shadow-lg">
         {/* Logo */}
         <div className="business-card-logo">

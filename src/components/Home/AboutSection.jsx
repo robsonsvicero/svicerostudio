@@ -1,10 +1,10 @@
 import React from 'react';
-import aboutPhoto from '../../images/about-photo.png';
+import aboutPhoto from '../../assets/about-photo.png';
 import Button from '../UI/Button';
 
 const AboutSection = () => {
   return (
-    <section id="sobre" className="bg-dark-bg py-24 px-4 md:px-16">
+    <section id="sobre" className="bg-dark-bg py-24 px-4 md:px-16 font-body">
       <div className="max-w-screen-xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Imagem com badge */}
@@ -21,7 +21,7 @@ const AboutSection = () => {
                 {/* Badge laranja */}
                 <div className="absolute bottom-[-40px] left-6">
                   <div className="bg-secondary text-white rounded-xl px-6 py-4 shadow-lg text-left">
-                    <span className="block text-3xl font-extrabold leading-tight mb-1">10+</span>
+                    <span className="block text-3xl font-bold leading-tight mb-1">10+</span>
                     <span className="block text-xs tracking-widest font-semibold">ANOS DE EXPERIÊNCIA</span>
                   </div>
                 </div>
@@ -32,7 +32,7 @@ const AboutSection = () => {
           {/* Texto e indicadores */}
           <div className="flex flex-col justify-center h-full">
             <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30 w-auto max-w-max">
-              <span className="w-2 h-2 rounded-full bg-secondary flex-shrink-0 inline-block"></span>
+              <span className="w-2 h-2 -rotate-45 bg-secondary flex-shrink-0 inline-block"></span>
               SOBRE O ESTÚDIO
             </span>
             <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">Quem está por trás do Svicero Studio?</h2>
@@ -61,16 +61,16 @@ const AboutSection = () => {
                 <span className="block text-sm text-[#B2B8C6] font-semibold">Clientes Satisfeitos</span>
               </div>
             </div>
+            <div
+              className="flex flex-row it justify-center">
+              <Button
+                href="/formulario-interesse"
+                variant="secondary"
+                className="w-full mt-20 self-start shadow-lg transition">
+                Ver se é para mim
+              </Button>
+            </div>
           </div>
-        </div>
-        <div
-          className="w-full flex items-center justify-center mt-8 lg:mt-12">
-          <Button
-            href="/formulario-interesse"
-            variant="secondary"
-            className="w-full lg:w-[50%] mt-12 self-start shadow-lg transition">
-            Ver se é para mim
-          </Button>
         </div>
 
       </div>
