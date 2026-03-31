@@ -146,7 +146,8 @@ const Portfolio = () => {
                     loading="lazy"
                   />
                 )}
-                <div className="absolute inset-0 flex flex-col justify-end bg-black/0 transition-all duration-300 p-6">
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/30 to-transparent transition-all duration-300 group-hover:from-black/80 group-hover:via-black/35" />
+                <div className="absolute inset-0 flex flex-col justify-end p-6">
                   <h3 className="text-cream uppercase text-2xl font-bold mb-2 drop-shadow-lg text-left">
                     {proj.titulo}
                   </h3>
