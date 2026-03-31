@@ -4,7 +4,7 @@ import Button from '../UI/Button';
 
 const AboutSection = () => {
   return (
-    <section id="sobre" className="bg-dark-bg py-24 px-4 md:px-16 font-body">
+    <section id="sobre" className="bg-dark-bg py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body">
       <div className="max-w-screen-xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Imagem com badge */}
@@ -35,7 +35,7 @@ const AboutSection = () => {
               <span className="w-2 h-2 -rotate-45 bg-secondary flex-shrink-0 inline-block"></span>
               SOBRE O ESTÚDIO
             </span>
-            <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">Quem está por trás do Svicero Studio?</h2>
+            <h2 className="font-title text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 text-balance">Quem está por trás do Svicero Studio?</h2>
             <p className="font-sans text-lg md:text-xl text-[#B2B8C6] max-w-2xl leading-relaxed mb-6">
               Eu sou o Robson Svicero e criei o Svicero Studio para ajudar autônomos e MEIs a terem uma imagem à altura do que entregam.</p>
             <p className="font-sans text-lg md:text-xl text-[#B2B8C6] max-w-2xl leading-relaxed mb-6">
@@ -51,7 +51,7 @@ const AboutSection = () => {
               Minha missão com o Svicero Studio é simples: ajudar profissionais de serviços a terem uma marca que permita cobrar melhor e se posicionar com segurança.
             </p>
             {/* Indicadores */}
-            <div className="flex gap-8 mt-4">
+            <div className="flex flex-wrap gap-6 sm:gap-8 mt-4">
               <div>
                 <span className="block text-3xl font-extrabold text-white mb-1">150+</span>
                 <span className="block text-sm text-[#B2B8C6] font-semibold">Projetos Entregues</span>
@@ -66,7 +66,7 @@ const AboutSection = () => {
               <Button
                 href="/formulario-interesse"
                 variant="secondary"
-                className="w-full mt-20 self-start shadow-lg transition">
+                className="w-full mt-10 sm:mt-20 self-start shadow-lg transition">
                 Ver se é para mim
               </Button>
             </div>

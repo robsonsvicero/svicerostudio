@@ -9,7 +9,7 @@ import 'swiper/css/pagination';
 
 const BlogSection = ({ blogPosts }) => {
   return (
-    <section id="blog" className="bg-dark-bg py-24 px-4 md:px-16 font-body">
+    <section id="blog" className="bg-dark-bg py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body">
       <div className="max-w-screen-xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
@@ -17,7 +17,7 @@ const BlogSection = ({ blogPosts }) => {
                 <span className="w-2 h-2 -rotate-45 bg-secondary flex-shrink-0 inline-block"></span>
                 BLOG
               </span>
-            <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-4">Conteúdos para fortalecer sua marca</h2>
+            <h2 className="font-title text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 text-balance">Conteúdos para fortalecer sua marca</h2>
           </div>
           <div className="mt-4 md:mt-0">
             <a href="/blog" className="text-secondary text-base font-normal flex items-center gap-2 hover:text-white transition-colors">
@@ -47,7 +47,7 @@ const BlogSection = ({ blogPosts }) => {
             <SwiperSlide key={post.id}>
               <Link
                 to={`/blog/${post.slug}`}
-                className="group rounded-2xl overflow-hidden bg-card transition-all duration-300 hover:-translate-y-2 shadow-lg flex flex-col h-full min-h-[420px] max-h-[420px]"
+                className="group rounded-2xl overflow-hidden bg-card transition-all duration-300 hover:-translate-y-2 shadow-lg flex flex-col h-full min-h-[360px] sm:min-h-[420px]"
               >
                 {/* Imagem do artigo */}
                 {post.imagem_destaque && (

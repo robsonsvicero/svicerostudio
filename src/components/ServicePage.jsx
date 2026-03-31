@@ -26,15 +26,15 @@ const ServicePage = ({
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,20,20,0.55)_0%,rgba(20,20,20,0.76)_50%,#141414_100%),radial-gradient(circle_at_top_right,rgba(184,115,51,0.22),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(95,178,216,0.10),transparent_24%)]" />
           <div className="absolute inset-0 bg-[linear-gradient(135deg,#2F353B_0%,#171F2A_45%,#844219_140%)] opacity-50" />
 
-          <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-6 lg:px-10 lg:pb-28">
-            <div className="mx-auto flex min-h-[72vh] max-w-4xl flex-col items-center justify-center text-center">
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pb-16 sm:pb-20 pt-6 lg:px-10 lg:pb-28">
+            <div className="mx-auto flex min-h-[62vh] sm:min-h-[72vh] max-w-4xl flex-col items-center justify-center text-center">
               <div className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-[#E9BF84] self-start">
                 Serviço estratégico
               </div>
-              <h1 className="mt-6 font-title text-5xl font-semibold tracking-[-0.06em] text-white lg:text-7xl">
+              <h1 className="mt-6 font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-7xl text-balance">
                 {title}
               </h1>
-              <p className="mt-5 max-w-3xl text-base leading-8 text-white/72 lg:text-xl">
+              <p className="mt-5 max-w-3xl text-base sm:text-lg leading-7 sm:leading-8 text-white/72 lg:text-xl">
                 {subtitle}
               </p>
 
@@ -51,7 +51,7 @@ const ServicePage = ({
         </section>
 
         {/* ESCOPO E MÉTODO */}
-        <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16 lg:px-10 lg:py-20">
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="rounded-[30px] border border-white/8 bg-white/[0.03] p-6 backdrop-blur lg:p-8">
               <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Escopo</p>
@@ -88,11 +88,11 @@ const ServicePage = ({
         </section>
 
         {/* PROJETOS ENTREGUES */}
-        <section className="mx-auto max-w-7xl px-6 py-8 lg:px-10 lg:py-12">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:px-10 lg:py-12">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Portfólio</p>
-              <h2 className="mt-3 font-[DM Sans] text-4xl font-semibold tracking-[-0.05em] text-white">
+              <h2 className="mt-3 font-[DM Sans] text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[-0.04em] text-white text-balance">
                 Projetos entregues
               </h2>
             </div>
@@ -141,13 +141,13 @@ const ServicePage = ({
         </section>
 
         {/* CONVITE ESTRATÉGICO */}
-        <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16 lg:px-10 lg:py-20">
           <div className="overflow-hidden rounded-[34px] border border-[#B87333]/18 bg-[linear-gradient(135deg,#B87333_0%,#844219_100%)]">
             <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
               <div className="flex items-center p-8 lg:p-12">
                 <div className="max-w-xl">
                   <p className="text-xs uppercase tracking-[0.18em] text-[#F8F7F2]/70">Convite estratégico</p>
-                  <h2 className="mt-4 font-[DM Sans] text-4xl font-semibold tracking-[-0.05em] text-[#F8F7F2] lg:text-5xl">
+                  <h2 className="mt-4 font-[DM Sans] text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[-0.04em] text-[#F8F7F2] lg:text-5xl text-balance">
                     {ctaTitle}
                   </h2>
                   <p className="mt-5 max-w-lg text-base leading-8 text-[#F8F7F2]/78">
@@ -163,7 +163,7 @@ const ServicePage = ({
 
               <div className="p-4 lg:p-6">
                 {ctaImage && (
-                  <img src={ctaImage} alt={ctaTitle} className="h-full min-h-[320px] rounded-[28px] border border-white/12 bg-[linear-gradient(135deg,#F8F7F2_0%,#E9BF84_160%)] shadow-2xl shadow-black/20 object-cover" />
+                  <img src={ctaImage} alt={ctaTitle} className="h-full min-h-[220px] sm:min-h-[320px] rounded-[28px] border border-white/12 bg-[linear-gradient(135deg,#F8F7F2_0%,#E9BF84_160%)] shadow-2xl shadow-black/20 object-cover" />
                 )}
               </div>
             </div>
