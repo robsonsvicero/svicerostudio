@@ -115,14 +115,27 @@ app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (re
 
     // Fallback: salvar no MongoDB
     console.log('[UPLOAD] R2 não configurado, salvando no MongoDB');
-    const uploadDoc = await Upload.create({
-      bucket,
-      storageKey: key,
-      originalName: file.originalname,
-      mimeType: file.mimetype,
-      size: file.size,
-      data: file.buffer,
-    });
+    const uploadDoc = await Upload.findOneAndUpdate(
+      { bucket, storageKey: key },
+      {
+        $set: {
+          originalName: file.originalname,
+          mimeType: file.mimetype,
+          size: file.size,
+          data: file.buffer,
+          updated_at: new Date(),
+        },
+        $setOnInsert: {
+          bucket,
+          storageKey: key,
+          created_at: new Date(),
+        },
+      },
+      {
+        upsert: true,
+        new: true,
+      },
+    );
 
     // Retornar URL HTTP válida para servir a imagem
     const publicUrl = `${process.env.API_BASE_URL || `http://localhost:${PORT}`}/api/storage/${uploadDoc._id}`;
