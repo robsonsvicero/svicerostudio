@@ -125,7 +125,7 @@ const Blog = () => {
         <Header variant="solid" />
 
         {/* Hero */}
-        <section className="relative flex items-center justify-center px-0 md:px-0 py-16 lg:py-32 mb-16 overflow-hidden min-h-[420px]" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+        <section className="relative flex items-center justify-center px-0 py-12 sm:py-16 lg:py-32 mb-12 sm:mb-16 overflow-hidden min-h-[320px] sm:min-h-[420px]" style={{ fontFamily: 'DM Sans, sans-serif' }}>
 
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -136,10 +136,10 @@ const Blog = () => {
           {/* Conteúdo principal */}
           <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center py-12 px-4 sm:px-6 lg:px-8">
 
-            <h1 className="font-title text-4xl lg:text-6xl font-semibold tracking-[-0.05em] text-white mb-6">
+            <h1 className="font-title text-3xl sm:text-4xl lg:text-6xl font-semibold tracking-[-0.04em] text-white mb-5 sm:mb-6 text-balance">
               Crônicas de Design
             </h1>
-            <p className="max-w-2xl mx-auto text-lg text-white/70 leading-relaxed">
+            <p className="max-w-2xl mx-auto text-base sm:text-lg text-white/70 leading-relaxed">
               Conteúdos para fortalecer sua marca, inspirar sua jornada e te ajudar a dominar a arte de criar experiências digitais memoráveis.
             </p>
           </div>
