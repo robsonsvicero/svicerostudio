@@ -88,7 +88,14 @@ export function applyPublicReadConstraints(table, filter) {
     return { ...filter, publicado: true };
   }
   if (table === 'projetos') {
-    return { ...filter, status: 'published' };
+    return {
+      ...filter,
+      $or: [
+        { status: 'published' },
+        { status: 'publicado' },
+        { publicado: true },
+      ],
+    };
   }
   if (table === 'autores') {
     return { ...filter, publicado: true };
