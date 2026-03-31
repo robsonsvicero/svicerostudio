@@ -1,12 +1,14 @@
 import { Helmet } from 'react-helmet-async';
-import defaultOgImage from '../assets/20260213_svicero_studio_og.webp';
+
+const DEFAULT_OG_IMAGE = 'https://svicerostudio.com.br/og-image.webp';
 
 const SEOHelmet = ({ 
   title = 'Design Estratégico para Marcas que Querem Crescer',
   description = 'Svicero Studio é um ecossistema de design estratégico, identidade visual e UX design que conecta estética bem pensada com estratégia orientada a resultado. Criamos marcas, interfaces e sites que posicionam negócios de autônomos a empresas em expansão, com clareza, autoridade e estrutura para crescer.',
   keywords = 'Svicero Studio, design estratégico, identidade visual, UX design, UI design, desenvolvimento web, criação de sites, branding, posicionamento de marca, design para negócios, estúdio de design, consultoria de marca',
-  ogImage = defaultOgImage,
-  ogType = 'website'
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = 'website',
+  canonical
 }) => {
   const siteUrl = 'https://svicerostudio.com.br';
   const BRAND_NAME = 'Svicero Studio';
@@ -33,13 +35,16 @@ const SEOHelmet = ({
   const fullTitle = withBrand(safeTrim(title));
 
   const normalizeOgImage = (imageUrl) => {
-    if (!imageUrl) return `${siteUrl}${defaultOgImage}`;
-    if (/^\https?:\/\//i.test(imageUrl) || imageUrl.startsWith('data:') || imageUrl.startsWith('//')) {
+    if (!imageUrl) return DEFAULT_OG_IMAGE;
+    if (/^https?:\/\//i.test(imageUrl) || imageUrl.startsWith('data:') || imageUrl.startsWith('//')) {
       return imageUrl;
     }
     return `${siteUrl}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`;
   };
   const fullOgImage = normalizeOgImage(ogImage);
+  const fullCanonical = canonical
+    ? (canonical.startsWith('http') ? canonical : `${siteUrl}${canonical.startsWith('/') ? canonical : `/${canonical}`}`)
+    : null;
 
   return (
     <Helmet>
@@ -53,7 +58,10 @@ const SEOHelmet = ({
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={fullOgImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:site_name" content="Svicero Studio" />
+      {fullCanonical && <meta property="og:url" content={fullCanonical} />}
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />

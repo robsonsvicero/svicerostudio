@@ -88,7 +88,7 @@ export function applyPublicReadConstraints(table, filter) {
     return { ...filter, publicado: true };
   }
   if (table === 'projetos') {
-    return { ...filter, mostrar_home: true };
+    return { ...filter, status: 'published' };
   }
   if (table === 'autores') {
     return { ...filter, publicado: true };
