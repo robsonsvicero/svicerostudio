@@ -7,7 +7,7 @@ import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
 import AdminLayout from '../../components/Admin/AdminLayout';
 
 import { API_URL } from '../../lib/api.js';
-import { getAvatarPlaceholder } from '../../utils/placeholders';
+import { getAvatarPlaceholder, getNameInitials } from '../../utils/placeholders';
 
 const AdminDepoimentos = () => {
     const navigate = useNavigate();
@@ -253,7 +253,7 @@ const AdminDepoimentos = () => {
                             <ul className="divide-y divide-white/8">
                                 {depoimentos.map(depoimento => (
                                     <li key={depoimento.id} className="flex items-center p-4 gap-4">
-                                        <img src={depoimento.imagem_autor_url || getAvatarPlaceholder(depoimento.nome.charAt(0), '141414', 150)} alt={depoimento.nome} className="w-12 h-12 object-cover rounded-full flex-shrink-0 bg-black/20" />
+                                        <img src={depoimento.imagem_autor_url || getAvatarPlaceholder(getNameInitials(depoimento.nome), '141414', 150)} alt={depoimento.nome} className="w-12 h-12 object-cover rounded-full flex-shrink-0 bg-black/20" />
                                         <div className="flex-1 min-w-0">
                                             <p className="font-semibold text-white truncate flex items-center gap-2">{depoimento.nome} 
                                                 <span className={`px-2 py-0.5 text-xs rounded-full ${depoimento.ativo ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>

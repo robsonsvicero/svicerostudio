@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { API_URL } from '../../lib/api.js';
 
+const getEntityId = (item) => item?.id || item?._id || '';
+
 // Componente de comentários para posts do blog
 const Comments = ({ slug }) => {
   const [comments, setComments] = useState([]);
@@ -55,7 +57,7 @@ const Comments = ({ slug }) => {
       ) : (
         <ul className="space-y-6 mb-8">
           {comments.map((c) => (
-            <li key={c._id} className="border-b border-white/10 pb-4">
+            <li key={getEntityId(c)} className="border-b border-white/10 pb-4">
               <p className="font-semibold text-secondary mb-1">{c.name}</p>
               <p className="text-low-dark mb-1">{c.content}</p>
               <span className="text-xs text-low-medium">{new Date(c.createdAt).toLocaleDateString()}</span>
@@ -70,14 +72,14 @@ const Comments = ({ slug }) => {
           value={name}
           onChange={e => setName(e.target.value)}
           required
-          className="border border-white/10 bg-gelo rounded px-3 py-2 text-low-dark placeholder:text-low-medium focus:border-secondary focus:outline-none transition-colors"
+          className="border border-white/10 bg-gelo rounded px-3 py-2 text-low-light placeholder:text-low-medium focus:border-secondary focus:outline-none transition-colors"
         />
         <textarea
           placeholder="Seu comentário"
           value={content}
           onChange={e => setContent(e.target.value)}
           required
-          className="border border-white/10 bg-gelo rounded px-3 py-2 text-low-dark placeholder:text-low-medium focus:border-secondary focus:outline-none transition-colors"
+          className="border border-white/10 bg-gelo rounded px-3 py-2 text-low-light placeholder:text-low-medium focus:border-secondary focus:outline-none transition-colors"
           rows={3}
         />
         <button type="submit" className="bg-secondary text-white px-4 py-2 rounded shadow hover:bg-secondary/90 transition-colors">Enviar comentário</button>

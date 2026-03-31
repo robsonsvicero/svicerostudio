@@ -14,6 +14,7 @@ import SEOHelmet from '../components/SEOHelmet';
 import Toast from '../components/UI/Toast';
 import { useToast } from '../hooks/useToast';
 import { API_URL } from '../lib/api.js';
+import { getNameInitials } from '../utils/placeholders';
 
 import idvDesigner from '../images/idv-deigner.webp';
 import uiDesigner from '../images/ui-designer.webp';
@@ -328,7 +329,7 @@ const Home = () => {
             <div className="max-w-screen-xl mx-auto">
               <div className="mb-12 text-left">
                 <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                  <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                  <span className="w-2 h-2 -rotate-45 bg-secondary inline-block"></span>
                   FEEDBACK
                 </span>
                 <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">O que diz quem passa pelo nosso processo</h2>
@@ -347,7 +348,7 @@ const Home = () => {
                           <p className="text-[#B2B8C6] text-base font-normal leading-relaxed mb-6 italic flex-1">"{depoimento.texto}"</p>
                           <div className="flex items-center gap-4 mt-auto">
                             <div className="w-12 h-12 flex-shrink-0 rounded-full bg-[#E5E5E5] flex items-center justify-center">
-                              <span className="font-semibold text-lg text-secondary700">{depoimento.iniciais || depoimento.nome?.substring(0, 2).toUpperCase()}</span>
+                              <span className="font-semibold text-lg text-secondary700">{depoimento.iniciais || getNameInitials(depoimento.nome)}</span>
                             </div>
                             <div>
                               <p className="text-white font-bold text-base">{depoimento.nome}</p>

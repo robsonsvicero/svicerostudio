@@ -19,7 +19,7 @@ const ExclusaoDados = () => {
               Exclusão de Dados
             </h1>
 
-            <div className="bg-gelo rounded-xl p-8 md:p-12 space-y-8">
+            <div className="bg-gelo/10 rounded-xl p-8 md:p-12 space-y-8">
               <section>
                 <h2 className="font-title text-2xl font-semibold text-low-dark mb-4">
                   Como Solicitar a Exclusão dos Seus Dados

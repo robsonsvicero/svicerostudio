@@ -3,6 +3,7 @@ import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import SEOHelmet from '../components/SEOHelmet';
+import CTAFinal from '../components/CTAFinal';
 
 const channels = [
   {
@@ -146,36 +147,9 @@ const Contato = () => {
         </section>
 
         {/* CTA FINAL */}
-        <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-10 lg:pb-28">
-          <div className="rounded-[34px] border border-[#B87333]/20 bg-[linear-gradient(135deg,#B87333_0%,#844219_100%)] p-12 text-center">
-            <h2 className="font-title text-4xl font-semibold text-[#F8F7F2]">
-              Pronto para dar o próximo passo com sua marca?
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#F8F7F2]/85">
-              Preencha o formulário de interesse ou chame o estúdio no WhatsApp
-              para iniciar a conversa.
-            </p>
-
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button
-                href="/formulario-interesse"
-                variant="primary"
-                className="transition-colors"
-              >Preencher formulário de interesse
-              </Button>
-
-              <Button
-                href="https://wa.me/5511964932007"
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="outline"
-                className="transition-colors"
-              >Falar pelo WhatsApp
-              </Button>
-            </div>
-          </div>
-        </section>
+        <div className='pt-24'>
+          <CTAFinal />
+        </div>
 
         <Footer />
       </div>

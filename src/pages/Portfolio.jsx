@@ -16,7 +16,7 @@ const fetchProjects = async () => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       operation: 'select',
-      orderBy: { column: 'ordem', ascending: true }
+      orderBy: { column: 'data_projeto', ascending: false }
     })
   });
   const payload = await res.json();
@@ -214,7 +214,9 @@ const Portfolio = () => {
       )}
 
       {/* CTA final */}
-      <CTAFinal />
+      <div className='pt-24'>
+        <CTAFinal />
+      </div>
 
       <Footer />
     </div>

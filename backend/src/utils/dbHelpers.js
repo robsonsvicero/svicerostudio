@@ -1,5 +1,17 @@
 import mongoose from 'mongoose';
 
+function normalizeMongoIdValue(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => normalizeMongoIdValue(item));
+  }
+
+  if (typeof value === 'string' && mongoose.Types.ObjectId.isValid(value)) {
+    return new mongoose.Types.ObjectId(value);
+  }
+
+  return value;
+}
+
 export function buildMongoFilter(filters = []) {
   const mongoFilter = {};
 
@@ -11,14 +23,18 @@ export function buildMongoFilter(filters = []) {
 
     if (operator === 'eq') {
       if (key === '_id') {
-        mongoFilter[key] = value;
+        mongoFilter[key] = normalizeMongoIdValue(value);
       } else {
         mongoFilter[key] = value;
       }
     }
 
     if (operator === 'in') {
-      mongoFilter[key] = { $in: Array.isArray(value) ? value : [value] };
+      mongoFilter[key] = {
+        $in: key === '_id'
+          ? normalizeMongoIdValue(Array.isArray(value) ? value : [value])
+          : Array.isArray(value) ? value : [value],
+      };
     }
 
     if (operator === 'ilike') {

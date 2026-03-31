@@ -60,7 +60,7 @@ const Login = () => {
         </div>
 
         {/* Formulário de Login */}
-        <div className="bg-gelo rounded-xl p-8 border border-white/10">
+        <div className="bg-secondary rounded-xl p-8 border border-white/10">
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
@@ -111,7 +111,10 @@ const Login = () => {
                 </button>
               </div>
             </div>
-            <Button type="submit" disabled={isLoading}>
+            <Button 
+              type="submit" 
+              disabled={isLoading}
+              variant='primary'>
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <i className="fa-solid fa-spinner fa-spin"></i>

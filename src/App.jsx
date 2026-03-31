@@ -22,6 +22,7 @@ const Admin = lazy(() => import('./pages/admin/Admin'));
 const BusinessCard = lazy(() => import('./pages/BusinessCard'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Privacidade = lazy(() => import('./pages/Privacidade'));
+const Termos = lazy(() => import('./pages/Termos'));
 const ExclusaoDados = lazy(() => import('./pages/ExclusaoDados'));
 const Portfolio = lazy(() => import('./pages/Portfolio'));
 const PacoteMarca = lazy(() => import('./pages/PacoteMarca'));
@@ -54,6 +55,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/agradecimento" element={<Agradecimento />} />
               <Route path="/privacidade" element={<Privacidade />} />
+              <Route path="/termos" element={<Termos />} />
               <Route path="/exclusao-dados" element={<ExclusaoDados />} />
               <Route path="/processos" element={<Processos />} />
               <Route 

@@ -7,6 +7,8 @@ import SEOHelmet from '../components/SEOHelmet'
 import { formatDate } from '../utils/formatDate'
 import { API_URL } from '../lib/api.js'
 
+const getEntityId = (item) => item?.id || item?._id || ''
+
 const Blog = () => {
   const [posts, setPosts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -39,7 +41,10 @@ const Blog = () => {
         const autoresPayload = await resAutores.json();
         if (!resAutores.ok) throw new Error(autoresPayload.error || 'Erro ao buscar autores');
         const autoresMap = {};
-        (autoresPayload.data || []).forEach(a => { autoresMap[a._id] = a.nome; });
+        (autoresPayload.data || []).forEach((autor) => {
+          const autorId = getEntityId(autor)
+          if (autorId) autoresMap[autorId] = autor.nome
+        });
 
         // Substituir autor pelo nome correspondente (garante que sempre será nome, nunca UUID)
         const postsCorrigidos = (postsPayload.data || []).map(post => {
