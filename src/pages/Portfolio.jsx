@@ -135,14 +135,14 @@ const Portfolio = () => {
               aria-label={proj.titulo}
             >
               <div
-                className="relative min-h-[280px] bg-[linear-gradient(135deg,#2F353B_0%,#844219_100%)]"
+                className="relative aspect-[16/10] bg-[linear-gradient(135deg,#2F353B_0%,#844219_100%)]"
                 style={{ background: proj.bg || '#E5E5E5' }}
               >
                 {proj.imagem_url && (
                   <img
                     src={proj.imagem_url}
                     alt={proj.titulo}
-                    className="w-full h-full object-cover rounded-2xl transition-all duration-300 group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover rounded-2xl transition-all duration-300 group-hover:scale-105"
                     loading="lazy"
                   />
                 )}
