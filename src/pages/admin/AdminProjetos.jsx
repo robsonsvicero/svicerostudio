@@ -20,6 +20,82 @@ const generateSlug = (title) =>
   slugify(title || '', { lower: true, strict: true });
 
 const CATEGORIAS = ['Web Design', 'UX Design', 'Branding', 'Posicionamento'];
+const MAX_UPLOAD_SIZE_BYTES = 8 * 1024 * 1024;
+const TARGET_UPLOAD_SIZE_BYTES = Math.floor(7.5 * 1024 * 1024);
+
+const loadImageFromFile = (file) =>
+  new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Não foi possível ler a imagem para otimização.'));
+    };
+    img.src = url;
+  });
+
+const canvasToBlob = (canvas, type, quality) =>
+  new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error('Falha ao converter imagem para upload.'));
+        return;
+      }
+      resolve(blob);
+    }, type, quality);
+  });
+
+const optimizeImageForUpload = async (file) => {
+  if (!file || file.size <= MAX_UPLOAD_SIZE_BYTES) return file;
+  if (!file.type.startsWith('image/')) {
+    throw new Error('Somente imagens podem ser enviadas.');
+  }
+
+  const img = await loadImageFromFile(file);
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  if (!ctx) {
+    throw new Error('Seu navegador não suporta processamento de imagem para upload.');
+  }
+
+  let scale = 1;
+  let quality = 0.9;
+  let optimizedBlob = null;
+
+  for (let i = 0; i < 8; i += 1) {
+    const width = Math.max(1, Math.round(img.width * scale));
+    const height = Math.max(1, Math.round(img.height * scale));
+
+    canvas.width = width;
+    canvas.height = height;
+    ctx.clearRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
+
+    optimizedBlob = await canvasToBlob(canvas, 'image/webp', quality);
+
+    if (optimizedBlob.size <= TARGET_UPLOAD_SIZE_BYTES) {
+      break;
+    }
+
+    scale *= 0.85;
+    quality = Math.max(0.5, quality - 0.08);
+  }
+
+  if (!optimizedBlob || optimizedBlob.size > MAX_UPLOAD_SIZE_BYTES) {
+    throw new Error('A imagem excede 8MB mesmo após otimização. Reduza a resolução e tente novamente.');
+  }
+
+  const baseName = (file.name || 'imagem').replace(/\.[^.]+$/, '');
+  return new File([optimizedBlob], `${baseName}.webp`, {
+    type: 'image/webp',
+    lastModified: Date.now(),
+  });
+};
 
 const AdminProjetos = () => {
   const { token, signOut } = useAuth();
@@ -208,11 +284,15 @@ const AdminProjetos = () => {
 
       setIsUploading(true);
       try {
-        const file = files[0];
+        const optimizedFile = await optimizeImageForUpload(files[0]);
+        if (optimizedFile !== files[0]) {
+          showToastMessage('Imagem otimizada automaticamente para envio.', 'success');
+        }
+
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', optimizedFile);
         formData.append('bucket', 'svicerostudio');
-        formData.append('key', `projetos/${form.slug || generateSlug(form.titulo)}/capa-${file.name}`);
+        formData.append('key', `projetos/${form.slug || generateSlug(form.titulo)}/capa-${optimizedFile.name}`);
 
         const res = await fetch(`${API_URL}/api/storage/upload`, {
           method: 'POST',
@@ -250,10 +330,15 @@ const AdminProjetos = () => {
       try {
         const newGalleryItems = [];
         for (const file of files) {
+          const optimizedFile = await optimizeImageForUpload(file);
+          if (optimizedFile !== file) {
+            showToastMessage(`Imagem ${file.name} otimizada para envio.`, 'success');
+          }
+
           const formData = new FormData();
-          formData.append('file', file);
+          formData.append('file', optimizedFile);
           formData.append('bucket', 'svicerostudio');
-          formData.append('key', `projetos/${form.slug || generateSlug(form.titulo)}/galeria/${Date.now()}-${file.name}`);
+          formData.append('key', `projetos/${form.slug || generateSlug(form.titulo)}/galeria/${Date.now()}-${optimizedFile.name}`);
 
           const res = await fetch(`${API_URL}/api/storage/upload`, {
             method: 'POST',
