@@ -25,11 +25,37 @@ import projetosRoutes from './routes/projetoRoutes.js';
 
 const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI_FALLBACK = process.env.MONGODB_URI_FALLBACK;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 if (!MONGODB_URI) throw new Error('MONGODB_URI não configurada');
 if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET não configurada');
+
+const isSrvDnsError = (error) => {
+  const message = String(error?.message || '').toLowerCase();
+  const code = String(error?.code || '').toUpperCase();
+
+  if (code === 'ECONNREFUSED' || code === 'ETIMEOUT' || code === 'ENOTFOUND') {
+    return message.includes('querysrv') || message.includes('_mongodb._tcp');
+  }
+
+  return message.includes('querysrv') || message.includes('_mongodb._tcp');
+};
+
+async function connectMongoWithFallback() {
+  try {
+    await mongoose.connect(MONGODB_URI);
+    return;
+  } catch (error) {
+    if (!isSrvDnsError(error) || !MONGODB_URI_FALLBACK) {
+      throw error;
+    }
+
+    console.warn('[server] Falha ao resolver SRV do MongoDB. Tentando MONGODB_URI_FALLBACK...');
+    await mongoose.connect(MONGODB_URI_FALLBACK);
+  }
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -205,7 +231,7 @@ async function ensureAdminFromEnv() {
 }
 
 async function bootstrap() {
-  await mongoose.connect(MONGODB_URI);
+  await connectMongoWithFallback();
   await ensureAdminFromEnv();
   app.listen(PORT, () => {
     console.log(`[server] API Mongo rodando na porta ${PORT}`);
