@@ -126,32 +126,31 @@ const Portfolio = () => {
 
       {/* Todos os projetos */}
       <section className="mx-auto max-w-7xl px-6 py-8 lg:px-10 lg:py-12">
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-14">
           {projects.map((proj) => (
             <button
               key={proj.id}
-              className="group overflow-hidden rounded-[30px] border border-white/8 bg-[#181818] shadow-lg transition duration-300 hover:-translate-y-1 hover:border-white/14 focus:outline-none focus:ring-2 focus:ring-[#B87333]"
+              className="relative group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 bg-white/0 focus:outline-none focus:ring-2 focus:ring-[#B87333]"
               onClick={() => handleOpenModal(proj)}
               aria-label={proj.titulo}
             >
-              <div className="aspect-[4/4.8] w-full relative bg-[linear-gradient(135deg,#2F353B_0%,#844219_100%)]">
+              <div
+                className="relative min-h-[280px] bg-[linear-gradient(135deg,#2F353B_0%,#844219_100%)]"
+                style={{ background: proj.bg || '#E5E5E5' }}
+              >
                 {proj.imagem_url && (
                   <img
                     src={proj.imagem_url}
                     alt={proj.titulo}
-                    className="absolute inset-0 h-full w-full object-cover z-0 transition-all duration-500 grayscale group-hover:grayscale-0"
+                    className="w-full h-full object-cover rounded-2xl transition-all duration-300 group-hover:scale-105"
                     loading="lazy"
                   />
                 )}
-                {/* Overlay degradê escuro só no hover */}
-                <div className="absolute inset-0 z-10 pointer-events-none transition-all duration-500 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                {/* Título só no hover */}
-                <div className="absolute bottom-0 left-0 w-full flex items-end justify-center p-6 z-20 transition-all duration-500 opacity-0 group-hover:opacity-100">
-                  <h3 className="font-[DM Sans] text-2xl font-semibold tracking-[-0.04em] text-white text-center drop-shadow-lg">
+                <div className="absolute inset-0 flex flex-col justify-end bg-black/0 transition-all duration-300 p-6">
+                  <h3 className="text-cream uppercase text-2xl font-bold mb-2 drop-shadow-lg text-left">
                     {proj.titulo}
                   </h3>
                 </div>
-                {/* Desafio e resultado permanecem ocultos no hover, se quiser mostrar algo mais, pode ajustar aqui */}
               </div>
             </button>
           ))}
