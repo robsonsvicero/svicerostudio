@@ -155,23 +155,6 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                           <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#B87333] border-t-transparent" />
                         </div>
                       )}
-
-                      {/* Info sobreposta */}
-                      <div className="absolute inset-0 flex items-end justify-between p-6 lg:p-8">
-                        <div>
-                          <div className="inline-flex items-center rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white/65 backdrop-blur">
-                            Case em destaque
-                          </div>
-                          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-white lg:text-5xl">
-                            {project.titulo}
-                          </h2>
-                        </div>
-                        {total > 0 && (
-                          <div className="hidden rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white/70 backdrop-blur lg:block">
-                            {pad(currentImageIndex + 1)} / {pad(total)}
-                          </div>
-                        )}
-                      </div>
                     </div>
 
                     {/* Botões prev/next */}

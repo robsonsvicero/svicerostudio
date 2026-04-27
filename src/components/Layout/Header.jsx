@@ -1,12 +1,19 @@
 import Button from "../UI/Button";
 import { Cog, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../assets/logo_horizontal.png";
 import simbolo from "../../assets/simbolo.png";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMenuHovered, setIsMenuHovered] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   const navLinks = [
     { href: "/", label: "HOME" },
@@ -83,18 +90,25 @@ const Header = () => {
 
       {/* menu mobile expandido */}
       {menuOpen && (
-        <nav className="md:hidden bg-primary border-t border-white/10 px-6 py-4 flex flex-col gap-4">
+        <nav className="md:hidden fixed inset-0 z-40 bg-primary/95 backdrop-blur-sm flex flex-col items-center justify-center gap-7 px-6 py-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-text-primary"
+              className="text-base font-semibold tracking-[0.12em] text-text-primary text-center"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
             </a>
           ))}
-          <Button variant="ghost" size="icon" className="mt-2 w-fit">
+          <Button
+            variant="custom"
+            size="icon"
+            className="mt-2 bg-transparent hover:bg-secondary"
+            href="/admin"
+            onClick={() => setMenuOpen(false)}
+            aria-label="Abrir área admin"
+          >
             <Cog size={20} />
           </Button>
         </nav>

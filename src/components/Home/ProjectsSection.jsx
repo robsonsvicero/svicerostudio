@@ -17,7 +17,7 @@ const ProjectsSection = ({ projects }) => {
 
   return (
     <>
-      <section id="projetos" className="py-24 px-4 md:px-16 bg-primary font-body">
+      <section id="projetos" className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 bg-primary font-body">
         <div className="max-w-screen-xl mx-auto">
           <div className="flex items-center justify-between mb-10">
             <div>
@@ -25,7 +25,7 @@ const ProjectsSection = ({ projects }) => {
                 <span className="w-2 h-2 -rotate-45 bg-secondary inline-block"></span>
                 PORTFÓLIO
               </span>
-              <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white">Projetos em Destaque</h2>
+              <h2 className="font-title text-3xl sm:text-4xl md:text-5xl font-extrabold text-white text-balance">Projetos em Destaque</h2>
               <p className="font-sans text-lg md:text-xl text-[#B2B8C6] max-w-2xl leading-relaxed mb-8">
                 Alguns dos projetos que mostram a qualidade do nosso processo criativo.
               </p>

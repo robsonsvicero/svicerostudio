@@ -5,10 +5,10 @@ import logoBranco from '../../images/logo_alternativo 4.png';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-footer-bg text-[#B2B8C6] pt-16 pb-8 px-4 md:px-16 lg:px-32 font-body">
+    <footer className="w-full bg-footer-bg text-[#B2B8C6] pt-14 sm:pt-16 pb-8 px-4 sm:px-6 md:px-12 lg:px-20 font-body">
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20">
         {/* Coluna esquerda: logo, texto, redes */}
-        <div className="flex-1 min-w-[260px] flex flex-col gap-6">
+        <div className="flex-1 min-w-0 flex flex-col gap-6">
           <div className="mb-2">
             {/* Logo */}
             <div className="flex-shrink-0">
@@ -39,7 +39,7 @@ const Footer = () => {
           </div>
         </div>
         {/* Coluna menus */}
-        <div className="flex-[2] flex flex-row gap-16 md:gap-24 justify-end">
+        <div className="flex-[2] flex flex-col sm:flex-row gap-10 sm:gap-12 md:gap-24 justify-start md:justify-end">
           <div>
             <h4 className="text-white font-bold text-lg mb-4">Estúdio</h4>
             <ul className="flex flex-col gap-2">
@@ -63,11 +63,11 @@ const Footer = () => {
       {/* Linha divisória */}
       <hr className="my-10 border-cream/10" />
       {/* Rodapé final */}
-      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#B2B8C6]/80">
+      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center md:items-start justify-between gap-4 text-sm text-[#B2B8C6]/80">
         <div className="flex flex-row items-center gap-2">
           <span>© 2026 Svicero Studio. Todos os direitos reservados.</span>
         </div>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 sm:gap-4">
           <Link to="/privacidade" className="hover:text-secondary transition-colors">Privacidade</Link>
           <span className="text-secondary text-lg">•</span>
           <Link to="/exclusao-dados" className="hover:text-secondary transition-colors">Exclusão de Dados</Link>

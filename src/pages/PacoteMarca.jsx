@@ -184,12 +184,12 @@ const PacoteMarca = () => {
   }, [depoimentos]);
 
   return (
-    <div className="bg-[#141414] min-h-screen flex flex-col text-[#EFEFEF] font-body py-20 md:py-36">
+    <div className="bg-[#141414] min-h-screen flex flex-col text-[#EFEFEF] font-body py-14 sm:py-20 md:py-28 lg:py-36">
       <Header variant="solid" />
       <main className="flex-1">
         {/* HERO */}
-        <section className="mx-auto max-w-7xl px-6 pt-12 pb-16 lg:px-10 lg:pb-24">
-          <h1 className="font-title text-5xl font-semibold tracking-[-0.06em] text-white lg:text-7xl">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-14 sm:pb-16 lg:px-10 lg:pb-24">
+          <h1 className="font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-7xl text-balance">
             Pacote Marca de Alto Padrão
           </h1>
           <p className="mt-6 max-w-3xl text-base leading-8 text-white/70 lg:text-xl">

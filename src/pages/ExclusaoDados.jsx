@@ -13,7 +13,7 @@ const ExclusaoDados = () => {
       <div className="min-h-screen bg-[#141414] font-body">
         <Header variant="solid" />
         
-        <div className="pt-[200px] pb-24 px-4 md:px-16">
+        <div className="pt-28 sm:pt-36 md:pt-[200px] pb-16 sm:pb-24 px-4 sm:px-6 md:px-16">
           <div className="max-w-4xl mx-auto">
             <h1 className="font-title text-4xl md:text-5xl font-semibold text-low-dark mb-8">
               Exclusão de Dados

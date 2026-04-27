@@ -41,14 +41,14 @@ const Contato = () => {
         <section className="relative overflow-hidden border-b border-white/8 mt-20 lg:mt-36">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(184,115,51,0.20),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(95,178,216,0.08),transparent_26%)]" />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-20 text-center lg:px-10 lg:py-24">
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-20 text-center lg:px-10 lg:py-24">
             
 
-            <h1 className="mt-6 font-title text-5xl font-semibold tracking-[-0.05em] text-white lg:text-6xl">
+            <h1 className="mt-6 font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-6xl text-balance">
               Fale com o Svicero Studio
             </h1>
 
-            <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-white/70">
+            <p className="mx-auto mt-6 max-w-3xl text-base sm:text-lg leading-7 sm:leading-8 text-white/70">
               Use o canal que for mais confortável para você. Se a ideia é falar
               sobre um projeto de marca ou site, o formulário de interesse ajuda
               o estúdio a responder de forma mais precisa.

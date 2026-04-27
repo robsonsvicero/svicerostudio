@@ -89,8 +89,8 @@ const Processos = () => {
       <main className="flex-1">
         <SEOHelmet title="Processo Svicero Studio" description="Veja como funciona o processo de criação de marca e site no Svicero Studio." />
         {/* HERO */}
-        <section className="mx-auto max-w-7xl px-6 pt-12 lg:px-10 lg:pb-24 mt-20 lg:mt-36 text-center">
-          <h1 className="font-title text-5xl font-semibold tracking-[-0.06em] text-white lg:text-7xl mb-4">Como funciona o processo no Svicero Studio</h1>
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 lg:px-10 lg:pb-24 mt-20 lg:mt-36 text-center">
+          <h1 className="font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-7xl mb-4 text-balance">Como funciona o processo no Svicero Studio</h1>
           <p className="mt-6 max-w-3xl mx-auto text-base leading-8 text-white/72 lg:text-xl ">
             Nada de projeto bagunçado ou sem previsibilidade. Você sabe exatamente o que vai acontecer em cada etapa, do primeiro contato à entrega final.
           </p>

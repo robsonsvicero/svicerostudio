@@ -25,11 +25,37 @@ import projetosRoutes from './routes/projetoRoutes.js';
 
 const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI_FALLBACK = process.env.MONGODB_URI_FALLBACK;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 if (!MONGODB_URI) throw new Error('MONGODB_URI não configurada');
 if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET não configurada');
+
+const isSrvDnsError = (error) => {
+  const message = String(error?.message || '').toLowerCase();
+  const code = String(error?.code || '').toUpperCase();
+
+  if (code === 'ECONNREFUSED' || code === 'ETIMEOUT' || code === 'ENOTFOUND') {
+    return message.includes('querysrv') || message.includes('_mongodb._tcp');
+  }
+
+  return message.includes('querysrv') || message.includes('_mongodb._tcp');
+};
+
+async function connectMongoWithFallback() {
+  try {
+    await mongoose.connect(MONGODB_URI);
+    return;
+  } catch (error) {
+    if (!isSrvDnsError(error) || !MONGODB_URI_FALLBACK) {
+      throw error;
+    }
+
+    console.warn('[server] Falha ao resolver SRV do MongoDB. Tentando MONGODB_URI_FALLBACK...');
+    await mongoose.connect(MONGODB_URI_FALLBACK);
+  }
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -85,12 +111,29 @@ const upload = multer({
   limits: { fileSize: 8 * 1024 * 1024 },
 });
 
-app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (req, res) => {
+const handleSingleUpload = (req, res, next) => {
+  upload.single('file')(req, res, (err) => {
+    if (!err) return next();
+
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(413).json({ error: 'Arquivo muito grande. Limite de 8MB.' });
+      }
+      return res.status(400).json({ error: `Erro de upload: ${err.code}` });
+    }
+
+    return res.status(400).json({ error: err.message || 'Falha ao processar upload' });
+  });
+};
+
+app.post('/api/storage/upload', authMiddleware, handleSingleUpload, async (req, res) => {
   try {
     const { bucket, key } = req.body || {};
     const file = req.file;
+    const safeBucket = String(bucket || '').trim();
+    const safeKey = String(key || '').trim();
 
-    if (!bucket || !key || !file) {
+    if (!safeBucket || !safeKey || !file) {
       return res.status(400).json({ error: 'bucket, key e file são obrigatórios' });
     }
 
@@ -100,13 +143,13 @@ app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (re
         await r2.send(
           new PutObjectCommand({
             Bucket: process.env.R2_BUCKET_NAME,
-            Key: key,
+            Key: safeKey,
             Body: file.buffer,
             ContentType: file.mimetype,
           }),
         );
-        const publicUrl = `${process.env.R2_PUBLIC_URL}/${key}`;
-        return res.json({ data: { path: key, url: publicUrl }, error: null });
+        const publicUrl = `${process.env.R2_PUBLIC_URL}/${safeKey}`;
+        return res.json({ data: { path: safeKey, url: publicUrl }, error: null });
       } catch (r2Error) {
         console.error('[UPLOAD R2 ERROR]', r2Error.message);
         // Fallback: salvar no MongoDB
@@ -115,18 +158,31 @@ app.post('/api/storage/upload', authMiddleware, upload.single('file'), async (re
 
     // Fallback: salvar no MongoDB
     console.log('[UPLOAD] R2 não configurado, salvando no MongoDB');
-    const uploadDoc = await Upload.create({
-      bucket,
-      storageKey: key,
-      originalName: file.originalname,
-      mimeType: file.mimetype,
-      size: file.size,
-      data: file.buffer,
-    });
+    const uploadDoc = await Upload.findOneAndUpdate(
+      { bucket: safeBucket, storageKey: safeKey },
+      {
+        $set: {
+          originalName: file.originalname,
+          mimeType: file.mimetype,
+          size: file.size,
+          data: file.buffer,
+          updated_at: new Date(),
+        },
+        $setOnInsert: {
+          bucket: safeBucket,
+          storageKey: safeKey,
+          created_at: new Date(),
+        },
+      },
+      {
+        upsert: true,
+        new: true,
+      },
+    );
 
     // Retornar URL HTTP válida para servir a imagem
     const publicUrl = `${process.env.API_BASE_URL || `http://localhost:${PORT}`}/api/storage/${uploadDoc._id}`;
-    return res.json({ data: { path: key, url: publicUrl, id: uploadDoc._id }, error: null });
+    return res.json({ data: { path: safeKey, url: publicUrl, id: uploadDoc._id }, error: null });
   } catch (err) {
     console.error('[UPLOAD ERROR]', err.message, err.stack);
     return res.status(500).json({ error: err.message || 'Erro ao fazer upload' });
@@ -175,7 +231,7 @@ async function ensureAdminFromEnv() {
 }
 
 async function bootstrap() {
-  await mongoose.connect(MONGODB_URI);
+  await connectMongoWithFallback();
   await ensureAdminFromEnv();
   app.listen(PORT, () => {
     console.log(`[server] API Mongo rodando na porta ${PORT}`);

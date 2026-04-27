@@ -29,8 +29,8 @@ const FAQ = () => {
     <div className="bg-dark-bg min-h-screen flex flex-col text-[#EFEFEF] font-body">
       <Header variant="solid" />
       <main className="flex-1">
-        <section className="mx-auto max-w-7xl px-6 pt-12 pb-16 lg:px-10 lg:pb-24 text-center mt-20 lg:mt-36">
-          <h1 className="font-title text-5xl font-semibold tracking-[-0.06em] text-white lg:text-7xl">FAQ – Perguntas Frequentes</h1>
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-14 sm:pb-16 lg:px-10 lg:pb-24 text-center mt-20 lg:mt-36">
+          <h1 className="font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-7xl text-balance">FAQ – Perguntas Frequentes</h1>
           <p className="mt-6 max-w-3xl mx-auto text-base leading-8 text-white/72 lg:text-xl">
             Use essa página para responder exatamente o que seus leads te perguntam pelo WhatsApp.
           </p>

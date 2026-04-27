@@ -108,9 +108,9 @@ const PlanosPacotes = () => {
       <Header variant="solid" />
       <main className="flex-1">
         {/* HERO */}
-        <section className="mx-auto max-w-7xl px-6 pt-20 lg:pt-36 pb-16 lg:px-10 lg:pb-24 text-center">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-14 sm:pt-20 lg:pt-36 pb-14 sm:pb-16 lg:px-10 lg:pb-24 text-center">
 
-          <h1 className="font-title text-5xl font-semibold tracking-[-0.06em] text-white lg:text-7xl">Escolha o pacote que melhor combina com o momento do seu negócio</h1>
+          <h1 className="font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-7xl text-balance">Escolha o pacote que melhor combina com o momento do seu negócio</h1>
           <p className="mt-6 max-w-3xl mx-auto text-base leading-8 text-white/72 lg:text-xl">
             Todos os pacotes foram pensados para ajudar autônomos e pequenos negócios a sair da cara de amador e ganhar mais confiança no digital – em diferentes estágios de crescimento.
           </p>

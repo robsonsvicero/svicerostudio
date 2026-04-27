@@ -17,6 +17,11 @@ export function getPlaceholderImage(letter = '?', bgColor = '1a1a1a', size = 150
   return `data:image/svg+xml;base64,${encoded}`;
 }
 
+// Alias para manter compatibilidade com imports legados no admin.
+export function getAvatarPlaceholder(letter = '?', bgColor = '1a1a1a', size = 150) {
+  return getPlaceholderImage(letter, bgColor, size);
+}
+
 export function getNameInitials(name = '') {
   const parts = String(name)
     .trim()
