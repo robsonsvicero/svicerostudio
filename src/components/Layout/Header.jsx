@@ -56,7 +56,12 @@ const Header = () => {
 
         {/* Ícone de engrenagem à direita */}
         <div className="flex-1 flex justify-end">
-          <Button variant="custom" size="icon" className="bg-transparent hover:bg-secondary">
+          <Button 
+            variant="custom" 
+            size="icon" 
+            className="bg-transparent hover:bg-secondary"
+            href="/admin">
+            
             <Cog className="text-cream/40" size={24} />
           </Button>
         </div>

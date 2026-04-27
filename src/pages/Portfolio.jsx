@@ -214,7 +214,9 @@ const Portfolio = () => {
       )}
 
       {/* CTA final */}
-      <CTAFinal />
+      <div className='pt-24'>
+        <CTAFinal />
+      </div>
 
       <Footer />
     </div>

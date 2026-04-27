@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../utils/formatDate';
+import Button from '../UI/Button';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -8,7 +9,7 @@ import 'swiper/css/pagination';
 
 const BlogSection = ({ blogPosts }) => {
   return (
-    <section id="blog" className="bg-primary py-24 px-4 md:px-16 font-body">
+    <section id="blog" className="bg-dark-bg py-24 px-4 md:px-16 font-body">
       <div className="max-w-screen-xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
@@ -46,7 +47,7 @@ const BlogSection = ({ blogPosts }) => {
             <SwiperSlide key={post.id}>
               <Link
                 to={`/blog/${post.slug}`}
-                className="group rounded-2xl overflow-hidden bg-cream transition-all duration-300 hover:-translate-y-2 shadow-lg flex flex-col h-full min-h-[420px] max-h-[420px]"
+                className="group rounded-2xl overflow-hidden bg-card transition-all duration-300 hover:-translate-y-2 shadow-lg flex flex-col h-full min-h-[420px] max-h-[420px]"
               >
                 {/* Imagem do artigo */}
                 {post.imagem_destaque && (
@@ -59,15 +60,15 @@ const BlogSection = ({ blogPosts }) => {
                   </div>
                 )}
                 <div className="flex flex-col px-6 py-6">
-                  
-                  <h3 className="font-title text-l font-semibold text-secondary mb-2 leading-snug">
+                  <span className="text-xs text-white font-semibold uppercase tracking-wider">
+                    {post.categoria}
+                  </span>
+                  <h3 className="text-base font-medium text-white opacity-50 mt-2 leading-snug line-clamp-2">
                     {post.titulo}
                   </h3>
-                  {post.resumo && (
-                      <p className="text-low-light text-body text-sm mb-5 line-clamp-3 leading-relaxed">
-                        {post.resumo}
-                      </p>
-                    )}
+                  <Button variant="secondary" size="sm" className="mt-4">
+                    Ler mais
+                  </Button>
                 </div>
               </Link>
             </SwiperSlide>

@@ -26,6 +26,7 @@ export default {
         gelo: '#f2f2f2',
         'dark-card': '#2F353B',
         'dark-surface': '#181818',
+        card: '#1e2023',
       },
       fontFamily: {
         body: ['DM Sans', 'sans-serif'],

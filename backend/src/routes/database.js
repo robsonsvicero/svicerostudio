@@ -52,15 +52,29 @@ router.post('/:table/query', async (req, res) => {
       const pipeline = [];
       if (Object.keys(mongoFilter).length > 0) pipeline.push({ $match: mongoFilter });
 
-      // Para posts: $lookup para resolver UUID do autor → nome.
-      // Fallback: se o campo 'autor' for um nome direto (posts legados),
-      // usa o valor bruto como autor_nome.
+      // Para posts: resolve o autor a partir de um id persistido em string
+      // (ObjectId serializado) ou usa o valor bruto para posts legados.
       if (table === 'posts') {
         pipeline.push({
           $lookup: {
             from: 'autores',
-            localField: 'autor',
-            foreignField: '_id',
+            let: {
+              autorObjectId: {
+                $convert: {
+                  input: '$autor',
+                  to: 'objectId',
+                  onError: null,
+                  onNull: null,
+                },
+              },
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ['$_id', '$$autorObjectId'] },
+                },
+              },
+            ],
             as: '_autor_info',
           },
         });
@@ -74,6 +88,9 @@ router.post('/:table/query', async (req, res) => {
               },
             },
             autor_foto: { $arrayElemAt: ['$_autor_info.foto_url', 0] },
+            autor_cargo: { $arrayElemAt: ['$_autor_info.cargo', 0] },
+            autor_bio: { $arrayElemAt: ['$_autor_info.bio', 0] },
+            autor_email: { $arrayElemAt: ['$_autor_info.email', 0] },
           },
         });
         pipeline.push({ $project: { _autor_info: 0 } });

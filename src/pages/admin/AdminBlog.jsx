@@ -10,6 +10,12 @@ import AdminLayout from '../../components/Admin/AdminLayout';
 import { API_URL } from '../../lib/api.js';
 import { getPlaceholderImage } from '../../utils/placeholders';
 
+const getEntityId = (item) => item?.id || item?._id || '';
+const isUuid = (value) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value || '');
+const isObjectId = (value) => /^[0-9a-f]{24}$/i.test(value || '');
+const isPersistedId = (value) => isUuid(value) || isObjectId(value);
+const getDisplayAuthorName = (value) => (value && !isPersistedId(value) ? value : '');
+
 const AdminBlog = () => {
   const navigate = useNavigate();
   const { token, signOut } = useAuth();
@@ -46,7 +52,10 @@ const AdminBlog = () => {
       });
       const payload = await res.json();
       if (!res.ok) throw new Error(payload.error || 'Erro ao buscar autores');
-      setAutores(payload.data || []);
+      setAutores((payload.data || []).map((autor) => ({
+        ...autor,
+        id: getEntityId(autor),
+      })));
     } catch (error) {
       showToastMessage(error.message, 'error');
     }
@@ -128,7 +137,7 @@ const AdminBlog = () => {
 
     // Remove campos computados pelo $lookup e campos de controle interno
     // eslint-disable-next-line no-unused-vars
-    const { id, autor_nome, autor_foto, ...payloadData } = formData;
+    const { id, _id, autor_nome, autor_foto, autor_cargo, autor_bio, autor_email, ...payloadData } = formData;
     const payload = payloadData;
 
     const op = editingId ? 'update' : 'insert';
@@ -154,21 +163,22 @@ const AdminBlog = () => {
   };
 
   const handleEdit = (post) => {
-    setEditingId(post.id);
+    setEditingId(getEntityId(post));
     const data_publicacao = post.data_publicacao
       ? new Date(post.data_publicacao).toISOString().slice(0, 10)
       : '';
 
     // Separa os campos computados pelo $lookup dos campos reais do post
     // eslint-disable-next-line no-unused-vars
-    const { id, autor_nome, autor_foto, ...postFields } = post;
+    const { id, _id, autor_nome, autor_foto, autor_cargo, autor_bio, autor_email, ...postFields } = post;
 
-    // Resolve o UUID do autor: se 'autor' for um UUID válido usa direto,
-    // caso contrário (posts legados com nome direto) tenta encontrar pelo nome na lista
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    const autorId = uuidRegex.test(postFields.autor)
-      ? postFields.autor
-      : autores.find(a => a.nome === postFields.autor)?.id || '';
+    const autorIdByReference = getEntityId(
+      autores.find((autor) => String(getEntityId(autor)) === String(postFields.autor)),
+    );
+    const autorIdByName = getEntityId(
+      autores.find((autor) => autor.nome === postFields.autor || autor.nome === autor_nome),
+    );
+    const autorId = autorIdByReference || autorIdByName || (isPersistedId(postFields.autor) ? postFields.autor : '');
 
     setFormData({
       ...initialFormState,
@@ -200,7 +210,7 @@ const AdminBlog = () => {
   const fields = [
     { name: 'titulo', label: 'Título do post', placeholder: 'Como criar uma marca memorável', type: 'text', required: true, col: 'lg:col-span-2' },
     { name: 'slug', label: 'Slug', placeholder: 'como-criar-marca-memoravel', type: 'text', required: true, col: 'lg:col-span-2' },
-    { name: 'autor', label: autores.length === 0 ? 'Autor ⚠ Nenhum autor cadastrado — acesse Autores primeiro' : 'Autor', placeholder: 'Selecione um autor', type: 'select', required: true, options: autores.map(a => ({ value: a.id, label: a.nome })), col: 'lg:col-span-1' },
+    { name: 'autor', label: autores.length === 0 ? 'Autor ⚠ Nenhum autor cadastrado — acesse Autores primeiro' : 'Autor', placeholder: 'Selecione um autor', type: 'select', required: true, options: autores.map(a => ({ value: getEntityId(a), label: a.nome })), col: 'lg:col-span-1' },
     { name: 'categoria', label: 'Categoria', placeholder: 'Selecione uma categoria', type: 'select', required: true, options: ['Performance & Conversão', 'Estratégia de Ativos (Business & IA)', 'Engenharia de Percepção (Branding)', 'UX Design & Engenharia de Lucro'].map(c => ({ value: c, label: c})), col: 'lg:col-span-1' },
     { name: 'data_publicacao', label: 'Data de publicação', placeholder: 'YYYY-MM-DD', type: 'date', required: true, col: 'lg:col-span-1' },
     { name: 'tags', label: 'Tags', placeholder: 'branding, ux, design', type: 'text', required: false, col: 'lg:col-span-1' },
@@ -320,10 +330,10 @@ const AdminBlog = () => {
               <div className="bg-[#181818] rounded-2xl border border-white/8">
                   <ul className="divide-y divide-white/8">
                       {posts.map(post => {
-                          const autorFallback = autores.find(a => a.id === post.autor);
-                          const autorNome = post.autor_nome || autorFallback?.nome || 'Autor desconhecido';
+                          const autorFallback = autores.find(a => String(getEntityId(a)) === String(post.autor));
+                          const autorNome = getDisplayAuthorName(post.autor_nome) || autorFallback?.nome || getDisplayAuthorName(post.autor) || 'Autor desconhecido';
                           return (
-                            <li key={post.id} className="flex items-center justify-between p-4 gap-4">
+                            <li key={getEntityId(post)} className="flex items-center justify-between p-4 gap-4">
                                <img src={post.imagem_destaque || getPlaceholderImage(post.titulo.charAt(0), '141414', 150)} alt={post.titulo} className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20" />
                                 <div className="flex-1 min-w-0">
                                     <p className="font-semibold text-white truncate">{post.titulo}</p>
@@ -334,7 +344,7 @@ const AdminBlog = () => {
                                       {post.publicado ? 'Publicado' : 'Rascunho'}
                                     </span>
                                     <Button variant="outline" onClick={() => handleEdit(post)}>Editar</Button>
-                                    <Button variant="danger" onClick={() => handleDelete(post.id)}>Excluir</Button>
+                                    <Button variant="danger" onClick={() => handleDelete(getEntityId(post))}>Excluir</Button>
                                 </div>
                             </li>
                           );

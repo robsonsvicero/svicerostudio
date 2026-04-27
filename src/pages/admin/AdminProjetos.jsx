@@ -10,7 +10,7 @@ import { API_URL } from '../../lib/api';
 import { useToast } from '../../hooks/useToast';
 import { getPlaceholderImage } from '../../utils/placeholders';
 import slugify from 'slugify';
-import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 import AdminLayout from '../../components/Admin/AdminLayout';
 import Button from '../../components/UI/Button';
@@ -310,6 +310,76 @@ const AdminProjetos = () => {
       }
     },
     [API_URL, token, signOut, showToastMessage, form.slug, form.titulo, gallery.length, editingId],
+  );
+
+  // ---------------------------------------------------------------------------
+  // Excluir imagem da galeria
+  // ---------------------------------------------------------------------------
+  const handleDeleteGalleryImage = useCallback(
+    async (index) => {
+      const img = gallery[index];
+      if (editingId && img.id) {
+        try {
+          const res = await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify({
+              operation: 'delete',
+              filters: [{ column: 'id', operator: 'eq', value: img.id }],
+            }),
+          });
+          if (!res.ok) {
+            const errData = await res.json();
+            if (res.status === 401) signOut();
+            throw new Error(errData.error || 'Erro ao excluir imagem da galeria');
+          }
+        } catch (err) {
+          showToastMessage(err.message, 'error');
+          return;
+        }
+      }
+      setGallery((prev) => prev.filter((_, i) => i !== index));
+      showToastMessage('Imagem removida.', 'success');
+    },
+    [gallery, editingId, API_URL, token, signOut, showToastMessage],
+  );
+
+  // ---------------------------------------------------------------------------
+  // Reordenar imagens da galeria
+  // ---------------------------------------------------------------------------
+  const handleMoveGalleryImage = useCallback(
+    async (index, direction) => {
+      const targetIndex = direction === 'left' ? index - 1 : index + 1;
+      if (targetIndex < 0 || targetIndex >= gallery.length) return;
+
+      const newGallery = [...gallery];
+      [newGallery[index], newGallery[targetIndex]] = [newGallery[targetIndex], newGallery[index]];
+      setGallery(newGallery);
+
+      if (editingId) {
+        const updates = [
+          { id: newGallery[index].id, ordem: index },
+          { id: newGallery[targetIndex].id, ordem: targetIndex },
+        ].filter((u) => u.id);
+
+        for (const update of updates) {
+          try {
+            await fetch(`${API_URL}/api/db/projeto_galeria/query`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+              body: JSON.stringify({
+                operation: 'update',
+                filters: [{ column: 'id', operator: 'eq', value: update.id }],
+                payload: { ordem: update.ordem },
+              }),
+            });
+          } catch (err) {
+            console.error('Erro ao atualizar ordem da galeria:', err);
+          }
+        }
+      }
+    },
+    [gallery, editingId, API_URL, token],
   );
 
   // ---------------------------------------------------------------------------
@@ -711,8 +781,36 @@ const AdminProjetos = () => {
                         alt={`Imagem ${index + 1}`}
                         className="w-full h-32 object-cover"
                       />
+                      {/* Botão excluir */}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteGalleryImage(index)}
+                        className="absolute top-1 right-1 bg-red-600/80 hover:bg-red-600 text-white rounded-md p-1 transition-colors"
+                        title="Excluir imagem"
+                      >
+                        <FaTrash size={10} />
+                      </button>
+                      {/* Barra inferior com setas e número */}
                       <div className="absolute inset-x-0 bottom-0 bg-black/70 px-2 py-1 text-[10px] text-white/80 flex justify-between items-center">
+                        <button
+                          type="button"
+                          onClick={() => handleMoveGalleryImage(index, 'left')}
+                          disabled={index === 0}
+                          className="disabled:opacity-30 hover:text-white transition-colors"
+                          title="Mover para esquerda"
+                        >
+                          <FaChevronLeft size={10} />
+                        </button>
                         <span>#{index + 1}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleMoveGalleryImage(index, 'right')}
+                          disabled={index === gallery.length - 1}
+                          className="disabled:opacity-30 hover:text-white transition-colors"
+                          title="Mover para direita"
+                        >
+                          <FaChevronRight size={10} />
+                        </button>
                       </div>
                     </div>
                   ))}

@@ -6,6 +6,8 @@ import AdminLayout from '../../components/Admin/AdminLayout';
 
 import { API_URL } from '../../lib/api.js';
 
+const getEntityId = (item) => item?.id || item?._id || '';
+
 const AdminComentarios = () => {
     const { token } = useAuth();
     const { showToast, toastMessage, toastType, showToastMessage, hideToast } = useToast();
@@ -100,7 +102,7 @@ const AdminComentarios = () => {
                         {!loading && comments.length > 0 && (
                             <ul className="space-y-4">
                                 {comments.map((comment) => (
-                                    <li key={comment._id} className="rounded-2xl border border-white/10 bg-white/[.03] p-5 backdrop-blur-sm">
+                                    <li key={getEntityId(comment)} className="rounded-2xl border border-white/10 bg-white/[.03] p-5 backdrop-blur-sm">
                                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-3">
@@ -115,11 +117,11 @@ const AdminComentarios = () => {
                                             </div>
                                             <div className="mt-4 sm:mt-0 flex-shrink-0 flex items-center gap-2">
                                                 {filter === 'pending' && (
-                                                    <Button variant="primary" onClick={() => handleUpdateStatus(comment._id, 'approved')}>
+                                                    <Button variant="primary" onClick={() => handleUpdateStatus(getEntityId(comment), 'approved')}>
                                                         Aprovar
                                                     </Button>
                                                 )}
-                                                <Button variant="danger" onClick={() => handleUpdateStatus(comment._id, 'deleted')}>
+                                                <Button variant="danger" onClick={() => handleUpdateStatus(getEntityId(comment), 'deleted')}>
                                                     Excluir
                                                 </Button>
                                             </div>
