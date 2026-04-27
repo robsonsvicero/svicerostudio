@@ -94,6 +94,17 @@ app.use(
   }),
 );
 
+// Middleware para garantir conexão com o banco no ambiente Serverless (Vercel)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Erro ao conectar no MongoDB via middleware:', error);
+    res.status(500).json({ error: 'Erro de conexão com o banco de dados' });
+  }
+});
+
 // Rotas
 app.use('/api/comments', commentsRouter);
 app.use('/api/interesse', interesseRouter);
@@ -230,15 +241,23 @@ async function ensureAdminFromEnv() {
   console.log(`[boot] Usuário admin criado: ${email}`);
 }
 
-async function bootstrap() {
+async function connectDB() {
+  if (mongoose.connection.readyState >= 1) return;
   await connectMongoWithFallback();
   await ensureAdminFromEnv();
-  app.listen(PORT, () => {
-    console.log(`[server] API Mongo rodando na porta ${PORT}`);
+}
+
+// Para uso local ou VPS
+if (!process.env.VERCEL) {
+  connectDB().then(() => {
+    app.listen(PORT, () => {
+      console.log(`[server] API Mongo rodando na porta ${PORT}`);
+    });
+  }).catch((error) => {
+    console.error('[server] Falha ao iniciar API:', error);
+    process.exit(1);
   });
 }
 
-bootstrap().catch((error) => {
-  console.error('[server] Falha ao iniciar API:', error);
-  process.exit(1);
-});
+// Exportamos o app para que a Vercel (Serverless) possa consumi-lo
+export default app;
