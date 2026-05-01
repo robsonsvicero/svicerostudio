@@ -144,7 +144,7 @@ const AdminProjetos = () => {
         },
         body: JSON.stringify({
           operation: 'select',
-          sort: { created_at: -1 },
+          orderBy: { column: 'created_at', ascending: false },
         }),
       });
 
