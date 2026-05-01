@@ -270,6 +270,8 @@ const AdminProjetos = () => {
   // ---------------------------------------------------------------------------
   // Upload de Imagens (Capa e Galeria)
   // ---------------------------------------------------------------------------
+  const getProjectSlug = useCallback(() => form.slug?.trim() || generateSlug(form.titulo) || 'novo-projeto', [form.slug, form.titulo]);
+
   const handleImageUpload = useCallback(
     async (uploadedFiles) => {
       // Se foi removida a imagem
@@ -292,7 +294,7 @@ const AdminProjetos = () => {
         const formData = new FormData();
         formData.append('file', optimizedFile);
         formData.append('bucket', 'svicerostudio');
-        formData.append('key', `projetos/${form.slug || generateSlug(form.titulo)}/capa-${optimizedFile.name}`);
+        formData.append('key', `projetos/${getProjectSlug()}/capa-${optimizedFile.name}`);
 
         const res = await fetch(`${API_URL}/api/storage/upload`, {
           method: 'POST',
@@ -317,7 +319,7 @@ const AdminProjetos = () => {
         setIsUploading(false);
       }
     },
-    [API_URL, token, signOut, showToastMessage, form.slug, form.titulo],
+    [API_URL, token, signOut, showToastMessage, getProjectSlug],
   );
 
   const handleGalleryImageUpload = useCallback(
@@ -338,7 +340,7 @@ const AdminProjetos = () => {
           const formData = new FormData();
           formData.append('file', optimizedFile);
           formData.append('bucket', 'svicerostudio');
-          formData.append('key', `projetos/${form.slug || generateSlug(form.titulo)}/galeria/${Date.now()}-${optimizedFile.name}`);
+          formData.append('key', `projetos/${getProjectSlug()}/galeria/${Date.now()}-${optimizedFile.name}`);
 
           const res = await fetch(`${API_URL}/api/storage/upload`, {
             method: 'POST',
@@ -394,7 +396,7 @@ const AdminProjetos = () => {
         setIsUploadingGallery(false);
       }
     },
-    [API_URL, token, signOut, showToastMessage, form.slug, form.titulo, gallery.length, editingId],
+    [API_URL, token, signOut, showToastMessage, getProjectSlug, gallery.length, editingId],
   );
 
   // ---------------------------------------------------------------------------
@@ -542,7 +544,7 @@ const AdminProjetos = () => {
           if (res.status === 401) signOut();
           throw new Error(data.error || `Erro ao criar projeto (status ${res.status})`);
         }
-        projectId = data.data[0].id; // Pega o ID do projeto recém-criado
+        projectId = data.data[0]?.id || data.data[0]?._id || data.data?.id || data.data?._id; // Pega o ID do projeto recém-criado
         showToastMessage('Projeto criado com sucesso!', 'success');
 
         // Se houver imagens na galeria (em memória), salva-as agora
@@ -569,8 +571,7 @@ const AdminProjetos = () => {
           if (!galleryRes.ok) {
             const galleryErrorData = await galleryRes.json();
             if (galleryRes.status === 401) signOut();
-            console.error('Erro ao salvar galeria após criar projeto:', galleryErrorData);
-            showToastMessage('Erro ao salvar galeria do projeto.', 'error');
+            throw new Error(galleryErrorData.error || `Erro ao salvar galeria do projeto (status ${galleryRes.status})`);
           } else {
             showToastMessage('Galeria salva com sucesso!', 'success');
           }
