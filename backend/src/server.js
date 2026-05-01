@@ -192,7 +192,10 @@ app.post('/api/storage/upload', authMiddleware, handleSingleUpload, async (req, 
     );
 
     // Retornar URL HTTP válida para servir a imagem
-    const publicUrl = `${process.env.API_BASE_URL || `http://localhost:${PORT}`}/api/storage/${uploadDoc._id}`;
+    const host = req.get('host');
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const baseUrl = process.env.API_BASE_URL || `${protocol}://${host}`;
+    const publicUrl = `${baseUrl}/api/storage/${uploadDoc._id}`;
     return res.json({ data: { path: safeKey, url: publicUrl, id: uploadDoc._id }, error: null });
   } catch (err) {
     console.error('[UPLOAD ERROR]', err.message, err.stack);
