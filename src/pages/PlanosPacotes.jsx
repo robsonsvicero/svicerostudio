@@ -244,7 +244,7 @@ const PlanosPacotes = () => {
           <p className="text-white/80 text-base mb-6">Me chama no WhatsApp ou preencha o formulário que eu te ajudo a entender qual opção faz mais sentido para o seu negócio hoje.</p>
           <div className="flex flex-col gap-3 sm:flex-row justify-center">
             <Button href="https://wa.me/5511964932007" variant="secondary" >Falar com o Svicero Studio</Button>
-            <Button href="formulario-interesse" variant="outline">Preencher formulário de interesse</Button>
+            <Button href="/diagnostico" variant="outline">Agendar Diagnóstico</Button>
           </div>
         </section>
       </main>

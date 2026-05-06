@@ -17,7 +17,7 @@ const CTAFinal = () => {
 
         <div className="flex flex-col md:flex-row gap-6 mt-2">
           <Button
-            href="#contato"
+            href="/diagnostico"
             variant="primary"
             className="transition-colors"
           >

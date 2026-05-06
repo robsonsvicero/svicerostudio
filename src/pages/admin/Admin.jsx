@@ -13,6 +13,7 @@ const Admin = () => {
   const [testimonialCount, setTestimonialCount] = React.useState(null);
   const [authorCount, setAuthorCount] = React.useState(null);
   const [pendingCount, setPendingCount] = React.useState(null);
+  const [faqCount, setFaqCount] = React.useState(null);
     // Buscar número de projetos
     React.useEffect(() => {
       if (!token) {
@@ -137,6 +138,25 @@ const Admin = () => {
       }
     };
     fetchPending();
+  }, [token, API_URL]);
+
+  // Buscar número de FAQs
+  React.useEffect(() => {
+    if (!token) {
+      setFaqCount(0);
+      return;
+    }
+    const fetchFaqs = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/faq`);
+        const data = await res.json();
+        setFaqCount(Array.isArray(data) ? data.length : 0);
+      } catch (e) {
+        console.error('Erro ao buscar FAQs:', e);
+        setFaqCount(0);
+      }
+    };
+    fetchFaqs();
   }, [token, API_URL]);
   React.useEffect(() => {
     const now = new Date();
@@ -342,6 +362,29 @@ const Admin = () => {
                 <div className="flex items-end justify-between mt-auto">
                   <span className="text-white/70 text-xs">{(pendingCount ?? 0)} pendentes</span>
                   <Link to={adminPages[4].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
+                    Acessar
+                    <i className="fa-solid fa-arrow-right text-xs"></i>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div key="faq" className={`relative rounded-2xl shadow-xl border border-white/10 p-8 flex flex-col h-full min-h-[220px] ${adminPages[5].color} transition-all`}>
+              <div className="absolute top-6 left-6">
+                <div className="w-10 h-10 bg-black/20 rounded-lg flex items-center justify-center">
+                  <i className={`${adminPages[5].icon} text-2xl text-white`}></i>
+                </div>
+              </div>
+              <div className="absolute top-6 right-6">
+                <span className="text-xs font-semibold bg-white/10 text-white px-3 py-1 rounded-full tracking-widest border border-white/20">{adminPages[5].badge}</span>
+              </div>
+              <div className="flex flex-col flex-1 justify-between mt-10">
+                <div>
+                  <h2 className="font-title text-2xl font-bold text-white mb-2">{adminPages[5].title}</h2>
+                  <p className="text-white/80 text-sm mb-4">{adminPages[5].description}</p>
+                </div>
+                <div className="flex items-end justify-between mt-auto">
+                  <span className="text-white/70 text-xs">{(faqCount ?? 0)} perguntas</span>
+                  <Link to={adminPages[5].link} className="bg-black/30 border border-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-white/80 hover:text-black transition">
                     Acessar
                     <i className="fa-solid fa-arrow-right text-xs"></i>
                   </Link>

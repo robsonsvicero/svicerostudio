@@ -3,20 +3,19 @@ import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import SEOHelmet from '../components/SEOHelmet';
-import CTAFinal from '../components/CTAFinal';
 
 const channels = [
   {
     title: 'E-mail',
     value: 'contato@svicerostudio.com.br',
-    description: 'Para mensagens formais, dúvidas ou apresentações de proposta.',
+    description: 'Para mensagens formais, parcerias ou apresentações.',
     href: 'mailto:contato@svicerostudio.com.br',
   },
   {
     title: 'WhatsApp',
     value: '(11) 96493-2007',
     description: 'Para conversas rápidas ou demandas mais urgentes.',
-    href: 'https://wa.me/5511964932007',
+    href: 'https://wa.me/5511964932007?text=Olá%20Robson%2C%20gostaria%20de%20conversar%20com%20o%20Svicero%20Studio.',
   },
   {
     title: 'Instagram',
@@ -31,7 +30,7 @@ const Contato = () => {
     <>
       <SEOHelmet
         title="Contato — Svicero Studio"
-        description="Fale com o Svicero Studio pelo canal que preferir: e-mail, WhatsApp ou Instagram. Para projetos de marca e site, preencha nosso formulário de interesse."
+        description="Fale com o Svicero Studio pelo canal que preferir: e-mail, WhatsApp ou Instagram."
         keywords="contato svicero studio, falar com designer, whatsapp designer"
       />
       <div className="bg-[#141414] min-h-screen text-[#EFEFEF] font-body">
@@ -42,48 +41,26 @@ const Contato = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(184,115,51,0.20),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(95,178,216,0.08),transparent_26%)]" />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-20 text-center lg:px-10 lg:py-24">
-            
-
             <h1 className="mt-6 font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-6xl text-balance">
-              Fale com o Svicero Studio
+              Fale com o estúdio
             </h1>
 
-            <p className="mx-auto mt-6 max-w-3xl text-base sm:text-lg leading-7 sm:leading-8 text-white/70">
-              Use o canal que for mais confortável para você. Se a ideia é falar
-              sobre um projeto de marca ou site, o formulário de interesse ajuda
-              o estúdio a responder de forma mais precisa.
-            </p>
-          </div>
-        </section>
-
-        {/* BLOCO PROJETO */}
-        <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-          <div className="rounded-[34px] border border-white/8 bg-[#181818] p-10 shadow-2xl shadow-black/30">
-            <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
-              Projetos
+            <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg leading-7 sm:leading-8 text-white/70">
+              Para dúvidas, parcerias ou conversas rápidas, use o canal que 
+              preferir. Se a ideia é falar sobre um projeto de marca, o melhor 
+              caminho é agendar um diagnóstico.
             </p>
 
-            <h2 className="mt-4 font-title text-4xl font-semibold tracking-[-0.04em] text-white">
-              Quero falar sobre um projeto de marca ou site
-            </h2>
-
-            <p className="mt-6 max-w-3xl text-base leading-8 text-white/70">
-              Se você quer entender se algum dos pacotes do Svicero Studio faz
-              sentido para o seu momento, preencha o formulário de interesse.
-              Assim o estúdio entende seu contexto e consegue responder com mais
-              clareza sobre próximos passos e investimento.
-            </p>
-
-            <div className="mt-8">
-              <Button href="/formulario-interesse" variant="secondary">
-                Preencher formulário de interesse
+            <div className="mt-8 flex justify-center">
+              <Button href="/diagnostico" variant="secondary">
+                Agendar Diagnóstico
               </Button>
             </div>
           </div>
         </section>
 
-        {/* CONTATO DIRETO */}
-        <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-10 lg:pb-20">
+        {/* CANAIS DIRETOS */}
+        <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">
@@ -95,9 +72,9 @@ const Contato = () => {
               </h2>
 
               <p className="mt-6 text-base leading-8 text-white/70">
-                Se ainda não é o momento de falar sobre um projeto específico,
-                mas você quer tirar uma dúvida ou conversar sobre outra demanda,
-                use um destes canais.
+                Se ainda não é o momento de falar sobre um projeto, mas você 
+                quer tirar uma dúvida ou conversar sobre outra demanda, use um 
+                destes canais diretamente.
               </p>
             </div>
 
@@ -139,17 +116,11 @@ const Contato = () => {
             </h3>
 
             <p className="mt-4 max-w-2xl text-sm leading-7 text-white/70">
-              O estúdio costuma responder mensagens e formulários em até alguns
-              dias úteis. Se sua demanda for urgente, o melhor caminho é entrar
-              em contato diretamente pelo WhatsApp.
+              O estúdio costuma responder mensagens em até dois dias úteis. 
+              Se sua demanda for urgente, o caminho mais rápido é o WhatsApp.
             </p>
           </div>
         </section>
-
-        {/* CTA FINAL */}
-        <div className='pt-24'>
-          <CTAFinal />
-        </div>
 
         <Footer />
       </div>

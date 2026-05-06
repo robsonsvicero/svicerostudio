@@ -124,10 +124,10 @@ const Processos = () => {
             </div>
           </div>
           <Button 
-            href="/contato" 
+            href="/diagnostico" 
             className="mx-auto"
             variant='secondary'
-            >Quero falar sobre meu projeto</Button>
+            >Agendar Diagnóstico</Button>
         </section>
 
         {/* PAPEL DO CLIENTE */}
@@ -181,9 +181,9 @@ const Processos = () => {
             <p className="text-white/80 text-base mb-8 max-w-2xl mx-auto">Se você se identificou com esse processo e sente que é o momento de levar sua marca e presença digital a outro nível, o próximo passo é simples.</p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Button 
-              href="/contato" 
+              href="/diagnostico" 
               variant='primary'
-              >Quero falar sobre meu projeto</Button>
+              >Agendar Diagnóstico</Button>
               <Button 
               href="/planos" 
               variant='outline'

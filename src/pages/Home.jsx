@@ -19,6 +19,7 @@ import { getNameInitials } from '../utils/placeholders';
 import idvDesigner from '../images/idv-deigner.webp';
 import uiDesigner from '../images/ui-designer.webp';
 import developer from '../images/developer.webp';
+import DiagnosticoSection from '../components/Home/DiagnosticoSection'; 
 
 import HeroSection from '../components/Home/HeroSection';
 import ServicesSection from '../components/Home/ServicesSection';
@@ -379,7 +380,7 @@ const Home = () => {
               </div>
 
               <div className="flex flex-col md:flex-row gap-4">
-                <Button href="#contato" variant="secondary">
+                <Button href="/diagnostico" variant="secondary">
                   Agendar Diagnóstico
                 </Button>
                 <Button href="/processos" variant="outline">
@@ -389,6 +390,9 @@ const Home = () => {
             </div>
           </div>
         </section>
+
+        {/* Diagnostico Section */}
+        <DiagnosticoSection />
 
         {/* Projetos Selecionados */}
         <ProjectsSection projects={projects} />

@@ -88,7 +88,7 @@ const Hero = () => {
 
         {/* CTA */}
         <div className="reveal stagger-4 mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-          <Button variant="secondary" size="lg" href="#contato">
+          <Button variant="secondary" size="lg" href="/diagnostico">
             Agendar Diagnóstico
           </Button>
         </div>

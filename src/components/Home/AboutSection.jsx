@@ -112,7 +112,7 @@ const AboutSection = () => {
 
             <div className="flex flex-row justify-center">
               <Button
-                href="#contato"
+                href="/diagnostico"
                 variant="secondary"
                 className="w-full mt-10 sm:mt-12 self-start shadow-lg transition"
               >
