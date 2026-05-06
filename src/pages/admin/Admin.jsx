@@ -169,6 +169,9 @@ const Admin = () => {
     {
       title: 'Comentários', badge: 'MODERAÇÃO', description: 'Faça a moderação com mais clareza, filtros e contexto.', icon: 'fa-solid fa-comments', link: '/admin/comentarios', color: 'bg-gradient-to-br from-[#0C2A1A] via-[#2B6B4A] to-[#1A3A2A]', stats: '5 pendentes',
     },
+    {
+      title: 'FAQ', badge: 'DÚVIDAS', description: 'Gerencie as perguntas frequentes exibidas no site e na home.', icon: 'fa-solid fa-circle-question', link: '/admin/faq', color: 'bg-gradient-to-br from-[#2A1B3A] via-[#4A2B6B] to-[#1A0C2A]', stats: 'Gerenciar',
+    },
   ];
 
   // Atalhos
