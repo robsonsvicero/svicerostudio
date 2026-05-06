@@ -60,12 +60,12 @@ const Hero = () => {
         </h1>
 
         {/* Parágrafo */}
-        <p className="reveal stagger-2 mt-5 sm:mt-6 text-white/90 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+        <p className="reveal stagger-2 mt-5 sm:mt-6 text-white/90 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
           Usamos estratégia de marca e design para reposicionar o seu negócio, justificar preços mais altos e atrair clientes dispostos a pagar o que você vale.
         </p>
 
         {/* Texto de transição para o CTA */}
-        <p className="reveal stagger-3 mt-8 text-white/70 text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-medium">
+        <p className="reveal stagger-3 mt-8 text-white/70 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed font-medium">
           Uma conversa estratégica para entender por que sua marca ainda não sustenta o preço que você merece cobrar – e o que precisa mudar para isso.
         </p>
 
