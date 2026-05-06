@@ -56,25 +56,30 @@ const Hero = () => {
 
         {/* Título - Centralizado e em uma linha */}
         <h1 className="reveal stagger-1 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.1] max-w-4xl mx-auto mt-12 sm:mt-16 md:mt-24 lg:mt-28 text-white text-balance">
-          Marca e site à altura de quem você é
+          Ajudamos empresas que já vendem a sair da guerra de preços.
         </h1>
 
         {/* Parágrafo */}
         <p className="reveal stagger-2 mt-5 sm:mt-6 text-white/80 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-          Criamos, com você, uma presença digital que combina estratégia,
-          estética e um pouco de magia, para o seu trabalho ser reconhecido
-          antes mesmo do primeiro contato.
+          Usamos estratégia de marca e design para reposicionar o seu negócio, justificar preços mais altos e atrair clientes dispostos a pagar o que você vale.
+        </p>
+
+        {/* Texto de transição para o CTA */}
+        <p className="reveal stagger-3 mt-8 text-white/90 text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-medium">
+          Uma conversa estratégica para entender por que sua marca ainda não sustenta o preço que você merece cobrar – e o que precisa mudar para isso.
         </p>
 
         {/* Botões - Com bordas arredondadas (rounded-2xl) */}
-        <div className="reveal stagger-3 mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <div className="reveal stagger-4 mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
           <Button variant="secondary" size="lg" href="#contato">
-            Revisar presença digital
-          </Button>
-          <Button variant="outline" size="lg" href="#projetos">
-            Ver como funciona
+            Agendar um Diagnóstico de Posicionamento
           </Button>
         </div>
+
+        {/* Microfrase final */}
+        <p className="reveal stagger-5 mt-12 text-white/40 text-[10px] sm:text-xs uppercase tracking-[0.2em] max-w-2xl mx-auto">
+          Falamos a língua do empresário, começando pelo seu negócio – e só depois indo para o design.
+        </p>
       </div>
 
       {/* Paginação do Carrossel - Barras grandes e só mudam de cor */}
