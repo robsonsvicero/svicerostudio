@@ -77,13 +77,26 @@ app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 // CORS
 const corsOriginFn = (origin, callback) => {
   const env = process.env.CORS_ORIGIN;
+  
+  // Sempre permitir a origem de produção
+  const alwaysAllowed = [
+    'https://www.svicerostudio.com.br',
+    'https://svicerostudio.com.br',
+    'http://localhost:5173'
+  ];
+
+  if (origin && alwaysAllowed.includes(origin)) {
+    return callback(null, true);
+  }
+
   if (!env || env.trim() === '' || env.includes('*')) {
     return callback(null, true);
   }
   if (!origin) return callback(null, true);
   const allowed = env.split(',').map((o) => o.trim());
   if (allowed.includes(origin)) return callback(null, true);
-  return callback(new Error('Not allowed by CORS'));
+  
+  return callback(null, false); // Retorna false em vez de Error para CORS falhar graciosamente
 };
 app.use(
   cors({
