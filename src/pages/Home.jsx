@@ -36,21 +36,21 @@ const Home = () => {
       alt: 'Card Designer',
       badge: { text: 'Branding & Identidade', className: 'designer text-[15px] font-medium text-[#FF9BAA] bg-[#FF9BAA]/20' },
       title: 'Arquitetura de marca para ampliar percepção de valor e desejo.',
-      link: '/servico-identidade-visual'
+      link: '/planos-pacotes'
     },
     {
       img: uiDesigner,
       alt: 'Card UI designer',
       badge: { text: 'UI & UX', className: 'ui-ux text-[15px] font-medium text-[#7EC8E3] bg-[#7EC8E3]/20' },
       title: 'Experiências digitais que reduzem fricção e elevam conversão qualificada.',
-      link: '/servico-ui-design'
+      link: '/planos-pacotes'
     },
     {
       img: developer,
       alt: 'Card Web Design',
       badge: { text: 'Web Design', className: 'developer text-[15px] font-medium text-[#6FCF97] bg-[#6FCF97]/20' },
       title: 'Infraestrutura web de alta performance para operações premium.',
-      link: '/servico-front-end'
+      link: '/planos-pacotes'
     },
   ];
 

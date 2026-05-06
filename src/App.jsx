@@ -8,9 +8,6 @@ import ConsentBanner from './components/ConsentBanner';
 import './styles/global.css';
 
 const Home = lazy(() => import('./pages/Home'));
-const ServiceFrontEnd = lazy(() => import('./pages/ServiceFrontEnd'));
-const ServiceIdentidadeVisual = lazy(() => import('./pages/ServiceIdentidadeVisual'));
-const ServiceUIUXDesign = lazy(() => import('./pages/ServiceUIUXDesign'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Login = lazy(() => import('./pages/Login'));
@@ -47,9 +44,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               {/* <Route path="/agenda" element={<Schedule />} /> */}
-              <Route path="/servico-front-end" element={<ServiceFrontEnd />} />
-              <Route path="/servico-identidade-visual" element={<ServiceIdentidadeVisual />} />
-              <Route path="/servico-ui-design" element={<ServiceUIUXDesign />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/cartao" element={<BusinessCard />} />

@@ -44,7 +44,7 @@ const Diagnostico = () => {
           </div>
         </section>
 
-        {/* BLOCO 1 – O que é e para quem é */}
+       {/* BLOCO 1 – O que é e para quem é */}
         <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
             <div>
@@ -227,11 +227,11 @@ const Diagnostico = () => {
                 </Button>
 
                 <Button
-                  href="/diagnostico"
+                  href="/formulario-interesse"
                   variant="outline"
                   className="w-full"
                 >
-                  Agendar Diagnóstico
+                  Preencher formulário
                 </Button>
 
                 <p className="text-[11px] text-white/70 leading-5 mt-1">

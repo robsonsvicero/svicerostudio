@@ -26,39 +26,28 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-footer-bg/80 backdrop-blur-md py-2 font-body border-b border-white/5">
       {/* DESKTOP */}
-      <div className="hidden md:flex items-center justify-between max-w-7xl mx-auto px-6 h-16">
+      <div className="hidden md:flex items-center justify-between max-w-7xl mx-auto px-6 h-24">
         {/* Logo à esquerda */}
-        <div className="flex-1 flex items-center justify-start">
+        <div className="flex items-center justify-start">
           <a href="/" className="hover:opacity-80 transition-opacity">
             <img
               src={logo}
               alt="Svicero Studio Logo"
-              className="h-12 w-auto object-contain"
+              className="h-16 w-auto object-contain"
             />
           </a>
         </div>
 
         {/* Centro: MENU aciona o overlay */}
-        <div className="flex-1 flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <button 
             onClick={() => setMenuOpen(true)}
             className="group flex items-center gap-3 text-sm font-bold tracking-[0.3em] text-text-primary hover:text-secondary transition-colors"
           >
-            <span className="w-8 h-[1px] bg-secondary/50 group-hover:w-12 transition-all"></span>
+            <span className="w-8 h-[1px] bg-low-dark/60 group-hover:w-12 transition-all"></span>
             MENU
-            <span className="w-8 h-[1px] bg-secondary/50 group-hover:w-12 transition-all"></span>
+            <span className="w-8 h-[1px] bg-low-dark/60 group-hover:w-12 transition-all"></span>
           </button>
-        </div>
-
-        {/* Ícone de engrenagem à direita */}
-        <div className="flex-1 flex justify-end">
-          <Button 
-            variant="custom" 
-            size="icon" 
-            className="bg-transparent hover:bg-secondary/20 border border-white/5"
-            href="/admin">
-            <Cog className="text-cream/60" size={22} />
-          </Button>
         </div>
       </div>
 
