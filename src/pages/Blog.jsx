@@ -155,28 +155,9 @@ const Blog = () => {
         {/* Filtros + Grid */}
         <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-10 lg:pb-28">
 
-          {/* Filtros de Categoria */}
-          {categories.length > 1 && (
-            <div className="mb-10 w-full">
-              <div className="flex overflow-x-auto md:flex-wrap md:justify-center items-center gap-2 sm:gap-6 pb-4 sm:pb-0 scrollbar-hide hide-scrollbar w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-5 py-2.5 rounded-full text-base whitespace-nowrap transition-all ${selectedCategory === category
-                      ? 'bg-copper text-white shadow-md font-medium'
-                      : 'bg-transparent text-muted hover:text-cream font-normal'
-                      }`}
-                  >
-                    {category}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          )}
-
+          
           {/* Barra de Busca - Ocultada conforme solicitação */}
-          {/*
+          
           <div className="mb-8 max-w-2xl mx-auto">
             <div className="relative">
               <input
@@ -194,7 +175,28 @@ const Blog = () => {
               </p>
             )}
           </div>
-          */}
+         
+
+          {/* Filtros de Categoria */}
+          {categories.length > 1 && (
+            <div className="mb-10 w-full">
+              <div className="flex overflow-x-auto md:flex-wrap md:justify-center items-center gap-2 sm:gap-6 pb-4 sm:pb-0 scrollbar-hide hide-scrollbar w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-5 py-2 rounded-full text-[15px] whitespace-nowrap transition-all outline-none ${selectedCategory === category
+                      ? 'bg-copper text-white shadow-md font-medium'
+                      : 'bg-transparent text-muted hover:text-cream font-normal border-none'
+                      }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
 
           {/* Filtros de Categoria */}
           {/* Categoria filters moved up */}
