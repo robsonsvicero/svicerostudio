@@ -29,7 +29,7 @@ const ClientsMarquee = () => {
       const swiper = new Swiper(swiperRef.current, {
         loop: true,
         slidesPerView: 'auto',
-        spaceBetween: 40,
+        spaceBetween: 50,
         speed: 2000,
         autoplay: {
           delay: 0,
@@ -53,16 +53,20 @@ const ClientsMarquee = () => {
   return (
     <section className="py-12 bg-charcoal/50 border-y border-white/5 overflow-hidden">
       <div className="swiper clients-marquee-swiper" ref={swiperRef}>
-        <div className="swiper-wrapper !ease-linear">
+        <div className="swiper-wrapper !ease-linear items-center">
           {[...logos, ...logos].map((logo, index) => (
-            <div key={index} className="swiper-slide !w-auto flex items-center justify-center gap-10">
-              <img 
-                src={logo} 
-                alt={`Cliente ${index + 1}`} 
-                className="h-16 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500"
-              />
-              <div className="w-2 h-2 rounded-full bg-copper flex-shrink-0"></div>
-            </div>
+            <React.Fragment key={index}>
+              <div className="swiper-slide !w-auto flex items-center justify-center">
+                <img 
+                  src={logo} 
+                  alt={`Cliente ${index + 1}`} 
+                  className="h-10 md:h-14 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500"
+                />
+              </div>
+              <div className="swiper-slide !w-auto flex items-center justify-center">
+                <div className="w-1.5 h-1.5 rounded-full bg-copper flex-shrink-0"></div>
+              </div>
+            </React.Fragment>
           ))}
         </div>
       </div>
