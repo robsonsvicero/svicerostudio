@@ -8,9 +8,9 @@ const Diagnostico = () => {
   return (
     <>
       <SEOHelmet
-        title="Diagnóstico de Posicionamento — Svicero Studio"
-        description="Uma conversa estratégica para entender por que sua marca ainda não sustenta o preço que você merece cobrar — e o que precisa mudar no seu posicionamento para sair da guerra de preços."
-        keywords="diagnóstico de posicionamento, estratégia de marca, guerra de preços, branding para empresários"
+        title="Diagnóstico de Posicionamento"
+        description="Uma conversa estratégica para entender por que sua marca ainda não sustenta o preço que você merece cobrar — e o que precisa mudar para sair da guerra de preços."
+        canonical="/diagnostico"
       />
 
       <div className="bg-charcoal min-h-screen text-cream font-body">
@@ -45,7 +45,7 @@ const Diagnostico = () => {
           </div>
         </section>
 
-       {/* BLOCO 1 – O que é e para quem é */}
+        {/* BLOCO 1 – O que é e para quem é */}
         <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
             <div>
@@ -211,38 +211,38 @@ const Diagnostico = () => {
                 <h3 className="text-2xl font-medium tracking-tight text-cream mb-4">
                   Agendar Diagnóstico
                 </h3>
-  
+
                 <p className="text-sm sm:text-base text-cream/90 leading-[1.6] mb-6">
-                Para agendar, você pode falar direto pelo WhatsApp ou, se
-                preferir, preencher o formulário. Em ambos os casos, a intenção é
-                a mesma: entender o seu contexto antes de qualquer proposta.
-              </p>
-
-              <div className="flex flex-col gap-4">
-                <Button
-                  href="https://wa.me/5511964932007?text=Ol%C3%A1%20Robson%2C%20gostaria%20de%20agendar%20um%20diagn%C3%B3stico%20de%20posicionamento%20para%20a%20minha%20marca."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="primary"
-                  className="w-full"
-                >
-                  Agendar pelo WhatsApp
-                </Button>
-
-                <Button
-                  href="/formulario-interesse"
-                  variant="outline"
-                  className="w-full"
-                >
-                  Preencher formulário
-                </Button>
-
-                <p className="text-[11px] text-white/70 leading-[1.6] mt-1 font-mono uppercase tracking-wider text-center">
-                  O diagnóstico não é compromisso de fechar projeto. É um passo
-                  anterior, para entender se faz sentido trabalharmos juntos e
-                  como o Svicero Studio pode gerar mais valor para o seu negócio.
+                  Para agendar, você pode falar direto pelo WhatsApp ou, se
+                  preferir, preencher o formulário. Em ambos os casos, a intenção é
+                  a mesma: entender o seu contexto antes de qualquer proposta.
                 </p>
-              </div>
+
+                <div className="flex flex-col gap-4">
+                  <Button
+                    href="https://wa.me/5511964932007?text=Ol%C3%A1%20Robson%2C%20gostaria%20de%20agendar%20um%20diagn%C3%B3stico%20de%20posicionamento%20para%20a%20minha%20marca."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="primary"
+                    className="w-full"
+                  >
+                    Agendar pelo WhatsApp
+                  </Button>
+
+                  <Button
+                    href="/formulario-interesse"
+                    variant="outline"
+                    className="w-full"
+                  >
+                    Preencher formulário
+                  </Button>
+
+                  <p className="text-[11px] text-white/70 leading-[1.6] mt-1 font-mono uppercase tracking-wider text-center">
+                    O diagnóstico não é compromisso de fechar projeto. É um passo
+                    anterior, para entender se faz sentido trabalharmos juntos e
+                    como o Svicero Studio pode gerar mais valor para o seu negócio.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

@@ -2,9 +2,10 @@ import React from 'react';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
-import FAQ from '../components/Blog/FAQ';
+import FAQSection from '../components/Home/FAQSection';
 import { API_URL } from '../lib/api';
 import SEOHelmet from '../components/SEOHelmet';
+import CTAFinal from '../components/CTAFinal';
 
 const etapas = [
   {
@@ -45,25 +46,6 @@ const etapas = [
   }
 ];
 
-const faq = [
-  {
-    pergunta: 'Quanto tempo leva, em média, um projeto completo?',
-    resposta: 'Depende do escopo, mas, em média, um projeto que envolve identidade visual + site leva de X a Y semanas. Isso pode variar conforme o número de ajustes e sua disponibilidade para aprovar cada etapa.'
-  },
-  {
-    pergunta: 'Eu preciso decidir tudo sozinho?',
-    resposta: 'Não. O processo é guiado. Você toma decisões com base em propostas e recomendações do estúdio, sempre com contexto e explicação.'
-  },
-  {
-    pergunta: 'E se eu não gostar de algo?',
-    resposta: 'Feedback faz parte do processo. Em cada etapa há espaço para ajustes e refinamentos, sempre dentro do escopo combinado.'
-  },
-  {
-    pergunta: 'Você atende clientes de outras cidades ou países?',
-    resposta: 'Sim. Todo o processo foi pensado para funcionar 100% online, com reuniões em vídeo e troca de materiais digitais.'
-  }
-];
-
 const Processos = () => {
   const [perguntas, setPerguntas] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -99,7 +81,7 @@ const Processos = () => {
 
         {/* POR QUE TER PROCESSO IMPORTA */}
         <section className="flex flex-col items-center justify-center rounded-[2rem] border border-white/5 bg-surface shadow-sm text-xs font-semibold text-copper mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center hover:border-white/10 transition-colors">
-          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-4">Por que um bom processo é tão importante quanto um bom design</h2>
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight leading-tight text-cream mb-4">Por que um bom processo é tão importante quanto um bom design</h2>
           <p className="max-w-4xl mx-auto text-left font-normal text-lg mb-6 text-muted leading-[1.6]">
             Um projeto de marca e site não é só “fazer um logo bonito” ou montar uma página na internet. Ele precisa traduzir o que você faz, como você pensa e o tipo de cliente que você quer atrair. Por isso, no Svicero Studio, o processo foi pensado para: entender seu momento com profundidade, transformar isso em estratégia, e só então partir para o visual e o digital. Você não entra em um funil genérico, você entra em um processo claro, passo a passo, com começo, meio e fim.
           </p>
@@ -123,11 +105,11 @@ const Processos = () => {
               ))}
             </div>
           </div>
-          <Button 
-            href="/formulario-interesse" 
+          <Button
+            href="/formulario-interesse"
             className="mx-auto"
             variant='primary'
-            >Agendar Diagnóstico</Button>
+          >Agendar Diagnóstico</Button>
         </section>
 
         {/* PAPEL DO CLIENTE */}
@@ -144,7 +126,7 @@ const Processos = () => {
             <div className='flex justify-center border-t border-white/5 pt-8 mt-4'>
               <p className="text-center max-w-2xl text-muted text-sm"><span className='font-medium text-cream'>Não se preocupe:</span> você não precisa “saber de design” ou “entender de site”. Seu papel é falar do seu negócio; o nosso é traduzir isso em marca e presença digital.</p>
             </div>
-            
+
           </div>
         </section>
 
@@ -163,34 +145,20 @@ const Processos = () => {
         </section>
 
         {/* MINI FAQ SOBRE O PROCESSO */}
-        <section className="w-full px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-8 text-center">Dúvidas rápidas sobre o processo</h2>
-          {loading ? (
-            <div className="text-muted text-center">Carregando perguntas...</div>
-          ) : (
-            <div className="flex w-full">
-              <FAQ faqs={perguntas} />
-            </div>
-          )}
-        </section>
+        {loading ? (
+          <div className="text-muted text-center py-12">Carregando perguntas...</div>
+        ) : (
+          <FAQSection
+            faqs={perguntas}
+            startIndex={4}
+            endIndex={8}
+            title="Dúvidas rápidas sobre o processo"
+            subtitle="FAQ"
+          />
+        )}
 
         {/* CTA FINAL */}
-        <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <div className="rounded-[2rem] border border-white/5 bg-surface p-12 shadow-md hover:shadow-lg hover:border-white/10 transition-all">
-            <h2 className="text-3xl md:text-[2.5rem] font-medium tracking-tight text-cream mb-6 text-balance">Pronto para dar o próximo passo com a sua marca?</h2>
-            <p className="text-muted text-lg mb-8 max-w-2xl mx-auto leading-[1.6]">Se você se identificou com esse processo e sente que é o momento de levar sua marca e presença digital a outro nível, o próximo passo é simples.</p>
-            <div className="flex flex-col md:flex-row gap-4 justify-center">
-              <Button 
-              href="/formulario-interesse" 
-              variant='primary'
-              >Agendar Diagnóstico</Button>
-              <Button 
-              href="/planos-pacotes" 
-              variant='outline'
-              >Ver pacotes e investimentos</Button>
-            </div>
-          </div>
-        </section>
+        <CTAFinal />
       </main>
       <Footer />
     </div>

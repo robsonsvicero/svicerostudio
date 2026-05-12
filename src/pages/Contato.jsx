@@ -30,10 +30,11 @@ const Contato = () => {
   return (
     <>
       <SEOHelmet
-        title="Contato — Svicero Studio"
-        description="Fale com o Svicero Studio pelo canal que preferir: e-mail, WhatsApp ou Instagram."
-        keywords="contato svicero studio, falar com designer, whatsapp designer"
+        title="Contato"
+        description="Fale com o Svicero Studio pelo canal que preferir: e-mail, WhatsApp ou Instagram. Para projetos de marca, agende um diagnóstico de posicionamento."
+        canonical="/contato"
       />
+
       <div className="bg-charcoal min-h-screen text-cream font-body">
         <Header variant="solid" />
 
@@ -49,8 +50,8 @@ const Contato = () => {
               </h1>
 
               <p className="mx-auto mt-6 max-w-2xl text-lg leading-[1.6] text-muted">
-                Para dúvidas, parcerias ou conversas rápidas, use o canal que 
-                preferir. Se a ideia é falar sobre um projeto de marca, o melhor 
+                Para dúvidas, parcerias ou conversas rápidas, use o canal que
+                preferir. Se a ideia é falar sobre um projeto de marca, o melhor
                 caminho é agendar um diagnóstico.
               </p>
 
@@ -77,8 +78,8 @@ const Contato = () => {
                 </h2>
 
                 <p className="mt-6 text-base leading-[1.6] text-muted">
-                  Se ainda não é o momento de falar sobre um projeto, mas você 
-                  quer tirar uma dúvida ou conversar sobre outra demanda, use um 
+                  Se ainda não é o momento de falar sobre um projeto, mas você
+                  quer tirar uma dúvida ou conversar sobre outra demanda, use um
                   destes canais diretamente.
                 </p>
               </div>
@@ -115,19 +116,19 @@ const Contato = () => {
         <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-10 lg:pb-20">
           <ScrollReveal direction="up" delay={0.1}>
             <div className="rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors bg-surface p-10 shadow-sm">
-            <p className="text-[10px] uppercase tracking-widest text-copper font-mono">
-              Tempo de resposta
-            </p>
+              <p className="text-[10px] uppercase tracking-widest text-copper font-mono">
+                Tempo de resposta
+              </p>
 
-            <h3 className="mt-3 text-2xl font-medium tracking-tight text-cream">
-              Em quanto tempo você recebe resposta?
-            </h3>
+              <h3 className="mt-3 text-2xl font-medium tracking-tight text-cream">
+                Em quanto tempo você recebe resposta?
+              </h3>
 
-            <p className="mt-4 text-base leading-[1.6] text-muted">
-              O estúdio costuma responder mensagens em até dois dias úteis. 
-              Se sua demanda for urgente, o caminho mais rápido é o WhatsApp.
-            </p>
-          </div>
+              <p className="mt-4 text-base leading-[1.6] text-muted">
+                O estúdio costuma responder mensagens em até dois dias úteis.
+                Se sua demanda for urgente, o caminho mais rápido é o WhatsApp.
+              </p>
+            </div>
           </ScrollReveal>
         </section>
 

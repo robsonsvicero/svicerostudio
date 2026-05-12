@@ -116,7 +116,7 @@ const Home = () => {
       const data = await res.json();
       let faqsData = Array.isArray(data) ? data : [];
       faqsData = faqsData.sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0));
-      setFaqs(faqsData.slice(0, 4)); // Pega apenas os 4 primeiros
+      setFaqs(faqsData); // Estado guarda tudo, o componente recorta na hora
     } catch (error) {
       console.error("Failed to fetch FAQs:", error);
     }
@@ -322,7 +322,7 @@ const Home = () => {
 
         <BlogSection blogPosts={blogPosts} />
 
-        <FAQSection faqs={faqs} />
+        <FAQSection faqs={faqs} endIndex={4} />
 
         {/* CTA Final */}
         <CTAFinal />

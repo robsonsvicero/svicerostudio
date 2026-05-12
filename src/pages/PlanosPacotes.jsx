@@ -4,6 +4,7 @@ import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import { Link } from 'react-router-dom';
 import CTAFinal from '../components/CTAFinal';
+import FAQSection from '../components/Home/FAQSection';
 
 const pacotes = [
   {
@@ -383,28 +384,14 @@ const PlanosPacotes = () => {
         </section>
 
         {/* FAQ */}
-        <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-10 text-center">
-            Perguntas frequentes
-          </h2>
+        <FAQSection 
+          title="Perguntas frequentes" 
+          subtitle="FAQ" 
+          faqs={faq} 
+          startIndex={0} 
+          endIndex={4} 
+        />
 
-          <div className="grid gap-8 md:grid-cols-2">
-            {faq.map((item, idx) => (
-              <div
-                key={idx}
-                className="rounded-[2rem] border border-white/5 bg-surface shadow-sm p-7 hover:border-white/10 transition-colors"
-              >
-                <h3 className="text-xl font-medium text-copper mb-3">
-                  {item.pergunta}
-                </h3>
-
-                <p className="text-muted leading-[1.6]">
-                  {item.resposta}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
         {/* CTA FINAL */}
         <CTAFinal />
       </main>
