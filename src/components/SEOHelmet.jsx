@@ -2,13 +2,13 @@ import { Helmet } from 'react-helmet-async';
 
 const DEFAULT_OG_IMAGE = 'https://svicerostudio.com.br/og-image.webp';
 
-const SEOHelmet = ({ 
-  title = 'Design Estratégico para Marcas que Querem Crescer',
-  description = 'Svicero Studio é um ecossistema de design estratégico, identidade visual e UX design que conecta estética bem pensada com estratégia orientada a resultado. Criamos marcas, interfaces e sites que posicionam negócios de autônomos a empresas em expansão, com clareza, autoridade e estrutura para crescer.',
-  keywords = 'Svicero Studio, design estratégico, identidade visual, UX design, UI design, desenvolvimento web, criação de sites, branding, posicionamento de marca, design para negócios, estúdio de design, consultoria de marca',
+const SEOHelmet = ({
+  title = 'Estratégia de Marca e Design para Sair da Guerra de Preços',
+  description = 'O Svicero Studio é um estúdio de estratégia de marca e design que ajuda empresas que já vendem a sair da guerra de preços — reposicionando a marca para justificar preços mais altos e atrair clientes mais alinhados.',
+  keywords = 'estratégia de marca, posicionamento de marca, identidade visual estratégica, branding para empresas, sair da guerra de preços, reposicionamento de marca, diagnóstico de posicionamento, Svicero Studio, Robson Svicero, design estratégico',
   ogImage = DEFAULT_OG_IMAGE,
   ogType = 'website',
-  canonical
+  canonical,
 }) => {
   const siteUrl = 'https://svicerostudio.com.br';
   const BRAND_NAME = 'Svicero Studio';
@@ -18,14 +18,15 @@ const SEOHelmet = ({
 
   const trimToLength = (value, maxLength) => {
     if (value.length <= maxLength) return value;
-    return safeTrim(value.slice(0, maxLength).replace(/[\s|:;,-]+$/, ''));
+    return safeTrim(value.slice(0, maxLength).replace(/[\s|:;,-]+
+$
+/, ''));
   };
 
   const withBrand = (baseTitle) => {
     if (baseTitle.includes(BRAND_NAME)) {
       return trimToLength(baseTitle, TITLE_LIMIT);
     }
-
     const suffix = ` | ${BRAND_NAME}`;
     const maxBaseLength = TITLE_LIMIT - suffix.length;
     const normalizedBase = trimToLength(baseTitle, maxBaseLength);
@@ -36,14 +37,23 @@ const SEOHelmet = ({
 
   const normalizeOgImage = (imageUrl) => {
     if (!imageUrl) return DEFAULT_OG_IMAGE;
-    if (/^https?:\/\//i.test(imageUrl) || imageUrl.startsWith('data:') || imageUrl.startsWith('//')) {
+    if (
+      /
+^
+https?:\/\//i.test(imageUrl) ||
+      imageUrl.startsWith('data:') ||
+      imageUrl.startsWith('//')
+    ) {
       return imageUrl;
     }
     return `${siteUrl}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`;
   };
+
   const fullOgImage = normalizeOgImage(ogImage);
   const fullCanonical = canonical
-    ? (canonical.startsWith('http') ? canonical : `${siteUrl}${canonical.startsWith('/') ? canonical : `/${canonical}`}`)
+    ? canonical.startsWith('http')
+      ? canonical
+      : `${siteUrl}${canonical.startsWith('/') ? canonical : `/${canonical}`}`
     : null;
 
   return (

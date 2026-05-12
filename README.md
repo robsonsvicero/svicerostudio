@@ -1,228 +1,158 @@
-# 🎨 Robson Svicero - Portfólio Profissional
+# 🎨 Svicero Studio - Engenharia Visual & Design Estratégico
 
-Este é o portfólio de Robson Svicero, especialista em Identidade Visual, UI/UX Design e Desenvolvimento Front-End. Meu foco é transformar ideias em experiências digitais memoráveis, utilizando ReactJS para performance e Tailwind CSS para um design ágil.
+Svicero Studio é uma plataforma de portfólio, blog corporativo e serviços de design estratégico focada em posicionamento de marcas de elite (High-Ticket). O projeto atua com excelência, do diagnóstico à presença digital, combinando uma interface moderna (Front-end) com gerenciamento de conteúdo completo através de um painel administrativo (Back-end).
 
 ![Preview do Projeto](./src/images/preview.webp)
 
-## 🚀 Tecnologias
+## 📖 Índice
 
-- **React 18.2.0** - Biblioteca JavaScript para interfaces
-- **Vite 5.0.0** - Build tool rápido
-- **React Router DOM 6.x** - Navegação client-side
-- **Tailwind CSS 3.4.15** - Framework CSS utility-first
-- **Swiper 11.0.0** - Carrossel de serviços
-- **Font Awesome 6.5.1** - Ícones
-- **Formspree** - Processamento de formulários
-- **Google Calendar** - Integração de agendamento
+- [Descrição do Projeto](#-descrição-do-projeto)
+- [Funcionalidades](#-funcionalidades)
+- [Tecnologias](#-tecnologias)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Instalação e Configuração](#-instalação-e-configuração)
+- [Uso e Execução](#-uso-e-execução)
+- [Contribuição](#-contribuição)
+- [Licença](#-licença)
+
+## 📌 Descrição do Projeto
+
+Desenvolvido para **Svicero Studio**, este projeto funciona tanto como um portfólio interativo quanto uma plataforma de atração e conversão contínua. Ele reflete a filosofia da marca: começar pelo negócio, passando por estratégia e culminando no design visual impecável.
+
+A aplicação conta com animações perfeitamente sincronizadas ao longo da rolagem, formulários integrados e um sistema robusto no backend para gerenciamento dinâmico de depoimentos, projetos de sucesso, comentários e postagens no blog corporativo.
 
 ## ✨ Funcionalidades
 
-### 🎯 Navegação e Performance
-- **Single Page Application (SPA)** com React Router para navegação instantânea
-- **Build otimizado** com Vite para carregamento ultra-rápido
-- **Imagens em WebP** reduzindo até 70% o tamanho dos arquivos
-- **Lazy loading** de componentes para melhor performance
+- **Experiência Visual Imersiva:** Animações baseadas em scroll (Intersection Observer) com _Framer Motion_ em todas as sessões e componentes.
+- **Plataforma de Blog e FAQ Dinâmicos:** Criação e publicação de conteúdos direto de um painel de administração customizado.
+- **Gestão de Depoimentos e Projetos:** Adição de novos cases e feedbacks de clientes via painel, com envio de imagens compactadas dinamicamente via backend.
+- **Performance e SEO:** Otimização para mecanismos de busca e uso assertivo de formatos WebP, gerando máxima otimização com build extremamente veloz no _Vite_.
+- **Atendimento Omnichannel:** Captura de Leads (Formulários de Interesse com Formspree) e redirecionamento dinâmico para WhatsApp.
+- **Interface e Tematização Dark Premium:** UI altamente estilizada com esquema de cores Dark Mode / Cobre (transmitindo Luxo/Estratégia).
 
-### 🎨 Design e Experiência
-- **Design 100% responsivo** adaptado para todos os dispositivos
-- **Tema customizado** com Tailwind CSS refletindo identidade visual única
-- **Animações suaves** e transições profissionais
-- **Componentes reutilizáveis** (Button, Card) com variantes
+## 🚀 Tecnologias
 
-### 📦 Funcionalidades de Negócio
-- **3 páginas de serviços** detalhadas (Identidade Visual, UI/UX Design, Front-End)
-- **Formulário de contato** integrado com Formspree
-- **Agendamento online** com Google Calendar
-- **Galeria de projetos** com links para Behance
-- **Carrossel de serviços** com Swiper
-- **WhatsApp flutuante** para contato rápido
+### Front-end
+- **React 18** e **Vite** para máxima produtividade e velocidade.
+- **Tailwind CSS** para design utility-first fluido e altamente responsivo.
+- **Framer Motion** para animações poderosas conectadas à interceptação de exibição.
+- **Swiper JS** para carrosséis dinâmicos integrados.
+- **React Router DOM 6+** na gestão de rotas, layouts e navegação client-side.
 
-### 🔍 SEO e Acessibilidade
-- **Meta tags otimizadas** (Open Graph, Twitter Card)
-- **Sitemap.xml** atualizado
-- **Robots.txt** configurado
-- **Página 404 customizada** com animação Lottie
-- **Schema.org** para dados estruturados
+### Back-end
+- **Node.js** e **Express 5.x** provendo uma API REST escalável e concisa.
+- **MongoDB & Mongoose** como banco de dados NoSQL de alta interatividade.
+- **JSON Web Tokens (JWT) & Bcryptjs** na camada de criptografia e autenticação do Painel Administrativo.
+- **Multer e Sharp** para recebimento, tratamento de redimensionamento e compressão de imagens antes do armazenamento (s3/local).
 
 ## 📂 Estrutura do Projeto
 
-
-```
+```bash
 svicerostudio/
-├── public/               # Arquivos estáticos
-│   ├── robots.txt        # SEO
-│   └── sitemap.xml       # Mapa do site
-├── src/
-│   ├── components/      # Componentes reutilizáveis
-│   │   ├── Layout/      # Header e Footer
-│   │   └── UI/          # Button e Card
-│   ├── images/          # Imagens (WebP otimizadas)
-│   ├── pages/           # Páginas da aplicação
-│   │   ├── Home.jsx
-│   │   ├── ServiceFrontEnd.jsx
-│   │   ├── ServiceIdentidadeVisual.jsx
-│   │   ├── ServiceUIUXDesign.jsx
-│   │   ├── NotFound.jsx
-│   │   ├── Admin.jsx
-│   │   ├── AdminBlog.jsx
-│   │   ├── AdminAutores.jsx
-│   │   ├── AdminProjetos.jsx
-│   │   ├── AdminComentarios.jsx
-│   │   ├── AdminDepoimentos.jsx
-│   │   ├── Blog.jsx
-│   │   ├── BlogPost.jsx
-│   │   ├── Contato.jsx
-│   │   ├── FAQ.jsx
-│   │   ├── Portfolio.jsx
-│   │   ├── PlanosPacotes.jsx
-│   │   ├── PacoteMarca.jsx
-│   │   ├── Agradecimento.jsx
-│   │   ├── ExclusaoDados.jsx
-│   │   ├── FormularioInteresse.jsx
-│   │   ├── Processos.jsx
-│   │   ├── ServicePage.jsx
-│   │   └── BusinessCard.jsx
-│   ├── styles/          # Estilos globais
-│   ├── App.jsx          # Configuração de rotas
-│   └── main.jsx         # Entry point
-├── backend/             # Backend Node.js (caso utilize funcionalidades administrativas)
+├── backend/                  # API Rest e Banco de Dados (Express, MongoDB)
+│   ├── scripts/              # Scripts de utilidade (seed, setup-admin, testes)
 │   ├── src/
-│   └── ...
-├── index.html           # HTML principal
-├── tailwind.config.js   # Configuração Tailwind
-├── vite.config.js       # Configuração Vite
-├── package.json         # Dependências
-└── README.md            # Documentação
+│   │   ├── middleware/       # Controle de acesso e autenticação JWT
+│   │   ├── models/           # Schemas Mongoose (Post, Projeto, Comment, Depoimento...)
+│   │   ├── routes/           # Mapeamento e lógica das Endpoints
+│   │   ├── utils/            # Funções helpers
+│   │   └── server.js         # Entry-point da API
+│   └── package.json    
+├── public/                   # Estáticos, sitemap e robots.txt
+├── src/                      # Código Front-end Principal (React)
+│   ├── api/                  # Clientes e instâncias de requisição web (Axios/Fetch)
+│   ├── components/           # Componentes base e Blocos das páginas (UI/Admin/Home)
+│   ├── pages/                # Rotas React completas e Telas do site
+│   │   └── admin/            # Telas de CRUD e gestão CMS (Painel Admin)
+│   ├── styles/               # CSS global (directives Tailwind)
+│   └── utils/                # Ajudantes de frontend (Slugs, Formatadores)
+├── index.html
+├── tailwind.config.js        # Tokens de UI (Escala de cinzas, cores primárias, fontes)
+└── vite.config.js            # Regras e plugins de empacotamento
 ```
 
-## 🛠️ Instalação
+## 🛠️ Instalação e Configuração
 
+### Pré-requisitos
+- [Node.js](https://nodejs.org/en/) (versão 18 ou superior)
+- [MongoDB](https://www.mongodb.com/) rodando localmente (porta 27017) ou uma [URI do Atlas](https://www.mongodb.com/cloud/atlas).
+- [Git](https://git-scm.com/)
 
-1. Clone o repositório:
-```bash
-git clone https://github.com/robsonsvicero/svicerostudio.git
-cd svicerostudio
-```
+### Passo a Passo
 
-2. Instale as dependências:
-```bash
-npm install
-```
+1. **Clone do Repositório**
+   ```bash
+   git clone https://github.com/robsonsvicero/svicerostudio.git
+   cd svicerostudio
+   ```
 
-3. Execute o servidor de desenvolvimento:
-```bash
-npm run dev
-```
+2. **Configuração do Backend**
+   Abra um terminal e acesse a pasta `backend/`:
+   ```bash
+   cd backend
+   npm install
+   ```
+   Crie um arquivo `.env` na raiz do backend baseado nas variáveis utilizadas no sistema:
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/svicerodb
+   JWT_SECRET=sua_chave_secreta_jwt
+   ```
+   *Se quiser iniciar o banco de dados com um usuário administrador:*
+   ```bash
+   npm run setup-admin
+   ```
 
-4. Acesse no navegador:
-```
-http://localhost:5173
-```
+3. **Configuração do Frontend**
+   No terminal alocado na raiz do projeto (`svicerostudio/`):
+   ```bash
+   npm install
+   ```
+   Para testes e apontamentos da api, pode-se criar `VITE_API_URL=http://localhost:5000` em um `.env` do front.
 
-## 📦 Build para Produção
+## 💻 Uso e Execução
 
-## 🗓️ Formato de Datas (posts)
+O framework proporciona scripts organizados para facilitar a execução conjunta.
 
-- **Formato recomendado:** sempre salvar `data_publicacao` no formato `YYYY-MM-DD` (ex.: `2026-01-16`).
-- **Motivo:** datetimes com `Z` (UTC midnight) são convertidos para o fuso local (ex.: UTC-3), o que pode exibir o dia anterior. Para evitar esse deslocamento, o projeto agora normaliza datas ao salvar e ao exibir.
-- **O que foi alterado:**
-  - Util de formatação: [src/utils/formatDate.js](src/utils/formatDate.js#L1-L200) — agora interpreta `YYYY-MM-DD` e `YYYY-MM-DDT00:00:00Z` como data local antes de formatar.
-  - Admin: [src/pages/AdminBlog.jsx](src/pages/AdminBlog.jsx) — antes de gravar, o campo `data_publicacao` é normalizado para `YYYY-MM-DD`; ao carregar para edição, também é apresentado nesse formato.
-- **Como testar localmente:**
-  1. Rode o script de testes criado: 
+**A partir do diretório raiz (`svicerostudio/`):**
 
-```bash
-node scripts/test-formatDate.mjs
-```
+- **Iniciando Ambiente de Desenvolvimento:**
+  ```bash
+  # Inicia somente o servidor Backend (Node/Express)
+  npm run dev:api 
 
-  2. No admin, crie/edite um post e defina a data de publicação como `2026-01-16`. Verifique na listagem do blog que a data aparece como `16 de janeiro de 2026`.
+  # Inicia o servidor Frontend (React/Vite) em modo de escuta
+  npm run dev 
+  ```
 
-Se preferir, podemos também adotar a prática de sempre salvar `data_publicacao` com timezone explícito `-03:00` no backend; me avise se quer que eu implemente isso.
+- **Gerando Build de Produção:**
+  Para gerar arquivos otimizados prontos para deploy estático.
+  ```bash
+  npm run build
+  ```
+  Isso gera a pasta `/dist` que pode ser enviada a um servidor.
+  *(Atenção: recursos como blog/admin dependem da inicialização de produção também na pasta `backend/` com `npm run start`)*.
 
-```bash
-npm run build
-```
+## 🤝 Contribuição
 
-Os arquivos otimizados serão gerados na pasta `dist/`.
+Contribuições ajudam a aprimorar o código e a arquitetura visual da plataforma.
 
-## 🚀 Deploy
+1. Faça o Fork deste repositório
+2. Crie uma branch para sua nova funcionalidade (`git checkout -b feature/MinhaInovacao`)
+3. Faça o commit de suas ações (`git commit -m 'feat: adicionar tal melhoria'`)
+4. Empurre suas modificações (`git push origin feature/MinhaInovacao`)
+5. Abra um **Pull Request**.
 
-### Hostinger (Recomendado)
-
-1. Execute o script de deploy:
-```bash
-.\deploy-hostinger.ps1
-```
-
-2. Faça upload do conteúdo da pasta `dist/` para `public_html/` via:
-   - File Manager da Hostinger
-   - FTP (FileZilla)
-
-
-## 🖥️ Backend (opcional)
-
-O projeto possui uma pasta `backend/` com API Node.js para funcionalidades administrativas (blog, autores, projetos, comentários, etc). Para rodar o backend:
-
-```bash
-cd backend
-npm install
-node src/server.js
-```
-
-O frontend pode funcionar de forma estática, mas recursos administrativos exigem o backend em execução.
-
-### Outros Hosts
-
-O projeto é compatível com qualquer host que suporte:
-- Arquivos estáticos
-- Mod_rewrite (Apache) ou configuração similar (Nginx)
-
-## 🎨 Personalização
-
-### Cores do Tema
-
-Edite `tailwind.config.js`:
-
-```js
-colors: {
-  primary: '#2F353B',    // Cinza escuro
-  secondary: '#B87333',  // Cobre
-  cream: '#F8F7F2',      // Creme
-  'dark-bg': '#141414',  // Fundo escuro
-}
-```
-
-### Fontes
-
-Configuradas no `tailwind.config.js`:
-- **Inter** - Corpo do texto
-- **Outfit** - Títulos
-
-## 🙏 Créditos e Agradecimentos
-
-Este site foi reconstruído com muito carinho e uma ajudinha de peso. Um salve especial à dupla que garantiu a performance e a agilidade: **ReactJS** (por toda a mágica da interface) e **Tailwind CSS** (por me salvar de vez de escrever muito CSS). Sem eles, a vida do desenvolvedor não seria tão leve!
-
-### Tecnologias que tornaram isso possível:
-- **React 18** - A base de tudo
-- **Vite** - Build tool que faz a diferença
-- **Tailwind CSS** - Styling sem sofrimento
-- **Swiper** - Carrosséis elegantes
-- **Font Awesome** - Ícones perfeitos
-- **Formspree** - Formulários sem backend
-- **Lottie** - Animações da página 404
-
-## 📧 Contato
-
-**Website**: [svicerostudio.com.br](https://svicerostudio.com.br)
-- **LinkedIn**: [linkedin.com/in/robsonsvicero](https://www.linkedin.com/in/robsonsvicero/)
-- **GitHub**: [github.com/robsonsvicero](https://github.com/robsonsvicero)
-- **Behance**: [behance.net/robsonsvicero](https://www.behance.net/robsonsvicero)
-**Email**: [hello@svicerostudio.com.br](mailto:hello@svicerostudio.com.br)
+Qualquer dúvida ou debate de ideia, abra uma nova **Issue**.
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está registrado sob a **Licença MIT** livre e padrão de mercado. Veja o arquivo base [LICENSE](LICENSE) deste repositório para detalhes sobre condições e permissões.
 
 ---
 
-Desenvolvido com 💙 em São Paulo
+**Svicero Studio • Engenharia Visual & Design Estratégico**
+- **Website:** [svicerostudio.com.br](https://svicerostudio.com.br/)
+- **Instagram:** [@svicerostudio](https://instagram.com/svicerostudio)
+
+*Desenvolvido com 💙 em São Paulo.*
