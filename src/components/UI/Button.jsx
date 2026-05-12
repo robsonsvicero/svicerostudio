@@ -26,15 +26,17 @@ const Button = ({
     // Variant: Border Beam
     const beamContent = (
       <>
-        <span className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#B87333_100%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
-        <span className="absolute inset-0 rounded-full bg-copper transition-opacity duration-300 group-hover:opacity-0"></span>
+        {/* Beam is now default */}
+        <span className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#B87333_100%)] opacity-100 transition-opacity duration-300"></span>
+        {/* Solid border appears on hover to "illuminate" */}
+        <span className="absolute inset-0 rounded-full bg-copper opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
         <span className={`flex items-center justify-center gap-3 uppercase transition-colors duration-300 group-hover:text-white font-bold tracking-[0.15em] text-white bg-surface w-full h-full rounded-full relative shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ${sizeClasses[size] || ''}`}>
             <span className="relative z-10">{children}</span>
             {icon && <span className="relative z-10 transition-transform duration-300 group-hover:scale-110">{icon}</span>}
         </span>
       </>
     );
-    const beamClasses = `group inline-flex overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(184,115,51,0.2)] rounded-full p-[1px] relative items-center justify-center focus:outline-none focus:ring-2 focus:ring-copper ${className}`;
+    const beamClasses = `group inline-flex overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_35px_rgba(184,115,51,0.5)] rounded-full p-[1px] relative items-center justify-center focus:outline-none focus:ring-2 focus:ring-copper ${className}`;
     
     if (href) {
       return <a href={href} target={target} rel={rel} className={beamClasses} {...props}>{beamContent}</a>;
@@ -46,15 +48,17 @@ const Button = ({
     // Variant: Secondary Border Beam (Inverted Primary)
     const beamSecondaryContent = (
       <>
-        <span className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#FAFAF8_100%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
-        <span className="absolute inset-0 rounded-full bg-cream transition-opacity duration-300 group-hover:opacity-0"></span>
-        <span className={`flex items-center justify-center gap-3 uppercase transition-colors duration-300 group-hover:text-white font-bold tracking-[0.15em] text-white bg-copper w-full h-full rounded-full relative shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ${sizeClasses[size] || ''}`}>
+        {/* White beam is now default */}
+        <span className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#FAFAF8_100%)] opacity-100 transition-opacity duration-300"></span>
+        {/* Solid white/cream border appears on hover */}
+        <span className="absolute inset-0 rounded-full bg-cream opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+        <span className={`flex items-center justify-center gap-3 uppercase transition-colors duration-300 group-hover:text-copper font-bold tracking-[0.15em] text-white bg-copper w-full h-full rounded-full relative shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ${sizeClasses[size] || ''}`}>
             <span className="relative z-10">{children}</span>
             {icon && <span className="relative z-10 transition-transform duration-300 group-hover:scale-110">{icon}</span>}
         </span>
       </>
     );
-    const beamSecondaryClasses = `group inline-flex overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(13,13,13,0.5)] rounded-full p-[1px] relative items-center justify-center focus:outline-none focus:ring-2 focus:ring-copper ${className}`;
+    const beamSecondaryClasses = `group inline-flex overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_35px_rgba(250,250,248,0.4)] rounded-full p-[1px] relative items-center justify-center focus:outline-none focus:ring-2 focus:ring-copper ${className}`;
     
     if (href) {
       return <a href={href} target={target} rel={rel} className={beamSecondaryClasses} {...props}>{beamSecondaryContent}</a>;
