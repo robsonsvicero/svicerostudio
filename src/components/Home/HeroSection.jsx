@@ -38,7 +38,7 @@ const Hero = () => {
 
   return (
     <section id="hero" className="max-w-7xl mx-auto px-6 pt-32 pb-24 lg:pt-48 lg:pb-32 grid lg:grid-cols-12 gap-12 lg:gap-8 items-center border-b border-white/5 font-body">
-      <ScrollReveal direction="right" delay={0.1} className="lg:col-span-6 flex flex-col items-start text-left order-2 lg:order-1 relative z-10">
+      <ScrollReveal direction="right" delay={0.1} className="lg:col-span-6 flex flex-col items-start text-left order-1 relative z-10">
         <span className="reveal text-copper text-[11px] font-mono uppercase tracking-[0.2em] mb-6 flex items-center gap-2 px-4 py-1.5 border border-copper/20 bg-copper/10 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(184,115,51,0.15)]">
           <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.8)]" />
           Branding
@@ -63,7 +63,7 @@ const Hero = () => {
         </div>
       </ScrollReveal>
 
-      <ScrollReveal direction="left" delay={0.3} className="lg:col-span-6 relative order-1 lg:order-2 [perspective:1000px] reveal stagger-2">
+      <ScrollReveal direction="left" delay={0.3} className="lg:col-span-6 relative order-2 [perspective:1000px] reveal stagger-2">
         <div className="absolute inset-0 bg-[#1E2023] rounded-[2rem] transform rotate-3 scale-[0.98] translate-x-3 translate-y-6 -z-10 border border-white/5 shadow-2xl"></div>
         <div className="w-full h-[450px] lg:h-[600px] bg-[#141414] rounded-[2rem] border border-white/10 overflow-hidden relative shadow-2xl group">
           {/* Carousel Track */}
