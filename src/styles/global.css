@@ -110,30 +110,18 @@
   /* Depoimentos - Cards com altura controlada */
   .depoimentos-swiper .swiper-slide {
     height: auto;
-    min-height: 320px;
-    max-height: 400px;
     flex-shrink: 0;
   }
 
   /* Forçar exatamente 3 slides no desktop */
+  /* Forçar altura mínima no desktop */
   @media (min-width: 1024px) {
     .depoimentos-swiper .swiper-slide {
-      width: calc((100% - 64px) / 3) !important;
-      max-width: calc((100% - 64px) / 3) !important;
-      min-width: calc((100% - 64px) / 3) !important;
       min-height: 360px;
-      max-height: 420px;
     }
   }
 
-  /* Forçar exatamente 2 slides no tablet */
-  @media (min-width: 768px) and (max-width: 1023px) {
-    .depoimentos-swiper .swiper-slide {
-      width: calc((100% - 32px) / 2) !important;
-      max-width: calc((100% - 32px) / 2) !important;
-      min-width: calc((100% - 32px) / 2) !important;
-    }
-  }
+
 
   /* Garantir que o container não mostre overflow */
   .depoimentos-swiper {

@@ -152,7 +152,7 @@ const Home = () => {
     const timeoutId = setTimeout(() => {
       if (swiperRef.current) {
         const depoimentosSwiperInstance = new Swiper(swiperRef.current, {
-          loop: depoimentos.length > 3,
+          loop: true,
           slidesPerView: 1,
           spaceBetween: 24,
           grabCursor: true,
@@ -162,9 +162,12 @@ const Home = () => {
           observer: true,
           observeParents: true,
           slidesPerGroup: 1,
-          resistanceRatio: 0.85,
-          slidesOffsetBefore: 0,
-          slidesOffsetAfter: 0,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          },
+          speed: 800,
           pagination: {
             el: '.depoimentos-swiper .swiper-pagination',
             clickable: true,
@@ -399,63 +402,82 @@ const Home = () => {
                   </h2>
                 </div>
               </ScrollReveal>
-
-              <ScrollReveal direction="up" delay={0.2} duration={0.8}>
-                <div className="relative">
-                  <div className="swiper depoimentos-swiper" ref={swiperRef}>
+                     <ScrollReveal direction="up" delay={0.2} duration={0.8}>
+                <div className="relative group">
+                  <div className="swiper depoimentos-swiper !pb-16" ref={swiperRef}>
                     <div className="swiper-wrapper">
                       {[...depoimentos]
                         .sort((a, b) => Number(a.ordem) - Number(b.ordem))
                         .map((depoimento) => (
-                          <div key={depoimento.id} className="swiper-slide">
-                            <div className="bg-[#141414]/60 backdrop-blur-xl rounded-3xl border border-white/5 p-8 flex flex-col h-full shadow-lg hover:shadow-xl hover:border-white/10 transition-all duration-500">
+                          <div key={depoimento.id} className="swiper-slide h-full">
+                            <div className="bg-[#141414]/60 backdrop-blur-xl rounded-[2rem] border border-white/5 p-8 md:p-10 flex flex-col h-full shadow-lg hover:shadow-2xl hover:border-copper/20 transition-all duration-500 group/card relative overflow-hidden">
+                              {/* Efeito de brilho no hover */}
+                              <div className="absolute inset-0 bg-gradient-to-br from-copper/5 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+                              
+                              {/* Aspas decorativas */}
+                              <div className="absolute top-6 right-8 text-copper/10 text-7xl font-serif select-none">
+                                "
+                              </div>
 
                               {/* Estrelas */}
                               <div
-                                className="mb-4"
+                                className="mb-6 flex gap-1"
                                 role="img"
                                 aria-label={`Avaliação: ${depoimento.estrelas || 5} de 5 estrelas`}
                               >
                                 {Array.from({ length: 5 }).map((_, i) => (
                                   <i
                                     key={i}
-                                    className={`fa-solid fa-star text-copper text-xl mr-1 ${i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''
+                                    className={`fa-solid fa-star text-copper text-sm ${i >= (depoimento.estrelas || 5) ? 'opacity-20' : ''
                                       }`}
                                   />
                                 ))}
                               </div>
 
                               {/* Texto do depoimento */}
-                              <p className="text-muted text-lg font-normal leading-[1.6] mb-8 italic flex-1">
+                              <p className="text-muted text-lg font-normal leading-[1.7] mb-10 italic flex-1 relative z-10">
                                 "{depoimento.texto}"
                               </p>
 
                               {/* Autor */}
-                              <div className="flex items-center gap-4 mt-auto pt-6 border-t border-white/5">
-                                <div className="w-12 h-12 flex-shrink-0 rounded-full bg-copper/10 flex items-center justify-center">
-                                  <span className="font-semibold text-lg text-copper">
-                                    {depoimento.iniciais || getNameInitials(depoimento.nome)}
-                                  </span>
+                              <div className="flex items-center gap-4 mt-auto pt-8 border-t border-white/5 relative z-10">
+                                <div className="w-14 h-14 flex-shrink-0 rounded-full bg-copper/10 border border-copper/20 flex items-center justify-center overflow-hidden">
+                                  {depoimento.avatar_url ? (
+                                    <img src={depoimento.avatar_url} alt={depoimento.nome} className="w-full h-full object-cover" />
+                                  ) : (
+                                    <span className="font-semibold text-xl text-copper">
+                                      {depoimento.iniciais || getNameInitials(depoimento.nome)}
+                                    </span>
+                                  )}
                                 </div>
                                 <div>
-                                  <p className="text-cream font-semibold text-base">
+                                  <p className="text-cream font-medium text-lg tracking-tight">
                                     {depoimento.nome}
                                   </p>
-                                  <p className="text-muted/70 font-mono text-[10px] uppercase tracking-wider">
+                                  <p className="text-muted/60 font-mono text-[10px] uppercase tracking-[0.15em] mt-1">
                                     {depoimento.cargo}
-                                    {depoimento.empresa ? `, ${depoimento.empresa}` : ''}
+                                    {depoimento.empresa ? <span className="text-copper/50 ml-1">@{depoimento.empresa}</span> : ''}
                                   </p>
                                 </div>
                               </div>
-
                             </div>
                           </div>
                         ))}
                     </div>
 
-                    <div className="swiper-button-prev" />
-                    <div className="swiper-button-next" />
-                    <div className="swiper-pagination mt-12 flex justify-center" />
+                    {/* Custom Navigation */}
+                    <div className="hidden md:flex absolute top-1/2 -left-16 -translate-y-1/2 z-10">
+                      <button className="swiper-button-prev !static !w-12 !h-12 !mt-0 rounded-full bg-surface border border-white/5 text-cream hover:bg-copper hover:border-copper hover:text-white transition-all duration-300 flex items-center justify-center shadow-xl">
+                        <i className="fa-solid fa-chevron-left text-sm"></i>
+                      </button>
+                    </div>
+                    <div className="hidden md:flex absolute top-1/2 -right-16 -translate-y-1/2 z-10">
+                      <button className="swiper-button-next !static !w-12 !h-12 !mt-0 rounded-full bg-surface border border-white/5 text-cream hover:bg-copper hover:border-copper hover:text-white transition-all duration-300 flex items-center justify-center shadow-xl">
+                        <i className="fa-solid fa-chevron-right text-sm"></i>
+                      </button>
+                    </div>
+
+                    <div className="swiper-pagination !bottom-0" />
                   </div>
                 </div>
               </ScrollReveal>
