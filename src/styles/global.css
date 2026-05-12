@@ -49,12 +49,14 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
     @apply font-sans text-base font-normal leading-normal bg-bg-primary text-text-primary antialiased;
     position: relative;
     min-height: 100vh;
+    overflow-x: hidden;
   }
 
   body::before {

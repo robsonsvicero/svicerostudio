@@ -68,7 +68,7 @@ const Header = () => {
 
       {/* OVERLAY MENU (FULL SCREEN) */}
       {/* OVERLAY MENU (FULL SCREEN) */}
-      <div className={`fixed inset-0 w-screen h-screen z-[100] bg-charcoal transition-all duration-500 ease-in-out ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} overflow-y-auto overflow-x-hidden`}>
+      <div className={`fixed inset-0 w-full h-full z-[100] bg-charcoal transition-all duration-500 ease-in-out ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} overflow-y-auto overflow-x-hidden`}>
         {/* Botão de Fechar */}
         <div className="absolute top-6 right-6 md:top-10 md:right-10 z-[110]">
           <Button 
