@@ -19,7 +19,7 @@ import { getNameInitials } from '../utils/placeholders';
 import idvDesigner from '../images/idv-deigner.webp';
 import uiDesigner from '../images/ui-designer.webp';
 import developer from '../images/developer.webp';
-import DiagnosticoSection from '../components/Home/DiagnosticoSection'; 
+import DiagnosticoSection from '../components/Home/DiagnosticoSection';
 
 import HeroSection from '../components/Home/HeroSection';
 import ClientsMarquee from '../components/Home/ClientsMarquee';
@@ -169,9 +169,9 @@ const Home = () => {
     <>
       <Preloader />
       <SEOHelmet
-        title="Engenharia Visual & Design Estratégico"
-        description="Projete a infraestrutura visual que sustenta o faturamento de marcas de elite. Conheça a Engenharia de Percepção do Svicero Studio. Design e estratégia de alto padrão."
-        keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
+        title="Svicero Studio | Estratégia de Marca e Design para Sair da Guerra de Preços"
+        description="Estúdio de estratégia de marca e design que ajuda empresas que já vendem a reposicionar a marca, justificar preços mais altos e atrair clientes melhores."
+        canonical="https://svicerostudio.com.br"
       />
       <div className="bg-charcoal text-cream min-h-screen font-body">
         <Header />
@@ -187,7 +187,7 @@ const Home = () => {
         </a>
 
         <HeroSection />
-        
+
         <ClientsMarquee />
 
         <section id="triade" className="py-24 px-4 md:px-16 bg-surface font-body border-t border-white/5">
@@ -239,8 +239,8 @@ const Home = () => {
                     Identidade e presença de marca
                   </h3>
                   <p className="text-base font-normal leading-[1.6] text-muted mt-4">
-                  Com a estratégia definida, traduzimos tudo em identidade visual e presença digital que comunicam seu posicionamento e apoiam suas vendas.
-                </p>
+                    Com a estratégia definida, traduzimos tudo em identidade visual e presença digital que comunicam seu posicionamento e apoiam suas vendas.
+                  </p>
                 </div>
               </ScrollReveal>
             </div>
@@ -256,56 +256,56 @@ const Home = () => {
                   pela primeira vez — e que entendem que marca forte não é custo, é investimento.
                 </div>
 
-              <h3 className="text-base font-semibold text-cream mb-6 uppercase tracking-wider">
-                Faz sentido conversar se:
-              </h3>
+                <h3 className="text-base font-semibold text-cream mb-6 uppercase tracking-wider">
+                  Faz sentido conversar se:
+                </h3>
 
-              <ul className="text-base font-normal leading-[1.6] text-muted mb-10 space-y-4">
-                <li className="flex items-start gap-4">
-                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                    <Check size={14} className="text-copper" />
-                  </span>
-                  Você entrega bem, mas sente que o valor percebido da sua marca não acompanha o nível do que você entrega.
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                    <Check size={14} className="text-copper" />
-                  </span>
-                  Clientes bons aparecem, mas ainda questionam o seu preço — e você sente dificuldade de justificar o valor que cobra.
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                    <Check size={14} className="text-copper" />
-                  </span>
-                  Sua comunicação parece genérica, parecida com a dos concorrentes, sem um diferencial claro.
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                    <Check size={14} className="text-copper" />
-                  </span>
-                  Você está chegando ao digital agora e quer construir sua presença com posicionamento certo desde o início — sem retrabalho.
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                    <Check size={14} className="text-copper" />
-                  </span>
-                  Você quer um parceiro que pense junto — não apenas alguém que execute o que você pede.
-                </li>
-              </ul>
+                <ul className="text-base font-normal leading-[1.6] text-muted mb-10 space-y-4">
+                  <li className="flex items-start gap-4">
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                      <Check size={14} className="text-copper" />
+                    </span>
+                    Você entrega bem, mas sente que o valor percebido da sua marca não acompanha o nível do que você entrega.
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                      <Check size={14} className="text-copper" />
+                    </span>
+                    Clientes bons aparecem, mas ainda questionam o seu preço — e você sente dificuldade de justificar o valor que cobra.
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                      <Check size={14} className="text-copper" />
+                    </span>
+                    Sua comunicação parece genérica, parecida com a dos concorrentes, sem um diferencial claro.
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                      <Check size={14} className="text-copper" />
+                    </span>
+                    Você está chegando ao digital agora e quer construir sua presença com posicionamento certo desde o início — sem retrabalho.
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                      <Check size={14} className="text-copper" />
+                    </span>
+                    Você quer um parceiro que pense junto — não apenas alguém que execute o que você pede.
+                  </li>
+                </ul>
 
-              <div className="border-t border-white/5 pt-8 mb-8 text-muted">
-                Se você se viu em dois ou mais pontos, vale a pena a gente conversar.
+                <div className="border-t border-white/5 pt-8 mb-8 text-muted">
+                  Se você se viu em dois ou mais pontos, vale a pena a gente conversar.
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 w-full">
+                  <Button variant="primary" href="/formulario-interesse" className="w-full" >
+                    Agendar Diagnóstico
+                  </Button>
+                  <Button variant="outline" href="/processos" className="w-full" >
+                    Ver como trabalhamos
+                  </Button>
+                </div>
               </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 w-full">
-                <Button variant="primary" href="/formulario-interesse" className="w-full" >
-                  Agendar Diagnóstico
-                </Button>
-                <Button variant="outline" href="/processos" className="w-full" >
-                  Ver como trabalhamos
-                </Button>
-              </div>
-            </div>
             </ScrollReveal>
           </div>
         </section>

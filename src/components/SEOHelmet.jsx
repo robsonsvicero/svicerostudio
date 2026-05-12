@@ -18,9 +18,7 @@ const SEOHelmet = ({
 
   const trimToLength = (value, maxLength) => {
     if (value.length <= maxLength) return value;
-    return safeTrim(value.slice(0, maxLength).replace(/[\s|:;,-]+
-$
-/, ''));
+    return safeTrim(value.slice(0, maxLength).replace(/[\s|:;,-]+$/, ''));
   };
 
   const withBrand = (baseTitle) => {
@@ -38,9 +36,7 @@ $
   const normalizeOgImage = (imageUrl) => {
     if (!imageUrl) return DEFAULT_OG_IMAGE;
     if (
-      /
-^
-https?:\/\//i.test(imageUrl) ||
+      /^https?:\/\//i.test(imageUrl) ||
       imageUrl.startsWith('data:') ||
       imageUrl.startsWith('//')
     ) {
