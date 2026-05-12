@@ -34,15 +34,21 @@ const ClientsMarquee = () => {
         autoplay: {
           delay: 0,
           disableOnInteraction: false,
-        },
-        freeMode: {
-          enabled: true,
-          momentum: false,
+          pauseOnMouseEnter: false,
         },
         allowTouchMove: false,
         observer: true,
         observeParents: true,
       });
+
+      // Evitar que cliques pausem o autoplay interceptando os eventos no wrapper
+      if (swiperRef.current) {
+        const preventPause = (e) => {
+          e.stopPropagation();
+        };
+        swiperRef.current.addEventListener('mousedown', preventPause, true);
+        swiperRef.current.addEventListener('touchstart', preventPause, true);
+      }
 
       return () => {
         if (swiper) swiper.destroy();
