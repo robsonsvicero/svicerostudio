@@ -136,7 +136,8 @@
   }
 
   /* Efeito de rolagem infinita linear (Marquee) */
-  .depoimentos-swiper .swiper-wrapper {
+  .depoimentos-swiper .swiper-wrapper,
+  .clients-marquee-swiper .swiper-wrapper {
     transition-timing-function: linear !important;
   }
 

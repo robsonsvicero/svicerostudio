@@ -22,6 +22,7 @@ import developer from '../images/developer.webp';
 import DiagnosticoSection from '../components/Home/DiagnosticoSection'; 
 
 import HeroSection from '../components/Home/HeroSection';
+import ClientsMarquee from '../components/Home/ClientsMarquee';
 import ServicesSection from '../components/Home/ServicesSection';
 import sviceroCta from '../images/Svicero_CTA.png';
 import AboutSection from '../components/Home/AboutSection';
@@ -375,6 +376,7 @@ const Home = () => {
 
         {/* Projetos Selecionados */}
         <ProjectsSection projects={projects} />
+        <ClientsMarquee />
 
         <AboutSection />
 
