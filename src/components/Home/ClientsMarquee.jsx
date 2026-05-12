@@ -30,7 +30,7 @@ const ClientsMarquee = () => {
         loop: true,
         slidesPerView: 'auto',
         spaceBetween: 60,
-        speed: 5000,
+        speed: 2000,
         autoplay: {
           delay: 0,
           disableOnInteraction: false,
@@ -55,12 +55,13 @@ const ClientsMarquee = () => {
       <div className="swiper clients-marquee-swiper" ref={swiperRef}>
         <div className="swiper-wrapper !ease-linear">
           {[...logos, ...logos].map((logo, index) => (
-            <div key={index} className="swiper-slide !w-auto flex items-center justify-center">
+            <div key={index} className="swiper-slide !w-auto flex items-center justify-center gap-[60px]">
               <img 
                 src={logo} 
                 alt={`Cliente ${index + 1}`} 
-                className="h-12 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500"
+                className="h-16 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500"
               />
+              <span className="w-1.5 h-1.5 rounded-full bg-copper/50"></span>
             </div>
           ))}
         </div>
