@@ -157,25 +157,22 @@ const Home = () => {
           spaceBetween: 32,
           grabCursor: true,
           centeredSlides: false,
-          watchOverflow: true,
-          watchSlidesProgress: true,
-          observer: true,
-          observeParents: true,
+          speed: 6000,
           autoplay: {
             delay: 0,
             disableOnInteraction: false,
+            pauseOnMouseEnter: false,
           },
           freeMode: {
             enabled: true,
             momentum: false,
+            sticky: false,
           },
-          speed: 8000,
-          allowTouchMove: true,
-          breakpoints: {
-            640: { slidesPerView: 1, spaceBetween: 24 },
-            768: { slidesPerView: 2, spaceBetween: 32 },
-            1024: { slidesPerView: 3, spaceBetween: 32 }
-          }
+          watchSlidesProgress: true,
+          preloadImages: false,
+          lazy: false,
+          observer: true,
+          observeParents: true,
         });
         swipersRef.current.push(depoimentosSwiperInstance);
         setSwipersInitialized(true);
@@ -403,11 +400,10 @@ const Home = () => {
                   <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none hidden md:block" />
                   
                   <div className="swiper depoimentos-swiper" ref={swiperRef}>
-                    <div className="swiper-wrapper">
-                      {[...depoimentos]
-                        .sort((a, b) => Number(a.ordem) - Number(b.ordem))
-                        .map((depoimento) => (
-                          <div key={depoimento.id} className="swiper-slide h-full">
+                    <div className="swiper-wrapper !ease-linear">
+                      {[...depoimentos, ...depoimentos, ...depoimentos]
+                        .map((depoimento, idx) => (
+                          <div key={`${depoimento.id}-${idx}`} className="swiper-slide h-full">
                             <div className="bg-[#141414]/60 backdrop-blur-xl rounded-[2rem] border border-white/5 p-8 md:p-10 flex flex-col h-full shadow-lg hover:shadow-2xl hover:border-copper/20 transition-all duration-500 group/card relative overflow-hidden">
                               {/* Efeito de brilho no hover */}
                               <div className="absolute inset-0 bg-gradient-to-br from-copper/5 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />

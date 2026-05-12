@@ -107,10 +107,17 @@
     display: none;
   }
 
-  /* Depoimentos - Cards com altura controlada */
+  /* Depoimentos - Cards para Marquee */
   .depoimentos-swiper .swiper-slide {
     height: auto;
+    width: 400px !important; /* Largura fixa para o marquee funcionar bem */
     flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .depoimentos-swiper .swiper-slide {
+      width: 300px !important;
+    }
   }
 
   /* Forçar exatamente 3 slides no desktop */
