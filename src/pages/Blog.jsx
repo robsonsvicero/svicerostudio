@@ -127,7 +127,7 @@ const Blog = () => {
         <Header variant="solid" />
 
         {/* Hero */}
-        <section className="relative flex items-center justify-center px-0 py-12 sm:py-16 lg:py-32 mb-12 sm:mb-16 overflow-hidden min-h-[320px] sm:min-h-[420px]">
+        <section className="relative flex items-center justify-center px-0 py-24 sm:py-16 lg:py-32 mb-12 sm:mb-16 overflow-hidden min-h-[320px] sm:min-h-[420px]">
 
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -155,7 +155,28 @@ const Blog = () => {
         {/* Filtros + Grid */}
         <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-10 lg:pb-28">
 
-          {/* Barra de Busca */}
+          {/* Filtros de Categoria */}
+          {categories.length > 1 && (
+            <div className="mb-10 w-full">
+              <div className="flex overflow-x-auto md:flex-wrap md:justify-center items-center gap-2 sm:gap-6 pb-4 sm:pb-0 scrollbar-hide hide-scrollbar w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-5 py-2.5 rounded-full text-base whitespace-nowrap transition-all ${selectedCategory === category
+                      ? 'bg-copper text-white shadow-md font-medium'
+                      : 'bg-transparent text-muted hover:text-cream font-normal'
+                      }`}
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Barra de Busca - Ocultada conforme solicitação */}
+          {/*
           <div className="mb-8 max-w-2xl mx-auto">
             <div className="relative">
               <input
@@ -173,97 +194,35 @@ const Blog = () => {
               </p>
             )}
           </div>
+          */}
 
           {/* Filtros de Categoria */}
-          {categories.length > 1 && (
-            <div className="mb-6 flex flex-wrap justify-center gap-3">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === category
-                    ? 'bg-copper text-white shadow-md'
-                    : 'bg-surface text-muted hover:text-cream border border-white/5 hover:border-white/10'
-                    }`}
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
-          )}
+          {/* Categoria filters moved up */}
 
-          {/* Filtros de Tags */}
+          {/* Filtros de Tags - Ocultados conforme solicitação */}
+          {/*
           {allTags.length > 0 && (
             <div className="mb-6">
               <div className="flex flex-wrap justify-center gap-2">
-                {selectedTag ? (
-                  <Button
-                    onClick={() => setSelectedTag('')}
-                    className="px-4 py-1.5 rounded-full text-sm bg-copper text-white shadow-md hover:bg-copper/80 transition-all flex items-center gap-2"
-                  >
-                    <i className="fa-solid fa-times text-xs"></i>
-                    {selectedTag}
-                  </Button>
-                ) : (
-                  <>
-                    <span className="px-3 py-1.5 text-sm text-muted flex items-center gap-1.5">
-                      <i className="fa-solid fa-tag text-xs"></i>
-                      Tags:
-                    </span>
-                    {allTags.slice(0, 10).map((tag) => (
-                      <Button
-                        key={tag}
-                        onClick={() => setSelectedTag(tag)}
-                        className="px-4 py-1.5 rounded-full text-sm bg-surface text-muted hover:text-cream border border-white/5 hover:border-white/10 transition-all"
-                      >
-                        {tag}
-                      </Button>
-                    ))}
-                    {allTags.length > 10 && (
-                      <span className="px-3 py-1.5 text-sm text-muted">
-                        +{allTags.length - 10}
-                      </span>
-                    )}
-                  </>
-                )}
+                ... 
               </div>
             </div>
           )}
+          */}
 
-          {/* Filtros de Autor */}
+          {/* Filtros de Autor - Ocultados conforme solicitação */}
+          {/* 
           {authors.length > 0 && (
             <div className="mb-10">
               <div className="flex flex-wrap justify-center gap-2">
-                {selectedAuthor ? (
-                  <Button
-                    onClick={() => setSelectedAuthor('')}
-                    className="px-4 py-1.5 rounded-full text-sm bg-copper text-white shadow-md hover:bg-copper/80 transition-all flex items-center gap-2"
-                  >
-                    <i className="fa-solid fa-times text-xs"></i>
-                    {selectedAuthor}
-                  </Button>
-                ) : (
-                  <>
-                    <span className="px-3 py-1.5 text-sm text-muted flex items-center gap-1.5">
-                      <i className="fa-solid fa-user text-xs"></i>
-                      Autores:
-                    </span>
-                    {authors.map((author) => (
-                      <Button
-                        key={author}
-                        onClick={() => setSelectedAuthor(author)}
-                        className="px-4 py-1.5 rounded-full text-sm bg-surface text-muted hover:text-cream border border-white/5 hover:border-white/10 transition-all"
-                      >
-                        {author}
-                      </Button>
-                    ))}
-                  </>
-                )}
+                ...
               </div>
             </div>
           )}
+          */}
 
-          {/* Limpar filtros */}
+          {/* Limpar filtros - Ocultados conforme solicitação */}
+          {/* 
           {hasActiveFilter && (
             <div className="flex justify-center mb-8">
               <Button
@@ -274,6 +233,7 @@ const Blog = () => {
               </Button>
             </div>
           )}
+          */}
 
           {/* Grid de Posts */}
           {isLoading ? (
