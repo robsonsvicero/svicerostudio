@@ -1,9 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
-import './Button.css';
+import React from 'react';
 
 const Button = ({
   children,
-  variant = 'outline', // outline, primary, secondary, custom
+  variant = 'outline', // outline, primary, secondary
   size = 'sm',
   className = '',
   icon,
@@ -12,134 +11,71 @@ const Button = ({
   target,
   rel,
   type = 'button',
-  fillColor: customFillColor, // Cor de preenchimento customizada
   ...props
 }) => {
-  const btnRef = useRef(null);
-  const circleRef = useRef(null);
-  const [circleSize, setCircleSize] = useState(0);
 
-  useEffect(() => {
-    if (btnRef.current) {
-      const width = btnRef.current.offsetWidth;
-      const height = btnRef.current.offsetHeight;
-      // O círculo cobre toda a diagonal do botão
-      const size = Math.sqrt(width * width + height * height) * 1.2;
-      setCircleSize(size);
-    }
-  }, [className]); // Removido btnRef.current e size das dependências
-
-  // Classes base
-  const baseClasses = 'inline-flex items-center justify-center font-medium font-body transition-all duration-300 relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-secondary';
   const sizeClasses = {
-    sm: 'px-6 py-4 text-base md:text-lg',
-    md: 'px-8 py-4 text-lg',
-    lg: 'px-12 py-4 text-xl',
-    icon: 'p-2',
+    sm: 'px-6 py-3 text-xs md:text-sm',
+    md: 'px-8 py-4 text-sm',
+    lg: 'px-10 py-5 text-sm md:text-base',
+    icon: 'p-3',
     bar: 'w-full h-full',
   };
 
-  // Variações de estilo
-  let variantClasses = '';
-  let outlineHoverClass = '';
   if (variant === 'primary') {
-    variantClasses = 'bg-primary border-none text-cream shadow-lg hover:bg-primary700';
-  } else if (variant === 'secondary') {
-    variantClasses = 'bg-secondary border-none text-cream shadow-lg hover:bg-secondary700';
-  } else if (variant === 'danger') {
-    variantClasses = 'bg-red-600 border-none text-white shadow-lg hover:bg-red-700';
-  } else if (variant === 'outline') {
-    variantClasses = 'bg-transparent border-2 border-white/30 text-low-dark shadow-lg outline-hover hover:border-none';
-    outlineHoverClass = 'outline-hover';
-  } else if (variant === 'ghost') {
-    variantClasses = 'bg-transparent border-none shadow-none';
-  } else if (variant === 'custom') {
-    // Variante custom: não aplica estilos de cor/borda, permite controle total via className
-    variantClasses = '';
+    // Variant: Border Beam
+    const beamContent = (
+      <>
+        <span className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#B87333_100%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+        <span className="absolute inset-0 rounded-full bg-copper transition-opacity duration-300 group-hover:opacity-0"></span>
+        <span className={`flex items-center justify-center gap-3 uppercase transition-colors duration-300 group-hover:text-white font-bold tracking-[0.15em] text-white bg-surface w-full h-full rounded-full relative shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ${sizeClasses[size] || ''}`}>
+            <span className="relative z-10">{children}</span>
+            {icon && <span className="relative z-10 transition-transform duration-300 group-hover:scale-110">{icon}</span>}
+        </span>
+      </>
+    );
+    const beamClasses = `group inline-flex overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(184,115,51,0.2)] rounded-full p-[1px] relative items-center justify-center focus:outline-none focus:ring-2 focus:ring-copper ${className}`;
+    
+    if (href) {
+      return <a href={href} target={target} rel={rel} className={beamClasses} {...props}>{beamContent}</a>;
+    }
+    return <button type={type} onClick={onClick} className={beamClasses} {...props}>{beamContent}</button>;
   }
 
-  // Garantir que rounded-2xl sempre seja aplicado por último
-  const classes = `${baseClasses} ${sizeClasses[size]} ${variantClasses} ${className} rounded-2xl`;
-
-  // Centraliza o círculo no centro do botão
-  const handleMouseEnter = () => {
-    const btn = btnRef.current;
-    const circle = circleRef.current;
-    if (!btn || !circle) return;
-    const width = btn.offsetWidth;
-    const height = btn.offsetHeight;
-    circle.style.left = `${width / 2}px`;
-    circle.style.top = `${height / 2}px`;
-    circle.classList.add('btn-fill-animate');
-  };
-  const handleMouseLeave = () => {
-    const circle = circleRef.current;
-    if (circle) {
-      circle.classList.remove('btn-fill-animate');
+  if (variant === 'secondary') {
+    // Variant: Secondary Border Beam (Inverted Primary)
+    const beamSecondaryContent = (
+      <>
+        <span className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#FAFAF8_100%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+        <span className="absolute inset-0 rounded-full bg-cream transition-opacity duration-300 group-hover:opacity-0"></span>
+        <span className={`flex items-center justify-center gap-3 uppercase transition-colors duration-300 group-hover:text-white font-bold tracking-[0.15em] text-white bg-copper w-full h-full rounded-full relative shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ${sizeClasses[size] || ''}`}>
+            <span className="relative z-10">{children}</span>
+            {icon && <span className="relative z-10 transition-transform duration-300 group-hover:scale-110">{icon}</span>}
+        </span>
+      </>
+    );
+    const beamSecondaryClasses = `group inline-flex overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(13,13,13,0.5)] rounded-full p-[1px] relative items-center justify-center focus:outline-none focus:ring-2 focus:ring-copper ${className}`;
+    
+    if (href) {
+      return <a href={href} target={target} rel={rel} className={beamSecondaryClasses} {...props}>{beamSecondaryContent}</a>;
     }
-  };
+    return <button type={type} onClick={onClick} className={beamSecondaryClasses} {...props}>{beamSecondaryContent}</button>;
+  }
 
-  // Cor do preenchimento animado
-  let fillColor = '#444444'; // primary (dark card on dark bg)
-  if (variant === 'secondary') fillColor = '#844219'; // deeper orange on orange
-  else if (variant === 'danger') fillColor = '#dc2626'; // vermelho
-  else if (variant === 'outline') fillColor = '#F8F7F280'; // hover fill on outline
-  else if (variant === 'custom') fillColor = ''; // cor clara padrão para custom
-
-  // Permite sobrescrever com prop customFillColor
-  if (customFillColor) fillColor = customFillColor;
-
-  // Classes de hover para texto (custom não força cor)
-  const textHoverClass = variant === 'custom' ? '' : 'group-hover:text-cream text-cream';
-  const iconHoverClass = variant === 'custom' ? '' : 'group-hover:text-cream text-cream';
-
-  // Para outline, texto escuro e hover claro
-  const textBaseClass = variant === 'outline' ? 'text-low-dark group-hover:text-[#EFEFEF]' : '';
-
-  const content = (
+  // Fallback / Variant: Outline Glass
+  const outlineClasses = `relative overflow-hidden group flex items-center justify-center gap-3 border border-white/10 bg-white/5 backdrop-blur-sm text-white rounded-full font-bold uppercase tracking-[0.15em] hover:bg-white hover:text-primary hover:border-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-copper ${sizeClasses[size] || ''} ${className}`;
+  
+  const outlineContent = (
     <>
-      {/* Círculo animado para preenchimento */}
-      <span
-        ref={circleRef}
-        className="btn-fill absolute rounded-full z-0"
-        style={{ width: circleSize, height: circleSize, background: fillColor }}
-        aria-hidden="true"
-      />
-      {icon && <span className={`relative z-10 mr-2 text-xl transition-colors duration-300 ${iconHoverClass}`}>{icon}</span>}
-      <span className={`relative z-10 transition-colors duration-300 ${textHoverClass} ${textBaseClass}`}>{children}</span>
+      {children}
+      {icon && <span className="transition-transform duration-300 group-hover:translate-x-1">{icon}</span>}
     </>
   );
 
   if (href) {
-    return (
-      <a
-        href={href}
-        target={target}
-        rel={rel}
-        className={classes}
-        ref={btnRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        {...props}
-      >
-        {content}
-      </a>
-    );
+    return <a href={href} target={target} rel={rel} className={outlineClasses} {...props}>{outlineContent}</a>;
   }
-
-  return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={classes}
-      ref={btnRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      {...props}
-    >
-      {content}
-    </button>
-  );
+  return <button type={type} onClick={onClick} className={outlineClasses} {...props}>{outlineContent}</button>;
 };
 
 export default Button;

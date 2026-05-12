@@ -6,6 +6,7 @@ import Footer from '../components/Layout/Footer'
 import SEOHelmet from '../components/SEOHelmet'
 import { formatDate } from '../utils/formatDate'
 import { API_URL } from '../lib/api.js'
+import Button from '../components/UI/Button';
 
 const getEntityId = (item) => item?.id || item?._id || ''
 
@@ -121,25 +122,30 @@ const Blog = () => {
         description="Artigos e insights sobre UX Design, Estratégia de Marca e Engenharia de Percepção. O conteúdo exclusivo do Svicero Studio para quem busca o topo do mercado digital."
         keywords="blog design, tendências design, desenvolvimento web, ui ux, design thinking"
       />
-      <div className="bg-dark-bg min-h-screen text-[#EFEFEF] font-body">
+      <div className="bg-charcoal min-h-screen text-cream font-body">
         <Header variant="solid" />
 
         {/* Hero */}
-        <section className="relative flex items-center justify-center px-0 py-12 sm:py-16 lg:py-32 mb-12 sm:mb-16 overflow-hidden min-h-[320px] sm:min-h-[420px]" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+        <section className="relative flex items-center justify-center px-0 py-12 sm:py-16 lg:py-32 mb-12 sm:mb-16 overflow-hidden min-h-[320px] sm:min-h-[420px]">
 
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `linear-gradient(90deg, rgba(35,35,35,1) 0%, rgba(35,35,35,0.85) 50%, rgba(35,35,35,0.1) 100%), url(${capaBlog})`
+              backgroundImage: `linear-gradient(90deg, rgba(250,250,248,1) 0%, rgba(250,250,248,0.95) 50%, rgba(250,250,248,0.7) 100%), url(${capaBlog})`
             }}
           ></div>
           {/* Conteúdo principal */}
           <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center py-12 px-4 sm:px-6 lg:px-8">
 
-            <h1 className="font-title text-3xl sm:text-4xl lg:text-6xl font-semibold tracking-[-0.04em] text-white mb-5 sm:mb-6 text-balance">
+            <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+              <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
+              BLOG
+            </span>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream mb-5 sm:mb-6 text-balance">
               Crônicas de Design
             </h1>
-            <p className="max-w-2xl mx-auto text-base sm:text-lg text-white/70 leading-relaxed">
+            <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-muted">
               Conteúdos para fortalecer sua marca, inspirar sua jornada e te ajudar a dominar a arte de criar experiências digitais memoráveis.
             </p>
           </div>
@@ -156,12 +162,12 @@ const Blog = () => {
                 placeholder="Buscar por título, conteúdo ou tags…"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-6 py-4 pr-12 rounded-2xl bg-[#181818] border border-white/10 text-white text-base placeholder-white/30 focus:border-secondary focus:outline-none transition-colors"
+                className="w-full px-6 py-4 pr-12 rounded-2xl bg-surface border border-white/5 hover:border-white/10 text-cream text-base placeholder-muted focus:border-copper focus:outline-none transition-colors shadow-sm"
               />
-              <i className="fa-solid fa-search absolute right-5 top-1/2 -translate-y-1/2 text-white/30 text-lg pointer-events-none"></i>
+              <i className="fa-solid fa-search absolute right-5 top-1/2 -translate-y-1/2 text-muted text-lg pointer-events-none"></i>
             </div>
             {searchTerm && (
-              <p className="text-sm text-white/40 mt-2 text-center">
+              <p className="text-sm text-muted mt-2 text-center">
                 {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
               </p>
             )}
@@ -171,16 +177,16 @@ const Blog = () => {
           {categories.length > 1 && (
             <div className="mb-6 flex flex-wrap justify-center gap-3">
               {categories.map((category) => (
-                <button
+                <Button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
                   className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === category
-                    ? 'bg-secondary text-white shadow-md'
-                    : 'bg-[#181818] text-white/50 hover:text-white border border-white/10 hover:border-white/20'
+                    ? 'bg-copper text-white shadow-md'
+                    : 'bg-surface text-muted hover:text-cream border border-white/5 hover:border-white/10'
                     }`}
                 >
                   {category}
-                </button>
+                </Button>
               ))}
             </div>
           )}
@@ -190,30 +196,30 @@ const Blog = () => {
             <div className="mb-6">
               <div className="flex flex-wrap justify-center gap-2">
                 {selectedTag ? (
-                  <button
+                  <Button
                     onClick={() => setSelectedTag('')}
-                    className="px-4 py-1.5 rounded-full text-sm bg-secondary text-white shadow-md hover:bg-secondary/80 transition-all flex items-center gap-2"
+                    className="px-4 py-1.5 rounded-full text-sm bg-copper text-white shadow-md hover:bg-copper/80 transition-all flex items-center gap-2"
                   >
                     <i className="fa-solid fa-times text-xs"></i>
                     {selectedTag}
-                  </button>
+                  </Button>
                 ) : (
                   <>
-                    <span className="px-3 py-1.5 text-sm text-white/30 flex items-center gap-1.5">
+                    <span className="px-3 py-1.5 text-sm text-muted flex items-center gap-1.5">
                       <i className="fa-solid fa-tag text-xs"></i>
                       Tags:
                     </span>
                     {allTags.slice(0, 10).map((tag) => (
-                      <button
+                      <Button
                         key={tag}
                         onClick={() => setSelectedTag(tag)}
-                        className="px-4 py-1.5 rounded-full text-sm bg-[#181818] text-white/50 hover:text-white border border-white/10 hover:border-white/20 transition-all"
+                        className="px-4 py-1.5 rounded-full text-sm bg-surface text-muted hover:text-cream border border-white/5 hover:border-white/10 transition-all"
                       >
                         {tag}
-                      </button>
+                      </Button>
                     ))}
                     {allTags.length > 10 && (
-                      <span className="px-3 py-1.5 text-sm text-white/30">
+                      <span className="px-3 py-1.5 text-sm text-muted">
                         +{allTags.length - 10}
                       </span>
                     )}
@@ -228,27 +234,27 @@ const Blog = () => {
             <div className="mb-10">
               <div className="flex flex-wrap justify-center gap-2">
                 {selectedAuthor ? (
-                  <button
+                  <Button
                     onClick={() => setSelectedAuthor('')}
-                    className="px-4 py-1.5 rounded-full text-sm bg-secondary text-white shadow-md hover:bg-secondary/80 transition-all flex items-center gap-2"
+                    className="px-4 py-1.5 rounded-full text-sm bg-copper text-white shadow-md hover:bg-copper/80 transition-all flex items-center gap-2"
                   >
                     <i className="fa-solid fa-times text-xs"></i>
                     {selectedAuthor}
-                  </button>
+                  </Button>
                 ) : (
                   <>
-                    <span className="px-3 py-1.5 text-sm text-white/30 flex items-center gap-1.5">
+                    <span className="px-3 py-1.5 text-sm text-muted flex items-center gap-1.5">
                       <i className="fa-solid fa-user text-xs"></i>
                       Autores:
                     </span>
                     {authors.map((author) => (
-                      <button
+                      <Button
                         key={author}
                         onClick={() => setSelectedAuthor(author)}
-                        className="px-4 py-1.5 rounded-full text-sm bg-[#181818] text-white/50 hover:text-white border border-white/10 hover:border-white/20 transition-all"
+                        className="px-4 py-1.5 rounded-full text-sm bg-surface text-muted hover:text-cream border border-white/5 hover:border-white/10 transition-all"
                       >
                         {author}
-                      </button>
+                      </Button>
                     ))}
                   </>
                 )}
@@ -259,25 +265,25 @@ const Blog = () => {
           {/* Limpar filtros */}
           {hasActiveFilter && (
             <div className="flex justify-center mb-8">
-              <button
+              <Button
                 onClick={clearAllFilters}
-                className="text-sm text-white/40 hover:text-white/70 transition-colors underline underline-offset-2"
+                className="text-sm text-muted hover:text-cream transition-colors underline underline-offset-2"
               >
                 Limpar todos os filtros
-              </button>
+              </Button>
             </div>
           )}
 
           {/* Grid de Posts */}
           {isLoading ? (
             <div className="text-center py-24">
-              <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-secondary"></div>
-              <p className="mt-4 text-white/40 text-sm">Carregando posts…</p>
+              <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-copper"></div>
+              <p className="mt-4 text-muted text-sm">Carregando posts…</p>
             </div>
           ) : filteredPosts.length === 0 ? (
             <div className="text-center py-24">
-              <i className="fa-regular fa-newspaper text-5xl text-white/20 mb-5 block"></i>
-              <p className="text-lg text-white/40">
+              <i className="fa-regular fa-newspaper text-5xl text-black/10 mb-5 block"></i>
+              <p className="text-lg text-muted">
                 {!hasActiveFilter
                   ? 'Nenhum post publicado ainda.'
                   : 'Nenhum post encontrado com os filtros selecionados.'}
@@ -289,52 +295,52 @@ const Blog = () => {
                 <Link
                   key={post.id}
                   to={`/blog/${post.slug}`}
-                  className="group overflow-hidden rounded-[30px] border border-white/8 bg-[#181818] shadow-lg transition duration-300 hover:-translate-y-1 hover:border-white/14 focus:outline-none focus:ring-2 focus:ring-secondary"
+                  className="group overflow-hidden rounded-[2rem] border border-white/5 bg-surface hover:border-white/10 shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-copper flex flex-col h-full"
                 >
                   {/* Imagem de Destaque */}
                   {post.imagem_destaque && (
-                    <div className="aspect-video overflow-hidden bg-dark-bg">
+                    <div className="aspect-video overflow-hidden bg-surface">
                       <img
                         src={post.imagem_destaque}
                         alt={post.titulo}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         loading="lazy"
                       />
                     </div>
                   )}
 
-                  <div className="p-7">
+                  <div className="p-8 flex flex-col flex-grow">
                     {/* Categoria e Data */}
-                    <div className="flex items-center gap-3 mb-4 text-xs">
+                    <div className="flex flex-wrap items-center gap-3 mb-4">
                       {post.categoria && (
-                        <span className="inline-flex rounded-full border border-white/10 bg-cream/20 px-3 py-1  text-white text-xs">
+                        <span className="inline-flex rounded-full border border-copper/20 bg-copper/5 px-3 py-1 text-copper font-mono text-[10px] uppercase tracking-widest">
                           {post.categoria}
                         </span>
                       )}
-                      <span className="text-white/40">
+                      <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
                         {formatDate(post.data_publicacao)}
                       </span>
                     </div>
 
                     {/* Título */}
-                    <h2 className="font-title text-xl font-semibold tracking-[-0.03em] text-white mb-3 group-hover:text-secondary transition-colors leading-snug">
+                    <h2 className="text-[1.25rem] font-medium tracking-tight text-cream mb-3 leading-snug line-clamp-2">
                       {post.titulo}
                     </h2>
 
                     {/* Resumo */}
                     {post.resumo && (
-                      <p className="text-white/55 text-sm mb-5 line-clamp-3 leading-relaxed">
+                      <p className="text-muted text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
                         {post.resumo}
                       </p>
                     )}
 
                     {/* Tags */}
                     {post.tags && (
-                      <div className="flex flex-wrap gap-1.5 mb-5">
+                      <div className="flex flex-wrap gap-1.5 mb-6">
                         {post.tags.toLowerCase().split(',').slice(0, 3).map((tag, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-0.5 bg-white/5 text-white/40 rounded text-xs"
+                            className="px-2 py-0.5 bg-white/5 border border-white/5 text-muted rounded text-[10px] font-mono tracking-wider"
                           >
                             #{tag.trim()}
                           </span>
@@ -343,9 +349,8 @@ const Blog = () => {
                     )}
 
                     {/* Ler mais */}
-                    <div className="flex items-center text-secondary text-sm font-medium">
-                      Ler mais
-                      <i className="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    <div className="flex items-center text-sm font-bold uppercase tracking-[.15em] text-cream group-hover:text-copper transition-colors mt-auto">
+                      Ler mais →
                     </div>
                   </div>
                 </Link>

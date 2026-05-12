@@ -241,7 +241,7 @@ const Home = () => {
         description="Projete a infraestrutura visual que sustenta o faturamento de marcas de elite. Conheça a Engenharia de Percepção do Svicero Studio. Design e estratégia de alto padrão."
         keywords="Design Estratégico para High-Ticket, Engenharia Visual, Consultoria de Branding de Luxo, Posicionamento de Marcas de Elite, UI/UX para Marcas Premium, Svicero Studio"
       />
-      <div className="bg-dark-bg min-h-screen">
+      <div className="bg-charcoal text-cream min-h-screen font-body">
         <Header />
 
         <a
@@ -256,139 +256,114 @@ const Home = () => {
 
         <HeroSection />
 
-        <section id="triade" className="py-24 px-4 md:px-16 bg-dark-bg font-body">
+        <section id="triade" className="py-24 px-4 md:px-16 bg-surface font-body border-t border-white/5">
           <div className="max-w-screen-xl mx-auto">
             <div className="container max-w-5xl text-left mb-16">
-              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                <span className="w-2 h-2 -rotate-45 bg-secondary" />
+              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+                <span className="w-1.5 h-1.5 rounded-full bg-copper" />
                 METODOLOGIA
               </span>
-              <h2 className="reveal stagger-1 text-4xl md:text-5xl font-bold text-text-primary text-left">
+              <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left">
                 Como o Svicero Studio trabalha
               </h2>
-              <p className="mt-4 text-low-medium text-left text-lg md:text-xl leading-relaxed">
-                Começamos pelo seu{" "}
-                <span className="font-bold">negócio</span>, passamos pela{" "}
-                <span className="font-bold">estratégia de marca</span> e só então
-                chegamos ao <span className="font-bold">design</span>. Nessa ordem,
-                sempre.
+              <p className="mt-6 text-xl font-normal leading-[1.6] text-muted text-left">
+                Começamos pelo seu <span className="font-semibold text-cream">negócio</span>, passamos pela <span className="font-semibold text-cream">estratégia de marca</span> e só então chegamos ao <span className="font-semibold text-cream">design</span>. Nessa ordem, sempre.
               </p>
             </div>
 
-            {/* Cards de serviço */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-              <div className="flex flex-col items-center text-center">
-                <span className="font-title text-[6rem] md:text-8xl font-normal text-secondary/30 leading-none mb-4">
-                  01
-                </span>
-                <h3 className="text-g font-bold text-text-primary mt-4">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+              <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500">
+                <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">01</span>
+                <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
                   Diagnóstico de negócio
                 </h3>
-                <p className="text-low-medium mt-3 text-m leading-relaxed">
-                  Antes de qualquer decisão visual, entendemos o seu negócio:
-                  objetivos, público, concorrência e onde sua marca está perdendo
-                  valor hoje.
+                <p className="text-base font-normal leading-[1.6] text-muted mt-4">
+                  Antes de qualquer decisão visual, entendemos o seu negócio: objetivos, público, concorrência e onde sua marca está perdendo valor hoje.
                 </p>
               </div>
 
-              <div className="flex flex-col items-center text-center">
-                <span className="font-title text-[6rem] md:text-8xl font-normal text-secondary/30 leading-none mb-4">
-                  02
-                </span>
-                <h3 className="text-g font-bold text-text-primary mt-4">
+              <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500">
+                <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">02</span>
+                <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
                   Estratégia de posicionamento
                 </h3>
-                <p className="text-low-medium mt-3 text-m leading-relaxed">
-                  Definimos como você deve ser percebido, que tipo de cliente quer
-                  atrair e qual mensagem precisa ficar clara para justificar preços
-                  mais altos.
+                <p className="text-base font-normal leading-[1.6] text-muted mt-4">
+                  Definimos como você deve ser percebido, que tipo de cliente quer atrair e qual mensagem precisa ficar clara para justificar preços mais altos.
                 </p>
               </div>
 
-              <div className="flex flex-col items-center text-center">
-                <span className="font-title text-[6rem] md:text-8xl font-normal text-secondary/30 leading-none mb-4">
-                  03
-                </span>
-                <h3 className="text-g font-bold text-text-primary mt-4">
+              <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500">
+                <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">03</span>
+                <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
                   Identidade e presença de marca
                 </h3>
-                <p className="text-low-medium mt-3 text-m leading-relaxed">
-                  Com a estratégia definida, traduzimos tudo em identidade visual e
-                  presença digital que comunicam seu posicionamento e apoiam suas
-                  vendas.
+                <p className="text-base font-normal leading-[1.6] text-muted mt-4">
+                  Com a estratégia definida, traduzimos tudo em identidade visual e presença digital que comunicam seu posicionamento e apoiam suas vendas.
                 </p>
               </div>
             </div>
+          </div>
 
             {/* Card "Para quem é" */}
-            <div className="bg-[#222] rounded-2xl p-8 md:p-12 mt-36 mb-8 max-w-3xl mx-auto flex flex-col items-center">
-              <h2 className="font-title text-3xl md:text-4xl font-bold text-white mb-2 text-left w-full">
+            <div className="bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-[2rem] p-10 md:p-16 mt-32 mb-8 max-w-4xl mx-auto flex flex-col shadow-xl">
+              <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-3">
                 Para quem é
               </h2>
-              <div className="text-[#B2B8C6] text-base md:text-lg font-light mb-6 text-left w-full">
+              <div className="text-xl font-normal leading-[1.6] text-muted mb-10">
                 Trabalhamos com negócios que já vendem ou estão chegando ao digital
-                pela primeira vez — e que entendem que marca forte não é custo, é
-                investimento.
+                pela primeira vez — e que entendem que marca forte não é custo, é investimento.
               </div>
 
-              <h3 className="font-title text-xl md:text-2xl font-semibold text-white mb-4 text-left w-full">
+              <h3 className="text-base font-semibold text-cream mb-6 uppercase tracking-wider">
                 Faz sentido conversar se:
               </h3>
 
-              <ul className="text-[#B2B8C6] text-base md:text-lg font-light mb-8 w-full">
-                <li className="flex items-start gap-2 mb-2">
-                  <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <Check size={12} className="text-secondary" />
+              <ul className="text-base font-normal leading-[1.6] text-muted mb-10 space-y-4">
+                <li className="flex items-start gap-4">
+                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                    <Check size={14} className="text-copper" />
                   </span>
-                  Você entrega bem, mas sente que o valor percebido da sua marca não
-                  acompanha o nível do que você entrega.
+                  Você entrega bem, mas sente que o valor percebido da sua marca não acompanha o nível do que você entrega.
                 </li>
-                <li className="flex items-start gap-2 mb-2">
-                  <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <Check size={12} className="text-secondary" />
+                <li className="flex items-start gap-4">
+                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                    <Check size={14} className="text-copper" />
                   </span>
-                  Clientes bons aparecem, mas ainda questionam o seu preço — e você
-                  sente dificuldade de justificar o valor que cobra.
+                  Clientes bons aparecem, mas ainda questionam o seu preço — e você sente dificuldade de justificar o valor que cobra.
                 </li>
-                <li className="flex items-start gap-2 mb-2">
-                  <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <Check size={12} className="text-secondary" />
+                <li className="flex items-start gap-4">
+                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                    <Check size={14} className="text-copper" />
                   </span>
-                  Sua comunicação parece genérica, parecida com a dos concorrentes,
-                  sem um diferencial claro.
+                  Sua comunicação parece genérica, parecida com a dos concorrentes, sem um diferencial claro.
                 </li>
-                <li className="flex items-start gap-2 mb-2">
-                  <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <Check size={12} className="text-secondary" />
+                <li className="flex items-start gap-4">
+                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                    <Check size={14} className="text-copper" />
                   </span>
-                  Você está chegando ao digital agora e quer construir sua presença
-                  com posicionamento certo desde o início — sem retrabalho.
+                  Você está chegando ao digital agora e quer construir sua presença com posicionamento certo desde o início — sem retrabalho.
                 </li>
-                <li className="flex items-start gap-2 mb-2">
-                  <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <Check size={12} className="text-secondary" />
+                <li className="flex items-start gap-4">
+                  <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
+                    <Check size={14} className="text-copper" />
                   </span>
-                  Você quer um parceiro que pense junto — não apenas alguém que
-                  execute o que você pede.
+                  Você quer um parceiro que pense junto — não apenas alguém que execute o que você pede.
                 </li>
               </ul>
 
-              <hr className="w-full border-t border-[#444] mb-6 mt-2" />
-
-              <div className="text-[#B2B8C6] text-left w-full mb-6">
+              <div className="border-t border-white/5 pt-8 mb-8 text-muted">
                 Se você se viu em dois ou mais pontos, vale a pena a gente conversar.
               </div>
 
-              <div className="flex flex-col md:flex-row gap-4">
-                <Button href="/diagnostico" variant="secondary">
+              <div className="flex flex-col sm:flex-row gap-4 w-full">
+                <Button variant="primary" href="/formulario-interesse" className="w-full" >
                   Agendar Diagnóstico
                 </Button>
-                <Button href="/processos" variant="outline">
+                <Button variant="outline" href="/processos" className="w-full" >
                   Ver como trabalhamos
                 </Button>
               </div>
             </div>
-          </div>
         </section>
 
         {/* Diagnostico Section */}
@@ -400,15 +375,15 @@ const Home = () => {
         <AboutSection />
 
         {depoimentos.length > 0 && (
-          <section className="bg-primary py-24 px-4 md:px-16">
+          <section className="bg-surface py-24 px-4 md:px-16 border-t border-white/5">
             <div className="max-w-screen-xl mx-auto">
 
-              <div className="mb-12 text-left">
-                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                  <span className="w-2 h-2 -rotate-45 bg-secondary inline-block" />
+              <div className="mb-12 text-center md:text-left flex flex-col items-center md:items-start">
+                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+                  <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
                   CLIENTES
                 </span>
-                <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">
+                <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left">
                   O que diz quem passa pelo nosso processo
                 </h2>
               </div>
@@ -420,7 +395,7 @@ const Home = () => {
                       .sort((a, b) => Number(a.ordem) - Number(b.ordem))
                       .map((depoimento) => (
                         <div key={depoimento.id} className="swiper-slide">
-                          <div className="bg-white/5 rounded-2xl border border-secondary/20 p-8 flex flex-col h-full shadow-md">
+                          <div className="bg-[#141414]/60 backdrop-blur-xl rounded-3xl border border-white/5 p-8 flex flex-col h-full shadow-lg hover:shadow-xl hover:border-white/10 transition-all duration-500">
 
                             {/* Estrelas */}
                             <div
@@ -431,29 +406,29 @@ const Home = () => {
                               {Array.from({ length: 5 }).map((_, i) => (
                                 <i
                                   key={i}
-                                  className={`fa-solid fa-star text-secondary text-xl mr-1 ${i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''
+                                  className={`fa-solid fa-star text-copper text-xl mr-1 ${i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''
                                     }`}
                                 />
                               ))}
                             </div>
 
                             {/* Texto do depoimento */}
-                            <p className="text-[#B2B8C6] text-base font-normal leading-relaxed mb-6 italic flex-1">
+                            <p className="text-muted text-lg font-normal leading-[1.6] mb-8 italic flex-1">
                               "{depoimento.texto}"
                             </p>
 
                             {/* Autor */}
-                            <div className="flex items-center gap-4 mt-auto">
-                              <div className="w-12 h-12 flex-shrink-0 rounded-full bg-[#E5E5E5] flex items-center justify-center">
-                                <span className="font-semibold text-lg text-secondary">
+                            <div className="flex items-center gap-4 mt-auto pt-6 border-t border-white/5">
+                              <div className="w-12 h-12 flex-shrink-0 rounded-full bg-copper/10 flex items-center justify-center">
+                                <span className="font-semibold text-lg text-copper">
                                   {depoimento.iniciais || getNameInitials(depoimento.nome)}
                                 </span>
                               </div>
                               <div>
-                                <p className="text-white font-bold text-base">
+                                <p className="text-cream font-semibold text-base">
                                   {depoimento.nome}
                                 </p>
-                                <p className="text-[#B2B8C6] text-sm font-normal">
+                                <p className="text-muted/70 font-mono text-[10px] uppercase tracking-wider">
                                   {depoimento.cargo}
                                   {depoimento.empresa ? `, ${depoimento.empresa}` : ''}
                                 </p>

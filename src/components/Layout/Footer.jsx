@@ -5,7 +5,8 @@ import logoBranco from '../../images/logo_alternativo 4.png';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-footer-bg text-[#B2B8C6] pt-14 sm:pt-16 pb-8 px-4 sm:px-6 md:px-12 lg:px-20 font-body">
+    <footer className="w-full bg-surface text-muted pt-14 sm:pt-16 pb-8 px-4 sm:px-6 md:px-12 lg:px-20 font-body relative overflow-hidden border-t border-white/5">
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-copper/5 rounded-full blur-[100px] pointer-events-none"></div>
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20">
         {/* Coluna esquerda: logo, texto, redes */}
         <div className="flex-1 min-w-0 flex flex-col gap-6">
@@ -25,54 +26,54 @@ const Footer = () => {
           </div>
           <div className="flex flex-row items-center justify-between mt-2">
             <a href="https://wa.me/5511964932007" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-              <i className="fa-brands fa-whatsapp text-3xl text-[#B2B8C6] hover:text-secondary transition-colors" />
+              <i className="fa-brands fa-whatsapp text-3xl text-white/60 hover:text-copper transition-colors" />
             </a>
             <a href="https://www.instagram.com/robsonsvicero.dsgr/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <i className="fa-brands fa-instagram text-3xl text-[#B2B8C6] hover:text-secondary transition-colors" />
+              <i className="fa-brands fa-instagram text-3xl text-white/60 hover:text-copper transition-colors" />
             </a>
             <a href="https://github.com/robsonsvicero" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-              <i className="fa-brands fa-github-alt text-3xl text-[#B2B8C6] hover:text-secondary transition-colors" />
+              <i className="fa-brands fa-github-alt text-3xl text-white/60 hover:text-copper transition-colors" />
             </a>
             <a href="https://www.behance.net/robsonsvicero" target="_blank" rel="noopener noreferrer" aria-label="Behance">
-              <i className="fa-brands fa-behance text-3xl text-[#B2B8C6] hover:text-secondary transition-colors" />
+              <i className="fa-brands fa-behance text-3xl text-white/60 hover:text-copper transition-colors" />
             </a>
           </div>
         </div>
         {/* Coluna menus */}
         <div className="flex-[2] flex flex-col sm:flex-row gap-10 sm:gap-12 md:gap-24 justify-start md:justify-end">
           <div>
-            <h4 className="text-white font-bold text-lg mb-4">Estúdio</h4>
+            <h4 className="text-cream font-medium text-lg mb-4">Estúdio</h4>
             <ul className="flex flex-col gap-2">
-              <li><Link to="/portfolio" className="hover:text-secondary transition-colors">Portfólio</Link></li>
-              <li><Link to="/planos-pacotes" className="hover:text-secondary transition-colors">Planos & Pacotes</Link></li>
-              <li><Link to="/processos" className="hover:text-secondary transition-colors">Processos</Link></li>
-              <li><Link to="/blog" className="hover:text-secondary transition-colors">Blog</Link></li>
+              <li><Link to="/portfolio" className="hover:text-copper transition-colors">Portfólio</Link></li>
+              <li><Link to="/planos-pacotes" className="hover:text-copper transition-colors">Planos & Pacotes</Link></li>
+              <li><Link to="/processos" className="hover:text-copper transition-colors">Processos</Link></li>
+              <li><Link to="/blog" className="hover:text-copper transition-colors">Blog</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-white font-bold text-lg mb-4">Suporte</h4>
+            <h4 className="text-cream font-medium text-lg mb-4">Suporte</h4>
             <ul className="flex flex-col gap-2">
-              <li><Link to="/contato" className="hover:text-secondary transition-colors">Contato</Link></li>
-              <li><Link to="/faq" className="hover:text-secondary transition-colors">FAQ</Link></li>
-              <li><Link to="/privacidade" className="hover:text-secondary transition-colors">Privacidade</Link></li>
-              <li><Link to="/termos" className="hover:text-secondary transition-colors">Termos</Link></li>
+              <li><Link to="/contato" className="hover:text-copper transition-colors">Contato</Link></li>
+              <li><Link to="/faq" className="hover:text-copper transition-colors">FAQ</Link></li>
+              <li><Link to="/privacidade" className="hover:text-copper transition-colors">Privacidade</Link></li>
+              <li><Link to="/termos" className="hover:text-copper transition-colors">Termos</Link></li>
             </ul>
           </div>
         </div>
       </div>
       {/* Linha divisória */}
-      <hr className="my-10 border-cream/10" />
+      <hr className="my-10 border-white/5 relative z-10" />
       {/* Rodapé final */}
-      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center md:items-start justify-between gap-4 text-sm text-[#B2B8C6]/80">
+      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center md:items-start justify-between gap-4 text-sm text-muted/80 relative z-10">
         <div className="flex flex-row items-center gap-2">
           <span>© 2026 Svicero Studio. Todos os direitos reservados.</span>
         </div>
         <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 sm:gap-4">
-          <Link to="/privacidade" className="hover:text-secondary transition-colors">Privacidade</Link>
-          <span className="text-secondary text-lg">•</span>
-          <Link to="/exclusao-dados" className="hover:text-secondary transition-colors">Exclusão de Dados</Link>
-          <span className="text-secondary text-lg">•</span>
-          <span className="flex items-center gap-1"><i className="fa-solid fa-location-dot text-[#B2B8C6]" /> São Paulo, Brasil</span>
+          <Link to="/privacidade" className="hover:text-copper transition-colors">Privacidade</Link>
+          <span className="text-copper/50 text-lg">•</span>
+          <Link to="/exclusao-dados" className="hover:text-copper transition-colors">Exclusão de Dados</Link>
+          <span className="text-copper/50 text-lg">•</span>
+          <span className="flex items-center gap-1"><i className="fa-solid fa-location-dot text-muted/80" /> São Paulo, Brasil</span>
         </div>
       </div>
     </footer>

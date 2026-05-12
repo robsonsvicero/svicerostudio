@@ -9,18 +9,19 @@ import 'swiper/css/pagination';
 
 const BlogSection = ({ blogPosts }) => {
   return (
-    <section id="blog" className="bg-dark-bg py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body">
+    <section id="blog" className="bg-charcoal py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body">
       <div className="max-w-screen-xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
-            <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                <span className="w-2 h-2 -rotate-45 bg-secondary flex-shrink-0 inline-block"></span>
-                BLOG
-              </span>
-            <h2 className="font-title text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 text-balance">Conteúdos para fortalecer sua marca</h2>
+            <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+              <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
+              BLOG
+            </span>
+            <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left mb-6">
+              Conteúdos para fortalecer sua marca</h2>
           </div>
           <div className="mt-4 md:mt-0">
-            <a href="/blog" className="text-secondary text-base font-normal flex items-center gap-2 hover:text-white transition-colors">
+            <a href="/blog" className="text-copper text-sm uppercase tracking-widest font-bold flex items-center gap-2 hover:text-copper/80 transition-colors">
               Ver todos os artigos
               <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </a>
@@ -47,28 +48,28 @@ const BlogSection = ({ blogPosts }) => {
             <SwiperSlide key={post.id}>
               <Link
                 to={`/blog/${post.slug}`}
-                className="group rounded-2xl overflow-hidden bg-card transition-all duration-300 hover:-translate-y-2 shadow-lg flex flex-col h-full min-h-[360px] sm:min-h-[420px]"
+                className="group rounded-3xl overflow-hidden bg-white border border-black/5 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 shadow-sm flex flex-col h-full min-h-[360px] sm:min-h-[420px]"
               >
                 {/* Imagem do artigo */}
                 {post.imagem_destaque && (
-                  <div className="w-full aspect-video overflow-hidden bg-[#E5E5E5]">
+                  <div className="w-full aspect-video overflow-hidden bg-surface">
                     <img
                       src={post.imagem_destaque}
                       alt={post.titulo}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   </div>
                 )}
-                <div className="flex flex-col px-6 py-6">
-                  <span className="text-xs text-white font-semibold uppercase tracking-wider">
+                <div className="flex flex-col px-8 py-8">
+                  <span className="text-[10px] text-copper font-mono uppercase tracking-widest">
                     {post.categoria}
                   </span>
-                  <h3 className="text-base font-medium text-white opacity-50 mt-2 leading-snug line-clamp-2">
+                  <h3 className="text-xl font-medium text-primary mt-3 leading-snug line-clamp-2">
                     {post.titulo}
                   </h3>
-                  <Button variant="secondary" size="sm" className="mt-4">
-                    Ler mais
-                  </Button>
+                  <div className="mt-6">
+                    <span className="text-sm font-bold uppercase tracking-[.15em] text-primary group-hover:text-copper transition-colors">Ler mais →</span>
+                  </div>
                 </div>
               </Link>
             </SwiperSlide>

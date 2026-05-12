@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import AdminLayout from '../../components/Layout/AdminLayout';
+import AdminLayout from '../../components/Admin/AdminLayout';
 import { API_URL } from '../../lib/api';
+import Button from '../../components/UI/Button';
 
+// Redesign dashboard: FAQ management with consistent SaaS styling
 
 const AdminFAQ = () => {
-    // Função para atualizar ordem no backend
+    // --- Logic (100% preserved) ---
     const updateOrderBackend = (faqs) => {
       faqs.forEach((item, idx) => {
         const id = item.id || item._id;
@@ -17,20 +19,18 @@ const AdminFAQ = () => {
       });
     };
 
-    // Handler drag end
     const handleDragEnd = (result) => {
       if (!result.destination) return;
       const reordered = Array.from(perguntas);
       const [removed] = reordered.splice(result.source.index, 1);
       reordered.splice(result.destination.index, 0, removed);
-      // Atualiza ordem local
       setPerguntas(reordered);
-      // Atualiza ordem no backend
       updateOrderBackend(reordered);
     };
+
   const [perguntas, setPerguntas] = useState([]);
   const [loading, setLoading] = useState(true);
-    // Buscar perguntas do backend
+
     React.useEffect(() => {
       setLoading(true);
       fetch(`${API_URL}/api/faq`)
@@ -44,6 +44,7 @@ const AdminFAQ = () => {
           setLoading(false);
         });
     }, []);
+
   const [pergunta, setPergunta] = useState('');
   const [resposta, setResposta] = useState('');
   const [ordem, setOrdem] = useState(0);
@@ -109,104 +110,118 @@ const AdminFAQ = () => {
     setEditIdx(null);
   };
 
+  // --- JSX (redesigned) ---
   return (
-    <AdminLayout title="Admin FAQ">
-      <div className="w-full mx-auto py-20 lg:py-36 px-20 lg:px-36 font-body">
-        <h1 className="text-3xl font-bold mb-6">Gerenciar Perguntas Frequentes (FAQ)</h1>
-        <form onSubmit={handleAdd} className="bg-[#181818] p-6 rounded-xl mb-8 shadow">
-          <div className="mb-4">
-            <label className="block text-[#E9BF84] mb-2">Pergunta</label>
+    <AdminLayout title="FAQ">
+      {/* Add form */}
+      <div className="rounded-xl border border-white/5 bg-surface p-6 mb-6">
+        <h2 className="text-base font-semibold text-cream mb-4">Nova Pergunta</h2>
+        <form onSubmit={handleAdd} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-muted mb-1.5">Pergunta</label>
             <input
               type="text"
               value={pergunta}
               onChange={e => setPergunta(e.target.value)}
-              className="w-full p-3 rounded bg-[#222] text-white border border-[#E9BF84]/20"
+              className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20"
               placeholder="Digite a pergunta"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-[#E9BF84] mb-2">Resposta</label>
+          <div>
+            <label className="block text-sm font-medium text-muted mb-1.5">Resposta</label>
             <textarea
               value={resposta}
               onChange={e => setResposta(e.target.value)}
-              className="w-full p-3 rounded bg-[#222] text-white border border-[#E9BF84]/20"
+              className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20 resize-none"
               placeholder="Digite a resposta"
-              rows={4}
+              rows={3}
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-[#E9BF84] mb-2">Ordem</label>
-            <input
-              type="number"
-              value={ordem}
-              onChange={e => setOrdem(Number(e.target.value))}
-              className="w-full p-3 rounded bg-[#222] text-white border border-[#E9BF84]/20"
-              placeholder="Defina a ordem de exibição"
-              min={0}
-            />
+          <div className="flex items-end gap-4">
+            <div className="w-32">
+              <label className="block text-sm font-medium text-muted mb-1.5">Ordem</label>
+              <input
+                type="number"
+                value={ordem}
+                onChange={e => setOrdem(Number(e.target.value))}
+                className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20"
+                min={0}
+              />
+            </div>
+            <Button type="submit" className="rounded-lg bg-copper px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition">
+              Adicionar
+            </Button>
           </div>
-          <button type="submit" className="bg-[#E9BF84] text-[#181818] font-semibold px-6 py-2 rounded hover:bg-[#cfa76b]">Adicionar</button>
         </form>
-        <div className="space-y-6">
+      </div>
+
+      {/* FAQ list */}
+      <div className="rounded-xl border border-white/5 bg-surface">
+        <div className="border-b border-white/5 px-6 py-4">
+          <h2 className="text-base font-semibold text-cream">
+            Perguntas Cadastradas
+            {!loading && <span className="ml-2 text-sm font-normal text-muted">({perguntas.length})</span>}
+          </h2>
+        </div>
+
+        <div className="p-4">
           {loading ? (
-            <div className="text-center text-white/60 py-8">Carregando perguntas...</div>
+            <div className="text-center text-muted py-10">Carregando perguntas...</div>
           ) : perguntas.length === 0 ? (
-            <div className="text-center text-white/60 py-8">Nenhuma pergunta cadastrada.</div>
+            <div className="text-center text-muted py-10">Nenhuma pergunta cadastrada.</div>
           ) : (
             <DragDropContext onDragEnd={handleDragEnd}>
               <Droppable droppableId="faq-list">
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
-                    {/* Ajuste de min-height para garantir drop acima */}
-                    <div style={{ minHeight: '1px' }}>
+                    <div style={{ minHeight: '1px' }} className="space-y-2">
                       {perguntas.map((item, idx) => (
                       <Draggable key={item.id || item._id} draggableId={String(item.id || item._id)} index={idx}>
                         {(dragProvided, dragSnapshot) => (
                           <div
                             ref={dragProvided.innerRef}
                             {...dragProvided.draggableProps}
-                            className={`bg-[#181818] p-5 rounded-xl shadow flex flex-col md:flex-row md:items-center md:justify-between mb-4 ${dragSnapshot.isDragging ? 'ring-2 ring-[#E9BF84]' : ''}`}
+                            className={`rounded-lg border bg-charcoal p-4 transition-all ${dragSnapshot.isDragging ? 'border-copper/50 shadow-lg shadow-copper/10' : 'border-white/5 hover:border-white/10'}`}
                             style={{ overflow: 'visible' }}
                           >
                             {editIdx === idx ? (
-                              <div className="w-full mt-4">
+                              <div className="space-y-3">
                                 <input
                                   type="text"
                                   value={editPergunta}
                                   onChange={e => setEditPergunta(e.target.value)}
-                                  className="w-full p-3 rounded bg-[#222] text-white border border-[#E9BF84]/20 mb-2"
+                                  className="w-full rounded-lg border border-white/10 bg-surface px-4 py-2.5 text-sm text-cream outline-none transition focus:border-copper/40"
                                 />
                                 <textarea
                                   value={editResposta}
                                   onChange={e => setEditResposta(e.target.value)}
-                                  className="w-full p-3 rounded bg-[#222] text-white border border-[#E9BF84]/20 mb-2"
-                                  rows={4}
+                                  className="w-full rounded-lg border border-white/10 bg-surface px-4 py-2.5 text-sm text-cream outline-none transition focus:border-copper/40 resize-none"
+                                  rows={3}
                                 />
-                                <input
-                                  type="number"
-                                  value={editOrdem}
-                                  onChange={e => setEditOrdem(Number(e.target.value))}
-                                  className="w-full p-3 rounded bg-[#222] text-white border border-[#E9BF84]/20 mb-2"
-                                  placeholder="Defina a ordem de exibição"
-                                  min={0}
-                                />
-                                <div className="flex gap-2 mt-2">
-                                  <button onClick={() => handleSaveEdit(idx)} className="bg-[#E9BF84] text-[#181818] font-semibold px-4 py-2 rounded hover:bg-[#cfa76b]">Salvar</button>
-                                  <button onClick={handleCancelEdit} className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
+                                <div className="flex items-center gap-3">
+                                  <input
+                                    type="number"
+                                    value={editOrdem}
+                                    onChange={e => setEditOrdem(Number(e.target.value))}
+                                    className="w-24 rounded-lg border border-white/10 bg-surface px-3 py-2.5 text-sm text-cream outline-none transition focus:border-copper/40"
+                                    min={0}
+                                  />
+                                  <Button onClick={() => handleSaveEdit(idx)} className="rounded-lg bg-copper px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition">Salvar</Button>
+                                  <Button onClick={handleCancelEdit} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-muted hover:text-cream transition">Cancelar</Button>
                                 </div>
                               </div>
                             ) : (
-                              <div>
-                                <div className="flex items-center mb-2">
-                                  <span {...dragProvided.dragHandleProps} className="cursor-grab text-[#E9BF84] mr-4 text-xl md:text-2xl select-none" title="Arraste para reordenar">☰</span>
-                                  <div className="flex-1">
-                                    <div className="text-[#E9BF84] font-semibold mb-1">{item.pergunta}</div>
-                                    <div className="text-white/80">{item.resposta}</div>
-                                  </div>
+                              <div className="flex items-start gap-3">
+                                <span {...dragProvided.dragHandleProps} className="cursor-grab text-muted hover:text-copper mt-0.5 text-base select-none flex-shrink-0 transition-colors" title="Arraste para reordenar">
+                                  <i className="fa-solid fa-grip-vertical"></i>
+                                </span>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-cream">{item.pergunta}</p>
+                                  <p className="mt-1 text-sm text-muted leading-relaxed line-clamp-2">{item.resposta}</p>
                                 </div>
-                                <div className="flex gap-2 mt-3 md:mt-0">
-                                  <button onClick={() => handleEdit(idx)} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Editar</button>
-                                  <button onClick={() => handleDelete(idx)} className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Remover</button>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <Button onClick={() => handleEdit(idx)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted hover:text-cream hover:bg-white/10 transition">Editar</Button>
+                                  <Button onClick={() => handleDelete(idx)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Remover</Button>
                                 </div>
                               </div>
                             )}

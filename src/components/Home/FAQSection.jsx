@@ -5,14 +5,14 @@ const FAQSection = ({ faqs }) => {
   if (!faqs || faqs.length === 0) return null;
 
   return (
-    <section className="py-24 px-4 md:px-16 bg-dark-bg font-body">
+    <section className="py-24 px-4 md:px-16 bg-surface font-body border-t border-white/5">
       <div className="max-w-screen-xl mx-auto">
         <div className="mb-16 text-left">
-          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-            <span className="w-2 h-2 -rotate-45 bg-secondary" />
+          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+            <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
             FAQ
           </span>
-          <h2 className="reveal stagger-1 text-4xl md:text-5xl font-bold text-text-primary text-left max-w-2xl leading-tight">
+          <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left mb-6">
             Dúvidas que costumam surgir antes do diagnóstico
           </h2>
         </div>
@@ -21,13 +21,13 @@ const FAQSection = ({ faqs }) => {
           {faqs.map((item, idx) => (
             <div 
               key={item.id || item._id} 
-              className="reveal stagger-2 rounded-[30px] border border-white/5 bg-[#1A1A1A] p-8 hover:border-secondary/30 transition-colors group"
+              className="rounded-3xl border border-white/5 bg-[#141414]/60 backdrop-blur-xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 group hover:border-white/10"
             >
-              <h3 className="text-xl font-bold text-[#E9BF84] mb-4 flex items-start gap-3">
-                <span className="text-secondary/50 font-title text-2xl leading-none">?</span>
+              <h3 className="text-[1.125rem] font-medium text-cream mb-4 flex items-start gap-3">
+                <span className="text-copper font-mono text-xl leading-none font-bold">?</span>
                 {item.pergunta}
               </h3>
-              <p className="text-white/70 text-base leading-relaxed pl-6 border-l border-white/5 group-hover:border-secondary/20 transition-colors">
+              <p className="text-muted text-base leading-[1.6] pl-6 border-l border-white/5 group-hover:border-copper/40 transition-colors">
                 {item.resposta}
               </p>
             </div>

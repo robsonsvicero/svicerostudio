@@ -199,205 +199,127 @@ const AdminAutores = () => {
         }
     };
 
+    // Redesign dashboard: Authors management with consistent SaaS styling
     return (
         <AdminLayout
-            toastProps={{
-                show: showToast,
-                message: toastMessage,
-                type: toastType,
-                onClose: hideToast
-            }}
-        >
-            <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-[32px] border border-white/8 bg-[#181818] shadow-2xl shadow-black/30 font-body">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(184,115,51,0.14),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(95,178,216,0.10),_transparent_22%)]"></div>
-                <div className="relative border-b border-white/8 px-6 py-6 lg:px-8">
-                    <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                        <div className="max-w-3xl">
-                            <div className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#E9BF84]">
-                                Gerenciar Autores
-                            </div>
-                            <h1 className="mt-4 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
-                                {editingAuthorId ? 'Editando Perfil de Autor' : 'Adicionar Novo Autor'}
-                            </h1>
-                            <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60 lg:text-base">
-                                Gerencie os perfis que assinam os conteúdos do studio.
-                            </p>
-                        </div>
-                        <div className="flex flex-col gap-3 sm:flex-row">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={clearForm}
-                            >
-                                {editingAuthorId ? 'Cancelar Edição' : 'Limpar'}
-                            </Button>
-                            <Button
-                                type="submit"
-                                variant="primary"
-                                disabled={isSaving || isUploading}
-                            >
-                                {isSaving ? 'Salvando...' : editingAuthorId ? 'Atualizar Autor' : 'Publicar Autor'}
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-                <div className="relative grid gap-6 px-6 py-6 lg:grid-cols-12 lg:px-8 lg:py-8">
-                    <div className="space-y-6 lg:col-span-8">
-                        <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-                            <div className="mb-6">
-                                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Identificação</p>
-                                <h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Informações do Autor</h2>
-                            </div>
-                            <div className="grid gap-4 lg:grid-cols-2">
-                                {/* Campo Nome */}
-                                <label className="lg:col-span-1 block">
-                                    <span className="mb-2 block text-sm font-medium text-white/82">Nome do autor <span className="ml-1 text-[#E9BF84]">*</span></span>
-                                    <input
-                                        type="text"
-                                        name="nome"
-                                        value={formData.nome || ''}
-                                        onChange={handleInputChange}
-                                        placeholder="Ex: Robson Svicero"
-                                        required
-                                        className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                                    />
-                                </label>
-                                {/* Campo Cargo */}
-                                <label className="lg:col-span-1 block">
-                                    <span className="mb-2 block text-sm font-medium text-white/82">Cargo <span className="ml-1 text-[#E9BF84]">*</span></span>
-                                    <input
-                                        type="text"
-                                        name="cargo"
-                                        value={formData.cargo || ''}
-                                        onChange={handleInputChange}
-                                        placeholder="Ex: Diretor de Arte & Design"
-                                        required
-                                        className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                                    />
-                                </label>
-                                {/* Campo Email */}
-                                <label className="lg:col-span-2 block">
-                                    <span className="mb-2 block text-sm font-medium text-white/82">Email de contato</span>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email || ''}
-                                        onChange={handleInputChange}
-                                        placeholder="contato@svicero.com"
-                                        className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                                    />
-                                </label>
-                                {/* Campo Slug (NOVO) */}
-                                <label className="lg:col-span-2 block">
-                                    <span className="mb-2 block text-sm font-medium text-white/82">Slug (URL amigável)</span>
-                                    <input
-                                        type="text"
-                                        name="slug"
-                                        value={formData.slug || ''}
-                                        onChange={handleInputChange}
-                                        placeholder="Ex: robson-svicero"
-                                        className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                                    />
-                                </label>
-                            </div>
-                        </section>
-
-                        <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-                            <div className="mb-6">
-                                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Conteúdo</p>
-                                <h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Biografia</h2>
-                            </div>
-                            <div className="grid gap-4">
-                                <label>
-                                    <span className="mb-2 block text-sm font-medium text-white/82">Bio</span>
-                                    <textarea
-                                        name="bio"
-                                        value={formData.bio}
-                                        onChange={handleInputChange}
-                                        placeholder="Escreva uma biografia curta..."
-                                        rows={4}
-                                        className="w-full resize-y rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-4 text-sm leading-6 text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                                    ></textarea>
-                                </label>
-                            </div>
-                        </section>
-
-                        <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-                            <div className="mb-6">
-                                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Mídia</p>
-                                <h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Foto de Perfil</h2>
-                            </div>
-                            <ImageUploadSlot
-                                title="Foto de perfil do autor"
-                                description="Arraste ou clique para enviar (Recomendado: 400x400px)"
-                                currentImageUrl={formData.foto_url}
-                                onUpload={handleImageUpload}
-                                isUploading={isUploading}
-                            />
-                        </section>
-                    </div>
-
-                    <aside className="space-y-6 lg:col-span-4">
-                        <section className="rounded-[28px] border border-white/8 bg-[#2F353B]/30 p-5 shadow-lg shadow-black/20">
-                            <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Configurações</p>
-                            <div className="mt-5 grid gap-3">
-                                <label className="flex items-center justify-between rounded-2xl border border-white/8 bg-[#141414]/55 px-4 py-4">
-                                    <span className="text-sm text-white/82">Perfil público</span>
-                                    <input
-                                        type="checkbox"
-                                        name="publicado"
-                                        checked={formData.publicado}
-                                        onChange={handleInputChange}
-                                        className="sr-only"
-                                    />
-                                    <span className={`flex h-7 w-12 items-center rounded-full border border-[#B87333]/20 px-1 ${formData.publicado ? 'bg-[#B87333]/50' : 'bg-white/5'}`}>
-                                        <span className={`h-5 w-5 rounded-full bg-[#B87333] transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`}></span>
-                                    </span>
-                                </label>
-                            </div>
-                        </section>
-                    </aside>
-                </div>
-            </form>
-
-            <div className="mt-16">
-                <h2 className="text-2xl font-semibold text-white mb-6">Autores Cadastrados</h2>
-                {isLoading && <p className="text-white/60">Carregando...</p>}
-                {!isLoading && autores.length === 0 && (
-                    <p className="p-6 text-white/60 bg-[#181818] rounded-2xl border border-white/8">Nenhum autor encontrado.</p>
-                )}
-                {autores.length > 0 && (
-                    <div className="bg-[#181818] rounded-2xl border border-white/8">
-                        <ul className="divide-y divide-white/8">
-                            {autores.map(author => (
-                                <li key={author.id} className="flex items-center p-4 gap-4">
-                                    <img
-                                        src={author.foto_url || getAvatarPlaceholder(author.nome.charAt(0), '141414', 150)}
-                                        alt={author.nome}
-                                        className="w-12 h-12 object-cover rounded-full flex-shrink-0 bg-black/20"
-                                    />
-                                    <div className="flex-1 min-w-0">
-                                        <p className="font-semibold text-white truncate flex items-center gap-2">
-                                            {author.nome}
-                                            <span className={`px-2 py-0.5 text-xs rounded-full ${author.publicado ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
-                                                {author.publicado ? 'Público' : 'Privado'}
-                                            </span>
-                                        </p>
-                                        <p className="text-sm text-white/60 truncate">{author.cargo}</p>
-                                        {author.slug && <p className="text-xs text-white/40 truncate">Slug: /{author.slug}</p>}
-                                    </div>
-                                    <div className="flex items-center gap-3 flex-shrink-0">
-                                        <Button variant="outline" onClick={() => handleEditAuthor(author)}>Editar</Button>
-                                        <Button variant="danger" onClick={() => handleDeleteAuthor(author.id)}>Excluir</Button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
+          title="Autores"
+          actions={
+            <div className="flex items-center gap-3">
+              <Button type="button" onClick={clearForm} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-muted hover:text-cream hover:bg-white/10 transition">
+                {editingAuthorId ? 'Cancelar' : 'Limpar'}
+              </Button>
             </div>
+          }
+          toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}
+        >
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="mb-8">
+            <div className="grid gap-6 lg:grid-cols-12">
+              <div className="space-y-6 lg:col-span-8">
+                {/* Author identification */}
+                <div className="rounded-xl border border-white/5 bg-surface p-6">
+                  <div className="mb-5">
+                    <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Identificação</p>
+                    <h2 className="text-base font-semibold text-cream">{editingAuthorId ? 'Editando Autor' : 'Novo Autor'}</h2>
+                  </div>
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <label className="lg:col-span-1 block">
+                      <span className="mb-1.5 block text-sm font-medium text-muted">Nome do autor <span className="ml-1 text-copper">*</span></span>
+                      <input type="text" name="nome" value={formData.nome || ''} onChange={handleInputChange} placeholder="Ex: Robson Svicero" required className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20" />
+                    </label>
+                    <label className="lg:col-span-1 block">
+                      <span className="mb-1.5 block text-sm font-medium text-muted">Cargo <span className="ml-1 text-copper">*</span></span>
+                      <input type="text" name="cargo" value={formData.cargo || ''} onChange={handleInputChange} placeholder="Ex: Diretor de Arte & Design" required className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20" />
+                    </label>
+                    <label className="lg:col-span-2 block">
+                      <span className="mb-1.5 block text-sm font-medium text-muted">Email de contato</span>
+                      <input type="email" name="email" value={formData.email || ''} onChange={handleInputChange} placeholder="contato@svicero.com" className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20" />
+                    </label>
+                    <label className="lg:col-span-2 block">
+                      <span className="mb-1.5 block text-sm font-medium text-muted">Slug (URL amigável)</span>
+                      <input type="text" name="slug" value={formData.slug || ''} onChange={handleInputChange} placeholder="Ex: robson-svicero" className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20" />
+                    </label>
+                  </div>
+                </div>
+
+                {/* Bio */}
+                <div className="rounded-xl border border-white/5 bg-surface p-6">
+                  <div className="mb-5">
+                    <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Conteúdo</p>
+                    <h2 className="text-base font-semibold text-cream">Biografia</h2>
+                  </div>
+                  <label>
+                    <span className="mb-1.5 block text-sm font-medium text-muted">Bio</span>
+                    <textarea name="bio" value={formData.bio} onChange={handleInputChange} placeholder="Escreva uma biografia curta..." rows={4} className="w-full resize-y rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm leading-6 text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20" />
+                  </label>
+                </div>
+
+                {/* Photo */}
+                <div className="rounded-xl border border-white/5 bg-surface p-6">
+                  <div className="mb-5">
+                    <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Mídia</p>
+                    <h2 className="text-base font-semibold text-cream">Foto de Perfil</h2>
+                  </div>
+                  <ImageUploadSlot title="Foto de perfil do autor" description="Arraste ou clique para enviar (Recomendado: 400x400px)" currentImageUrl={formData.foto_url} onUpload={handleImageUpload} isUploading={isUploading} />
+                </div>
+              </div>
+
+              {/* Sidebar */}
+              <aside className="space-y-6 lg:col-span-4">
+                <div className="rounded-xl border border-white/5 bg-surface p-5">
+                  <p className="text-xs font-mono uppercase tracking-widest text-copper mb-4">Configurações</p>
+                  <label className="flex items-center justify-between rounded-lg border border-white/5 bg-charcoal px-4 py-3.5 cursor-pointer hover:border-white/10 transition-colors">
+                    <span className="text-sm text-cream">Perfil público</span>
+                    <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleInputChange} className="sr-only" />
+                    <span className={`flex h-6 w-11 items-center rounded-full border border-copper/20 px-0.5 transition-colors ${formData.publicado ? 'bg-copper/40' : 'bg-white/5'}`}>
+                      <span className={`h-5 w-5 rounded-full bg-copper transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
+                    </span>
+                  </label>
+                  <Button type="submit" className="mt-4 w-full rounded-lg bg-copper px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSaving || isUploading}>
+                    {isSaving ? 'Salvando...' : editingAuthorId ? 'Atualizar Autor' : 'Publicar Autor'}
+                  </Button>
+                </div>
+              </aside>
+            </div>
+          </form>
+
+          {/* List */}
+          <div className="rounded-xl border border-white/5 bg-surface">
+            <div className="border-b border-white/5 px-6 py-4">
+              <h2 className="text-base font-semibold text-cream">
+                Autores Cadastrados
+                {!isLoading && <span className="ml-2 text-sm font-normal text-muted">({autores.length})</span>}
+              </h2>
+            </div>
+            {isLoading && <p className="p-6 text-muted">Carregando...</p>}
+            {!isLoading && autores.length === 0 && <p className="p-6 text-muted">Nenhum autor encontrado.</p>}
+            {autores.length > 0 && (
+              <ul className="divide-y divide-white/5">
+                {autores.map(author => (
+                  <li key={author.id} className="flex items-center px-6 py-4 gap-4 hover:bg-white/[.02] transition-colors">
+                    <img src={author.foto_url || getAvatarPlaceholder(author.nome.charAt(0), '141414', 150)} alt={author.nome} className="w-10 h-10 object-cover rounded-full flex-shrink-0 bg-charcoal" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-cream truncate flex items-center gap-2">
+                        {author.nome}
+                        <span className={`px-2 py-0.5 text-xs rounded-md font-medium ${author.publicado ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+                          {author.publicado ? 'Público' : 'Privado'}
+                        </span>
+                      </p>
+                      <p className="text-xs text-muted truncate">{author.cargo}</p>
+                      {author.slug && <p className="text-xs text-muted/60 truncate">/{author.slug}</p>}
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <Button onClick={() => handleEditAuthor(author)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted hover:text-cream hover:bg-white/10 transition">Editar</Button>
+                      <Button onClick={() => handleDeleteAuthor(author.id)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </AdminLayout>
     );
 };
 
 export default AdminAutores;
+

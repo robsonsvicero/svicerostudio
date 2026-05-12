@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_URL } from '../lib/api.js';
+import Button from './UI/Button';
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -107,31 +108,31 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative my-4 w-full max-w-7xl font-sans text-[#EFEFEF]"
+          className="relative my-4 w-full max-w-7xl font-body text-primary"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="relative overflow-hidden rounded-[34px] border border-white/[0.08] bg-[#181818] shadow-2xl shadow-black/40">
+          <div className="relative overflow-hidden rounded-[2rem] border border-black/10 bg-white shadow-2xl shadow-black/20">
 
             {/* Gradiente ambiente */}
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(184,115,51,0.12),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(95,178,216,0.08),_transparent_24%)]" />
 
             {/* Botão fechar */}
-            <button
+            <Button
               onClick={onClose}
               aria-label="Fechar modal"
-              className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-dark-bg/80 text-xl text-white/75 backdrop-blur transition hover:border-[#B87333]/30 hover:text-white"
+              className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white/80 text-xl text-primary/75 backdrop-blur transition hover:border-copper/30 hover:text-copper shadow-sm"
             >
               ×
-            </button>
+            </Button>
 
             <div className="relative grid lg:grid-cols-[1.2fr_0.8fr]">
 
               {/* ── ESQUERDA: Galeria ── */}
-              <section className="border-b border-white/[0.08] lg:border-b-0 lg:border-r lg:border-white/[0.08]">
+              <section className="border-b border-black/10 lg:border-b-0 lg:border-r lg:border-black/10">
                 <div className="p-4 lg:p-5">
 
                   {/* Imagem principal */}
-                  <div className="relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0D0D0D]">
+                  <div className="relative overflow-hidden rounded-[1.5rem] border border-black/10 bg-surface">
                     <div className="relative aspect-[16/10] w-full overflow-hidden">
 
                       {/* Imagem ou placeholder */}
@@ -143,11 +144,11 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                           loading="lazy"
                         />
                       ) : (
-                        <div className="absolute inset-0 bg-[linear-gradient(135deg,#2F353B_0%,#171F2A_45%,#844219_140%)]" />
+                        <div className="absolute inset-0 bg-surface" />
                       )}
 
                       {/* Overlay escuro para legibilidade do texto */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent" />
 
                       {/* Spinner de carregamento */}
                       {isLoading && (
@@ -160,35 +161,35 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                     {/* Botões prev/next */}
                     {total > 1 && (
                       <>
-                        <button
+                        <Button
                           onClick={handlePrevImage}
                           aria-label="Imagem anterior"
-                          className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-dark-bg/80 text-xl text-white/75 backdrop-blur transition hover:border-[#B87333]/30 hover:text-white"
+                          className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white/80 text-xl text-primary/75 backdrop-blur transition hover:border-copper hover:text-copper shadow-sm"
                         >
                           ‹
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           onClick={handleNextImage}
                           aria-label="Próxima imagem"
-                          className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-dark-bg/80 text-xl text-white/75 backdrop-blur transition hover:border-[#B87333]/30 hover:text-white"
+                          className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white/80 text-xl text-primary/75 backdrop-blur transition hover:border-copper hover:text-copper shadow-sm"
                         >
                           ›
-                        </button>
+                        </Button>
                       </>
                     )}
 
                     {/* Dots */}
                     {total > 1 && (
-                      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2 rounded-full border border-white/10 bg-dark-bg/75 px-3 py-2 backdrop-blur">
+                      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2 rounded-full border border-black/10 bg-white/75 px-3 py-2 backdrop-blur shadow-sm">
                         {galleryImages.map((_, idx) => (
-                          <button
+                          <Button
                             key={idx}
                             onClick={() => setCurrentImageIndex(idx)}
                             aria-label={`Ir para imagem ${idx + 1}`}
                             className={`h-2 rounded-full transition-all ${
                               idx === currentImageIndex
-                                ? 'w-8 bg-[#B87333]'
-                                : 'w-2 bg-white/30 hover:bg-white/60'
+                                ? 'w-8 bg-copper'
+                                : 'w-2 bg-primary/30 hover:bg-primary/60'
                             }`}
                           />
                         ))}
@@ -200,15 +201,15 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                   {total > 1 && (
                     <div className="mt-4 grid grid-cols-4 gap-3 lg:grid-cols-8">
                       {galleryImages.map((img, idx) => (
-                        <button
+                        <Button
                           key={idx}
                           onClick={() => setCurrentImageIndex(idx)}
                           aria-label={`Thumbnail ${idx + 1}`}
-                          className={`overflow-hidden rounded-2xl border transition ${
+                          className={`overflow-hidden rounded-xl border transition ${
                             idx === currentImageIndex
-                              ? 'border-[#B87333]/60'
-                              : 'border-white/[0.08] hover:border-white/20'
-                          } bg-[#0D0D0D]`}
+                              ? 'border-copper shadow-md'
+                              : 'border-black/5 hover:border-copper/50'
+                          } bg-surface`}
                         >
                           <div className="aspect-[4/3] w-full overflow-hidden">
                             <img
@@ -218,7 +219,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                               loading="lazy"
                             />
                           </div>
-                        </button>
+                        </Button>
                       ))}
                     </div>
                   )}
@@ -232,43 +233,44 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                   {/* Cabeçalho: título + seletor de idioma */}
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <div className="inline-flex items-center rounded-full border border-[#B87333]/20 bg-[#B87333]/10 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[#E9BF84]">
+                      <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+                        <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
                         Projeto selecionado
                       </div>
-                      <h1 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-white lg:text-5xl">
+                      <h1 className="mt-4 text-[1.875rem] md:text-4xl font-medium tracking-tight text-primary">
                         {project.titulo}
                       </h1>
                       {formattedDate && (
-                        <p className="mt-3 text-sm uppercase tracking-[0.22em] text-white/40">
+                        <p className="mt-3 text-[10px] uppercase tracking-[0.22em] text-muted font-mono">
                           {formattedDate}
                         </p>
                       )}
                     </div>
 
                     {/* Seletor de idioma */}
-                    <div className="shrink-0 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-3">
-                      <p className="text-[11px] uppercase tracking-[0.18em] text-white/35">Idioma</p>
-                      <div className="mt-2 flex gap-2">
-                        <button
+                    <div className="shrink-0 rounded-2xl border border-black/5 bg-surface px-4 py-3">
+                      <p className="text-[10px] uppercase tracking-widest text-muted font-mono text-center mb-2">Idioma</p>
+                      <div className="flex gap-2">
+                        <Button
                           onClick={() => setLanguage('pt')}
-                          className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                          className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
                             language === 'pt'
-                              ? 'bg-[#B87333] text-[#141414]'
-                              : 'border border-white/10 text-white/65 hover:text-white'
+                              ? 'bg-copper text-white'
+                              : 'border border-black/10 text-dim hover:text-primary'
                           }`}
                         >
                           PT
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           onClick={() => setLanguage('en')}
-                          className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                          className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
                             language === 'en'
-                              ? 'bg-[#B87333] text-[#141414]'
-                              : 'border border-white/10 text-white/65 hover:text-white'
+                              ? 'bg-copper text-white'
+                              : 'border border-black/10 text-dim hover:text-primary'
                           }`}
                         >
                           EN
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -279,10 +281,10 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                       {meta.map(([label, value]) => (
                         <div
                           key={label}
-                          className="rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-4"
+                          className="rounded-2xl border border-black/5 bg-surface px-4 py-4"
                         >
-                          <p className="text-[11px] uppercase tracking-[0.18em] text-white/35">{label}</p>
-                          <p className="mt-2 text-sm font-medium text-white/90">{value}</p>
+                          <p className="text-[10px] uppercase tracking-widest font-mono text-muted">{label}</p>
+                          <p className="mt-2 text-sm font-medium text-primary">{value}</p>
                         </div>
                       ))}
                     </div>
@@ -290,7 +292,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
 
                   {/* Descrição / storytelling */}
                   {description && (
-                    <div className="mt-8 space-y-5 text-[15px] leading-8 text-white/70">
+                    <div className="mt-8 space-y-5 text-[15px] leading-8 text-dim">
                       {description.split(/\n\n+/).map((para, i) => (
                         <p key={i}>{para}</p>
                       ))}
@@ -299,14 +301,14 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                 </div>
 
                 {/* Rodapé com botões de ação */}
-                <div className="border-t border-white/[0.08] bg-dark-bg/60 p-6 backdrop-blur lg:p-8">
+                <div className="border-t border-black/5 bg-surface/60 p-6 backdrop-blur lg:p-8">
                   <div className="flex flex-wrap gap-3">
                     {project.site_url && (
                       <a
                         href={project.site_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-2xl border border-[#B87333]/20 bg-[#B87333]/10 px-5 py-3 text-sm font-medium text-[#F8F7F2] transition hover:bg-[#B87333]/20"
+                        className="rounded-full border border-copper/20 bg-copper/5 px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-copper transition hover:bg-copper/10"
                       >
                         {language === 'pt' ? 'Ver site' : 'Visit site'}
                       </a>
@@ -316,7 +318,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-2xl bg-[#B87333] px-5 py-3 text-sm font-semibold text-[#141414] transition hover:brightness-110"
+                        className="rounded-full bg-copper px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-white shadow-sm transition hover:shadow-md hover:bg-copper/90"
                       >
                         {language === 'pt' ? 'Ver no Behance' : 'View on Behance'}
                       </a>
@@ -326,7 +328,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                         href={project.link2}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/80 transition hover:bg-white/[0.08]"
+                        className="rounded-full border border-black/10 bg-white px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-primary shadow-sm transition hover:shadow-md hover:bg-surface"
                       >
                         {project.button_text2 || 'Ver mais'}
                       </a>

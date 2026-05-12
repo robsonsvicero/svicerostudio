@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from './UI/Button';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -33,12 +34,12 @@ class ErrorBoundary extends React.Component {
             </div>
             
             <div className="space-y-4">
-              <button
+              <Button
                 onClick={() => window.location.reload()}
                 className="inline-block px-8 py-3 bg-secondary text-white font-title text-lg rounded-lg shadow-md hover:scale-105 hover:bg-secondary/90 transition-all duration-300"
               >
                 Recarregar página
-              </button>
+              </Button>
               
               <div className="mt-4">
                 <a

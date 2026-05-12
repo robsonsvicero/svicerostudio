@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
@@ -39,6 +39,89 @@ const fetchDepoimentos = async () => {
   return payload.data || [];
 };
 
+const ProjectCard = ({ project, index, handleOpenModal }) => {
+  const isFeatured = index === 0; // Apenas o primeiro card no tamanho maior
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!isFeatured || !cardRef.current || window.innerWidth < 1024) return;
+
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -4;
+    const rotateY = ((x - centerX) / centerX) * 4;
+
+    card.style.transition = 'transform 0.1s ease-out';
+    card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  };
+
+  const handleMouseLeave = () => {
+    if (!isFeatured || !cardRef.current) return;
+    const card = cardRef.current;
+    card.style.transition = 'transform 0.5s ease-out';
+    card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onClick={() => handleOpenModal(project)}
+      onKeyDown={(e) => e.key === 'Enter' && handleOpenModal(project)}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      role="button"
+      tabIndex={0}
+      aria-label={`Ver projeto ${project.titulo}`}
+      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-copper/40 bg-[#141414]/80 backdrop-blur-md rounded-3xl flex flex-col ${
+        isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "min-h-[380px]"
+      }`}
+      style={{ transition: 'transform 0.5s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out', transformStyle: 'preserve-3d' }}
+    >
+      {/* Container da Imagem */}
+      <div className={`relative overflow-hidden ${isFeatured ? "md:w-3/5 order-1 md:order-1" : "w-full flex-1 order-1"}`} style={{ transform: 'translateZ(20px)' }}>
+        <div className="absolute inset-0 bg-copper/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>
+        {project.imagem_url ? (
+          <img
+            src={project.imagem_url}
+            alt={project.titulo}
+            className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full bg-[#1A1A1A] flex items-center justify-center">
+            <span className="text-white/20 font-mono text-sm tracking-widest">SVICERO</span>
+          </div>
+        )}
+      </div>
+
+      {/* Container do Conteúdo */}
+      <div className={`relative z-20 flex flex-col justify-center p-8 lg:p-12 ${isFeatured ? "md:w-2/5 order-2 border-t md:border-t-0 md:border-l border-white/5 bg-[#141414]" : "order-2 border-t border-white/5 bg-[#141414]"}`} style={{ transform: 'translateZ(30px)' }}>
+        <div className="flex items-center justify-between mb-6">
+           <span className="text-[10px] font-mono text-copper uppercase tracking-widest bg-copper/10 px-4 py-1.5 rounded-full border border-copper/20">
+             {project.categoria || "Case Study"}
+           </span>
+           <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-copper group-hover:border-copper transition-all duration-300 shadow-[0_0_15px_rgba(184,115,51,0)] group-hover:shadow-[0_0_15px_rgba(184,115,51,0.5)]">
+             <i className="fa-solid fa-arrow-right text-muted text-xs group-hover:text-white transition-colors -rotate-45 group-hover:rotate-0 duration-300"></i>
+           </div>
+        </div>
+        
+        <h3 className={`text-cream font-medium tracking-tight leading-[1.1] mb-4 ${isFeatured ? "text-3xl md:text-[2.5rem]" : "text-2xl"}`}>
+          {project.titulo}
+        </h3>
+        
+        <div className="mt-auto pt-6 flex items-center gap-3 text-sm font-bold uppercase tracking-[.15em] text-muted group-hover:text-copper transition-colors duration-300">
+          Ver Projeto Completo
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Portfolio = () => {
   const [projects, setProjects] = useState([]);
   const [depoimentos, setDepoimentos] = useState([]);
@@ -61,7 +144,7 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="bg-dark-bg min-h-screen text-[#EFEFEF] font-body">
+    <div className="bg-charcoal min-h-screen text-cream font-body">
       <SEOHelmet
         title="Projetos — Svicero Studio"
         description="Marcas que transformaram percepção em valor. Conheça nossos projetos de branding e design estratégico."
@@ -69,68 +152,29 @@ const Portfolio = () => {
       <Header variant="solid" />
 
       {/* Hero Section */}
-      <section className={`${container} mt-20 lg:mt-36 py-14 sm:py-16 lg:py-24 text-center`}>
-        <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/10 text-xs font-semibold text-secondary tracking-widest border border-secondary/30">
-          <span className="w-2 h-2 -rotate-45 bg-secondary inline-block" />
+      <section className={`${container} py-14 sm:py-16 lg:py-24 text-center`}>
+        <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+          <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
           CASES DE SUCESSO
         </span>
-        <h1 className="font-title text-3xl sm:text-4xl lg:text-7xl font-semibold tracking-[-0.04em] text-white mb-6 text-balance">
+        <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream mb-6 text-balance">
           Projetos que transformaram percepção em valor
         </h1>
-        <p className="max-w-2xl mx-auto text-base sm:text-lg text-white/70 leading-relaxed">
+        <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-muted">
           Casos reais de negócios que reposicionamos. Cada projeto começa pelo diagnóstico e termina com uma marca capaz de justificar preços mais altos e atrair clientes mais alinhados.
         </p>
       </section>
 
       {/* Grid de Projetos */}
       <section className={`${container} pb-20 lg:pb-32`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:auto-rows-[380px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ perspective: '1200px' }}>
           {projects.map((proj, index) => (
-            <button
-              key={proj.id}
-              className={`relative group cursor-pointer rounded-2xl overflow-hidden transition-all duration-500 bg-[#181818] border border-white/5 focus:outline-none focus:ring-2 focus:ring-secondary/50 ${index === 0 || index === 3 ? 'md:col-span-2 md:row-span-1' : ''}`}
-              onClick={() => handleOpenModal(proj)}
-              aria-label={proj.titulo}
-            >
-              {/* Background/Image */}
-              <div
-                className="absolute inset-0 w-full h-full transition-transform duration-700 group-hover:scale-110"
-                style={{ background: proj.bg || '#181818' }}
-              >
-                {proj.imagem_url && (
-                  <img
-                    src={proj.imagem_url}
-                    alt={proj.titulo}
-                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-                    loading="lazy"
-                  />
-                )}
-              </div>
-
-              {/* Overlay Gradient Default */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500 group-hover:opacity-0" />
-
-              {/* Title Default (Visible when not hovered) */}
-              <div className="absolute bottom-0 left-0 right-0 p-8 transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4">
-                <h3 className="text-white text-xl font-bold uppercase tracking-wider">
-                  {proj.titulo}
-                </h3>
-              </div>
-
-              {/* Hover Content */}
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-500 backdrop-blur-[6px] flex flex-col justify-center items-center p-8 text-center">
-                <span className="text-secondary text-xs font-bold tracking-[0.2em] uppercase mb-3 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  {proj.categoria || 'Estratégia & Design'}
-                </span>
-                <h3 className="text-white text-3xl md:text-4xl font-bold mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                  {proj.titulo}
-                </h3>
-                <div className="w-12 h-[1px] bg-secondary/50 mb-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150" />
-                <span className="px-6 py-2 rounded-full border border-white/20 text-white/80 text-sm font-medium translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-200 hover:bg-white hover:text-black transition-colors">
-                  Ver Projeto
-                </span>
-              </div>
-            </button>
+            <ProjectCard 
+              key={proj.id} 
+              project={proj} 
+              index={index} 
+              handleOpenModal={handleOpenModal} 
+            />
           ))}
         </div>
 
@@ -140,14 +184,15 @@ const Portfolio = () => {
 
       {/* Clientes */}
       {depoimentos.length > 0 && (
-        <section className="bg-[#111] py-20 sm:py-32 border-t border-white/5">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <section className="bg-surface py-20 sm:py-32 border-t border-white/5 relative overflow-hidden">
+          <div className="absolute top-0 right-1/4 w-80 h-80 bg-copper/5 rounded-full blur-[80px] pointer-events-none"></div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
             <div className="mb-16 text-center md:text-left">
-              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/10 text-xs font-semibold text-secondary tracking-widest border border-secondary/30">
-                <span className="w-2 h-2 rounded-full bg-secondary flex-shrink-0 inline-block"></span>
+              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+                <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
                 CLIENTES
               </span>
-              <h2 className="font-title text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 text-balance">
+              <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream mb-6 text-balance">
                 O que dizem as marcas que transformamos
               </h2>
             </div>
@@ -170,40 +215,40 @@ const Portfolio = () => {
                 .sort((a, b) => Number(a.ordem) - Number(b.ordem))
                 .map((depoimento) => (
                   <SwiperSlide key={depoimento.id}>
-                    <div className="bg-white/[0.03] rounded-3xl border border-white/10 p-8 md:p-10 flex flex-col h-full shadow-2xl transition-all duration-300 hover:border-secondary/30 group">
+                    <div className="bg-surface rounded-[2rem] border border-white/5 hover:border-white/10 p-8 md:p-10 flex flex-col h-full shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
                       {/* Estrelas */}
                       <div className="mb-6 flex gap-1">
                         {Array.from({ length: 5 }).map((_, i) => (
                           <i 
                             key={i} 
-                            className={`fa-solid fa-star text-secondary text-sm ${i >= (depoimento.estrelas || 5) ? 'opacity-20' : ''}`}
+                            className={`fa-solid fa-star text-copper text-sm ${i >= (depoimento.estrelas || 5) ? 'opacity-20' : ''}`}
                           />
                         ))}
                       </div>
                       
                       {/* Texto */}
-                      <p className="text-white/80 text-lg font-light leading-relaxed mb-8 italic flex-1">
+                      <p className="text-muted text-lg font-light leading-relaxed mb-8 italic flex-1">
                         "{depoimento.texto}"
                       </p>
                       
                       {/* Avatar, nome e cargo */}
-                      <div className="flex items-center gap-4 mt-auto border-t border-white/10 pt-6">
+                      <div className="flex items-center gap-4 mt-auto border-t border-white/5 pt-6">
                         {depoimento.foto_url ? (
                           <img 
                             src={depoimento.foto_url} 
                             alt={depoimento.nome} 
-                            className="h-14 w-14 rounded-full object-cover ring-2 ring-white/10" 
+                            className="h-14 w-14 rounded-full object-cover ring-2 ring-black/5" 
                           />
                         ) : (
-                          <div className="w-14 h-14 flex-shrink-0 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/30">
-                            <span className="font-semibold text-lg text-secondary">
+                          <div className="w-14 h-14 flex-shrink-0 rounded-full bg-copper/10 flex items-center justify-center border border-copper/20">
+                            <span className="font-semibold text-lg text-copper">
                               {depoimento.iniciais || depoimento.nome?.substring(0, 2).toUpperCase()}
                             </span>
                           </div>
                         )}
                         <div>
-                          <p className="text-white font-bold text-lg">{depoimento.nome}</p>
-                          <p className="text-white/50 text-sm font-medium uppercase tracking-wider">
+                          <p className="text-cream font-bold text-lg">{depoimento.nome}</p>
+                          <p className="text-muted text-[10px] font-mono tracking-widest uppercase">
                             {depoimento.cargo}{depoimento.empresa ? ` @ ${depoimento.empresa}` : ''}
                           </p>
                         </div>
@@ -217,15 +262,16 @@ const Portfolio = () => {
       )}
 
       {/* CTA final */}
-      <section className="bg-dark-bg py-24 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto bg-gradient-to-br from-secondary via-secondary to-secondary700 rounded-[40px] p-10 md:p-20 text-center shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+      <section className="bg-charcoal py-24 px-4 sm:px-6 font-body">
+        <div className="max-w-screen-xl w-full mx-auto bg-surface border border-white/5 text-cream rounded-[2rem] sm:rounded-[3rem] shadow-xl flex flex-col items-center justify-center px-5 sm:px-8 py-10 sm:py-16 relative overflow-hidden text-center">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-copper/15 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-copper/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
 
-          <h2 className="font-title text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 text-balance relative z-10">
+          <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] mb-6 text-balance relative z-10">
             Sua marca pode sustentar o preço que você já merece cobrar
           </h2>
 
-          <p className="text-white/90 text-lg md:text-xl font-light mb-10 max-w-2xl mx-auto relative z-10">
+          <p className="text-lg md:text-xl font-normal leading-[1.6] text-white/60 mb-10 max-w-2xl mx-auto relative z-10">
             Se você sente que sua marca ainda não reflete o nível do que você entrega — 
             ou que ela te força a competir por preço em vez de valor — o próximo passo 
             é um diagnóstico honesto sobre o seu posicionamento.
@@ -233,9 +279,8 @@ const Portfolio = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
             <Button
-              href="/diagnostico"
+              href="/formulario-interesse"
               variant="primary"
-              className="px-10 py-4 shadow-xl"
             >
               Agendar Diagnóstico
             </Button>
@@ -244,7 +289,6 @@ const Portfolio = () => {
               target="_blank"
               rel="noopener noreferrer"
               variant="outline"
-              className="px-10 py-4"
             >
               Falar pelo WhatsApp
             </Button>

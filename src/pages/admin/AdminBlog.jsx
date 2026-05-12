@@ -216,143 +216,154 @@ const AdminBlog = () => {
     { name: 'tags', label: 'Tags', placeholder: 'branding, ux, design', type: 'text', required: false, col: 'lg:col-span-1' },
   ];
 
+  // Redesign dashboard: Blog management with consistent SaaS styling
+
+  const formActions = (
+    <div className="flex items-center gap-3">
+      <Button type="button" onClick={resetForm} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-muted hover:text-cream hover:bg-white/10 transition">
+        {editingId ? 'Cancelar' : 'Limpar'}
+      </Button>
+    </div>
+  );
+
   return (
-    <AdminLayout toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}>
-        <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-[32px] border border-white/8 bg-[#181818] shadow-2xl shadow-black/30 font-body">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(184,115,51,0.14),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(95,178,216,0.10),_transparent_22%)]" />
-          <div className="relative border-b border-white/8 px-6 py-6 lg:px-8">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-3xl">
-                <div className="inline-flex items-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#E9BF84]">
-                  Gerenciar Blog
-                </div>
-                <h1 className="mt-4 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white lg:text-5xl">
-                  {editingId ? 'Editando Artigo' : 'Criar um novo artigo'}
-                </h1>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60 lg:text-base">
-                  Crie, edite e gerencie o conteúdo do blog do Svicero Studio.
-                </p>
+    <AdminLayout
+      title="Blog"
+      actions={formActions}
+      toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}
+    >
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="mb-8">
+        <div className="grid gap-6 lg:grid-cols-12">
+          {/* Main form column */}
+          <div className="space-y-6 lg:col-span-8">
+            {/* Metadata section */}
+            <div className="rounded-xl border border-white/5 bg-surface p-6">
+              <div className="mb-5">
+                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Informações</p>
+                <h2 className="text-base font-semibold text-cream">
+                  {editingId ? 'Editando Artigo' : 'Novo Artigo'}
+                </h2>
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                 <button type="button" onClick={resetForm} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/80 transition hover:bg-white/8">
-                  {editingId ? 'Cancelar Edição' : 'Limpar Campos'}
-                </button>
-                <button type="submit" className="rounded-2xl bg-[#B87333] px-5 py-3 text-sm font-semibold text-[#141414] transition hover:brightness-110" disabled={isSubmitting || isUploading}>
-                  {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Artigo' : 'Publicar Artigo')}
-                </button>
+              <div className="grid gap-4 lg:grid-cols-2">
+                {fields.map((field) => (
+                  <label key={field.name} className={`${field.col} block`}>
+                    <span className="mb-1.5 block text-sm font-medium text-muted">
+                      {field.label}
+                      {field.required && <span className="ml-1 text-copper">*</span>}
+                    </span>
+                    {field.type === 'select' ? (
+                      <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20">
+                        <option value="" disabled>{field.placeholder}</option>
+                        {field.options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                      </select>
+                    ) : (
+                      <input
+                        type={field.type}
+                        name={field.name}
+                        value={formData[field.name] || ''}
+                        onChange={handleFieldChange}
+                        placeholder={field.placeholder}
+                        required={field.required}
+                        className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20"
+                      />
+                    )}
+                  </label>
+                ))}
               </div>
+            </div>
+
+            {/* Content section */}
+            <div className="rounded-xl border border-white/5 bg-surface p-6">
+              <div className="mb-5">
+                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Conteúdo</p>
+                <h2 className="text-base font-semibold text-cream">Corpo do Artigo</h2>
+              </div>
+              <div className="space-y-4">
+                <label>
+                  <span className="mb-1.5 block text-sm font-medium text-muted">Resumo</span>
+                  <textarea name="resumo" value={formData.resumo} onChange={handleFieldChange} placeholder="Uma síntese para SEO e chamadas." rows={3} className="w-full resize-none rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20" />
+                </label>
+                <label>
+                  <span className="mb-1.5 block text-sm font-medium text-muted">Conteúdo (Markdown)</span>
+                  <textarea name="conteudo" value={formData.conteudo} onChange={handleFieldChange} placeholder="Escreva o artigo aqui..." rows={15} className="w-full resize-y rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm leading-6 text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20" />
+                </label>
+              </div>
+            </div>
+
+            {/* Media section */}
+            <div className="rounded-xl border border-white/5 bg-surface p-6">
+              <div className="mb-5">
+                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Mídia</p>
+                <h2 className="text-base font-semibold text-cream">Imagem de Destaque</h2>
+              </div>
+              <ImageUploadSlot title="Imagem de capa do post" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_destaque} onUpload={handleImageUpload} isUploading={isUploading} />
             </div>
           </div>
 
-          <div className="relative grid gap-6 px-6 py-6 lg:grid-cols-12 lg:px-8 lg:py-8">
-            <div className="space-y-6 lg:col-span-8">
-              
-              <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-                 <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Informações Principais</p><h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Metadados do Artigo</h2></div>
-                 <div className="grid gap-4 lg:grid-cols-2">
-                   {fields.map((field) => (
-                     <label key={field.name} className={`${field.col} block`}>
-                       <span className="mb-2 block text-sm font-medium text-white/82">
-                         {field.label}
-                         {field.required && <span className="ml-1 text-[#E9BF84]">*</span>}
-                       </span>
-                        {field.type === 'select' ? (
-                            <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40">
-                                <option value="" disabled>{field.placeholder}</option>
-                                {field.options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                            </select>
-                        ) : (
-                           <input
-                             type={field.type}
-                             name={field.name}
-                             value={formData[field.name] || ''}
-                             onChange={handleFieldChange}
-                             placeholder={field.placeholder}
-                             required={field.required}
-                             className="w-full rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                           />
-                        )}
-                     </label>
-                   ))}
-                 </div>
-              </section>
-
-              <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-                <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Conteúdo</p><h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Corpo do Artigo</h2></div>
-                <div className="grid gap-4">
-                  <label>
-                    <span className="mb-2 block text-sm font-medium text-white/82">Resumo</span>
-                    <textarea name="resumo" value={formData.resumo} onChange={handleFieldChange} placeholder="Uma síntese para SEO e chamadas." rows={3} className="w-full resize-none rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-4 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
-                  </label>
-                  <label>
-                    <span className="mb-2 block text-sm font-medium text-white/82">Conteúdo (suporta Markdown)</span>
-                    <textarea name="conteudo" value={formData.conteudo} onChange={handleFieldChange} placeholder="Escreva o artigo aqui..." rows={15} className="w-full resize-y rounded-2xl border border-white/10 bg-dark-bg/70 px-4 py-4 text-sm leading-6 text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40" />
-                  </label>
-                </div>
-              </section>
-              
-              <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur lg:p-6">
-                 <div className="mb-6"><p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Mídia</p><h2 className="mt-2 font-[DM Sans] text-2xl font-semibold text-white">Imagem de Destaque</h2></div>
-                 <div className="grid gap-4">
-                    <ImageUploadSlot title="Imagem de capa do post" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_destaque} onUpload={handleImageUpload} isUploading={isUploading} />
-                 </div>
-              </section>
+          {/* Sidebar column */}
+          <aside className="space-y-6 lg:col-span-4">
+            {/* Publish settings */}
+            <div className="rounded-xl border border-white/5 bg-surface p-5">
+              <p className="text-xs font-mono uppercase tracking-widest text-copper mb-4">Publicação</p>
+              <label className="flex items-center justify-between rounded-lg border border-white/5 bg-charcoal px-4 py-3.5 cursor-pointer hover:border-white/10 transition-colors">
+                <span className="text-sm text-cream">Publicar artigo</span>
+                <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleFieldChange} className="sr-only" />
+                <span className={`flex h-6 w-11 items-center rounded-full border border-copper/20 px-0.5 transition-colors ${formData.publicado ? 'bg-copper/40' : 'bg-white/5'}`}>
+                  <span className={`h-5 w-5 rounded-full bg-copper transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
+                </span>
+              </label>
+              <Button type="submit" className="mt-4 w-full rounded-lg bg-copper px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSubmitting || isUploading}>
+                {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Artigo' : 'Publicar Artigo')}
+              </Button>
             </div>
 
-            <aside className="space-y-6 lg:col-span-4">
-              <section className="rounded-[28px] border border-white/8 bg-[#2F353B]/30 p-5 shadow-lg shadow-black/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Configurações de Publicação</p>
-                 <div className="mt-5 grid gap-3">
-                    <label className="flex items-center justify-between rounded-2xl border border-white/8 bg-dark-bg/55 px-4 py-4">
-                      <span className="text-sm text-white/82">Publicar artigo</span>
-                      <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleFieldChange} className="sr-only" />
-                      <span className={`flex h-7 w-12 items-center rounded-full border border-[#B87333]/20  px-1 ${formData.publicado ? 'bg-[#B87333]/50' : 'bg-white/5'}`}>
-                        <span className={`h-5 w-5 rounded-full bg-[#B87333] transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
-                      </span>
-                    </label>
-                </div>
-              </section>
-              <section className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5 backdrop-blur">
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Preview do Conteúdo</p>
-                  <div className="prose prose-sm prose-invert mt-4 max-h-96 overflow-auto">
-                    <Markdown>{formData.conteudo || 'O preview do seu texto em Markdown aparecerá aqui.'}</Markdown>
-                  </div>
-              </section>
-            </aside>
-          </div>
-        </form>
-
-        <div className="mt-16">
-            <h2 className="text-2xl font-semibold text-white mb-6">Artigos Cadastrados</h2>
-            {isLoading && <p className="text-white/60">Carregando artigos...</p>}
-            {!isLoading && posts.length === 0 && <p className="p-6 text-white/60 bg-[#181818] rounded-2xl border border-white/8">Nenhum artigo encontrado.</p>}
-            {posts.length > 0 && (
-              <div className="bg-[#181818] rounded-2xl border border-white/8">
-                  <ul className="divide-y divide-white/8">
-                      {posts.map(post => {
-                          const autorFallback = autores.find(a => String(getEntityId(a)) === String(post.autor));
-                          const autorNome = getDisplayAuthorName(post.autor_nome) || autorFallback?.nome || getDisplayAuthorName(post.autor) || 'Autor desconhecido';
-                          return (
-                            <li key={getEntityId(post)} className="flex items-center justify-between p-4 gap-4">
-                               <img src={post.imagem_destaque || getPlaceholderImage(post.titulo.charAt(0), '141414', 150)} alt={post.titulo} className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20" />
-                                <div className="flex-1 min-w-0">
-                                    <p className="font-semibold text-white truncate">{post.titulo}</p>
-                                    <p className="text-sm text-white/60 truncate">{autorNome} • {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
-                                </div>
-                                <div className="flex items-center gap-3 flex-shrink-0">
-                                    <span className={`px-2 py-1 text-xs rounded-full ${post.publicado ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
-                                      {post.publicado ? 'Publicado' : 'Rascunho'}
-                                    </span>
-                                    <Button variant="outline" onClick={() => handleEdit(post)}>Editar</Button>
-                                    <Button variant="danger" onClick={() => handleDelete(getEntityId(post))}>Excluir</Button>
-                                </div>
-                            </li>
-                          );
-                      })}
-                  </ul>
+            {/* Markdown preview */}
+            <div className="rounded-xl border border-white/5 bg-surface p-5">
+              <p className="text-xs font-mono uppercase tracking-widest text-copper mb-4">Preview</p>
+              <div className="prose prose-sm prose-invert max-h-96 overflow-auto">
+                <Markdown>{formData.conteudo || 'O preview do seu texto em Markdown aparecerá aqui.'}</Markdown>
               </div>
-            )}
+            </div>
+          </aside>
         </div>
+      </form>
+
+      {/* Posts list */}
+      <div className="rounded-xl border border-white/5 bg-surface">
+        <div className="border-b border-white/5 px-6 py-4">
+          <h2 className="text-base font-semibold text-cream">
+            Artigos Cadastrados
+            {!isLoading && <span className="ml-2 text-sm font-normal text-muted">({posts.length})</span>}
+          </h2>
+        </div>
+        {isLoading && <p className="p-6 text-muted">Carregando artigos...</p>}
+        {!isLoading && posts.length === 0 && <p className="p-6 text-muted">Nenhum artigo encontrado.</p>}
+        {posts.length > 0 && (
+          <ul className="divide-y divide-white/5">
+            {posts.map(post => {
+              const autorFallback = autores.find(a => String(getEntityId(a)) === String(post.autor));
+              const autorNome = getDisplayAuthorName(post.autor_nome) || autorFallback?.nome || getDisplayAuthorName(post.autor) || 'Autor desconhecido';
+              return (
+                <li key={getEntityId(post)} className="flex items-center justify-between px-6 py-4 gap-4 hover:bg-white/[.02] transition-colors">
+                  <img src={post.imagem_destaque || getPlaceholderImage(post.titulo.charAt(0), '141414', 150)} alt={post.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-charcoal" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-cream truncate">{post.titulo}</p>
+                    <p className="text-xs text-muted truncate">{autorNome} · {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className={`px-2.5 py-1 text-xs rounded-md font-medium ${post.publicado ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+                      {post.publicado ? 'Publicado' : 'Rascunho'}
+                    </span>
+                    <Button onClick={() => handleEdit(post)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted hover:text-cream hover:bg-white/10 transition">Editar</Button>
+                    <Button onClick={() => handleDelete(getEntityId(post))} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
   </AdminLayout>
   );
 };

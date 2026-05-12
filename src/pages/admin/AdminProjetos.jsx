@@ -587,396 +587,206 @@ const AdminProjetos = () => {
     }
   };
 
+  // Redesign dashboard: Projects management with consistent SaaS styling
+
+  const inputClass = "w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20";
+  const labelClass = "mb-1.5 block text-sm font-medium text-muted";
+
   return (
-    <AdminLayout>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-white">Gerenciar Projetos</h1>
-        <Button onClick={handleCancelEdit} disabled={isSaving || isUploading || isUploadingGallery}>
-          <FaPlus className="mr-2" /> Novo Projeto
+    <AdminLayout
+      title="Projetos"
+      actions={
+        <Button type="button" onClick={handleCancelEdit} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-muted hover:text-cream hover:bg-white/10 transition" disabled={isSaving || isUploading || isUploadingGallery}>
+          {editingId ? 'Cancelar' : 'Novo'}
         </Button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
+      }
+    >
+      <form onSubmit={handleSubmit} className="mb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Coluna Esquerda (Main Content) */}
+          {/* Main column */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Informações Básicas */}
-            <section className="rounded-2xl bg-[#141414]/80 border border-white/8 p-6 lg:p-8 space-y-4">
-              <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-                Informações Básicas
-              </h2>
+            {/* Basic info */}
+            <div className="rounded-xl border border-white/5 bg-surface p-6 space-y-4">
+              <div className="mb-2">
+                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Informações</p>
+                <h2 className="text-base font-semibold text-cream">{editingId ? 'Editando Projeto' : 'Novo Projeto'}</h2>
+              </div>
               <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Título do Projeto <span className="text-red-500">*</span>
-                </span>
-                <input
-                  type="text"
-                  name="titulo"
-                  value={form.titulo}
-                  onChange={handleFieldChange}
-                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="Nome do projeto"
-                  required
-                />
+                <span className={labelClass}>Título <span className="text-copper">*</span></span>
+                <input type="text" name="titulo" value={form.titulo} onChange={handleFieldChange} className={inputClass} placeholder="Nome do projeto" required />
               </label>
               <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Slug (URL amigável) <span className="text-red-500">*</span>
-                </span>
-                <input
-                  type="text"
-                  name="slug"
-                  value={form.slug}
-                  onChange={handleFieldChange}
-                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="nome-do-projeto"
-                  required
-                />
+                <span className={labelClass}>Slug <span className="text-copper">*</span></span>
+                <input type="text" name="slug" value={form.slug} onChange={handleFieldChange} className={inputClass} placeholder="nome-do-projeto" required />
               </label>
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Categoria
-                </span>
-                <select
-                  name="categoria"
-                  value={form.categoria}
-                  onChange={handleFieldChange}
-                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
-                >
-                  <option value="">Selecione uma categoria</option>
-                  {CATEGORIAS.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <label className="block">
+                  <span className={labelClass}>Categoria</span>
+                  <select name="categoria" value={form.categoria} onChange={handleFieldChange} className={inputClass}>
+                    <option value="">Selecione</option>
+                    {CATEGORIAS.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
+                  </select>
+                </label>
+                <label className="block">
+                  <span className={labelClass}>Cliente</span>
+                  <input type="text" name="cliente" value={form.cliente} onChange={handleFieldChange} className={inputClass} placeholder="Nome do cliente" />
+                </label>
+                <label className="block">
+                  <span className={labelClass}>Data do Projeto</span>
+                  <DatePicker
+                    selected={form.data_projeto ? new Date(form.data_projeto) : null}
+                    onChange={(date) => {
+                      if (date) {
+                        const formatted = date.toISOString().split('T')[0];
+                        handleFieldChange({ target: { name: 'data_projeto', value: formatted } });
+                      }
+                    }}
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="Selecione a data"
+                    className={inputClass}
+                    calendarClassName="bg-[#1a1a1a] text-white border-white/10"
+                  />
+                </label>
+                <label className="block">
+                  <span className={labelClass}>Status</span>
+                  <select name="status" value={form.status} onChange={handleFieldChange} className={inputClass}>
+                    <option value="draft">Rascunho</option>
+                    <option value="published">Publicado</option>
+                  </select>
+                </label>
+              </div>
+              <label className="flex items-center gap-3 rounded-lg border border-white/5 bg-charcoal px-4 py-3 cursor-pointer hover:border-white/10 transition-colors">
+                <input type="checkbox" name="mostrar_home" checked={form.mostrar_home} onChange={handleFieldChange} className="h-4 w-4 rounded border-white/10 bg-charcoal text-copper focus:ring-copper/40" />
+                <span className="text-sm text-cream">Mostrar na Home</span>
               </label>
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Cliente
-                </span>
-                <input
-                  type="text"
-                  name="cliente"
-                  value={form.cliente}
-                  onChange={handleFieldChange}
-                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="Nome do cliente"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Data do Projeto
-                </span>
-                <DatePicker
-                  selected={form.data_projeto ? new Date(form.data_projeto) : null}
-                  onChange={(date) => {
-                    if (date) {
-                      const formatted = date.toISOString().split('T')[0];
-                      handleFieldChange({ target: { name: 'data_projeto', value: formatted } });
-                    }
-                  }}
-                  dateFormat="dd/MM/yyyy"
-                  placeholderText="Selecione a data"
-                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  calendarClassName="bg-[#1a1a1a] text-white border-white/10"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Status
-                </span>
-                <select
-                  name="status"
-                  value={form.status}
-                  onChange={handleFieldChange}
-                  className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#B87333]/40"
-                >
-                  <option value="draft">Rascunho</option>
-                  <option value="published">Publicado</option>
-                </select>
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Mostrar na Home
-                </span>
-                <input
-                  type="checkbox"
-                  name="mostrar_home"
-                  checked={form.mostrar_home}
-                  onChange={handleFieldChange}
-                  className="ml-2 h-4 w-4 rounded border-white/10 bg-[#141414]/70 text-[#B87333] focus:ring-[#B87333]/40"
-                />
-              </label>
-            </section>
+            </div>
 
-            {/* Descrições */}
-            <section className="rounded-2xl bg-[#141414]/80 border border-white/8 p-6 lg:p-8 space-y-4">
-              <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-                Descrições
-              </h2>
+            {/* Descriptions */}
+            <div className="rounded-xl border border-white/5 bg-surface p-6 space-y-4">
+              <div className="mb-2">
+                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Conteúdo</p>
+                <h2 className="text-base font-semibold text-cream">Descrições</h2>
+              </div>
               <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Descrição curta <span className="text-red-500">*</span>
-                </span>
-                <textarea
-                  name="descricao"
-                  value={form.descricao}
-                  onChange={handleFieldChange}
-                  className="min-h-[80px] w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="Uma breve descrição do projeto..."
-                  required
-                />
+                <span className={labelClass}>Descrição curta <span className="text-copper">*</span></span>
+                <textarea name="descricao" value={form.descricao} onChange={handleFieldChange} className={`${inputClass} min-h-[80px] resize-y`} placeholder="Uma breve descrição do projeto..." required />
               </label>
               <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Descrição longa (PT)
-                </span>
-                <textarea
-                  name="descricao_longa"
-                  value={form.descricao_longa}
-                  onChange={handleFieldChange}
-                  className="min-h-[120px] w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="Detalhes do projeto..."
-                />
+                <span className={labelClass}>Descrição longa (PT)</span>
+                <textarea name="descricao_longa" value={form.descricao_longa} onChange={handleFieldChange} className={`${inputClass} min-h-[120px] resize-y`} placeholder="Detalhes do projeto..." />
               </label>
               <label className="block">
-                <span className="mb-2 block text-sm font-medium text-white/82">
-                  Descrição longa (EN)
-                </span>
-                <textarea
-                  name="descricao_longa_en"
-                  value={form.descricao_longa_en}
-                  onChange={handleFieldChange}
-                  className="min-h-[120px] w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                  placeholder="Project details in English..."
-                />
+                <span className={labelClass}>Descrição longa (EN)</span>
+                <textarea name="descricao_longa_en" value={form.descricao_longa_en} onChange={handleFieldChange} className={`${inputClass} min-h-[120px] resize-y`} placeholder="Project details in English..." />
               </label>
-            </section>
+            </div>
           </div>
 
-          {/* Coluna Direita */}
+          {/* Sidebar */}
           <aside className="space-y-6">
-            {/* Capa */}
-            <section className="rounded-2xl bg-[#141414]/80 border border-white/8 p-6 lg:p-8 space-y-4">
-              <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-                Imagem de Capa
-              </h2>
-              <ImageUploadSlot
-                title="Imagem de capa"
-                description="JPG, PNG até 8MB"
-                onUpload={handleImageUpload}
-                isUploading={isUploading}
-                currentImageUrl={form.imagem_url}
-              />
-            </section>
+            {/* Cover image */}
+            <div className="rounded-xl border border-white/5 bg-surface p-5 space-y-4">
+              <p className="text-xs font-mono uppercase tracking-widest text-copper">Imagem de Capa</p>
+              <ImageUploadSlot title="Imagem de capa" description="JPG, PNG até 8MB" onUpload={handleImageUpload} isUploading={isUploading} currentImageUrl={form.imagem_url} />
+            </div>
 
-            {/* Links e Botões */}
-            <section className="rounded-2xl bg-[#141414]/80 border border-white/8 p-6 lg:p-8 space-y-4">
-              <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-                Links & Ações
-              </h2>
-              <div className="space-y-4">
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Link principal
-                  </span>
-                  <input
-                    type="text"
-                    name="link"
-                    value={form.link}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="https://..."
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Texto do botão principal
-                  </span>
-                  <input
-                    type="text"
-                    name="button_text"
-                    value={form.button_text}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Ver Projeto"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Segundo Link
-                  </span>
-                  <input
-                    type="text"
-                    name="link2"
-                    value={form.link2}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="https://..."
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-white/82">
-                    Texto do Segundo Botão
-                  </span>
-                  <input
-                    type="text"
-                    name="button_text2"
-                    value={form.button_text2}
-                    onChange={handleFieldChange}
-                    className="w-full rounded-2xl border border-white/10 bg-[#141414]/70 px-4 py-3.5 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#B87333]/40"
-                    placeholder="Texto alternativo"
-                  />
-                </label>
-              </div>
-            </section>
+            {/* Links */}
+            <div className="rounded-xl border border-white/5 bg-surface p-5 space-y-4">
+              <p className="text-xs font-mono uppercase tracking-widest text-copper">Links & Ações</p>
+              <label className="block">
+                <span className={labelClass}>Link principal</span>
+                <input type="text" name="link" value={form.link} onChange={handleFieldChange} className={inputClass} placeholder="https://..." />
+              </label>
+              <label className="block">
+                <span className={labelClass}>Texto do botão</span>
+                <input type="text" name="button_text" value={form.button_text} onChange={handleFieldChange} className={inputClass} placeholder="Ver Projeto" />
+              </label>
+              <label className="block">
+                <span className={labelClass}>Segundo Link</span>
+                <input type="text" name="link2" value={form.link2} onChange={handleFieldChange} className={inputClass} placeholder="https://..." />
+              </label>
+              <label className="block">
+                <span className={labelClass}>Texto do 2º botão</span>
+                <input type="text" name="button_text2" value={form.button_text2} onChange={handleFieldChange} className={inputClass} placeholder="Texto alternativo" />
+              </label>
+            </div>
 
-            {/* Galeria */}
-            <section className="rounded-2xl bg-[#141414]/80 border border-white/8 p-6 lg:p-8 space-y-4 font-body">
+            {/* Gallery */}
+            <div className="rounded-xl border border-white/5 bg-surface p-5 space-y-4">
               <div className="flex items-center justify-between gap-3">
-                <h2 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-                  Galeria de Imagens
-                </h2>
-                <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/70">
-                  <FaPlus className="h-3 w-3 text-[#B87333]" />
-                  <span>{gallery.length} imagens</span>
-                </span>
+                <p className="text-xs font-mono uppercase tracking-widest text-copper">Galeria</p>
+                <span className="text-xs text-muted">{gallery.length} imagens</span>
               </div>
-              <p className="text-xs text-white/55">
-                Envie múltiplas imagens para compor a galeria do projeto.
-              </p>
-
-              <ImageUploadSlot
-                title="Imagens da galeria"
-                description="Arraste ou selecione múltiplas imagens"
-                onUpload={handleGalleryImageUpload}
-                isUploading={isUploadingGallery}
-                multiple={true}
-              />
-
+              <ImageUploadSlot title="Imagens da galeria" description="Arraste ou selecione múltiplas imagens" onUpload={handleGalleryImageUpload} isUploading={isUploadingGallery} multiple={true} />
               {gallery.length > 0 && (
-                <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   {gallery.map((img, index) => (
-                    <div
-                      key={img.id || img.imagem_url || index}
-                      className="relative rounded-xl overflow-hidden border border-white/10 bg-black/30"
-                    >
-                      <img
-                        src={img.imagem_url}
-                        alt={`Imagem ${index + 1}`}
-                        className="w-full h-32 object-cover"
-                      />
-                      {/* Botão excluir */}
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteGalleryImage(index)}
-                        className="absolute top-1 right-1 bg-red-600/80 hover:bg-red-600 text-white rounded-md p-1 transition-colors"
-                        title="Excluir imagem"
-                      >
-                        <FaTrash size={10} />
-                      </button>
-                      {/* Barra inferior com setas e número */}
-                      <div className="absolute inset-x-0 bottom-0 bg-black/70 px-2 py-1 text-[10px] text-white/80 flex justify-between items-center">
-                        <button
-                          type="button"
-                          onClick={() => handleMoveGalleryImage(index, 'left')}
-                          disabled={index === 0}
-                          className="disabled:opacity-30 hover:text-white transition-colors"
-                          title="Mover para esquerda"
-                        >
-                          <FaChevronLeft size={10} />
-                        </button>
+                    <div key={img.id || img.imagem_url || index} className="relative rounded-lg overflow-hidden border border-white/5 bg-charcoal">
+                      <img src={img.imagem_url} alt={`Imagem ${index + 1}`} className="w-full h-24 object-cover" />
+                      <Button type="button" onClick={() => handleDeleteGalleryImage(index)} className="absolute top-1 right-1 bg-red-600/80 hover:bg-red-600 text-white rounded-md p-1 transition-colors" title="Excluir imagem">
+                        <FaTrash size={8} />
+                      </Button>
+                      <div className="absolute inset-x-0 bottom-0 bg-black/70 px-1.5 py-0.5 text-[9px] text-white/80 flex justify-between items-center">
+                        <Button type="button" onClick={() => handleMoveGalleryImage(index, 'left')} disabled={index === 0} className="disabled:opacity-30 hover:text-white transition-colors" title="Mover">
+                          <FaChevronLeft size={8} />
+                        </Button>
                         <span>#{index + 1}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleMoveGalleryImage(index, 'right')}
-                          disabled={index === gallery.length - 1}
-                          className="disabled:opacity-30 hover:text-white transition-colors"
-                          title="Mover para direita"
-                        >
-                          <FaChevronRight size={10} />
-                        </button>
+                        <Button type="button" onClick={() => handleMoveGalleryImage(index, 'right')} disabled={index === gallery.length - 1} className="disabled:opacity-30 hover:text-white transition-colors" title="Mover">
+                          <FaChevronRight size={8} />
+                        </Button>
                       </div>
                     </div>
                   ))}
                 </div>
               )}
-            </section>
+            </div>
 
-            {/* Botões de Ação - AGORA DENTRO DO FORM */}
-            <section className="rounded-2xl bg-[#141414]/80 border border-white/8 p-4 lg:p-6 flex justify-end gap-3">
+            {/* Action buttons */}
+            <div className="rounded-xl border border-white/5 bg-surface p-5 flex justify-end gap-3">
               {editingId && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleCancelEdit}
-                  disabled={isSaving || isUploading || isUploadingGallery}
-                >
+                <Button type="button" onClick={handleCancelEdit} disabled={isSaving || isUploading || isUploadingGallery} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-muted hover:text-cream hover:bg-white/10 transition">
                   Cancelar
                 </Button>
               )}
-              <Button type="submit" disabled={isSaving || isUploading || isUploadingGallery}>
+              <Button type="submit" disabled={isSaving || isUploading || isUploadingGallery} className="rounded-lg bg-copper px-5 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition">
                 {isSaving ? 'Salvando...' : editingId ? 'Atualizar' : 'Publicar'}
               </Button>
-            </section>
+            </div>
           </aside>
         </div>
       </form>
 
-      {/* Lista de Projetos */}
-      <div className="mt-16">
-        <h2 className="text-2xl font-semibold text-white mb-6">Projetos Existentes</h2>
-        {isLoading && <p className="text-white/60">Carregando...</p>}
-        {!isLoading && projects.length === 0 && (
-          <p className="p-6 text-white/60 bg-[#181818] rounded-2xl border border-white/8">
-            Nenhum projeto encontrado.
-          </p>
-        )}
+      {/* Projects list */}
+      <div className="rounded-xl border border-white/5 bg-surface">
+        <div className="border-b border-white/5 px-6 py-4">
+          <h2 className="text-base font-semibold text-cream">
+            Projetos Existentes
+            {!isLoading && <span className="ml-2 text-sm font-normal text-muted">({projects.length})</span>}
+          </h2>
+        </div>
+        {isLoading && <p className="p-6 text-muted">Carregando...</p>}
+        {!isLoading && projects.length === 0 && <p className="p-6 text-muted">Nenhum projeto encontrado.</p>}
         {projects.length > 0 && (
-          <div className="bg-[#181818] rounded-2xl border border-white/8">
-            <ul className="divide-y divide-white/8">
-              {projects.map((proj) => (
-                <li key={proj.id} className="flex items-center p-4 gap-4">
-                  <img
-                    src={
-                      proj.imagem_url ||
-                      getPlaceholderImage(proj.titulo?.charAt(0) || 'P', '141414', 150)
-                    }
-                    alt={proj.titulo}
-                    className="w-16 h-10 object-cover rounded-lg flex-shrink-0 bg-black/20"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-white truncate flex items-center gap-2">
-                      {proj.titulo}
-                      <span
-                        className={`px-2 py-0.5 text-xs rounded-full capitalize ${
-                          proj.status === 'published'
-                            ? 'bg-green-500/10 text-green-400'
-                            : proj.status === 'draft'
-                            ? 'bg-yellow-500/10 text-yellow-400'
-                            : 'bg-gray-500/10 text-gray-400'
-                        }`}
-                      >
-                        {proj.status === 'published' ? 'Publicado' : proj.status}
-                      </span>
-                    </p>
-                    <p className="text-sm text-white/60 truncate">
-                      {proj.categoria || 'Sem categoria'}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 flex-shrink-0">
-                    <Button variant="outline" onClick={() => handleEditProject(proj)}>
-                      Editar
-                    </Button>
-                    <Button variant="danger" onClick={() => handleDeleteProject(proj.id)}>
-                      Excluir
-                    </Button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="divide-y divide-white/5">
+            {projects.map((proj) => (
+              <li key={proj.id} className="flex items-center px-6 py-4 gap-4 hover:bg-white/[.02] transition-colors">
+                <img src={proj.imagem_url || getPlaceholderImage(proj.titulo?.charAt(0) || 'P', '141414', 150)} alt={proj.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-charcoal" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-cream truncate flex items-center gap-2">
+                    {proj.titulo}
+                    <span className={`px-2 py-0.5 text-xs rounded-md font-medium capitalize ${proj.status === 'published' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+                      {proj.status === 'published' ? 'Publicado' : proj.status}
+                    </span>
+                  </p>
+                  <p className="text-xs text-muted truncate">{proj.categoria || 'Sem categoria'}</p>
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <Button onClick={() => handleEditProject(proj)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted hover:text-cream hover:bg-white/10 transition">Editar</Button>
+                  <Button onClick={() => handleDeleteProject(proj.id)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
+                </div>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
     </AdminLayout>
@@ -984,3 +794,4 @@ const AdminProjetos = () => {
 };
 
 export default AdminProjetos;
+

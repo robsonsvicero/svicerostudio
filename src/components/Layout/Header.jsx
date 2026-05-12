@@ -24,68 +24,69 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-footer-bg/80 backdrop-blur-md py-2 font-body border-b border-white/5">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0D0D0D]/60 backdrop-blur-2xl py-2 font-body border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
       {/* DESKTOP */}
-      <div className="hidden md:flex items-center justify-between max-w-7xl mx-auto px-6 h-24">
+      <div className="hidden md:flex items-center justify-between max-w-7xl mx-auto px-6 h-16">
         {/* Logo à esquerda */}
         <div className="flex items-center justify-start">
           <a href="/" className="hover:opacity-80 transition-opacity">
-            <img
-              src={logo}
-              alt="Svicero Studio Logo"
-              className="h-16 w-auto object-contain"
-            />
+              <img
+                src={logo}
+                alt="Svicero Studio Logo"
+                className="h-16 w-auto object-contain brightness-0 invert"
+              />
           </a>
         </div>
 
         {/* Centro: MENU aciona o overlay */}
         <div className="flex justify-center items-center">
-          <button 
+          <Button 
             onClick={() => setMenuOpen(true)}
-            className="group flex items-center gap-3 text-sm font-bold tracking-[0.3em] text-text-primary hover:text-secondary transition-colors"
+            className="group flex items-center gap-3 text-sm font-bold tracking-[0.3em] text-cream hover:text-copper transition-colors"
           >
-            <span className="w-8 h-[1px] bg-low-dark/60 group-hover:w-12 transition-all"></span>
+            <span className="w-8 h-[1px] bg-white/40 group-hover:w-12 transition-all"></span>
             MENU
-            <span className="w-8 h-[1px] bg-low-dark/60 group-hover:w-12 transition-all"></span>
-          </button>
+            <span className="w-8 h-[1px] bg-white/40 group-hover:w-12 transition-all"></span>
+          </Button>
         </div>
       </div>
 
       {/* MOBILE */}
       <div className="md:hidden flex items-center justify-between h-16 px-6">
         <a href="/">
-          <img src={simbolo} alt="Logo" className="h-10" />
+          <img src={simbolo} alt="Logo" className="h-10 brightness-0 invert" />
         </a>
 
-        <button
+        <Button
           onClick={() => setMenuOpen(true)}
-          className="text-text-primary p-2"
+          className="text-cream p-2"
           aria-label="Abrir Menu"
         >
           <Menu size={28} />
-        </button>
+        </Button>
       </div>
 
       {/* OVERLAY MENU (FULL SCREEN) */}
-      <div className={`fixed inset-0 w-screen h-screen z-[100] bg-[#141414] transition-all duration-500 ease-in-out ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} overflow-y-auto overflow-x-hidden`}>
+      {/* OVERLAY MENU (FULL SCREEN) */}
+      <div className={`fixed inset-0 w-screen h-screen z-[100] bg-charcoal transition-all duration-500 ease-in-out ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} overflow-y-auto overflow-x-hidden`}>
         {/* Botão de Fechar */}
         <div className="absolute top-6 right-6 md:top-10 md:right-10 z-[110]">
-          <button 
+          <Button 
             onClick={() => setMenuOpen(false)}
-            className="text-text-primary hover:text-secondary transition-colors p-3 bg-white/5 rounded-full"
+            className="text-cream hover:text-copper transition-colors p-3 bg-white/5 rounded-full"
             aria-label="Fechar Menu"
           >
             <X size={32} strokeWidth={1.5} />
-          </button>
+          </Button>
         </div>
 
         {/* Links do Menu */}
-        <nav className="min-h-screen w-full flex flex-col items-center justify-start pt-24 pb-20 px-6 gap-6 md:gap-8">
+        <nav className="min-h-screen w-full flex flex-col items-center justify-start pt-24 pb-20 px-6 gap-4 md:gap-4">
           {navLinks.map((link, index) => (
             <a
               key={link.href}
               href={link.href}
-              className={`text-2xl md:text-4xl font-title font-bold tracking-tight text-text-primary hover:text-secondary transition-all transform hover:scale-105 text-center ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+              className={`text-[1.875rem] md:text-[3.75rem] font-medium tracking-tight text-cream hover:text-copper transition-all transform text-center ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
               style={{ transitionDelay: `${index * 100}ms` }}
               onClick={() => setMenuOpen(false)}
             >
@@ -96,7 +97,7 @@ const Header = () => {
           {/* Botão Admin no final do menu */}
           <a 
             href="/admin"
-            className={`mt-10 flex items-center gap-3 px-10 py-5 rounded-full border border-white/10 bg-white/5 text-[12px] font-bold tracking-[0.2em] text-text-primary hover:bg-secondary hover:text-black transition-all shadow-2xl ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+            className={`mt-10 flex items-center gap-3 px-10 py-5 rounded-full border border-white/10 bg-surface text-[12px] font-bold tracking-[0.2em] text-cream hover:bg-copper hover:border-copper transition-all shadow-sm ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
             style={{ transitionDelay: `${navLinks.length * 100}ms` }}
             onClick={() => setMenuOpen(false)}
           >
@@ -106,7 +107,7 @@ const Header = () => {
 
           {/* Rodapé do Menu */}
           <div className="mt-20 text-center opacity-30">
-            <p className="text-[10px] tracking-[0.5em] font-medium uppercase text-white">
+            <p className="text-[10px] tracking-[0.5em] font-medium uppercase text-muted">
               Svicero Studio © 2026
             </p>
           </div>

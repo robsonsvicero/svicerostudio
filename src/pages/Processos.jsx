@@ -84,39 +84,39 @@ const Processos = () => {
       });
   }, []);
   return (
-    <div className="bg-dark-bg min-h-screen flex flex-col text-[#EFEFEF] font-body">
+    <div className="bg-charcoal min-h-screen flex flex-col text-cream font-body">
       <Header variant="solid" />
       <main className="flex-1">
         <SEOHelmet title="Processo Svicero Studio" description="Veja como funciona o processo de criação de marca e site no Svicero Studio." />
         {/* HERO */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 lg:px-10 lg:pb-24 mt-20 lg:mt-36 text-center">
-          <h1 className="font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-7xl mb-4 text-balance">Como funciona o processo no Svicero Studio</h1>
-          <p className="mt-6 max-w-3xl mx-auto text-base leading-8 text-white/72 lg:text-xl ">
+          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-tight text-cream mb-4 text-balance">Como funciona o processo no Svicero Studio</h1>
+          <p className="mt-6 max-w-3xl mx-auto text-lg leading-[1.6] text-muted lg:text-xl ">
             Nada de projeto bagunçado ou sem previsibilidade. Você sabe exatamente o que vai acontecer em cada etapa, do primeiro contato à entrega final.
           </p>
 
         </section>
 
         {/* POR QUE TER PROCESSO IMPORTA */}
-        <section className=" flex flex-col items-center justify-center rounded-[30px] border border-secondary/25 bg-cream/10 text-xs font-semibold text-secondary mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <h2 className="font-title text-3xl font-semibold tracking-[-0.04em] text-white mb-4">Por que um bom processo é tão importante quanto um bom design</h2>
-          <p className="max-w-4xl mx-auto text-left font-normal text-lg mb-6 text-white/80">
+        <section className="flex flex-col items-center justify-center rounded-[2rem] border border-white/5 bg-surface shadow-sm text-xs font-semibold text-copper mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center hover:border-white/10 transition-colors">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-4">Por que um bom processo é tão importante quanto um bom design</h2>
+          <p className="max-w-4xl mx-auto text-left font-normal text-lg mb-6 text-muted leading-[1.6]">
             Um projeto de marca e site não é só “fazer um logo bonito” ou montar uma página na internet. Ele precisa traduzir o que você faz, como você pensa e o tipo de cliente que você quer atrair. Por isso, no Svicero Studio, o processo foi pensado para: entender seu momento com profundidade, transformar isso em estratégia, e só então partir para o visual e o digital. Você não entra em um funil genérico, você entra em um processo claro, passo a passo, com começo, meio e fim.
           </p>
-          <div>
+          <div className="w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 mb-16">
               {etapas.map((etapa, idx) => (
-                <div key={idx} className="rounded-[30px] border border-secondary/30 bg-dark-card/75 p-8 shadow-lg flex flex-col h-full text-white">
-                  <div className="text-2xl font-semibold text-secondary mb-2">{etapa.titulo}</div>
-                  <p className="text-m font-normal mb-4 text-white/80 leading-normal text-left">{etapa.texto}</p>
-                  <div className="flex flex-col md:flex-row md:gap-8">
-                    <div className="flex-1 mb-2 md:mb-0">
-                      <div className="text-base font-bold text-[#E9BF84] mb-1 ">O que você faz:</div>
-                      <div className="text-sm font-light text-white/80 leading-normal text-left">{etapa.papelCliente}</div>
+                <div key={idx} className="rounded-[2rem] border border-white/5 bg-charcoal p-8 shadow-sm flex flex-col h-full text-cream hover:border-white/10 hover:shadow-md transition-all">
+                  <div className="text-2xl font-medium tracking-tight text-copper mb-2">{etapa.titulo}</div>
+                  <p className="text-base font-normal mb-6 text-muted leading-[1.6] text-left">{etapa.texto}</p>
+                  <div className="flex flex-col md:flex-row md:gap-8 mt-auto border-t border-white/5 pt-6">
+                    <div className="flex-1 mb-4 md:mb-0">
+                      <div className="text-[10px] uppercase font-mono tracking-widest text-copper mb-2">O que você faz:</div>
+                      <div className="text-sm font-normal text-muted leading-[1.6] text-left">{etapa.papelCliente}</div>
                     </div>
                     <div className="flex-1">
-                      <div className="text-base font-bold text-[#E9BF84] mb-1">O que você recebe:</div>
-                      <div className="text-sm font-light text-white/80 leading-normal text-left">{etapa.papelEstudio}</div>
+                      <div className="text-[10px] uppercase font-mono tracking-widest text-cream mb-2">O que você recebe:</div>
+                      <div className="text-sm font-normal text-muted leading-[1.6] text-left">{etapa.papelEstudio}</div>
                     </div>
                   </div>
                 </div>
@@ -124,25 +124,25 @@ const Processos = () => {
             </div>
           </div>
           <Button 
-            href="/diagnostico" 
+            href="/formulario-interesse" 
             className="mx-auto"
-            variant='secondary'
+            variant='primary'
             >Agendar Diagnóstico</Button>
         </section>
 
         {/* PAPEL DO CLIENTE */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <div className="rounded-[30px] border border-[#B87333]/30 bg-[#181818] p-8 shadow-lg">
-            <h2 className="font-title text-3xl font-semibold tracking-[-0.04em] text-white mb-4">O que eu preciso fazer durante o processo?</h2>
-            <p className="mb-6 text-white/80">O processo é colaborativo, mas não é pesado. Você entra com o conhecimento do seu negócio; o estúdio entra com estratégia, design e tecnologia.</p>
-            <ul className="space-y-4 text-lg mb-4 max-w-xl mx-auto text-left">
-              <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">1</span><span className="text-white/80 text-base">Participar das reuniões-chave (diagnóstico e aprovações).</span></li>
-              <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">2</span><span className="text-white/80 text-base">Responder a um questionário simples sobre seu negócio e público.</span></li>
-              <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">3</span><span className="text-white/80 text-base">Enviar materiais básicos (fotos, logotipos antigos, se existirem, etc.).</span></li>
-              <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">4</span><span className="text-white/80 text-base">Dar feedback sincero e dentro dos prazos combinados.</span></li>
+          <div className="rounded-[2rem] border border-white/5 bg-surface p-10 shadow-sm hover:border-white/10 transition-colors">
+            <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-4">O que eu preciso fazer durante o processo?</h2>
+            <p className="mb-8 text-muted leading-[1.6]">O processo é colaborativo, mas não é pesado. Você entra com o conhecimento do seu negócio; o estúdio entra com estratégia, design e tecnologia.</p>
+            <ul className="space-y-5 text-base mb-8 max-w-2xl mx-auto text-left">
+              <li className="flex gap-4 items-start"><span className="mt-0.5 h-6 w-6 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">1</span><span className="text-muted leading-[1.6]">Participar das reuniões-chave (diagnóstico e aprovações).</span></li>
+              <li className="flex gap-4 items-start"><span className="mt-0.5 h-6 w-6 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">2</span><span className="text-muted leading-[1.6]">Responder a um questionário simples sobre seu negócio e público.</span></li>
+              <li className="flex gap-4 items-start"><span className="mt-0.5 h-6 w-6 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">3</span><span className="text-muted leading-[1.6]">Enviar materiais básicos (fotos, logotipos antigos, se existirem, etc.).</span></li>
+              <li className="flex gap-4 items-start"><span className="mt-0.5 h-6 w-6 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">4</span><span className="text-muted leading-[1.6]">Dar feedback sincero e dentro dos prazos combinados.</span></li>
             </ul>
-            <div className='flex justify-center'>
-              <p className="text-left text-white/60"><span className='font-semibold'>Não se preocupe:</span> você não precisa “saber de design” ou “entender de site”. Seu papel é falar do seu negócio; o nosso é traduzir isso em marca e presença digital.</p>
+            <div className='flex justify-center border-t border-white/5 pt-8 mt-4'>
+              <p className="text-center max-w-2xl text-muted text-sm"><span className='font-medium text-cream'>Não se preocupe:</span> você não precisa “saber de design” ou “entender de site”. Seu papel é falar do seu negócio; o nosso é traduzir isso em marca e presença digital.</p>
             </div>
             
           </div>
@@ -150,23 +150,23 @@ const Processos = () => {
 
         {/* PAPEL DO ESTÚDIO */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <div className="rounded-[30px] border border-[#B87333]/30 bg-[#181818] p-8 shadow-lg">
-            <h2 className="font-title text-3xl font-semibold tracking-[-0.04em] text-white mb-4">O que o Svicero Studio garante nesse processo</h2>
-            <ul className="space-y-4 text-lg mb-4 max-w-xl mx-auto text-left">
-              <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">1</span><span className="text-white/80 text-base">Organização e clareza em cada etapa.</span></li>
-              <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">2</span><span className="text-white/80 text-base">Prazos combinados e respeitados (salvo imprevistos alinhados).</span></li>
-              <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">3</span><span className="text-white/80 text-base">Explicações em linguagem simples, sem jargão desnecessário.</span></li>
-              <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">4</span><span className="text-white/80 text-base">Foco em resultado para o seu negócio, e não apenas na estética.</span></li>
-              <li className="flex gap-3 items-start"><span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">5</span><span className="text-white/80 text-base">Orientação honesta: se algo não fizer sentido para o seu momento, vamos falar.</span></li>
+          <div className="rounded-[2rem] border border-white/5 bg-surface p-10 shadow-sm hover:border-white/10 transition-colors">
+            <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-8 text-center">O que o Svicero Studio garante nesse processo</h2>
+            <ul className="space-y-5 text-base max-w-2xl mx-auto text-left">
+              <li className="flex gap-4 items-start"><span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">1</span><span className="text-muted leading-[1.6]">Organização e clareza em cada etapa.</span></li>
+              <li className="flex gap-4 items-start"><span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">2</span><span className="text-muted leading-[1.6]">Prazos combinados e respeitados (salvo imprevistos alinhados).</span></li>
+              <li className="flex gap-4 items-start"><span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">3</span><span className="text-muted leading-[1.6]">Explicações em linguagem simples, sem jargão desnecessário.</span></li>
+              <li className="flex gap-4 items-start"><span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">4</span><span className="text-muted leading-[1.6]">Foco em resultado para o seu negócio, e não apenas na estética.</span></li>
+              <li className="flex gap-4 items-start"><span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">5</span><span className="text-muted leading-[1.6]">Orientação honesta: se algo não fizer sentido para o seu momento, vamos falar.</span></li>
             </ul>
           </div>
         </section>
 
         {/* MINI FAQ SOBRE O PROCESSO */}
         <section className="w-full px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-title text-3xl font-semibold tracking-[-0.04em] text-white mb-8 text-center">Dúvidas rápidas sobre o processo</h2>
+          <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-8 text-center">Dúvidas rápidas sobre o processo</h2>
           {loading ? (
-            <div className="text-white text-center">Carregando perguntas...</div>
+            <div className="text-muted text-center">Carregando perguntas...</div>
           ) : (
             <div className="flex w-full">
               <FAQ faqs={perguntas} />
@@ -176,16 +176,16 @@ const Processos = () => {
 
         {/* CTA FINAL */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <div className="rounded-[30px] border border-[#B87333]/30 bg-secondary p-8 shadow-lg">
-            <h2 className="font-title text-3xl font-semibold tracking-[-0.04em] text-white mb-6">Pronto para dar o próximo passo com a sua marca?</h2>
-            <p className="text-white/80 text-base mb-8 max-w-2xl mx-auto">Se você se identificou com esse processo e sente que é o momento de levar sua marca e presença digital a outro nível, o próximo passo é simples.</p>
+          <div className="rounded-[2rem] border border-white/5 bg-surface p-12 shadow-md hover:shadow-lg hover:border-white/10 transition-all">
+            <h2 className="text-3xl md:text-[2.5rem] font-medium tracking-tight text-cream mb-6 text-balance">Pronto para dar o próximo passo com a sua marca?</h2>
+            <p className="text-muted text-lg mb-8 max-w-2xl mx-auto leading-[1.6]">Se você se identificou com esse processo e sente que é o momento de levar sua marca e presença digital a outro nível, o próximo passo é simples.</p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Button 
-              href="/diagnostico" 
+              href="/formulario-interesse" 
               variant='primary'
               >Agendar Diagnóstico</Button>
               <Button 
-              href="/planos" 
+              href="/planos-pacotes" 
               variant='outline'
               >Ver pacotes e investimentos</Button>
             </div>

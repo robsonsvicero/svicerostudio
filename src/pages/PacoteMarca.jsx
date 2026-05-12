@@ -184,15 +184,15 @@ const PacoteMarca = () => {
   }, [depoimentos]);
 
   return (
-    <div className="bg-[#141414] min-h-screen flex flex-col text-[#EFEFEF] font-body py-14 sm:py-20 md:py-28 lg:py-36">
+    <div className="bg-charcoal min-h-screen flex flex-col text-cream font-body py-14 sm:py-20 md:py-28 lg:py-36">
       <Header variant="solid" />
       <main className="flex-1">
         {/* HERO */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-14 sm:pb-16 lg:px-10 lg:pb-24">
-          <h1 className="font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-7xl text-balance">
+          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-tight text-cream text-balance">
             Pacote Marca de Alto Padrão
           </h1>
-          <p className="mt-6 max-w-3xl text-base leading-8 text-white/70 lg:text-xl">
+          <p className="mt-6 max-w-3xl text-lg leading-[1.6] text-muted">
             Para autônomos, MEIs e pequenos negócios que querem sair da "cara de amador" e ter uma
             marca à altura da qualidade do que entregam.
           </p>
@@ -200,37 +200,37 @@ const PacoteMarca = () => {
 
         {/* PARA QUEM É */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
             Esse pacote é para você se…
           </h2>
-          <ul className="space-y-4">
+          <ul className="space-y-5">
             {bulletsParaQuem.map((item, idx) => (
-              <li key={idx} className="flex gap-3 items-start">
-                <span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">
+              <li key={idx} className="flex gap-4 items-start">
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">
                   {idx + 1}
                 </span>
-                <span className="text-white/80 text-base">{item}</span>
+                <span className="text-muted text-base leading-[1.6]">{item}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-lg text-[#E9BF84] font-medium">{reforcoParaQuem}</p>
+          <p className="mt-8 text-lg text-copper font-medium">{reforcoParaQuem}</p>
         </section>
 
         {/* O QUE ESTÁ INCLUÍDO */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-8">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-8">
             O que está incluído no Pacote Marca de Alto Padrão
           </h2>
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             {blocosIncluidos.map((bloco) => (
               <div
                 key={bloco.titulo}
-                className="rounded-[30px] border border-white/8 bg-white/[0.03] p-6 backdrop-blur"
+                className="rounded-[2rem] border border-white/5 bg-surface p-8 shadow-sm hover:border-white/10 hover:shadow-md transition-all"
               >
-                <h3 className="text-xl font-semibold text-[#E9BF84] mb-4">{bloco.titulo}</h3>
-                <ul className="space-y-2">
+                <h3 className="text-xl font-medium tracking-tight text-copper mb-4">{bloco.titulo}</h3>
+                <ul className="space-y-3">
                   {bloco.itens.map((item, i) => (
-                    <li key={i} className="text-white/80 text-base">
+                    <li key={i} className="text-muted text-base leading-[1.6]">
                       {item}
                     </li>
                   ))}
@@ -242,12 +242,12 @@ const PacoteMarca = () => {
 
         {/* PROCESSO */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
             Como vamos trabalhar juntos
           </h2>
-          <ol className="space-y-4 list-decimal list-inside">
+          <ol className="space-y-3 list-decimal list-inside">
             {processo.map((step, idx) => (
-              <li key={idx} className="text-white/80 text-base">
+              <li key={idx} className="text-muted text-base leading-[1.6]">
                 {step}
               </li>
             ))}
@@ -256,16 +256,16 @@ const PacoteMarca = () => {
 
         {/* BENEFÍCIOS */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
             O que muda para o seu negócio com esse pacote
           </h2>
-          <ul className="space-y-4">
+          <ul className="space-y-5">
             {beneficios.map((item, idx) => (
-              <li key={idx} className="flex gap-3 items-start">
-                <span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">
+              <li key={idx} className="flex gap-4 items-start">
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">
                   {idx + 1}
                 </span>
-                <span className="text-white/80 text-base">{item}</span>
+                <span className="text-muted text-base leading-[1.6]">{item}</span>
               </li>
             ))}
           </ul>
@@ -273,83 +273,85 @@ const PacoteMarca = () => {
 
         {/* PARA QUEM NÃO É */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
             Esse pacote não é para você se…
           </h2>
-          <ul className="space-y-4">
+          <ul className="space-y-5">
             {bulletsNaoEh.map((item, idx) => (
-              <li key={idx} className="flex gap-3 items-start">
-                <span className="mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">
+              <li key={idx} className="flex gap-4 items-start">
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">
                   {idx + 1}
                 </span>
-                <span className="text-white/80 text-base">{item}</span>
+                <span className="text-muted text-base leading-[1.6]">{item}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-lg text-[#E9BF84] font-medium">{reforcoNaoEh}</p>
+          <p className="mt-8 text-lg text-copper font-medium">{reforcoNaoEh}</p>
         </section>
 
         {/* INVESTIMENTO E CTA */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">
-            Investimento
-          </h2>
-          <p className="text-white/80 text-base mb-6">
-            O Pacote Marca de Alto Padrão é personalizado de acordo com o momento e a complexidade
-            do seu negócio.
-            <br />
-            Me chama no WhatsApp ou preencha o formulário para eu entender sua necessidade e te
-            enviar uma proposta clara, sem surpresas.
-          </p>
-          <Button href="https://wa.me/5511964932007" variant="secondary" className="mt-4">
-            Quero conversar sobre o pacote
-          </Button>
+          <div className="rounded-[2rem] border border-white/5 bg-surface shadow-sm p-12 hover:border-white/10 hover:shadow-md transition-all">
+            <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
+              Investimento
+            </h2>
+            <p className="text-muted text-lg mb-8 max-w-2xl mx-auto leading-[1.6]">
+              O Pacote Marca de Alto Padrão é personalizado de acordo com o momento e a complexidade
+              do seu negócio.
+              <br />
+              Me chama no WhatsApp ou preencha o formulário para eu entender sua necessidade e te
+              enviar uma proposta clara, sem surpresas.
+            </p>
+            <Button href="https://wa.me/5511964932007" variant="primary" className="mt-4">
+              Quero conversar sobre o pacote
+            </Button>
+          </div>
         </section>
 
         {/* DEPOIMENTOS */}
         {depoimentos.length > 0 && (
-          <section className="bg-dark-bg py-24 px-4 md:px-16">
+          <section className="bg-charcoal py-24 px-4 md:px-16 border-t border-white/5">
             <div className="max-w-screen-xl mx-auto">
-              <div className="mb-12 text-left">
-                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                  <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+              <div className="mb-12 text-center md:text-left">
+                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+                  <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
                   FEEDBACK
                 </span>
-                <h2 className="font-title text-4xl md:text-5xl font-extrabold text-white mb-6">
+                <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-cream mb-6 text-balance">
                   O que diz quem passa pelo nosso processo
                 </h2>
               </div>
               <div className="relative">
                 <div className="swiper depoimentos-swiper">
-                  <div className="swiper-wrapper">
+                  <div className="swiper-wrapper py-4">
                     {[...depoimentos]
                       .sort((a, b) => Number(a.ordem) - Number(b.ordem))
                       .map((depoimento) => (
-                        <div key={depoimento.id} className="swiper-slide">
-                          <div className="bg-white/5 rounded-2xl border border-secondary700 p-8 flex flex-col h-full shadow-md">
+                        <div key={depoimento.id} className="swiper-slide h-auto">
+                          <div className="bg-surface rounded-[2rem] border border-white/5 p-8 flex flex-col h-full shadow-sm hover:shadow-md transition-all">
                             <div className="mb-4">
                               {Array.from({ length: 5 }).map((_, i) => (
                                 <i
                                   key={i}
-                                  className={`fa-solid fa-star text-secondary text-xl mr-1 ${
+                                  className={`fa-solid fa-star text-copper text-xl mr-1 ${
                                     i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''
                                   }`}
                                 ></i>
                               ))}
                             </div>
-                            <p className="text-[#B2B8C6] text-base font-normal leading-relaxed mb-6 italic flex-1">
+                            <p className="text-muted text-base font-normal leading-[1.6] mb-8 italic flex-1">
                               "{depoimento.texto}"
                             </p>
-                            <div className="flex items-center gap-4 mt-auto">
-                              <div className="w-12 h-12 flex-shrink-0 rounded-full bg-[#E5E5E5] flex items-center justify-center">
-                                <span className="font-semibold text-lg text-secondary700">
+                            <div className="flex items-center gap-4 mt-auto border-t border-white/5 pt-6">
+                              <div className="w-12 h-12 flex-shrink-0 rounded-full bg-copper/10 flex items-center justify-center border border-copper/20">
+                                <span className="font-medium text-lg text-copper">
                                   {depoimento.iniciais ||
                                     depoimento.nome?.substring(0, 2).toUpperCase()}
                                 </span>
                               </div>
                               <div>
-                                <p className="text-white font-bold text-base">{depoimento.nome}</p>
-                                <p className="text-[#B2B8C6] text-sm font-normal">
+                                <p className="text-cream font-medium text-base">{depoimento.nome}</p>
+                                <p className="text-muted text-sm font-normal">
                                   {depoimento.cargo}
                                   {depoimento.empresa ? `, ${depoimento.empresa}` : ''}
                                 </p>
@@ -359,9 +361,9 @@ const PacoteMarca = () => {
                         </div>
                       ))}
                   </div>
-                  <div className="swiper-button-prev"></div>
-                  <div className="swiper-button-next"></div>
-                  <div className="swiper-pagination mt-12 flex justify-center"></div>
+                  <div className="swiper-button-prev !text-copper !bg-white !w-12 !h-12 !rounded-full !shadow-md border border-black/5 after:!text-xl"></div>
+                  <div className="swiper-button-next !text-copper !bg-white !w-12 !h-12 !rounded-full !shadow-md border border-black/5 after:!text-xl"></div>
+                  <div className="swiper-pagination mt-12 flex justify-center !bottom-0"></div>
                 </div>
               </div>
             </div>

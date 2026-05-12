@@ -1,5 +1,6 @@
 // src/components/UI/ImageUploadSlot.jsx
 import React, { useState } from 'react';
+import Button from './Button';
 
 const ImageUploadSlot = ({
   title,
@@ -54,7 +55,7 @@ const ImageUploadSlot = ({
             <p className="mt-1 text-sm leading-6 text-white/55 truncate">
               {fileName || 'Imagem carregada.'}
             </p>
-            <button
+            <Button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -64,7 +65,7 @@ const ImageUploadSlot = ({
               className="text-xs text-red-400 hover:underline mt-1"
             >
               Remover
-            </button>
+            </Button>
           </div>
         </div>
       ) : (

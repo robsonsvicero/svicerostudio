@@ -3,6 +3,7 @@ import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import { Link } from 'react-router-dom';
+import CTAFinal from '../components/CTAFinal';
 
 const pacotes = [
   {
@@ -104,21 +105,21 @@ const faq = [
 
 const PlanosPacotes = () => {
   return (
-    <div className="bg-dark-bg min-h-screen flex flex-col text-[#EFEFEF] font-sans">
+    <div className="bg-charcoal min-h-screen flex flex-col text-cream font-body">
       <Header variant="solid" />
       <main className="flex-1">
         {/* HERO */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-14 sm:pt-20 lg:pt-36 pb-14 sm:pb-16 lg:px-10 lg:pb-24 text-center">
-          <h1 className="font-title text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.04em] text-white lg:text-7xl text-balance">
+          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-tight text-cream text-balance">
             Escolha o pacote ideal para o momento da sua marca
           </h1>
 
-          <p className="mt-6 max-w-3xl mx-auto text-base leading-8 text-white/72 lg:text-xl">
+          <p className="mt-6 max-w-3xl mx-auto text-lg leading-[1.6] text-muted lg:text-xl">
             Cada pacote foi pensado para ajudar negócios que já entregam um bom serviço, mas ainda não transmitem isso com clareza no digital.
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row justify-center">
-            <Button href="https://wa.me/5511964932007" variant="secondary">
+            <Button href="https://wa.me/5511964932007" variant="primary">
               Falar com o Svicero Studio
             </Button>
 
@@ -132,50 +133,43 @@ const PlanosPacotes = () => {
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
           <div className="grid gap-8 md:grid-cols-3">
 
-            {/* PREMIUM */}
-            <div className="md:col-span-1 h-full flex">
-              <div className="relative overflow-hidden rounded-[32px] border border-[#B87333]/30 bg-[#181818] p-8 shadow-2xl flex flex-col h-full">
+            {/* PRESENÇA ESSENCIAL */}
+            <div className="relative rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl p-8 flex-1 flex flex-col h-full shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-white/10 hover:-translate-y-2 group mt-0 md:mt-4">
+              <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-[2rem]"></div>
+              <div className="relative z-10 flex flex-col h-full">
 
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(184,115,51,0.18),transparent_40%)] pointer-events-none" />
+                <h2 className="text-2xl font-medium text-cream mb-4 tracking-tight">
+                  Presença Essencial
+                </h2>
 
-                <div className="relative z-10 flex flex-col h-full">
-                  <span className="absolute top-0 right-0 bg-[#B87333] text-white text-xs font-bold px-4 py-1 rounded-full">
-                    Mais completo
-                  </span>
+                <p className="text-muted leading-[1.6] mb-6">
+                  Para quem quer parar de parecer improvisado e começar a transmitir mais profissionalismo nas redes.
+                </p>
 
-                  <h2 className="text-3xl font-semibold text-[#E9BF84] mt-6 mb-4">
-                    Posicionamento Premium
-                  </h2>
+                <ul className="space-y-3 mb-6">
+                  {pacotes[0].inclui.map((item, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-3 text-muted text-base"
+                    >
+                      <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-copper/40" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
 
-                  <p className="text-white/80 leading-relaxed mb-6">
-                    Para marcas que já entregam qualidade, mas ainda não transmitem isso com clareza, autoridade e percepção de valor.
+                <div className="mt-auto">
+                  <p className="text-copper italic font-light mb-4 text-sm">
+                    Ideal para começar a transmitir mais valor sem precisar investir em um projeto completo.
                   </p>
 
-                  <ul className="space-y-3 mb-6">
-                    {pacotes[2].inclui.map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-3 text-white/80 text-base"
-                      >
-                        <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-[#E9BF84]" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="rounded-2xl border border-[#B87333]/20 bg-[#B87333]/5 p-5 mb-8">
-                    <p className="text-[#E9BF84] text-sm uppercase tracking-widest mb-2">
-                      Resultado esperado
-                    </p>
-
-                    <p className="text-white/85 leading-relaxed">
-                      Mais segurança para cobrar melhor, transmitir profissionalismo e construir uma presença digital alinhada ao nível real do seu serviço.
-                    </p>
-                  </div>
+                  <p className="text-muted text-[10px] uppercase font-mono tracking-widest mb-6">
+                    Não inclui site nem estratégia aprofundada.
+                  </p>
 
                   <Button
-                    href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[2].nome)}.`}
-                    variant="secondary"
+                    href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[0].nome)}.`}
+                    variant="outline"
                     className="w-full mt-auto"
                   >
                     Quero este pacote
@@ -184,59 +178,72 @@ const PlanosPacotes = () => {
               </div>
             </div>
 
-            {/* SECUNDÁRIOS */}
-            <div className="md:col-span-2 flex flex-col gap-8 md:flex-row">
+            {/* PREMIUM */}
+            <div className="md:col-span-1 h-full flex z-10 relative">
+              <div className="relative overflow-hidden rounded-[2.5rem] border border-copper/40 bg-[#1A1A1A]/90 backdrop-blur-2xl p-8 md:p-10 shadow-[0_20px_50px_rgba(184,115,51,0.15)] flex flex-col h-full w-full transition-all duration-500 hover:-translate-y-3 group md:scale-105">
 
-              {/* PRESENÇA ESSENCIAL */}
-              <div className="rounded-[30px] border border-white/8 bg-[#181818] p-8 flex-1 flex flex-col h-full transition-all duration-300 hover:border-white/15 hover:-translate-y-1">
+                {/* Glow & Lights */}
+                <div className="absolute inset-0 bg-gradient-to-b from-copper/10 to-transparent opacity-80 pointer-events-none mix-blend-overlay"></div>
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-copper/20 rounded-full blur-3xl pointer-events-none group-hover:bg-copper/30 transition-colors duration-500"></div>
 
-                <h2 className="text-2xl font-semibold text-[#E9BF84] mb-4">
-                  Presença Essencial
-                </h2>
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-6">
+                    <span className="bg-copper/10 border border-copper/20 text-copper text-[10px] uppercase font-bold tracking-widest px-4 py-1.5 rounded-full">
+                      Recomendado
+                    </span>
+                  </div>
 
-                <p className="text-white/80 leading-relaxed mb-6">
-                  Para quem quer parar de parecer improvisado e começar a transmitir mais profissionalismo nas redes.
-                </p>
+                  <h2 className="text-3xl font-medium text-cream mb-4 tracking-tight">
+                    Posicionamento Premium
+                  </h2>
 
-                <ul className="space-y-3 mb-6">
-                  {pacotes[0].inclui.map((item, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-start gap-3 text-white/80 text-base"
-                    >
-                      <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-white/70" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-auto">
-                  <p className="text-[#E9BF84] italic font-light mb-4">
-                    Ideal para começar a transmitir mais valor sem precisar investir em um projeto completo.
+                  <p className="text-muted leading-[1.6] mb-6">
+                    Para marcas que já entregam qualidade, mas ainda não transmitem isso com clareza, autoridade e percepção de valor.
                   </p>
 
-                  <p className="text-white/40 text-sm mb-6">
-                    Não inclui site nem estratégia aprofundada.
-                  </p>
+                  <ul className="space-y-3 mb-6">
+                    {pacotes[2].inclui.map((item, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start gap-3 text-muted text-base"
+                      >
+                        <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-copper shadow-[0_0_8px_rgba(184,115,51,0.5)]" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="rounded-xl border border-copper/20 bg-copper/5 p-5 mb-8">
+                    <p className="text-copper text-[10px] uppercase tracking-widest font-mono mb-2">
+                      Resultado esperado
+                    </p>
+
+                    <p className="text-cream leading-[1.6]">
+                      Mais segurança para cobrar melhor, transmitir profissionalismo e construir uma presença digital alinhada ao nível real do seu serviço.
+                    </p>
+                  </div>
 
                   <Button
-                    href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[0].nome)}.`}
-                    variant="outline"
-                    className="w-full"
+                    href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[2].nome)}.`}
+                    variant="primary"
+                    className="w-full mt-auto"
                   >
                     Quero este pacote
                   </Button>
                 </div>
               </div>
+            </div>
 
-              {/* SITE DE AUTORIDADE */}
-              <div className="rounded-[30px] border border-white/8 bg-[#181818] p-8 flex-1 flex flex-col h-full transition-all duration-300 hover:border-white/15 hover:-translate-y-1">
+            {/* SITE DE AUTORIDADE */}
+            <div className="relative rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl p-8 flex-1 flex flex-col h-full shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-white/10 hover:-translate-y-2 group mt-0 md:mt-4">
+              <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-[2rem]"></div>
+              <div className="relative z-10 flex flex-col h-full">
 
-                <h2 className="text-2xl font-semibold text-[#E9BF84] mb-4">
+                <h2 className="text-2xl font-medium text-cream mb-4 tracking-tight">
                   Site de Autoridade
                 </h2>
 
-                <p className="text-white/80 leading-relaxed mb-6">
+                <p className="text-muted leading-[1.6] mb-6">
                   Para negócios que já têm identidade visual, mas precisam de um site que transmita confiança e ajude a gerar oportunidades reais.
                 </p>
 
@@ -244,39 +251,41 @@ const PlanosPacotes = () => {
                   {pacotes[1].inclui.map((item, idx) => (
                     <li
                       key={idx}
-                      className="flex items-start gap-3 text-white/80 text-base"
+                      className="flex items-start gap-3 text-muted text-base"
                     >
-                      <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-white/70" />
+                      <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-copper/40" />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
 
                 <div className="mt-auto">
-                  <p className="text-[#E9BF84] italic font-light mb-6">
+                  <p className="text-copper italic font-light mb-6 text-sm">
                     Um site pensado para aumentar confiança, facilitar contato e fortalecer sua presença digital.
                   </p>
 
                   <Button
                     href={`https://wa.me/5511964932007?text=Olá! Tenho interesse no pacote ${encodeURIComponent(pacotes[1].nome)}.`}
                     variant="outline"
-                    className="w-full"
+                    className="w-full mt-auto"
                   >
                     Quero este pacote
                   </Button>
                 </div>
               </div>
             </div>
+
           </div>
         </section>
 
         {/* RESULTADO */}
         <section className="mx-auto max-w-5xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-white/5 text-xs font-semibold text-[#E9BF84] tracking-widest border border-white/10">
+          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+            <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
             O QUE MUDA
           </span>
 
-          <h2 className="font-title text-3xl sm:text-4xl font-semibold tracking-[-0.04em] text-white mb-8">
+          <h2 className="text-3xl sm:text-4xl font-medium tracking-tight text-cream mb-8 text-balance">
             Mais do que design, o objetivo é mudar a percepção da sua marca
           </h2>
 
@@ -291,7 +300,7 @@ const PlanosPacotes = () => {
             ].map((item, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl border border-white/8 bg-[#181818] px-5 py-4 text-white/80"
+                className="rounded-2xl border border-white/5 bg-surface shadow-sm px-5 py-4 text-muted hover:border-white/10 transition-colors"
               >
                 {item}
               </div>
@@ -304,27 +313,27 @@ const PlanosPacotes = () => {
           id="comparar"
           className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20"
         >
-          <h2 className="font-title text-3xl font-semibold tracking-[-0.04em] text-white mb-10 text-center">
+          <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-10 text-center">
             Compare os pacotes
           </h2>
 
-          <div className="overflow-x-auto rounded-[30px] border border-white/8 bg-[#181818]">
+          <div className="overflow-x-auto rounded-[2rem] border border-white/5 bg-surface shadow-sm">
             <table className="min-w-full">
               <thead>
-                <tr className="border-b border-white/10">
-                  <th className="px-6 py-5 text-left text-[#E9BF84]">
+                <tr className="border-b border-white/5 bg-charcoal/50">
+                  <th className="px-6 py-5 text-left text-copper text-xs uppercase tracking-widest font-mono">
                     Recursos
                   </th>
 
-                  <th className="px-6 py-5 text-center text-white">
+                  <th className="px-6 py-5 text-center text-cream font-semibold">
                     Presença Essencial
                   </th>
 
-                  <th className="px-6 py-5 text-center text-white">
+                  <th className="px-6 py-5 text-center text-cream font-semibold">
                     Site de Autoridade
                   </th>
 
-                  <th className="px-6 py-5 text-center text-[#E9BF84]">
+                  <th className="px-6 py-5 text-center text-copper font-semibold">
                     Posicionamento Premium
                   </th>
                 </tr>
@@ -334,21 +343,21 @@ const PlanosPacotes = () => {
                 {tabela.map((row, idx) => (
                   <tr
                     key={idx}
-                    className="border-b border-white/5"
+                    className="border-b border-white/5 hover:bg-surface/50 transition-colors"
                   >
-                    <td className="px-6 py-5 text-[#E9BF84] font-medium">
+                    <td className="px-6 py-5 text-cream font-medium text-sm">
                       {row.linha}
                     </td>
 
-                    <td className="px-6 py-5 text-center text-white/75">
+                    <td className="px-6 py-5 text-center text-muted text-sm">
                       {row.essencial}
                     </td>
 
-                    <td className="px-6 py-5 text-center text-white/75">
+                    <td className="px-6 py-5 text-center text-muted text-sm">
                       {row.site}
                     </td>
 
-                    <td className="px-6 py-5 text-center text-white">
+                    <td className="px-6 py-5 text-center text-cream font-medium text-sm">
                       {row.altoPadrao}
                     </td>
                   </tr>
@@ -358,22 +367,24 @@ const PlanosPacotes = () => {
           </div>
 
           <div className="mt-10 text-center">
-            <p className="text-white/75 text-lg mb-5">
+            <p className="text-muted text-lg mb-5">
               Ainda não sabe qual faz mais sentido para o seu momento?
             </p>
+            <div className="w-full max-w-4xl mx-auto">
+              <Button
+                href="https://wa.me/5511964932007"
+                variant="outline"
+              >
+                Conversar no WhatsApp
+              </Button>
+            </div>
 
-            <Button
-              href="https://wa.me/5511964932007"
-              variant="secondary"
-            >
-              Conversar no WhatsApp
-            </Button>
           </div>
         </section>
 
         {/* FAQ */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="font-title text-3xl font-semibold tracking-[-0.04em] text-white mb-10 text-center">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-10 text-center">
             Perguntas frequentes
           </h2>
 
@@ -381,13 +392,13 @@ const PlanosPacotes = () => {
             {faq.map((item, idx) => (
               <div
                 key={idx}
-                className="rounded-[30px] border border-white/8 bg-[#181818] p-7"
+                className="rounded-[2rem] border border-white/5 bg-surface shadow-sm p-7 hover:border-white/10 transition-colors"
               >
-                <h3 className="text-xl font-semibold text-[#E9BF84] mb-3">
+                <h3 className="text-xl font-medium text-copper mb-3">
                   {item.pergunta}
                 </h3>
 
-                <p className="text-white/80 leading-relaxed">
+                <p className="text-muted leading-[1.6]">
                   {item.resposta}
                 </p>
               </div>
@@ -395,14 +406,7 @@ const PlanosPacotes = () => {
           </div>
         </section>
         {/* CTA FINAL */}
-        <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <h2 className="font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white mb-6">Vamos descobrir qual pacote é o ideal para o seu momento?</h2>
-          <p className="text-white/80 text-base mb-6">Me chama no WhatsApp ou preencha o formulário que eu te ajudo a entender qual opção faz mais sentido para o seu negócio hoje.</p>
-          <div className="flex flex-col gap-3 sm:flex-row justify-center">
-            <Button href="https://wa.me/5511964932007" variant="secondary" >Falar com o Svicero Studio</Button>
-            <Button href="/diagnostico" variant="outline">Agendar Diagnóstico</Button>
-          </div>
-        </section>
+        <CTAFinal />
       </main>
       <Footer />
     </div>
