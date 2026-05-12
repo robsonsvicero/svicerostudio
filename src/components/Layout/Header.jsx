@@ -24,10 +24,11 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0D0D0D]/60 backdrop-blur-2xl py-2 font-body border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
-      {/* DESKTOP */}
-      <div className="hidden md:flex items-center justify-between max-w-7xl mx-auto px-6 h-16">
-        {/* Logo à esquerda */}
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0D0D0D]/60 backdrop-blur-2xl py-2 font-body border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
+        {/* DESKTOP */}
+        <div className="hidden md:flex items-center justify-between max-w-7xl mx-auto px-6 h-16">
+          {/* Logo à esquerda */}
         <div className="flex items-center justify-start">
           <a href="/" className="hover:opacity-80 transition-opacity">
               <img
@@ -65,10 +66,10 @@ const Header = () => {
           <Menu size={28} />
         </Button>
       </div>
+      </header>
 
       {/* OVERLAY MENU (FULL SCREEN) */}
-      {/* OVERLAY MENU (FULL SCREEN) */}
-      <div className={`fixed inset-0 w-full h-full z-[100] bg-charcoal transition-all duration-500 ease-in-out ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} overflow-y-auto overflow-x-hidden`}>
+      <div className={`fixed inset-0 w-full h-[100dvh] z-[100] bg-charcoal transition-all duration-500 ease-in-out ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} overflow-y-auto overflow-x-hidden`}>
         {/* Botão de Fechar */}
         <div className="absolute top-6 right-6 md:top-10 md:right-10 z-[110]">
           <Button 
@@ -86,7 +87,7 @@ const Header = () => {
             <a
               key={link.href}
               href={link.href}
-              className={`text-[1.875rem] md:text-[3.75rem] font-medium tracking-tight text-cream hover:text-copper transition-all transform text-center ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+              className={`text-[1.875rem] md:text-[3.25rem] font-medium tracking-tight text-cream hover:text-copper transition-all transform text-center ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
               style={{ transitionDelay: `${index * 100}ms` }}
               onClick={() => setMenuOpen(false)}
             >
@@ -106,14 +107,14 @@ const Header = () => {
           </a>
 
           {/* Rodapé do Menu */}
-          <div className="mt-20 text-center opacity-30">
-            <p className="text-[10px] tracking-[0.5em] font-medium uppercase text-muted">
+          <div className="mt-20 text-center opacity-90">
+            <p className="text-[10px] tracking-[0.5em] font-medium uppercase text-copper">
               Svicero Studio © 2026
             </p>
           </div>
         </nav>
       </div>
-    </header>
+    </>
   );
 };
 

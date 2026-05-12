@@ -1,16 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-
 import Header from '../components/Layout/Header';
+
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import SEOHelmet from '../components/SEOHelmet';
 import ProjectModal from '../components/ProjectModal';
 import ScrollReveal from '../components/UI/ScrollReveal';
+import DepoimentosSection from '../components/DepoimentosSection';
 import { API_URL } from '../lib/api.js';
 
 // Estilos padronizados
@@ -25,16 +21,6 @@ const fetchProjects = async () => {
       operation: 'select',
       orderBy: { column: 'data_projeto', ascending: false }
     })
-  });
-  const payload = await res.json();
-  return payload.data || [];
-};
-
-const fetchDepoimentos = async () => {
-  const res = await fetch(`${API_URL}/api/db/depoimentos/query`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ operation: 'select', orderBy: { column: 'ordem', ascending: true } })
   });
   const payload = await res.json();
   return payload.data || [];
@@ -79,12 +65,12 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       tabIndex={0}
       aria-label={`Ver projeto ${project.titulo}`}
       className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-copper/40 bg-[#141414]/80 backdrop-blur-md rounded-3xl flex flex-col ${
-        isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "min-h-[380px]"
+        isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "aspect-square"
       }`}
       style={{ transition: 'transform 0.5s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out', transformStyle: 'preserve-3d' }}
     >
       {/* Container da Imagem */}
-      <div className={`relative overflow-hidden ${isFeatured ? "md:w-3/5 order-1 md:order-1" : "w-full flex-1 order-1"}`} style={{ transform: 'translateZ(20px)' }}>
+      <div className={`relative overflow-hidden ${isFeatured ? "md:w-3/5 order-1 md:order-1" : "w-full h-1/2 flex-none order-1"}`} style={{ transform: 'translateZ(20px)' }}>
         <div className="absolute inset-0 bg-copper/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>
         {project.imagem_url ? (
           <img
@@ -101,7 +87,7 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       </div>
 
       {/* Container do Conteúdo */}
-      <div className={`relative z-20 flex flex-col justify-center p-8 lg:p-12 ${isFeatured ? "md:w-2/5 order-2 border-t md:border-t-0 md:border-l border-white/5 bg-[#141414]" : "order-2 border-t border-white/5 bg-[#141414]"}`} style={{ transform: 'translateZ(30px)' }}>
+      <div className={`relative z-20 flex flex-col justify-center p-8 lg:p-12 ${isFeatured ? "md:w-2/5 order-2 border-t md:border-t-0 md:border-l border-white/5 bg-[#141414]" : "h-1/2 flex-none order-2 border-t border-white/5 bg-[#141414]"}`} style={{ transform: 'translateZ(30px)' }}>
         <div className="flex items-center justify-between mb-6">
            <span className="text-[10px] font-mono text-copper uppercase tracking-widest bg-copper/10 px-4 py-1.5 rounded-full border border-copper/20">
              {project.categoria || "Case Study"}
@@ -125,13 +111,11 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
 
 const Portfolio = () => {
   const [projects, setProjects] = useState([]);
-  const [depoimentos, setDepoimentos] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     fetchProjects().then(setProjects);
-    fetchDepoimentos().then(setDepoimentos);
   }, []);
 
   const handleOpenModal = (project) => {
@@ -169,6 +153,7 @@ const Portfolio = () => {
       </section>
 
       {/* Grid de Projetos */}
+      {/* Grid de Projetos e Modal omitidos para limpeza nesta parte... Espere, tenho que manter as tags! */}
       <section className={`${container} pb-20 lg:pb-32`}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ perspective: '1200px' }}>
           {projects.map((proj, index) => (
@@ -191,86 +176,7 @@ const Portfolio = () => {
         <ProjectModal isOpen={modalOpen} onClose={handleCloseModal} project={selectedProject} />
       </section>
 
-      {/* Clientes */}
-      {depoimentos.length > 0 && (
-        <section className="bg-surface py-20 sm:py-32 border-t border-white/5 relative overflow-hidden">
-          <div className="absolute top-0 right-1/4 w-80 h-80 bg-copper/5 rounded-full blur-[80px] pointer-events-none"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
-            <ScrollReveal direction="up" delay={0.1}>
-              <div className="mb-16 text-center md:text-left">
-                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-                  <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-                  CLIENTES
-                </span>
-                <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream mb-6 text-balance">
-                  O que dizem as marcas que transformamos
-                </h2>
-              </div>
-            </ScrollReveal>
-
-            <Swiper
-              modules={[Pagination, Navigation]}
-              spaceBetween={30}
-              slidesPerView={1}
-              loop={depoimentos.length > 3}
-              pagination={{ clickable: true, dynamicBullets: true }}
-              navigation={true}
-              breakpoints={{
-                640: { slidesPerView: 1 },
-                768: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-              }}
-              className="depoimentos-swiper pb-16"
-            >
-              {[...depoimentos]
-                .sort((a, b) => Number(a.ordem) - Number(b.ordem))
-                .map((depoimento) => (
-                  <SwiperSlide key={depoimento.id}>
-                    <div className="bg-surface rounded-[2rem] border border-white/5 hover:border-white/10 p-8 md:p-10 flex flex-col h-full shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
-                      {/* Estrelas */}
-                      <div className="mb-6 flex gap-1">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <i 
-                            key={i} 
-                            className={`fa-solid fa-star text-copper text-sm ${i >= (depoimento.estrelas || 5) ? 'opacity-20' : ''}`}
-                          />
-                        ))}
-                      </div>
-                      
-                      {/* Texto */}
-                      <p className="text-muted text-lg font-light leading-relaxed mb-8 italic flex-1">
-                        "{depoimento.texto}"
-                      </p>
-                      
-                      {/* Avatar, nome e cargo */}
-                      <div className="flex items-center gap-4 mt-auto border-t border-white/5 pt-6">
-                        {depoimento.foto_url ? (
-                          <img 
-                            src={depoimento.foto_url} 
-                            alt={depoimento.nome} 
-                            className="h-14 w-14 rounded-full object-cover ring-2 ring-black/5" 
-                          />
-                        ) : (
-                          <div className="w-14 h-14 flex-shrink-0 rounded-full bg-copper/10 flex items-center justify-center border border-copper/20">
-                            <span className="font-semibold text-lg text-copper">
-                              {depoimento.iniciais || depoimento.nome?.substring(0, 2).toUpperCase()}
-                            </span>
-                          </div>
-                        )}
-                        <div>
-                          <p className="text-cream font-bold text-lg">{depoimento.nome}</p>
-                          <p className="text-muted text-[10px] font-mono tracking-widest uppercase">
-                            {depoimento.cargo}{depoimento.empresa ? ` @ ${depoimento.empresa}` : ''}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-            </Swiper>
-          </div>
-        </section>
-      )}
+      <DepoimentosSection />
 
       {/* CTA final */}
       <section className="bg-charcoal py-24 px-4 sm:px-6 font-body">

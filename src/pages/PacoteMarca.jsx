@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Swiper from 'swiper/bundle';
-import 'swiper/css/bundle';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
+import DepoimentosSection from '../components/DepoimentosSection';
 import { API_URL } from '../lib/api.js';
 
 const bulletsParaQuem = [
@@ -95,94 +94,6 @@ const reforcoNaoEh =
 
 // Componente único e correto — tudo junto em um só lugar
 const PacoteMarca = () => {
-  const [depoimentos, setDepoimentos] = useState([]);
-  // Guarda a instância diretamente, não num array, pois há apenas um swiper aqui
-  const swiperInstanceRef = useRef(null);
-
-  useEffect(() => {
-    const fetchDepoimentos = async () => {
-      try {
-        const res = await fetch(`${API_URL}/api/db/depoimentos/query`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            operation: 'select',
-            orderBy: { column: 'ordem', ascending: true },
-          }),
-        });
-        const payload = await res.json();
-        setDepoimentos(payload.data || []);
-      } catch (error) {
-        console.error('Failed to fetch testimonials:', error);
-      }
-    };
-    fetchDepoimentos();
-  }, []);
-
-  useEffect(() => {
-    if (depoimentos.length === 0) return;
-
-    const timeoutId = setTimeout(() => {
-      const el = document.querySelector('.depoimentos-swiper');
-      if (!el) {
-        console.error('Elemento .depoimentos-swiper não encontrado');
-        return;
-      }
-
-      // Destrói instância anterior antes de criar uma nova
-      if (swiperInstanceRef.current) {
-        try {
-          swiperInstanceRef.current.destroy(true, true);
-        } catch (e) {
-          // ignora
-        }
-        swiperInstanceRef.current = null;
-      }
-
-      swiperInstanceRef.current = new Swiper('.depoimentos-swiper', {
-        loop: true,
-        slidesPerView: 1,
-        spaceBetween: 24,
-        grabCursor: true,
-        centeredSlides: false,
-        watchOverflow: true,
-        watchSlidesProgress: true,
-        observer: true,
-        observeParents: true,
-        slidesPerGroup: 1,
-        resistanceRatio: 0.85,
-        slidesOffsetBefore: 0,
-        slidesOffsetAfter: 0,
-        pagination: {
-          el: '.depoimentos-swiper .swiper-pagination',
-          clickable: true,
-          dynamicBullets: true,
-        },
-        navigation: {
-          nextEl: '.depoimentos-swiper .swiper-button-next',
-          prevEl: '.depoimentos-swiper .swiper-button-prev',
-        },
-        breakpoints: {
-          640: { slidesPerView: 1, spaceBetween: 24 },
-          768: { slidesPerView: 2, spaceBetween: 32 },
-          1024: { slidesPerView: 3, spaceBetween: 32 },
-        },
-      });
-    }, 200);
-
-    return () => {
-      clearTimeout(timeoutId);
-      if (swiperInstanceRef.current) {
-        try {
-          swiperInstanceRef.current.destroy(true, true);
-        } catch (e) {
-          // ignora
-        }
-        swiperInstanceRef.current = null;
-      }
-    };
-  }, [depoimentos]);
-
   return (
     <div className="bg-charcoal min-h-screen flex flex-col text-cream font-body py-14 sm:py-20 md:py-28 lg:py-36">
       <Header variant="solid" />
@@ -308,67 +219,7 @@ const PacoteMarca = () => {
           </div>
         </section>
 
-        {/* DEPOIMENTOS */}
-        {depoimentos.length > 0 && (
-          <section className="bg-charcoal py-24 px-4 md:px-16 border-t border-white/5">
-            <div className="max-w-screen-xl mx-auto">
-              <div className="mb-12 text-center md:text-left">
-                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-                  <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-                  FEEDBACK
-                </span>
-                <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-cream mb-6 text-balance">
-                  O que diz quem passa pelo nosso processo
-                </h2>
-              </div>
-              <div className="relative">
-                <div className="swiper depoimentos-swiper">
-                  <div className="swiper-wrapper py-4">
-                    {[...depoimentos]
-                      .sort((a, b) => Number(a.ordem) - Number(b.ordem))
-                      .map((depoimento) => (
-                        <div key={depoimento.id} className="swiper-slide h-auto">
-                          <div className="bg-surface rounded-[2rem] border border-white/5 p-8 flex flex-col h-full shadow-sm hover:shadow-md transition-all">
-                            <div className="mb-4">
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                <i
-                                  key={i}
-                                  className={`fa-solid fa-star text-copper text-xl mr-1 ${
-                                    i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''
-                                  }`}
-                                ></i>
-                              ))}
-                            </div>
-                            <p className="text-muted text-base font-normal leading-[1.6] mb-8 italic flex-1">
-                              "{depoimento.texto}"
-                            </p>
-                            <div className="flex items-center gap-4 mt-auto border-t border-white/5 pt-6">
-                              <div className="w-12 h-12 flex-shrink-0 rounded-full bg-copper/10 flex items-center justify-center border border-copper/20">
-                                <span className="font-medium text-lg text-copper">
-                                  {depoimento.iniciais ||
-                                    depoimento.nome?.substring(0, 2).toUpperCase()}
-                                </span>
-                              </div>
-                              <div>
-                                <p className="text-cream font-medium text-base">{depoimento.nome}</p>
-                                <p className="text-muted text-sm font-normal">
-                                  {depoimento.cargo}
-                                  {depoimento.empresa ? `, ${depoimento.empresa}` : ''}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                  <div className="swiper-button-prev !text-copper !bg-white !w-12 !h-12 !rounded-full !shadow-md border border-black/5 after:!text-xl"></div>
-                  <div className="swiper-button-next !text-copper !bg-white !w-12 !h-12 !rounded-full !shadow-md border border-black/5 after:!text-xl"></div>
-                  <div className="swiper-pagination mt-12 flex justify-center !bottom-0"></div>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
+        <DepoimentosSection />
       </main>
       <Footer />
     </div>
