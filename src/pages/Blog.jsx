@@ -127,37 +127,31 @@ const Blog = () => {
         <Header variant="solid" />
 
         {/* Hero */}
-        <section className="relative flex items-center justify-center px-0 py-24 sm:py-16 lg:py-32 mb-12 sm:mb-16 overflow-hidden min-h-[320px] sm:min-h-[420px]">
+        <section className="relative flex items-center justify-center px-0 pb-32 pt-64 mg:pt-32 mb-12 sm:mb-16 overflow-hidden min-h-[320px] sm:min-h-[420px]">
 
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `linear-gradient(90deg, rgba(250,250,248,1) 0%, rgba(250,250,248,0.95) 50%, rgba(250,250,248,0.7) 100%), url(${capaBlog})`
+              backgroundImage: `url(${capaBlog})`
             }}
           ></div>
           {/* Conteúdo principal */}
-          <ScrollReveal direction="up" delay={0.1} className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center py-12 px-4 sm:px-6 lg:px-8">
-
-            <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-              <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-              BLOG
-            </span>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream mb-5 sm:mb-6 text-balance">
-              Crônicas de Design
-            </h1>
-            <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-muted">
-              Conteúdos para fortalecer sua marca, inspirar sua jornada e te ajudar a dominar a arte de criar experiências digitais memoráveis.
-            </p>
+          <ScrollReveal direction="up" delay={0.1} className="relative z-20 w-full mx-auto flex flex-col items-center sm:items-start justify-center text-left py-12 px-4 sm:px-6 lg:px-8">
+            <div className='flex flex-col items-start'>
+              <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream mb-5 sm:mb-6">
+                Blog
+              </h1>
+              
+            </div>
           </ScrollReveal>
         </section>
 
         {/* Filtros + Grid */}
         <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-10 lg:pb-28">
 
-          
+
           {/* Barra de Busca - Ocultada conforme solicitação */}
-          
+
           <div className="mb-8 max-w-2xl mx-auto">
             <div className="relative">
               <input
@@ -175,7 +169,7 @@ const Blog = () => {
               </p>
             )}
           </div>
-         
+
 
           {/* Filtros de Categoria */}
           {categories.length > 1 && (
@@ -260,63 +254,63 @@ const Blog = () => {
                     to={`/blog/${post.slug}`}
                     className="group overflow-hidden rounded-[2rem] border border-white/5 bg-surface hover:border-white/10 shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-copper flex flex-col h-full"
                   >
-                  {/* Imagem de Destaque */}
-                  {post.imagem_destaque && (
-                    <div className="aspect-video overflow-hidden bg-surface">
-                      <img
-                        src={post.imagem_destaque}
-                        alt={post.titulo}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
-
-                  <div className="p-8 flex flex-col flex-grow">
-                    {/* Categoria e Data */}
-                    <div className="flex flex-wrap items-center gap-3 mb-4">
-                      {post.categoria && (
-                        <span className="inline-flex rounded-full border border-copper/20 bg-copper/5 px-3 py-1 text-copper font-mono text-[10px] uppercase tracking-widest">
-                          {post.categoria}
-                        </span>
-                      )}
-                      <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
-                        {formatDate(post.data_publicacao)}
-                      </span>
-                    </div>
-
-                    {/* Título */}
-                    <h2 className="text-[1.25rem] font-medium tracking-tight text-cream mb-3 leading-snug line-clamp-2">
-                      {post.titulo}
-                    </h2>
-
-                    {/* Resumo */}
-                    {post.resumo && (
-                      <p className="text-muted text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
-                        {post.resumo}
-                      </p>
-                    )}
-
-                    {/* Tags */}
-                    {post.tags && (
-                      <div className="flex flex-wrap gap-1.5 mb-6">
-                        {post.tags.toLowerCase().split(',').slice(0, 3).map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2 py-0.5 bg-white/5 border border-white/5 text-muted rounded text-[10px] font-mono tracking-wider"
-                          >
-                            #{tag.trim()}
-                          </span>
-                        ))}
+                    {/* Imagem de Destaque */}
+                    {post.imagem_destaque && (
+                      <div className="aspect-video overflow-hidden bg-surface">
+                        <img
+                          src={post.imagem_destaque}
+                          alt={post.titulo}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          loading="lazy"
+                        />
                       </div>
                     )}
 
-                    {/* Ler mais */}
-                    <div className="flex items-center text-sm font-bold uppercase tracking-[.15em] text-cream group-hover:text-copper transition-colors mt-auto">
-                      Ler mais →
+                    <div className="p-8 flex flex-col flex-grow">
+                      {/* Categoria e Data */}
+                      <div className="flex flex-wrap items-center gap-3 mb-4">
+                        {post.categoria && (
+                          <span className="inline-flex rounded-full border border-copper/20 bg-copper/5 px-3 py-1 text-copper font-mono text-[10px] uppercase tracking-widest">
+                            {post.categoria}
+                          </span>
+                        )}
+                        <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
+                          {formatDate(post.data_publicacao)}
+                        </span>
+                      </div>
+
+                      {/* Título */}
+                      <h2 className="text-[1.25rem] font-medium tracking-tight text-cream mb-3 leading-snug line-clamp-2">
+                        {post.titulo}
+                      </h2>
+
+                      {/* Resumo */}
+                      {post.resumo && (
+                        <p className="text-muted text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
+                          {post.resumo}
+                        </p>
+                      )}
+
+                      {/* Tags */}
+                      {post.tags && (
+                        <div className="flex flex-wrap gap-1.5 mb-6">
+                          {post.tags.toLowerCase().split(',').slice(0, 3).map((tag, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-0.5 bg-white/5 border border-white/5 text-muted rounded text-[10px] font-mono tracking-wider"
+                            >
+                              #{tag.trim()}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Ler mais */}
+                      <div className="flex items-center text-sm font-bold uppercase tracking-[.15em] text-cream group-hover:text-copper transition-colors mt-auto">
+                        Ler mais →
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
                 </ScrollReveal>
               ))}
             </div>

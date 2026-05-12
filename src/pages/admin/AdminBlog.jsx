@@ -211,7 +211,7 @@ const AdminBlog = () => {
     { name: 'titulo', label: 'Título do post', placeholder: 'Como criar uma marca memorável', type: 'text', required: true, col: 'lg:col-span-2' },
     { name: 'slug', label: 'Slug', placeholder: 'como-criar-marca-memoravel', type: 'text', required: true, col: 'lg:col-span-2' },
     { name: 'autor', label: autores.length === 0 ? 'Autor ⚠ Nenhum autor cadastrado — acesse Autores primeiro' : 'Autor', placeholder: 'Selecione um autor', type: 'select', required: true, options: autores.map(a => ({ value: getEntityId(a), label: a.nome })), col: 'lg:col-span-1' },
-    { name: 'categoria', label: 'Categoria', placeholder: 'Selecione uma categoria', type: 'select', required: true, options: ['Performance & Conversão', 'Estratégia de Ativos (Business & IA)', 'Engenharia de Percepção (Branding)', 'UX Design & Engenharia de Lucro'].map(c => ({ value: c, label: c})), col: 'lg:col-span-1' },
+    { name: 'categoria', label: 'Categoria', placeholder: 'Selecione uma categoria', type: 'select', required: true, options: ['Posicionamento', 'Marca', 'Digital', 'Negócios', 'Processo', 'Cases', 'Designer'].map(c => ({ value: c, label: c})), col: 'lg:col-span-1' },
     { name: 'data_publicacao', label: 'Data de publicação', placeholder: 'YYYY-MM-DD', type: 'date', required: true, col: 'lg:col-span-1' },
     { name: 'tags', label: 'Tags', placeholder: 'branding, ux, design', type: 'text', required: false, col: 'lg:col-span-1' },
   ];
