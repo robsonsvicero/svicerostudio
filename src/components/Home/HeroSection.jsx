@@ -42,27 +42,23 @@ const Hero = () => {
           <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.8)]" />
           Branding
         </span>
-        
+
         <h1 className="reveal stagger-1 text-4xl sm:text-5xl lg:text-[4rem] font-bold tracking-tight text-white leading-[1.05] mb-8">
           Ajudamos empresas que já vendem a sair da <span className="text-copper italic font-normal">guerra de preços.</span>
         </h1>
-        
+
         <p className="reveal stagger-2 text-lg md:text-xl text-white/80 mb-6 max-w-lg leading-[1.6]">
           Usamos estratégia de marca e design para reposicionar o seu negócio, justificar preços mais altos e atrair clientes dispostos a pagar o que você vale.
         </p>
-        
+
         <p className="reveal stagger-3 text-white/60 text-base max-w-lg leading-relaxed mb-10">
           Uma conversa estratégica para entender por que sua marca ainda não sustenta o preço que você merece cobrar – e o que precisa mudar para isso.
         </p>
-        
-        <div className="reveal stagger-4 flex flex-col sm:flex-row gap-6 items-center w-full sm:w-auto">
-          <a href="/formulario-interesse" className="w-full sm:w-auto group inline-flex overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(184,115,51,0.25)] rounded-full p-[1px] relative items-center justify-center">
-            <span className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#B87333_100%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
-            <span className="absolute inset-0 rounded-full bg-copper transition-opacity duration-300 group-hover:opacity-0"></span>
-            <span className="flex items-center justify-center gap-3 uppercase transition-colors duration-300 group-hover:text-white text-xs font-bold tracking-widest text-white bg-[#141414] w-full h-full rounded-full py-4 px-8 relative shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-              <span className="relative z-10">Agendar Diagnóstico →</span>
-            </span>
-          </a>
+
+        <div className="reveal stagger-4 flex flex-row gap-6 items-center w-full sm:w-auto">
+          <Button variant="primary" href="/formulario-interesse" className="w-full" >
+            Agendar Diagnóstico
+          </Button>
         </div>
       </div>
 
@@ -76,9 +72,8 @@ const Hero = () => {
                 key={index}
                 src={bg}
                 alt=""
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
-                  index === currentBgIndex ? "opacity-100" : "opacity-0"
-                }`}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${index === currentBgIndex ? "opacity-100" : "opacity-0"
+                  }`}
               />
             ))}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
@@ -89,9 +84,8 @@ const Hero = () => {
               <button
                 key={index}
                 onClick={() => handleDotClick(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentBgIndex ? "bg-copper w-6" : "bg-white/40 hover:bg-white/80"
-                }`}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentBgIndex ? "bg-copper w-6" : "bg-white/40 hover:bg-white/80"
+                  }`}
                 aria-label={`Ir para imagem ${index + 1}`}
               />
             ))}

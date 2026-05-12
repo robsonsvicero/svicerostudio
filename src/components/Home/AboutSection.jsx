@@ -110,9 +110,9 @@ const AboutSection = () => {
               </div>
             </div>
 
-            <div className="flex flex-row justify-center">
+            <div className="flex flex-row justify-center pt-10">
               <Button
-                variant='outline'
+                variant='secondary'
                 href="https://wa.me/5511964932007"
                 target="_blank"
                 rel="noopener noreferrer"

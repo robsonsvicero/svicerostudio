@@ -3,7 +3,7 @@ import React from 'react';
 const Button = ({
   children,
   variant = 'outline', // outline, primary, secondary
-  size = 'sm',
+  size = 'md',
   className = '',
   icon,
   onClick,
@@ -22,7 +22,7 @@ const Button = ({
     bar: 'w-full h-full',
   };
 
-  if (variant === 'primary') {
+  if (variant === 'secondary') {
     // Variant: Border Beam
     const beamContent = (
       <>
@@ -44,7 +44,7 @@ const Button = ({
     return <button type={type} onClick={onClick} className={beamClasses} {...props}>{beamContent}</button>;
   }
 
-  if (variant === 'secondary') {
+  if (variant === 'primary') {
     // Variant: Secondary Border Beam (Inverted Primary)
     const beamSecondaryContent = (
       <>
