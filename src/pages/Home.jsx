@@ -153,30 +153,24 @@ const Home = () => {
       if (swiperRef.current) {
         const depoimentosSwiperInstance = new Swiper(swiperRef.current, {
           loop: true,
-          slidesPerView: 1,
-          spaceBetween: 24,
+          slidesPerView: 'auto',
+          spaceBetween: 32,
           grabCursor: true,
           centeredSlides: false,
           watchOverflow: true,
           watchSlidesProgress: true,
           observer: true,
           observeParents: true,
-          slidesPerGroup: 1,
           autoplay: {
-            delay: 3000,
+            delay: 0,
             disableOnInteraction: false,
-            pauseOnMouseEnter: true,
           },
-          speed: 800,
-          pagination: {
-            el: '.depoimentos-swiper .swiper-pagination',
-            clickable: true,
-            dynamicBullets: true,
+          freeMode: {
+            enabled: true,
+            momentum: false,
           },
-          navigation: {
-            nextEl: '.depoimentos-swiper .swiper-button-next',
-            prevEl: '.depoimentos-swiper .swiper-button-prev',
-          },
+          speed: 8000,
+          allowTouchMove: true,
           breakpoints: {
             640: { slidesPerView: 1, spaceBetween: 24 },
             768: { slidesPerView: 2, spaceBetween: 32 },
@@ -404,7 +398,11 @@ const Home = () => {
               </ScrollReveal>
                      <ScrollReveal direction="up" delay={0.2} duration={0.8}>
                 <div className="relative group">
-                  <div className="swiper depoimentos-swiper !pb-16" ref={swiperRef}>
+                  {/* Edges Fade Effect */}
+                  <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none hidden md:block" />
+                  <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none hidden md:block" />
+                  
+                  <div className="swiper depoimentos-swiper" ref={swiperRef}>
                     <div className="swiper-wrapper">
                       {[...depoimentos]
                         .sort((a, b) => Number(a.ordem) - Number(b.ordem))
@@ -465,19 +463,7 @@ const Home = () => {
                         ))}
                     </div>
 
-                    {/* Custom Navigation */}
-                    <div className="hidden md:flex absolute top-1/2 -left-16 -translate-y-1/2 z-10">
-                      <button className="swiper-button-prev !static !w-12 !h-12 !mt-0 rounded-full bg-surface border border-white/5 text-cream hover:bg-copper hover:border-copper hover:text-white transition-all duration-300 flex items-center justify-center shadow-xl">
-                        <i className="fa-solid fa-chevron-left text-sm"></i>
-                      </button>
-                    </div>
-                    <div className="hidden md:flex absolute top-1/2 -right-16 -translate-y-1/2 z-10">
-                      <button className="swiper-button-next !static !w-12 !h-12 !mt-0 rounded-full bg-surface border border-white/5 text-cream hover:bg-copper hover:border-copper hover:text-white transition-all duration-300 flex items-center justify-center shadow-xl">
-                        <i className="fa-solid fa-chevron-right text-sm"></i>
-                      </button>
-                    </div>
-
-                    <div className="swiper-pagination !bottom-0" />
+                    <div className="swiper-pagination !hidden" />
                   </div>
                 </div>
               </ScrollReveal>

@@ -128,6 +128,11 @@
     overflow: hidden !important;
   }
 
+  /* Efeito de rolagem infinita linear (Marquee) */
+  .depoimentos-swiper .swiper-wrapper {
+    transition-timing-function: linear !important;
+  }
+
   /* Swiper Pagination Dots - garantir centralização e posição abaixo dos cards */
   .depoimentos-swiper .swiper-pagination {
     position: static !important;
