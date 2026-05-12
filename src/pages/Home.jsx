@@ -250,6 +250,8 @@ const Home = () => {
         </a>
 
         <HeroSection />
+        
+        <ClientsMarquee />
 
         <section id="triade" className="py-24 px-4 md:px-16 bg-surface font-body border-t border-white/5">
           <div className="max-w-screen-xl mx-auto">
@@ -376,7 +378,6 @@ const Home = () => {
 
         {/* Projetos Selecionados */}
         <ProjectsSection projects={projects} />
-        <ClientsMarquee />
 
         <AboutSection />
 

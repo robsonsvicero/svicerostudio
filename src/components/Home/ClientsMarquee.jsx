@@ -60,7 +60,7 @@ const ClientsMarquee = () => {
                 <img 
                   src={logo} 
                   alt={`Cliente ${index + 1}`} 
-                  className="h-10 md:h-14 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500"
+                  className="h-10 md:h-16 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500"
                 />
               </div>
               <div className="swiper-slide !w-auto flex items-center justify-center">
