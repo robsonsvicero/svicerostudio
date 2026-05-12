@@ -41,7 +41,7 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       role="button"
       tabIndex={0}
       aria-label={`Ver projeto ${project.titulo}`}
-      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-copper/40 backdrop-blur-md rounded-3xl flex flex-col ${
+      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-copper/40 backdrop-blur-md rounded-3xl flex flex-col h-full ${
         isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "min-h-[380px]"
       }`}
       style={{ transition: 'transform 0.5s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out', transformStyle: 'preserve-3d' }}
@@ -132,7 +132,7 @@ const ProjectsSection = ({ projects }) => {
                 key={project.id} 
                 direction="up" 
                 delay={0.1 + index * 0.15}
-                className={index === 0 ? "md:col-span-2" : ""}
+                className={index === 0 ? "md:col-span-2" : "h-full"}
               >
                 <ProjectCard 
                   project={project} 
