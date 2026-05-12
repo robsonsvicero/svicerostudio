@@ -82,7 +82,9 @@ const corsOriginFn = (origin, callback) => {
   const alwaysAllowed = [
     'https://www.svicerostudio.com.br',
     'https://svicerostudio.com.br',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175'
   ];
 
   if (origin && alwaysAllowed.includes(origin)) {
