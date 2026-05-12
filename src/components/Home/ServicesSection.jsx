@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../UI/Button';
+import ScrollReveal from '../UI/ScrollReveal';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -9,16 +10,18 @@ import 'swiper/css/pagination';
 const ServicesSection = ({ servicos }) => (
   <section id="servicos" className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 bg-dark-bg font-body">
     <div className="max-w-screen-xl mx-auto">
-      <div className="mb-12 text-left">
-        <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                <span className="w-2 h-2 -rotate-45 bg-secondary inline-block"></span>
-                ESPECIALIDADES
-              </span>
-        <h2 className="font-title text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 text-balance">Nossos Serviços</h2>
-        <p className="font-sans text-lg md:text-xl text-[#B2B8C6] max-w-2xl leading-relaxed mb-8">
-          Combinamos criatividade e precisão técnica para impulsionar seu negócio no mundo digital através de soluções sob medida.
-        </p>
-      </div>
+      <ScrollReveal direction="up" delay={0.1}>
+        <div className="mb-12 text-left">
+          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
+                  <span className="w-2 h-2 -rotate-45 bg-secondary inline-block"></span>
+                  ESPECIALIDADES
+                </span>
+          <h2 className="font-title text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 text-balance">Nossos Serviços</h2>
+          <p className="font-sans text-lg md:text-xl text-[#B2B8C6] max-w-2xl leading-relaxed mb-8">
+            Combinamos criatividade e precisão técnica para impulsionar seu negócio no mundo digital através de soluções sob medida.
+          </p>
+        </div>
+      </ScrollReveal>
       <Swiper
         modules={[Navigation, Pagination]}
         loop={true}

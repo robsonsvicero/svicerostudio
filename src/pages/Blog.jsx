@@ -7,6 +7,7 @@ import SEOHelmet from '../components/SEOHelmet'
 import { formatDate } from '../utils/formatDate'
 import { API_URL } from '../lib/api.js'
 import Button from '../components/UI/Button';
+import ScrollReveal from '../components/UI/ScrollReveal';
 
 const getEntityId = (item) => item?.id || item?._id || ''
 
@@ -135,7 +136,7 @@ const Blog = () => {
             }}
           ></div>
           {/* Conteúdo principal */}
-          <div className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center py-12 px-4 sm:px-6 lg:px-8">
+          <ScrollReveal direction="up" delay={0.1} className="relative z-20 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center py-12 px-4 sm:px-6 lg:px-8">
 
             <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
               <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
@@ -148,7 +149,7 @@ const Blog = () => {
             <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-muted">
               Conteúdos para fortalecer sua marca, inspirar sua jornada e te ajudar a dominar a arte de criar experiências digitais memoráveis.
             </p>
-          </div>
+          </ScrollReveal>
         </section>
 
         {/* Filtros + Grid */}
@@ -291,12 +292,12 @@ const Blog = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.map((post) => (
-                <Link
-                  key={post.id}
-                  to={`/blog/${post.slug}`}
-                  className="group overflow-hidden rounded-[2rem] border border-white/5 bg-surface hover:border-white/10 shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-copper flex flex-col h-full"
-                >
+              {filteredPosts.map((post, idx) => (
+                <ScrollReveal direction="up" delay={0.1 + (idx % 3) * 0.15} key={post.id}>
+                  <Link
+                    to={`/blog/${post.slug}`}
+                    className="group overflow-hidden rounded-[2rem] border border-white/5 bg-surface hover:border-white/10 shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-copper flex flex-col h-full"
+                  >
                   {/* Imagem de Destaque */}
                   {post.imagem_destaque && (
                     <div className="aspect-video overflow-hidden bg-surface">
@@ -354,6 +355,7 @@ const Blog = () => {
                     </div>
                   </div>
                 </Link>
+                </ScrollReveal>
               ))}
             </div>
           )}

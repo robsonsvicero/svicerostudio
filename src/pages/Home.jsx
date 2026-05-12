@@ -27,7 +27,7 @@ import sviceroCta from '../images/Svicero_CTA.png';
 import AboutSection from '../components/Home/AboutSection';
 import FAQSection from '../components/Home/FAQSection';
 import CTAFinal from '../components/CTAFinal';
-
+import ScrollReveal from '../components/UI/ScrollReveal';
 
 const Home = () => {
   const servicos = [
@@ -258,61 +258,69 @@ const Home = () => {
 
         <section id="triade" className="py-24 px-4 md:px-16 bg-surface font-body border-t border-white/5">
           <div className="max-w-screen-xl mx-auto">
-            <div className="container max-w-5xl text-left mb-16">
-              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-                <span className="w-1.5 h-1.5 rounded-full bg-copper" />
-                METODOLOGIA
-              </span>
-              <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left">
-                Como o Svicero Studio trabalha
-              </h2>
-              <p className="mt-6 text-xl font-normal leading-[1.6] text-muted text-left">
-                Começamos pelo seu <span className="font-semibold text-cream">negócio</span>, passamos pela <span className="font-semibold text-cream">estratégia de marca</span> e só então chegamos ao <span className="font-semibold text-cream">design</span>. Nessa ordem, sempre.
-              </p>
-            </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-              <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500">
-                <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">01</span>
-                <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
-                  Diagnóstico de negócio
-                </h3>
-                <p className="text-base font-normal leading-[1.6] text-muted mt-4">
-                  Antes de qualquer decisão visual, entendemos o seu negócio: objetivos, público, concorrência e onde sua marca está perdendo valor hoje.
+            <ScrollReveal direction="up" delay={0.1}>
+              <div className="container max-w-5xl text-left mb-16">
+                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+                  <span className="w-1.5 h-1.5 rounded-full bg-copper" />
+                  METODOLOGIA
+                </span>
+                <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left">
+                  Como o Svicero Studio trabalha
+                </h2>
+                <p className="mt-6 text-xl font-normal leading-[1.6] text-muted text-left">
+                  Começamos pelo seu <span className="font-semibold text-cream">negócio</span>, passamos pela <span className="font-semibold text-cream">estratégia de marca</span> e só então chegamos ao <span className="font-semibold text-cream">design</span>. Nessa ordem, sempre.
                 </p>
               </div>
+            </ScrollReveal>
 
-              <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500">
-                <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">02</span>
-                <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
-                  Estratégia de posicionamento
-                </h3>
-                <p className="text-base font-normal leading-[1.6] text-muted mt-4">
-                  Definimos como você deve ser percebido, que tipo de cliente quer atrair e qual mensagem precisa ficar clara para justificar preços mais altos.
-                </p>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+              <ScrollReveal direction="up" delay={0.1}>
+                <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500 h-full">
+                  <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">01</span>
+                  <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
+                    Diagnóstico de negócio
+                  </h3>
+                  <p className="text-base font-normal leading-[1.6] text-muted mt-4">
+                    Antes de qualquer decisão visual, entendemos o seu negócio: objetivos, público, concorrência e onde sua marca está perdendo valor hoje.
+                  </p>
+                </div>
+              </ScrollReveal>
 
-              <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500">
-                <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">03</span>
-                <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
-                  Identidade e presença de marca
-                </h3>
-                <p className="text-base font-normal leading-[1.6] text-muted mt-4">
+              <ScrollReveal direction="up" delay={0.2}>
+                <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500 h-full">
+                  <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">02</span>
+                  <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
+                    Estratégia de posicionamento
+                  </h3>
+                  <p className="text-base font-normal leading-[1.6] text-muted mt-4">
+                    Definimos como você deve ser percebido, que tipo de cliente quer atrair e qual mensagem precisa ficar clara para justificar preços mais altos.
+                  </p>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal direction="up" delay={0.3}>
+                <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500 h-full">
+                  <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">03</span>
+                  <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
+                    Identidade e presença de marca
+                  </h3>
+                  <p className="text-base font-normal leading-[1.6] text-muted mt-4">
                   Com a estratégia definida, traduzimos tudo em identidade visual e presença digital que comunicam seu posicionamento e apoiam suas vendas.
                 </p>
-              </div>
+                </div>
+              </ScrollReveal>
             </div>
-          </div>
 
             {/* Card "Para quem é" */}
-            <div className="bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-[2rem] p-10 md:p-16 mt-32 mb-8 max-w-4xl mx-auto flex flex-col shadow-xl">
-              <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-3">
-                Para quem é
-              </h2>
-              <div className="text-xl font-normal leading-[1.6] text-muted mb-10">
-                Trabalhamos com negócios que já vendem ou estão chegando ao digital
-                pela primeira vez — e que entendem que marca forte não é custo, é investimento.
-              </div>
+            <ScrollReveal direction="up" delay={0.2} duration={0.8}>
+              <div className="bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-[2rem] p-10 md:p-16 mt-32 mb-8 max-w-4xl mx-auto flex flex-col shadow-xl">
+                <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-3">
+                  Para quem é
+                </h2>
+                <div className="text-xl font-normal leading-[1.6] text-muted mb-10">
+                  Trabalhamos com negócios que já vendem ou estão chegando ao digital
+                  pela primeira vez — e que entendem que marca forte não é custo, é investimento.
+                </div>
 
               <h3 className="text-base font-semibold text-cream mb-6 uppercase tracking-wider">
                 Faz sentido conversar se:
@@ -364,6 +372,8 @@ const Home = () => {
                 </Button>
               </div>
             </div>
+            </ScrollReveal>
+          </div>
         </section>
 
         {/* Diagnostico Section */}
@@ -374,77 +384,81 @@ const Home = () => {
 
         <AboutSection />
 
+        {/* Depoimentos Section */}
         {depoimentos.length > 0 && (
           <section className="bg-surface py-24 px-4 md:px-16 border-t border-white/5">
             <div className="max-w-screen-xl mx-auto">
-
-              <div className="mb-12 text-center md:text-left flex flex-col items-center md:items-start">
-                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-                  <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-                  CLIENTES
-                </span>
-                <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left">
-                  O que diz quem passa pelo nosso processo
-                </h2>
-              </div>
-
-              <div className="relative">
-                <div className="swiper depoimentos-swiper" ref={swiperRef}>
-                  <div className="swiper-wrapper">
-                    {[...depoimentos]
-                      .sort((a, b) => Number(a.ordem) - Number(b.ordem))
-                      .map((depoimento) => (
-                        <div key={depoimento.id} className="swiper-slide">
-                          <div className="bg-[#141414]/60 backdrop-blur-xl rounded-3xl border border-white/5 p-8 flex flex-col h-full shadow-lg hover:shadow-xl hover:border-white/10 transition-all duration-500">
-
-                            {/* Estrelas */}
-                            <div
-                              className="mb-4"
-                              role="img"
-                              aria-label={`Avaliação: ${depoimento.estrelas || 5} de 5 estrelas`}
-                            >
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                <i
-                                  key={i}
-                                  className={`fa-solid fa-star text-copper text-xl mr-1 ${i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''
-                                    }`}
-                                />
-                              ))}
-                            </div>
-
-                            {/* Texto do depoimento */}
-                            <p className="text-muted text-lg font-normal leading-[1.6] mb-8 italic flex-1">
-                              "{depoimento.texto}"
-                            </p>
-
-                            {/* Autor */}
-                            <div className="flex items-center gap-4 mt-auto pt-6 border-t border-white/5">
-                              <div className="w-12 h-12 flex-shrink-0 rounded-full bg-copper/10 flex items-center justify-center">
-                                <span className="font-semibold text-lg text-copper">
-                                  {depoimento.iniciais || getNameInitials(depoimento.nome)}
-                                </span>
-                              </div>
-                              <div>
-                                <p className="text-cream font-semibold text-base">
-                                  {depoimento.nome}
-                                </p>
-                                <p className="text-muted/70 font-mono text-[10px] uppercase tracking-wider">
-                                  {depoimento.cargo}
-                                  {depoimento.empresa ? `, ${depoimento.empresa}` : ''}
-                                </p>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-
-                  <div className="swiper-button-prev" />
-                  <div className="swiper-button-next" />
-                  <div className="swiper-pagination mt-12 flex justify-center" />
+              <ScrollReveal direction="up" delay={0.1}>
+                <div className="mb-12 text-center md:text-left flex flex-col items-center md:items-start">
+                  <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+                    <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
+                    CLIENTES
+                  </span>
+                  <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left">
+                    O que diz quem passa pelo nosso processo
+                  </h2>
                 </div>
-              </div>
+              </ScrollReveal>
+
+              <ScrollReveal direction="up" delay={0.2} duration={0.8}>
+                <div className="relative">
+                  <div className="swiper depoimentos-swiper" ref={swiperRef}>
+                    <div className="swiper-wrapper">
+                      {[...depoimentos]
+                        .sort((a, b) => Number(a.ordem) - Number(b.ordem))
+                        .map((depoimento) => (
+                          <div key={depoimento.id} className="swiper-slide">
+                            <div className="bg-[#141414]/60 backdrop-blur-xl rounded-3xl border border-white/5 p-8 flex flex-col h-full shadow-lg hover:shadow-xl hover:border-white/10 transition-all duration-500">
+
+                              {/* Estrelas */}
+                              <div
+                                className="mb-4"
+                                role="img"
+                                aria-label={`Avaliação: ${depoimento.estrelas || 5} de 5 estrelas`}
+                              >
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                  <i
+                                    key={i}
+                                    className={`fa-solid fa-star text-copper text-xl mr-1 ${i >= (depoimento.estrelas || 5) ? 'opacity-30' : ''
+                                      }`}
+                                  />
+                                ))}
+                              </div>
+
+                              {/* Texto do depoimento */}
+                              <p className="text-muted text-lg font-normal leading-[1.6] mb-8 italic flex-1">
+                                "{depoimento.texto}"
+                              </p>
+
+                              {/* Autor */}
+                              <div className="flex items-center gap-4 mt-auto pt-6 border-t border-white/5">
+                                <div className="w-12 h-12 flex-shrink-0 rounded-full bg-copper/10 flex items-center justify-center">
+                                  <span className="font-semibold text-lg text-copper">
+                                    {depoimento.iniciais || getNameInitials(depoimento.nome)}
+                                  </span>
+                                </div>
+                                <div>
+                                  <p className="text-cream font-semibold text-base">
+                                    {depoimento.nome}
+                                  </p>
+                                  <p className="text-muted/70 font-mono text-[10px] uppercase tracking-wider">
+                                    {depoimento.cargo}
+                                    {depoimento.empresa ? `, ${depoimento.empresa}` : ''}
+                                  </p>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+
+                    <div className="swiper-button-prev" />
+                    <div className="swiper-button-next" />
+                    <div className="swiper-pagination mt-12 flex justify-center" />
+                  </div>
+                </div>
+              </ScrollReveal>
 
             </div>
           </section>

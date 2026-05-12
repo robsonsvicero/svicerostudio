@@ -10,6 +10,7 @@ import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import SEOHelmet from '../components/SEOHelmet';
 import ProjectModal from '../components/ProjectModal';
+import ScrollReveal from '../components/UI/ScrollReveal';
 import { API_URL } from '../lib/api.js';
 
 // Estilos padronizados
@@ -153,28 +154,36 @@ const Portfolio = () => {
 
       {/* Hero Section */}
       <section className={`${container} py-14 sm:py-16 lg:py-24 text-center`}>
-        <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-          <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-          CASES DE SUCESSO
-        </span>
-        <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream mb-6 text-balance">
-          Projetos que transformaram percepção em valor
-        </h1>
-        <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-muted">
-          Casos reais de negócios que reposicionamos. Cada projeto começa pelo diagnóstico e termina com uma marca capaz de justificar preços mais altos e atrair clientes mais alinhados.
-        </p>
+        <ScrollReveal direction="up" delay={0.1}>
+          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+            <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
+            CASES DE SUCESSO
+          </span>
+          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream mb-6 text-balance">
+            Projetos que transformaram percepção em valor
+          </h1>
+          <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-muted">
+            Casos reais de negócios que reposicionamos. Cada projeto começa pelo diagnóstico e termina com uma marca capaz de justificar preços mais altos e atrair clientes mais alinhados.
+          </p>
+        </ScrollReveal>
       </section>
 
       {/* Grid de Projetos */}
       <section className={`${container} pb-20 lg:pb-32`}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ perspective: '1200px' }}>
           {projects.map((proj, index) => (
-            <ProjectCard 
+            <ScrollReveal 
               key={proj.id} 
-              project={proj} 
-              index={index} 
-              handleOpenModal={handleOpenModal} 
-            />
+              direction="up" 
+              delay={0.1 + index * 0.15}
+              className={index === 0 ? "md:col-span-2" : ""}
+            >
+              <ProjectCard 
+                project={proj} 
+                index={index} 
+                handleOpenModal={handleOpenModal} 
+              />
+            </ScrollReveal>
           ))}
         </div>
 
@@ -187,15 +196,17 @@ const Portfolio = () => {
         <section className="bg-surface py-20 sm:py-32 border-t border-white/5 relative overflow-hidden">
           <div className="absolute top-0 right-1/4 w-80 h-80 bg-copper/5 rounded-full blur-[80px] pointer-events-none"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
-            <div className="mb-16 text-center md:text-left">
-              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-                <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-                CLIENTES
-              </span>
-              <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream mb-6 text-balance">
-                O que dizem as marcas que transformamos
-              </h2>
-            </div>
+            <ScrollReveal direction="up" delay={0.1}>
+              <div className="mb-16 text-center md:text-left">
+                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
+                  <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
+                  CLIENTES
+                </span>
+                <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream mb-6 text-balance">
+                  O que dizem as marcas que transformamos
+                </h2>
+              </div>
+            </ScrollReveal>
 
             <Swiper
               modules={[Pagination, Navigation]}
@@ -263,37 +274,39 @@ const Portfolio = () => {
 
       {/* CTA final */}
       <section className="bg-charcoal py-24 px-4 sm:px-6 font-body">
-        <div className="max-w-screen-xl w-full mx-auto bg-surface border border-white/5 text-cream rounded-[2rem] sm:rounded-[3rem] shadow-xl flex flex-col items-center justify-center px-5 sm:px-8 py-10 sm:py-16 relative overflow-hidden text-center">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-copper/15 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-copper/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+        <ScrollReveal direction="up" delay={0.2} duration={0.8}>
+          <div className="max-w-screen-xl w-full mx-auto bg-surface border border-white/5 text-cream rounded-[2rem] sm:rounded-[3rem] shadow-xl flex flex-col items-center justify-center px-5 sm:px-8 py-10 sm:py-16 relative overflow-hidden text-center">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-copper/15 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-copper/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
 
-          <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] mb-6 text-balance relative z-10">
-            Sua marca pode sustentar o preço que você já merece cobrar
-          </h2>
+            <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] mb-6 text-balance relative z-10">
+              Sua marca pode sustentar o preço que você já merece cobrar
+            </h2>
 
-          <p className="text-lg md:text-xl font-normal leading-[1.6] text-white/60 mb-10 max-w-2xl mx-auto relative z-10">
-            Se você sente que sua marca ainda não reflete o nível do que você entrega — 
-            ou que ela te força a competir por preço em vez de valor — o próximo passo 
-            é um diagnóstico honesto sobre o seu posicionamento.
-          </p>
+            <p className="text-lg md:text-xl font-normal leading-[1.6] text-white/60 mb-10 max-w-2xl mx-auto relative z-10">
+              Se você sente que sua marca ainda não reflete o nível do que você entrega — 
+              ou que ela te força a competir por preço em vez de valor — o próximo passo 
+              é um diagnóstico honesto sobre o seu posicionamento.
+            </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-            <Button
-              href="/formulario-interesse"
-              variant="primary"
-            >
-              Agendar Diagnóstico
-            </Button>
-            <Button
-              href="https://wa.me/5511964932007?text=Olá%20Robson%2C%20vi%20os%20projetos%20do%20Svicero%20Studio%20e%20gostaria%20de%20conversar%20sobre%20minha%20marca."
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="outline"
-            >
-              Falar pelo WhatsApp
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
+              <Button
+                href="/formulario-interesse"
+                variant="primary"
+              >
+                Agendar Diagnóstico
+              </Button>
+              <Button
+                href="https://wa.me/5511964932007?text=Olá%20Robson%2C%20vi%20os%20projetos%20do%20Svicero%20Studio%20e%20gostaria%20de%20conversar%20sobre%20minha%20marca."
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outline"
+              >
+                Falar pelo WhatsApp
+              </Button>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       <Footer />

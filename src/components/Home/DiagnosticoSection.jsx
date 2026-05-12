@@ -1,4 +1,5 @@
 import Button from "../UI/Button";
+import ScrollReveal from "../UI/ScrollReveal";
 
 const DiagnosticoSection = () => {
   return (
@@ -6,7 +7,7 @@ const DiagnosticoSection = () => {
       <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 
         {/* Lado esquerdo: explicação */}
-        <div>
+        <ScrollReveal direction="right" delay={0.1}>
           <span className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
             <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
             PRIMEIRO PASSO
@@ -33,10 +34,10 @@ const DiagnosticoSection = () => {
             <li className="flex gap-3 items-center"><span className="w-1.5 h-1.5 bg-copper rounded-full"></span> Foco em objetivos, público, concorrência e percepção de marca.</li>
             <li className="flex gap-3 items-center"><span className="w-1.5 h-1.5 bg-copper rounded-full"></span> Você sai com clareza sobre por que sua marca não sustenta ainda o preço que merece.</li>
           </ul>
-        </div>
+        </ScrollReveal>
 
         {/* Lado direito: para quem é + CTA */}
-        <div className="bg-surface border border-white/5 hover:border-white/10 shadow-lg rounded-[2rem] p-8 md:p-10 flex flex-col justify-between relative overflow-hidden transition-colors">
+        <ScrollReveal direction="left" delay={0.2} className="bg-surface border border-white/5 hover:border-white/10 shadow-lg rounded-[2rem] p-8 md:p-10 flex flex-col justify-between relative overflow-hidden transition-colors">
           <div className="absolute top-0 right-0 w-48 h-48 bg-copper/5 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
           
           <div className="relative z-10">
@@ -59,7 +60,7 @@ const DiagnosticoSection = () => {
               Agendar Diagnóstico
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
 
       </div>
     </section>

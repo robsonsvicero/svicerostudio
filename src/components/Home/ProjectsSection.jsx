@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProjectModal from '../ProjectModal';
+import ScrollReveal from '../UI/ScrollReveal';
 
 const ProjectCard = ({ project, index, handleOpenModal }) => {
   const isFeatured = index === 0;
@@ -106,7 +107,7 @@ const ProjectsSection = ({ projects }) => {
         className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 bg-surface font-body"
       >
         <div className="max-w-screen-xl mx-auto">
-          <div className="flex items-center justify-between mb-10">
+          <ScrollReveal direction="up" delay={0.1} className="flex items-center justify-between mb-10">
             <div>
               <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
                 <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
@@ -123,16 +124,22 @@ const ProjectsSection = ({ projects }) => {
                 preços mais altos.
               </p>
             </div>
-          </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-14" style={{ perspective: '1200px' }}>
             {projects.slice(0, 3).map((project, index) => (
-              <ProjectCard 
+              <ScrollReveal 
                 key={project.id} 
-                project={project} 
-                index={index} 
-                handleOpenModal={handleOpenModal} 
-              />
+                direction="up" 
+                delay={0.1 + index * 0.15}
+                className={index === 0 ? "md:col-span-2" : ""}
+              >
+                <ProjectCard 
+                  project={project} 
+                  index={index} 
+                  handleOpenModal={handleOpenModal} 
+                />
+              </ScrollReveal>
             ))}
           </div>
         </div>

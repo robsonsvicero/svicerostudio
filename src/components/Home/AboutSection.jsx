@@ -1,6 +1,7 @@
 import React from 'react';
 import aboutPhoto from '../../assets/about-photo.png';
 import Button from '../UI/Button';
+import ScrollReveal from '../UI/ScrollReveal';
 
 const AboutSection = () => {
   return (
@@ -12,7 +13,7 @@ const AboutSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
           {/* Imagem com badge */}
-          <div className="flex justify-center lg:justify-start">
+          <ScrollReveal direction="right" delay={0.1} className="flex justify-center lg:justify-start">
             <div className="relative w-full max-w-lg">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
                 <img
@@ -35,10 +36,10 @@ const AboutSection = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Texto e indicadores */}
-          <div className="flex flex-col justify-center h-full">
+          <ScrollReveal direction="left" delay={0.2} className="flex flex-col justify-center h-full">
             <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper w-auto max-w-max">
               <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
               SOBRE O ESTÚDIO
@@ -120,7 +121,7 @@ const AboutSection = () => {
                 Falar pelo WhatsApp
               </Button>
             </div>
-          </div>
+          </ScrollReveal>
 
         </div>
       </div>

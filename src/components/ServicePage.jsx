@@ -3,6 +3,7 @@ import Header from './Layout/Header';
 import Footer from './Layout/Footer'; 
 
 import Button from './UI/Button';
+import ScrollReveal from './UI/ScrollReveal';
 
 
 const ServicePage = ({
@@ -53,64 +54,70 @@ const ServicePage = ({
         {/* ESCOPO E MÉTODO */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16 lg:px-10 lg:py-20">
           <div className="grid gap-6 lg:grid-cols-2">
-            <div className="rounded-[30px] border border-white/8 bg-white/[0.03] p-6 backdrop-blur lg:p-8">
-              <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Escopo</p>
-              <h2 className="mt-3 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white">
-                O que inclui
-              </h2>
-              <div className="mt-8 space-y-4">
-                {includes.map((item, index) => (
-                  <div key={item} className="flex gap-4 rounded-2xl border border-white/8 bg-[#181818] px-4 py-4">
-                    <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">
-                      {index + 1}
-                    </span>
-                    <p className="text-sm leading-7 text-white/72">{item}</p>
-                  </div>
-                ))}
+            <ScrollReveal direction="right" delay={0.1}>
+              <div className="rounded-[30px] border border-white/8 bg-white/[0.03] p-6 backdrop-blur lg:p-8 h-full">
+                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Escopo</p>
+                <h2 className="mt-3 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white">
+                  O que inclui
+                </h2>
+                <div className="mt-8 space-y-4">
+                  {includes.map((item, index) => (
+                    <div key={item} className="flex gap-4 rounded-2xl border border-white/8 bg-[#181818] px-4 py-4">
+                      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#B87333]/25 bg-[#B87333]/10 text-xs font-semibold text-[#E9BF84]">
+                        {index + 1}
+                      </span>
+                      <p className="text-sm leading-7 text-white/72">{item}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className="rounded-[30px] border border-white/8 bg-white/[0.03] p-6 backdrop-blur lg:p-8">
-              <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Método</p>
-              <h2 className="mt-3 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white">
-                Processo de criação
-              </h2>
-              <div className="mt-8 space-y-4">
-                {process.map((step, index) => (
-                  <div key={step} className="rounded-2xl border border-white/8 bg-[#181818] px-4 py-4">
-                    <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Etapa {index + 1}</p>
-                    <p className="mt-2 text-sm leading-7 text-white/72">{step}</p>
-                  </div>
-                ))}
+            <ScrollReveal direction="left" delay={0.2}>
+              <div className="rounded-[30px] border border-white/8 bg-white/[0.03] p-6 backdrop-blur lg:p-8 h-full">
+                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Método</p>
+                <h2 className="mt-3 font-[DM Sans] text-3xl font-semibold tracking-[-0.04em] text-white">
+                  Processo de criação
+                </h2>
+                <div className="mt-8 space-y-4">
+                  {process.map((step, index) => (
+                    <div key={step} className="rounded-2xl border border-white/8 bg-[#181818] px-4 py-4">
+                      <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Etapa {index + 1}</p>
+                      <p className="mt-2 text-sm leading-7 text-white/72">{step}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
 
         {/* PROJETOS ENTREGUES */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:px-10 lg:py-12">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Portfólio</p>
-              <h2 className="mt-3 font-[DM Sans] text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[-0.04em] text-white text-balance">
-                Projetos entregues
-              </h2>
+          <ScrollReveal direction="up" delay={0.1}>
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Portfólio</p>
+                <h2 className="mt-3 font-[DM Sans] text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[-0.04em] text-white text-balance">
+                  Projetos entregues
+                </h2>
+              </div>
+              <a href="/portfolio" className="hidden rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white/75 transition hover:bg-white/8 lg:block">
+                Ver todos
+              </a>
             </div>
-            <a href="/portfolio" className="hidden rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white/75 transition hover:bg-white/8 lg:block">
-              Ver todos
-            </a>
-          </div>
+          </ScrollReveal>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {examples.map((example, index) => (
-              <a
-                key={example.title}
-                href={example.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group overflow-hidden rounded-[30px] border border-white/8 bg-[#181818] transition duration-300 hover:-translate-y-1 hover:border-white/14 focus:outline-none focus:ring-2 focus:ring-[#B87333]"
-                aria-label={example.title}
-              >
+              <ScrollReveal direction="up" delay={0.1 + index * 0.15} key={example.title}>
+                <a
+                  href={example.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group overflow-hidden rounded-[30px] border border-white/8 bg-[#181818] transition duration-300 hover:-translate-y-1 hover:border-white/14 focus:outline-none focus:ring-2 focus:ring-[#B87333] block h-full"
+                  aria-label={example.title}
+                >
                 <div className="aspect-[4/4.8] w-full relative bg-[linear-gradient(135deg,#2F353B_0%,#844219_100%)]">
                   {/* Imagem do projeto */}
                   {example.image && (
@@ -136,15 +143,17 @@ const ServicePage = ({
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent z-10 pointer-events-none" />
                 </div>
               </a>
+              </ScrollReveal>
             ))}
           </div>
         </section>
 
         {/* CONVITE ESTRATÉGICO */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16 lg:px-10 lg:py-20">
-          <div className="overflow-hidden rounded-[34px] border border-[#B87333]/18 bg-[linear-gradient(135deg,#B87333_0%,#844219_100%)]">
-            <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-              <div className="flex items-center p-8 lg:p-12">
+          <ScrollReveal direction="up" delay={0.2} duration={0.8}>
+            <div className="overflow-hidden rounded-[34px] border border-[#B87333]/18 bg-[linear-gradient(135deg,#B87333_0%,#844219_100%)]">
+              <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+                <div className="flex items-center p-8 lg:p-12">
                 <div className="max-w-xl">
                   <p className="text-xs uppercase tracking-[0.18em] text-[#F8F7F2]/70">Convite estratégico</p>
                   <h2 className="mt-4 font-[DM Sans] text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[-0.04em] text-[#F8F7F2] lg:text-5xl text-balance">
@@ -168,6 +177,7 @@ const ServicePage = ({
               </div>
             </div>
           </div>
+          </ScrollReveal>
         </section>
       </main>
       <Footer />
