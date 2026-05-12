@@ -1,6 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import Swiper from 'swiper/bundle';
-import 'swiper/css/bundle';
+import React from 'react';
 
 import logo1 from '../../assets/1-cia-odontologica.png';
 import logo2 from '../../assets/2-robtech.png';
@@ -18,63 +16,52 @@ import logo13 from '../../assets/13-amanda-store.png';
 import logo14 from '../../assets/14-andre-barbosa.png';
 
 const ClientsMarquee = () => {
-  const swiperRef = useRef(null);
   const logos = [
     logo1, logo2, logo3, logo4, logo5, logo6, logo7, 
     logo8, logo9, logo10, logo11, logo12, logo13, logo14
   ];
 
-  useEffect(() => {
-    if (swiperRef.current) {
-      const swiper = new Swiper(swiperRef.current, {
-        loop: true,
-        slidesPerView: 'auto',
-        spaceBetween: 50,
-        speed: 2000,
-        autoplay: {
-          delay: 0,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: false,
-        },
-        allowTouchMove: false,
-        observer: true,
-        observeParents: true,
-      });
-
-      // Evitar que cliques pausem o autoplay interceptando os eventos no wrapper
-      if (swiperRef.current) {
-        const preventPause = (e) => {
-          e.stopPropagation();
-        };
-        swiperRef.current.addEventListener('mousedown', preventPause, true);
-        swiperRef.current.addEventListener('touchstart', preventPause, true);
-      }
-
-      return () => {
-        if (swiper) swiper.destroy();
-      };
-    }
-  }, []);
-
   return (
-    <section className="py-12 bg-charcoal/50 border-y border-white/5 overflow-hidden">
-      <div className="swiper clients-marquee-swiper" ref={swiperRef}>
-        <div className="swiper-wrapper !ease-linear items-center">
-          {[...logos, ...logos].map((logo, index) => (
-            <React.Fragment key={index}>
-              <div className="swiper-slide !w-auto flex items-center justify-center">
-                <img 
-                  src={logo} 
-                  alt={`Cliente ${index + 1}`} 
-                  className="h-10 md:h-16 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500"
-                />
-              </div>
-              <div className="swiper-slide !w-auto flex items-center justify-center">
-                <div className="w-1.5 h-1.5 rounded-full bg-copper flex-shrink-0"></div>
-              </div>
-            </React.Fragment>
-          ))}
-        </div>
+    <section className="py-12 bg-charcoal/50 border-y border-white/5 overflow-hidden relative w-full">
+      <style>
+        {`
+          .marquee-container {
+            display: flex;
+            width: max-content;
+            animation: scroll 45s linear infinite;
+          }
+
+          .marquee-container:hover {
+            /* Se quiser que pause ao passar o mouse, basta descomentar a linha abaixo */
+            /* animation-play-state: paused; */ 
+          }
+
+          @keyframes scroll {
+            to {
+              transform: translate3d(-50%, 0, 0); /* Move 50% left */
+            }
+          }
+        `}
+      </style>
+
+      {/* O container interno da rolagem */}
+      <div className="marquee-container items-center gap-12 pl-12 pointer-events-auto">
+        {[...logos, ...logos].map((logo, index) => (
+          <React.Fragment key={index}>
+            <div className="flex-shrink-0 flex items-center justify-center">
+              <img 
+                src={logo} 
+                alt={`Cliente ${index + 1}`} 
+                className="h-10 md:h-16 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500"
+                draggable="false"
+              />
+            </div>
+            {/* O SEPARADOR DA LISTA */}
+            <div className="flex-shrink-0 flex items-center justify-center">
+              <div className="w-1.5 h-1.5 rounded-full bg-copper flex-shrink-0"></div>
+            </div>
+          </React.Fragment>
+        ))}
       </div>
     </section>
   );
