@@ -25,9 +25,9 @@ const BlogSection = ({ blogPosts }) => {
             <div className="mt-4 md:mt-0">
               <a href="/blog" className="text-copper text-sm uppercase tracking-widest font-bold flex items-center gap-2 hover:text-copper/80 transition-colors">
                 Ver todos os artigos
-                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
               </a>
-              
+
             </div>
           </div>
         </ScrollReveal>
@@ -39,7 +39,7 @@ const BlogSection = ({ blogPosts }) => {
           breakpoints={{
             1024: { slidesPerView: 3 }, // web
             768: { slidesPerView: 2 }, // tablet
-            0:   { slidesPerView: 1 }, // mobile
+            0: { slidesPerView: 1 }, // mobile
           }}
           pagination={{ clickable: true }}
           className="blog-swiper mb-12"
@@ -48,37 +48,44 @@ const BlogSection = ({ blogPosts }) => {
             .sort((a, b) => new Date(b.data_publicacao) - new Date(a.data_publicacao))
             .slice(0, 3)
             .map((post, idx) => (
-            <SwiperSlide key={post.id}>
-              <ScrollReveal direction="up" delay={0.1 + idx * 0.15} className="h-full">
-                <Link
-                  to={`/blog/${post.slug}`}
-                  className="group rounded-3xl overflow-hidden bg-white border border-black/5 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 shadow-sm flex flex-col h-full min-h-[360px] sm:min-h-[420px]"
-                >
-                {/* Imagem do artigo */}
-                {post.imagem_destaque && (
-                  <div className="w-full aspect-video overflow-hidden bg-surface">
-                    <img
-                      src={post.imagem_destaque}
-                      alt={post.titulo}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
-                )}
-                <div className="flex flex-col px-8 py-8">
-                  <span className="text-[10px] text-copper font-mono uppercase tracking-widest">
-                    {post.categoria}
-                  </span>
-                  <h3 className="text-xl font-medium text-primary mt-3 leading-snug line-clamp-2">
-                    {post.titulo}
-                  </h3>
-                  <div className="mt-6">
-                    <span className="text-sm font-bold uppercase tracking-[.15em] text-primary group-hover:text-copper transition-colors">Ler mais →</span>
-                  </div>
-                </div>
-              </Link>
-              </ScrollReveal>
-            </SwiperSlide>
-          ))}
+              <SwiperSlide key={post.id}>
+                <ScrollReveal direction="up" delay={0.1 + idx * 0.15} className="h-full">
+                  <Link
+                    to={`/blog/${post.slug}`}
+                    className="mt-12 group rounded-3xl overflow-hidden bg-white/5 border border-black/5 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 shadow-sm flex flex-col h-full min-h-[360px] sm:min-h-[420px]"
+                  >
+                    {/* Imagem do artigo */}
+                    {post.imagem_destaque && (
+                      <div className="w-full aspect-video overflow-hidden bg-surface">
+                        <img
+                          src={post.imagem_destaque}
+                          alt={post.titulo}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                      </div>
+                    )}
+                    <div className="flex flex-col px-8 py-8">
+                      <div className='flex flex-row gap-6 items-center justify-between'>
+                      <span className="tinline-flex rounded-full border border-copper/20 bg-copper/5 px-3 py-1 text-copper font-mono text-[10px] uppercase tracking-widest">
+                        {post.categoria}
+                      </span>
+
+                      <span className="text-[10px] text-copper font-mono uppercase tracking-widest">
+                        {post.data_publicacao ? formatDate(post.data_publicacao) : ''}
+                      </span>
+                      </div>
+
+                      <h3 className="text-xl font-medium text-cream/80 mt-3 leading-snug line-clamp-2">
+                        {post.titulo}
+                      </h3>
+                      <div className="mt-6">
+                        <span className="text-sm font-bold uppercase tracking-[.15em] text-cream/60 group-hover:text-copper transition-colors">Ler mais →</span>
+                      </div>
+                    </div>
+                  </Link>
+                </ScrollReveal>
+              </SwiperSlide>
+            ))}
         </Swiper>
       </div>
     </section>
