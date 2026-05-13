@@ -50,20 +50,15 @@ const AboutSection = () => {
             </h2>
 
             <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
-              Sou o Robson Svicero, estrategista de marca com background em
-              design e produto digital. Já atuei como designer de identidade
-              visual, webdesigner, UX, UI e programador — e hoje uso toda essa
-              bagagem para uma única finalidade:{' '}
-              <span className="text-cream font-medium">
-                ajudar empresas a saírem da guerra de preço usando marca e
-                estratégia como vantagem competitiva.
-              </span>
+              Sou o Robson Svicero, estrategista de marca com background em tecnologia, design e produto digital. Já atuei como programador, webdesigner, designer de identidade visual e UX/UI. Hoje, uso essa mistura para uma única finalidade: ajudar empresas a saírem da guerra de preços por meio de marca e estratégia como vantagem competitiva.
             </p>
 
             <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
-              Antes de abrir qualquer ferramenta de design, entro na realidade
-              do negócio do cliente: objetivos, mercado, concorrência e onde
-              a marca está perdendo valor hoje.
+              Depois de anos dentro de empresas, percebendo na prática quando a marca não acompanha o nível do negócio, eu trouxe o olhar de UX e de produto digital para o branding: entender pessoas e objetivos de negócio antes de qualquer decisão visual.
+            </p>
+
+            <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
+              No Svicero Studio:
             </p>
 
             <ul className="space-y-3 mb-8 max-w-2xl">
