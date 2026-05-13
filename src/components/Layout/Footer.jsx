@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import logoBranco from '../../images/logo_alternativo 4.png';
+import logoBranco from '../../assets/logo_horizontal.png';
 
 const Footer = () => {
   return (
