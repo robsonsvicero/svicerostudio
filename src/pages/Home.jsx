@@ -99,8 +99,7 @@ const Home = () => {
         body: JSON.stringify({
           operation: 'select',
           filters: [{ column: 'publicado', operator: 'eq', value: true }],
-          limit: 3,
-          orderBy: { column: 'data_publicacao', ascending: false }
+          orderBy: { data_publicacao: -1 }
         })
       });
       const payload = await res.json();
