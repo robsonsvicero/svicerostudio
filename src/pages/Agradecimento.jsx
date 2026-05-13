@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../images/logo_alternativo 4.png";
+import logo from "../assets/logo_horizontal.png";
 import Button from "../components/UI/Button";
 
 const Agradecimento = () => (
