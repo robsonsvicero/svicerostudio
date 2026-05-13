@@ -9,16 +9,15 @@ import logo6 from '../../assets/6-chimp-skatwear.png';
 import logo7 from '../../assets/7-isaque-moveis.png';
 import logo8 from '../../assets/8-powerbrain.png';
 import logo9 from '../../assets/9-sacadas-classz.png';
-import logo10 from '../../assets/10-lancamentossp.png';
-import logo11 from '../../assets/11-alexandre-ivo.png';
-import logo12 from '../../assets/12-instituto-sublim.png';
-import logo13 from '../../assets/13-amanda-store.png';
-import logo14 from '../../assets/14-andre-barbosa.png';
+import logo10 from '../../assets/10-alexandre-ivo.png';
+import logo11 from '../../assets/11-instituto-sublim.png';
+import logo12 from '../../assets/12-amanda-store.png';
+import logo13 from '../../assets/13-andre-barbosa.png';
 
 const ClientsMarquee = () => {
   const logos = [
     logo1, logo2, logo3, logo4, logo5, logo6, logo7, 
-    logo8, logo9, logo10, logo11, logo12, logo13, logo14
+    logo8, logo9, logo10, logo11, logo12, logo13
   ];
 
   return (
