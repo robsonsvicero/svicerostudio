@@ -246,7 +246,7 @@ const Home = () => {
 
             {/* Card "Para quem é" */}
             <ScrollReveal direction="up" delay={0.2} duration={0.8}>
-              <div className="bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-[2rem] p-10 md:p-16 mt-32 mb-8 max-w-4xl mx-auto flex flex-col shadow-xl">
+              <div className="bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 md:p-10 mt-32 mb-8 max-w-4xl mx-auto flex flex-col shadow-xl">
                 <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-3">
                   Para quem é
                 </h2>
