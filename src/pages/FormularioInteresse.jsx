@@ -3,6 +3,7 @@ import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import SEOHelmet from '../components/SEOHelmet';
+import { ChevronDown } from 'lucide-react';
 
 const situacaoMarca = [
   'Tenho logo e site',
@@ -249,20 +250,23 @@ const FormularioInteresse = () => {
                 <label className={labelClass}>
                   Qual é a situação atual da sua marca? *
                 </label>
-                <select
-                  name="situacaoMarca"
-                  value={form.situacaoMarca}
-                  onChange={handleChange}
-                  required
-                  className={inputClass}
-                >
-                  <option value="">Selecione...</option>
-                  {situacaoMarca.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    name="situacaoMarca"
+                    value={form.situacaoMarca}
+                    onChange={handleChange}
+                    required
+                    className={`${inputClass} appearance-none cursor-pointer pr-10`}
+                  >
+                    <option value="" disabled className="bg-charcoal text-muted">Selecione...</option>
+                    {situacaoMarca.map((opt) => (
+                      <option key={opt} value={opt} className="bg-charcoal text-cream">
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                </div>
               </div>
 
               <div>
@@ -311,20 +315,23 @@ const FormularioInteresse = () => {
                 <label className={labelClass}>
                   Você tem algum prazo em mente para avançar? *
                 </label>
-                <select
-                  name="prazo"
-                  value={form.prazo}
-                  onChange={handleChange}
-                  required
-                  className={inputClass}
-                >
-                  <option value="">Selecione...</option>
-                  {prazos.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    name="prazo"
+                    value={form.prazo}
+                    onChange={handleChange}
+                    required
+                    className={`${inputClass} appearance-none cursor-pointer pr-10`}
+                  >
+                    <option value="" disabled className="bg-charcoal text-muted">Selecione...</option>
+                    {prazos.map((opt) => (
+                      <option key={opt} value={opt} className="bg-charcoal text-cream">
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                </div>
               </div>
             </div>
 
@@ -338,19 +345,22 @@ const FormularioInteresse = () => {
                 <label className={labelClass}>
                   Como você conheceu o Svicero Studio?
                 </label>
-                <select
-                  name="comoConheceu"
-                  value={form.comoConheceu}
-                  onChange={handleChange}
-                  className={inputClass}
-                >
-                  <option value="">Selecione...</option>
-                  {comoConheceu.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    name="comoConheceu"
+                    value={form.comoConheceu}
+                    onChange={handleChange}
+                    className={`${inputClass} appearance-none cursor-pointer pr-10`}
+                  >
+                    <option value="" disabled className="bg-charcoal text-muted">Selecione...</option>
+                    {comoConheceu.map((opt) => (
+                      <option key={opt} value={opt} className="bg-charcoal text-cream">
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                </div>
 
                 {form.comoConheceu === 'Outro' && (
                   <input

@@ -32,7 +32,7 @@ const AdminComentarios = lazy(() => import('./pages/admin/AdminComentarios'));
 const AdminFAQ = lazy(() => import('./pages/admin/AdminFAQ'));
 const Agradecimento = lazy(() => import('./pages/Agradecimento'));
 const Diagnostico = lazy(() => import('./pages/Diagnostico'));
-
+const LPDentistas = lazy(() => import('./pages/LPDentistas'));
 
 function App() {
   return (
@@ -116,6 +116,7 @@ function App() {
               />
               <Route path="/diagnostico" element={<Diagnostico />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/lp-dentistas" element={<LPDentistas />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
