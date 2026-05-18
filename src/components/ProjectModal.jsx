@@ -125,217 +125,188 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
               ×
             </Button>
 
-            <div className="relative grid lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="relative flex flex-col">
 
-              {/* ── ESQUERDA: Galeria ── */}
-              <section className="border-b border-white/5 lg:border-b-0 lg:border-r lg:border-white/5">
-                <div className="p-4 lg:p-5">
-
-                  {/* Imagem principal */}
-                  <div className="relative overflow-hidden rounded-[1.5rem] border border-white/5 bg-card">
-                    <div className="relative aspect-[16/10] w-full overflow-hidden">
-
-                      {/* Imagem ou placeholder */}
-                      {!isLoading && currentImg ? (
-                        <img
-                          src={currentImg.imagem_url}
-                          alt={`${project.titulo} – ${currentImageIndex + 1}`}
-                          className="absolute inset-0 h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-card" />
-                      )}
-
-                      {/* Overlay escuro para legibilidade do texto */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-
-                      {/* Spinner de carregamento */}
-                      {isLoading && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="h-10 w-10 animate-spin rounded-full border-4 border-copper border-t-transparent" />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Botões prev/next */}
-                    {total > 1 && (
-                      <>
-                        <Button
-                          onClick={handlePrevImage}
-                          aria-label="Imagem anterior"
-                          className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-card/80 text-xl text-cream/75 backdrop-blur transition hover:border-copper hover:text-copper shadow-sm hover:shadow-copper/20"
-                        >
-                          ‹
-                        </Button>
-                        <Button
-                          onClick={handleNextImage}
-                          aria-label="Próxima imagem"
-                          className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-card/80 text-xl text-cream/75 backdrop-blur transition hover:border-copper hover:text-copper shadow-sm hover:shadow-copper/20"
-                        >
-                          ›
-                        </Button>
-                      </>
-                    )}
-
-                    {/* Dots */}
-                    {total > 1 && (
-                      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2 rounded-full border border-white/10 bg-card/80 px-3 py-2 backdrop-blur shadow-sm">
-                        {galleryImages.map((_, idx) => (
-                          <Button
-                            key={idx}
-                            onClick={() => setCurrentImageIndex(idx)}
-                            aria-label={`Ir para imagem ${idx + 1}`}
-                            className={`h-2 rounded-full transition-all ${
-                              idx === currentImageIndex
-                                ? 'w-8 bg-copper shadow-[0_0_8px_rgba(184,115,51,0.5)]'
-                                : 'w-2 bg-cream/30 hover:bg-cream/60'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    )}
+              {/* ── TOPO: Galeria (Carrossel) ── */}
+              <section className="relative w-full overflow-hidden bg-card">
+                
+                {/* Badge sobreposto */}
+                <div className="absolute left-4 top-4 lg:left-8 lg:top-8 z-10">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-copper/25 bg-surface/80 backdrop-blur text-[11px] font-mono uppercase tracking-[.2em] text-copper shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
+                    Projeto selecionado
                   </div>
+                </div>
 
-                  {/* Thumbnails */}
+                <div className="relative aspect-[16/9] lg:aspect-[21/9] w-full">
+                  {/* Imagem ou placeholder */}
+                  {!isLoading && currentImg ? (
+                    <img
+                      src={currentImg.imagem_url}
+                      alt={`${project.titulo} – ${currentImageIndex + 1}`}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-card" />
+                  )}
+
+                  {/* Overlay escuro para legibilidade do texto e dos dots */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent" />
+
+                  {/* Spinner de carregamento */}
+                  {isLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-copper border-t-transparent" />
+                    </div>
+                  )}
+
+                  {/* Botões prev/next */}
                   {total > 1 && (
-                    <div className="mt-4 grid grid-cols-4 gap-3 lg:grid-cols-8">
-                      {galleryImages.map((img, idx) => (
+                    <>
+                      <Button
+                        onClick={handlePrevImage}
+                        aria-label="Imagem anterior"
+                        className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-card/80 text-xl text-cream/75 backdrop-blur transition hover:border-copper hover:text-copper shadow-sm hover:shadow-copper/20"
+                      >
+                        ‹
+                      </Button>
+                      <Button
+                        onClick={handleNextImage}
+                        aria-label="Próxima imagem"
+                        className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-card/80 text-xl text-cream/75 backdrop-blur transition hover:border-copper hover:text-copper shadow-sm hover:shadow-copper/20"
+                      >
+                        ›
+                      </Button>
+                    </>
+                  )}
+
+                  {/* Dots (Paginação no rodapé do carrossel) */}
+                  {total > 1 && (
+                    <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2 rounded-full border border-white/10 bg-surface/80 px-3 py-2 backdrop-blur shadow-sm">
+                      {galleryImages.map((_, idx) => (
                         <Button
                           key={idx}
                           onClick={() => setCurrentImageIndex(idx)}
-                          aria-label={`Thumbnail ${idx + 1}`}
-                          className={`overflow-hidden rounded-xl border transition ${
+                          aria-label={`Ir para imagem ${idx + 1}`}
+                          className={`h-2 rounded-full transition-all ${
                             idx === currentImageIndex
-                              ? 'border-copper shadow-md shadow-copper/20 opacity-100'
-                              : 'border-white/5 hover:border-copper/50 opacity-60 hover:opacity-100'
-                          } bg-card`}
-                        >
-                          <div className="aspect-[4/3] w-full overflow-hidden">
-                            <img
-                              src={img.imagem_url}
-                              alt={`Thumbnail ${idx + 1}`}
-                              className="h-full w-full object-cover transition"
-                              loading="lazy"
-                            />
-                          </div>
-                        </Button>
+                              ? 'w-8 bg-copper shadow-[0_0_8px_rgba(184,115,51,0.5)]'
+                              : 'w-2 bg-cream/30 hover:bg-cream/60'
+                          }`}
+                        />
                       ))}
                     </div>
                   )}
                 </div>
               </section>
 
-              {/* ── DIREITA: Informações ── */}
-              <aside className="flex flex-col">
-                <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+              {/* ── BASE: Informações ── */}
+              <section className="flex flex-col p-6 lg:p-10 border-t border-white/5 bg-surface">
+                {/* Cabeçalho: título + seletor de idioma */}
+                <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                  <div>
+                    <h1 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream">
+                      {project.titulo}
+                    </h1>
+                    {formattedDate && (
+                      <p className="mt-3 text-[10px] uppercase tracking-[0.22em] text-muted font-mono">
+                        {formattedDate}
+                      </p>
+                    )}
+                  </div>
 
-                  {/* Cabeçalho: título + seletor de idioma */}
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-                        <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-                        Projeto selecionado
+                  {/* Seletor de idioma */}
+                  <div className="shrink-0 rounded-2xl border border-white/5 bg-card/50 px-4 py-3">
+                    <p className="text-[10px] uppercase tracking-widest text-muted font-mono text-center mb-2">Idioma</p>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => setLanguage('pt')}
+                        className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
+                          language === 'pt'
+                            ? 'bg-copper text-white shadow-[0_0_10px_rgba(184,115,51,0.3)]'
+                            : 'border border-white/10 text-muted hover:text-cream hover:border-white/20'
+                        }`}
+                      >
+                        PT
+                      </Button>
+                      <Button
+                        onClick={() => setLanguage('en')}
+                        className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
+                          language === 'en'
+                            ? 'bg-copper text-white shadow-[0_0_10px_rgba(184,115,51,0.3)]'
+                            : 'border border-white/10 text-muted hover:text-cream hover:border-white/20'
+                        }`}
+                      >
+                        EN
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Grid principal da base (Meta + Descrição) */}
+                <div className="mt-8 grid gap-8 lg:grid-cols-3">
+                  
+                  {/* Col 1: Meta infos (Cliente, Categoria, etc) */}
+                  <div className="lg:col-span-1 space-y-4">
+                    {meta.map(([label, value]) => (
+                      <div
+                        key={label}
+                        className="rounded-2xl border border-white/5 bg-card/30 px-4 py-4"
+                      >
+                        <p className="text-[10px] uppercase tracking-widest font-mono text-muted">{label}</p>
+                        <p className="mt-2 text-sm font-medium text-cream">{value}</p>
                       </div>
-                      <h1 className="mt-4 text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream">
-                        {project.titulo}
-                      </h1>
-                      {formattedDate && (
-                        <p className="mt-3 text-[10px] uppercase tracking-[0.22em] text-muted font-mono">
-                          {formattedDate}
-                        </p>
+                    ))}
+                  </div>
+
+                  {/* Col 2 e 3: Descrição e Botões */}
+                  <div className="lg:col-span-2 flex flex-col">
+                    {description && (
+                      <div className="space-y-5 text-[15px] leading-8 text-muted">
+                        {description.split(/\n\n+/).map((para, i) => (
+                          <p key={i}>{para}</p>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Rodapé com botões de ação */}
+                    <div className="mt-10 flex flex-wrap gap-3">
+                      {project.site_url && (
+                        <a
+                          href={project.site_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full border border-copper/20 bg-copper/5 px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-copper transition hover:bg-copper/10 hover:shadow-[0_0_15px_rgba(184,115,51,0.2)]"
+                        >
+                          {language === 'pt' ? 'Ver site' : 'Visit site'}
+                        </a>
+                      )}
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full bg-copper px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-white shadow-sm transition hover:shadow-md hover:shadow-copper/30 hover:bg-copper/90"
+                        >
+                          {language === 'pt' ? 'Ver no Behance' : 'View on Behance'}
+                        </a>
+                      )}
+                      {project.link2 && (
+                        <a
+                          href={project.link2}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full border border-white/10 bg-card px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-cream shadow-sm transition hover:shadow-md hover:bg-white/5"
+                        >
+                          {project.button_text2 || 'Ver mais'}
+                        </a>
                       )}
                     </div>
-
-                    {/* Seletor de idioma */}
-                    <div className="shrink-0 rounded-2xl border border-white/5 bg-card/50 px-4 py-3">
-                      <p className="text-[10px] uppercase tracking-widest text-muted font-mono text-center mb-2">Idioma</p>
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => setLanguage('pt')}
-                          className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
-                            language === 'pt'
-                              ? 'bg-copper text-white shadow-[0_0_10px_rgba(184,115,51,0.3)]'
-                              : 'border border-white/10 text-muted hover:text-cream hover:border-white/20'
-                          }`}
-                        >
-                          PT
-                        </Button>
-                        <Button
-                          onClick={() => setLanguage('en')}
-                          className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
-                            language === 'en'
-                              ? 'bg-copper text-white shadow-[0_0_10px_rgba(184,115,51,0.3)]'
-                              : 'border border-white/10 text-muted hover:text-cream hover:border-white/20'
-                          }`}
-                        >
-                          EN
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Meta grid (cliente, ano, categoria) */}
-                  {meta.length > 0 && (
-                    <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                      {meta.map(([label, value]) => (
-                        <div
-                          key={label}
-                          className="rounded-2xl border border-white/5 bg-card/30 px-4 py-4"
-                        >
-                          <p className="text-[10px] uppercase tracking-widest font-mono text-muted">{label}</p>
-                          <p className="mt-2 text-sm font-medium text-cream">{value}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Descrição / storytelling */}
-                  {description && (
-                    <div className="mt-8 space-y-5 text-[15px] leading-8 text-muted">
-                      {description.split(/\n\n+/).map((para, i) => (
-                        <p key={i}>{para}</p>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Rodapé com botões de ação */}
-                <div className="border-t border-white/5 bg-surface/80 p-6 backdrop-blur lg:p-8">
-                  <div className="flex flex-wrap gap-3">
-                    {project.site_url && (
-                      <a
-                        href={project.site_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-full border border-copper/20 bg-copper/5 px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-copper transition hover:bg-copper/10 hover:shadow-[0_0_15px_rgba(184,115,51,0.2)]"
-                      >
-                        {language === 'pt' ? 'Ver site' : 'Visit site'}
-                      </a>
-                    )}
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-full bg-copper px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-white shadow-sm transition hover:shadow-md hover:shadow-copper/30 hover:bg-copper/90"
-                      >
-                        {language === 'pt' ? 'Ver no Behance' : 'View on Behance'}
-                      </a>
-                    )}
-                    {project.link2 && (
-                      <a
-                        href={project.link2}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-full border border-white/10 bg-card px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-cream shadow-sm transition hover:shadow-md hover:bg-white/5"
-                      >
-                        {project.button_text2 || 'Ver mais'}
-                      </a>
-                    )}
                   </div>
                 </div>
-              </aside>
+
+              </section>
             </div>
           </div>
         </motion.div>
