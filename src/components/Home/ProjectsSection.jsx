@@ -16,7 +16,7 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
+
     const rotateX = ((y - centerY) / centerY) * -4;
     const rotateY = ((x - centerX) / centerX) * 4;
 
@@ -41,9 +41,8 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       role="button"
       tabIndex={0}
       aria-label={`Ver projeto ${project.titulo}`}
-      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-copper/40 backdrop-blur-md rounded-3xl flex flex-col h-full ${
-        isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "min-h-[380px]"
-      }`}
+      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-copper/40 backdrop-blur-md rounded-3xl flex flex-col h-full ${isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "min-h-[380px]"
+        }`}
       style={{ transition: 'transform 0.5s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out', transformStyle: 'preserve-3d' }}
     >
       {/* Container da Imagem */}
@@ -66,18 +65,18 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       {/* Container do Conteúdo */}
       <div className={`relative z-20 flex flex-col justify-center p-8 lg:p-12 ${isFeatured ? "md:w-2/5 order-2 border-t md:border-t-0 md:border-l border-white/5" : "order-2 border-t border-white/5 bg-[#141414]"}`} style={{ transform: 'translateZ(30px)' }}>
         <div className="flex items-center justify-between mb-6">
-           <span className="text-[10px] font-mono text-copper uppercase tracking-widest bg-copper/10 px-4 py-1.5 rounded-full border border-copper/20">
-             {project.categoria || "Case Study"}
-           </span>
-           <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-copper group-hover:border-copper transition-all duration-300 shadow-[0_0_15px_rgba(184,115,51,0)] group-hover:shadow-[0_0_15px_rgba(184,115,51,0.5)]">
-             <i className="fa-solid fa-arrow-right text-muted text-xs group-hover:text-white transition-colors -rotate-45 group-hover:rotate-0 duration-300"></i>
-           </div>
+          <span className="text-[10px] font-mono text-copper uppercase tracking-widest bg-copper/10 px-4 py-1.5 rounded-full border border-copper/20">
+            {project.categoria || "Case Study"}
+          </span>
+          <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-copper group-hover:border-copper transition-all duration-300 shadow-[0_0_15px_rgba(184,115,51,0)] group-hover:shadow-[0_0_15px_rgba(184,115,51,0.5)]">
+            <i className="fa-solid fa-arrow-right text-muted text-xs group-hover:text-white transition-colors -rotate-45 group-hover:rotate-0 duration-300"></i>
+          </div>
         </div>
-        
+
         <h3 className={`text-cream font-medium tracking-tight leading-[1.1] mb-4 ${isFeatured ? "text-3xl md:text-[2.5rem]" : "text-2xl"}`}>
           {project.titulo}
         </h3>
-        
+
         <div className="mt-auto pt-6 flex items-center gap-3 text-sm font-bold uppercase tracking-[.15em] text-muted group-hover:text-copper transition-colors duration-300">
           Ver Projeto Completo
         </div>
@@ -119,25 +118,24 @@ const ProjectsSection = ({ projects }) => {
               </h2>
 
               <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl">
-                Casos reais de negócios que reposicionamos — cada projeto começa
-                pelo diagnóstico e termina com uma marca capaz de justificar
-                preços mais altos.
+                Transformamos excelência clínica em percepção de valor.
+                Criamos ativos visuais que posicionam o consultório para atrair pacientes particulares que buscam confiança, experiência e diferenciação.
               </p>
             </div>
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-14" style={{ perspective: '1200px' }}>
             {projects.slice(0, 3).map((project, index) => (
-              <ScrollReveal 
-                key={project.id} 
-                direction="up" 
+              <ScrollReveal
+                key={project.id}
+                direction="up"
                 delay={0.1 + index * 0.15}
                 className={index === 0 ? "md:col-span-2" : "h-full"}
               >
-                <ProjectCard 
-                  project={project} 
-                  index={index} 
-                  handleOpenModal={handleOpenModal} 
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  handleOpenModal={handleOpenModal}
                 />
               </ScrollReveal>
             ))}
