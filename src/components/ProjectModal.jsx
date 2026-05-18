@@ -69,6 +69,17 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
     };
   }, [isOpen, currentImageIndex, galleryImages.length]);
 
+  useEffect(() => {
+    if (isOpen && galleryImages.length > 1) {
+      const timer = setInterval(() => {
+        setCurrentImageIndex((prev) =>
+          prev === galleryImages.length - 1 ? 0 : prev + 1
+        );
+      }, 5000); // 5 segundos
+      return () => clearInterval(timer);
+    }
+  }, [isOpen, galleryImages.length]);
+
   if (!isOpen || !project) return null;
 
   const description = language === 'pt'
@@ -163,36 +174,36 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
 
                   {/* Botões prev/next */}
                   {total > 1 && (
-                    <>
-                      <Button
-                        onClick={handlePrevImage}
+                    <div className="absolute left-6 top-1/2 flex -translate-y-1/2 gap-2 z-20">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
                         aria-label="Imagem anterior"
-                        className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-card/80 text-xl text-cream/75 backdrop-blur transition hover:border-copper hover:text-copper shadow-sm hover:shadow-copper/20"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-xl text-cream backdrop-blur transition hover:bg-copper hover:border-copper shadow-sm hover:shadow-copper/30"
                       >
                         ‹
-                      </Button>
-                      <Button
-                        onClick={handleNextImage}
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
                         aria-label="Próxima imagem"
-                        className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-card/80 text-xl text-cream/75 backdrop-blur transition hover:border-copper hover:text-copper shadow-sm hover:shadow-copper/20"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-xl text-cream backdrop-blur transition hover:bg-copper hover:border-copper shadow-sm hover:shadow-copper/30"
                       >
                         ›
-                      </Button>
-                    </>
+                      </button>
+                    </div>
                   )}
 
                   {/* Dots (Paginação no rodapé do carrossel) */}
                   {total > 1 && (
-                    <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2 rounded-full border border-white/10 bg-surface/80 px-3 py-2 backdrop-blur shadow-sm">
+                    <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-1.5 rounded-full border border-white/10 bg-surface/60 px-3 py-2 backdrop-blur shadow-sm z-20">
                       {galleryImages.map((_, idx) => (
-                        <Button
+                        <button
                           key={idx}
-                          onClick={() => setCurrentImageIndex(idx)}
+                          onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
                           aria-label={`Ir para imagem ${idx + 1}`}
-                          className={`h-2 rounded-full transition-all ${
+                          className={`h-1.5 rounded-full transition-all ${
                             idx === currentImageIndex
-                              ? 'w-8 bg-copper shadow-[0_0_8px_rgba(184,115,51,0.5)]'
-                              : 'w-2 bg-cream/30 hover:bg-cream/60'
+                              ? 'w-6 bg-copper shadow-[0_0_8px_rgba(184,115,51,0.8)]'
+                              : 'w-1.5 bg-cream/50 hover:bg-cream/90'
                           }`}
                         />
                       ))}
