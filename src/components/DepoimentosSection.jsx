@@ -3,7 +3,6 @@ import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import ScrollReveal from './UI/ScrollReveal';
 import { API_URL } from '../lib/api.js';
-import { getNameInitials } from '../utils/placeholders';
 
 const DepoimentosSection = () => {
   const [depoimentos, setDepoimentos] = useState([]);
@@ -125,28 +124,6 @@ const DepoimentosSection = () => {
                         <p className="text-muted text-lg font-normal leading-[1.7] mb-10 italic flex-1 relative z-10">
                           "{depoimento.texto}"
                         </p>
-
-                        {/* Autor */}
-                        <div className="flex items-center gap-4 mt-auto pt-8 border-t border-white/5 relative z-10">
-                          <div className="w-14 h-14 flex-shrink-0 rounded-full bg-copper/10 border border-copper/20 flex items-center justify-center overflow-hidden">
-                            {depoimento.avatar_url ? (
-                              <img src={depoimento.avatar_url} alt={depoimento.nome} className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="font-semibold text-xl text-copper">
-                                {depoimento.iniciais || getNameInitials(depoimento.nome)}
-                              </span>
-                            )}
-                          </div>
-                          <div>
-                            <p className="text-cream font-medium text-lg tracking-tight">
-                              {depoimento.nome}
-                            </p>
-                            <p className="text-muted/60 font-mono text-[10px] uppercase tracking-[0.15em] mt-1">
-                              {depoimento.cargo}
-                              {depoimento.empresa ? <span className="text-copper/50 ml-1">@{depoimento.empresa}</span> : ''}
-                            </p>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   ))}

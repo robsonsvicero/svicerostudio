@@ -7,6 +7,7 @@ import SEOHelmet from '../components/SEOHelmet';
 import ProjectModal from '../components/ProjectModal';
 import ScrollReveal from '../components/UI/ScrollReveal';
 import DepoimentosSection from '../components/DepoimentosSection';
+import CTAFinal from '../components/CTAFinal';
 import { API_URL } from '../lib/api.js';
 
 // Estilos padronizados
@@ -179,41 +180,7 @@ const Portfolio = () => {
       <DepoimentosSection />
 
       {/* CTA final */}
-      <section className="bg-charcoal py-24 px-4 sm:px-6 font-body">
-        <ScrollReveal direction="up" delay={0.2} duration={0.8}>
-          <div className="max-w-screen-xl w-full mx-auto bg-surface border border-white/5 text-cream rounded-[2rem] sm:rounded-[3rem] shadow-xl flex flex-col items-center justify-center px-5 sm:px-8 py-10 sm:py-16 relative overflow-hidden text-center">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-copper/15 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-copper/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-
-            <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] mb-6 text-balance relative z-10">
-              Sua marca pode sustentar o preço que você já merece cobrar
-            </h2>
-
-            <p className="text-lg md:text-xl font-normal leading-[1.6] text-white/60 mb-10 max-w-2xl mx-auto relative z-10">
-              Se você sente que sua marca ainda não reflete o nível do que você entrega —
-              ou que ela te força a competir por preço em vez de valor — o próximo passo
-              é um diagnóstico honesto sobre o seu posicionamento.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-              <Button
-                href="/formulario-interesse"
-                variant="primary"
-              >
-                Agendar Diagnóstico
-              </Button>
-              <Button
-                href="https://wa.me/5511964932007?text=Olá%20Robson%2C%20vi%20os%20projetos%20do%20Svicero%20Studio%20e%20gostaria%20de%20conversar%20sobre%20minha%20marca."
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="outline"
-              >
-                Falar pelo WhatsApp
-              </Button>
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
+      <CTAFinal />
 
       <Footer />
     </div>
