@@ -300,7 +300,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                           rel="noopener noreferrer"
                           className="rounded-full bg-copper px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-white shadow-sm transition hover:shadow-md hover:shadow-copper/30 hover:bg-copper/90"
                         >
-                          {language === 'pt' ? 'Ver no Behance' : 'View on Behance'}
+                          {project.button_text || (language === 'pt' ? 'Ver Projeto' : 'View Project')}
                         </a>
                       )}
                       {project.link2 && (
@@ -310,7 +310,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                           rel="noopener noreferrer"
                           className="rounded-full border border-white/10 bg-card px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-cream shadow-sm transition hover:shadow-md hover:bg-white/5"
                         >
-                          {project.button_text2 || 'Ver mais'}
+                          {project.button_text2 || (language === 'pt' ? 'Ver mais' : 'See more')}
                         </a>
                       )}
                     </div>
