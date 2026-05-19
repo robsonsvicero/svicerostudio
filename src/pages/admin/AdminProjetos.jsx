@@ -120,6 +120,7 @@ const AdminProjetos = () => {
     link2: '',
     button_text2: '',
     mostrar_home: true,
+    ordem: 0,
   };
 
   const [projects, setProjects] = useState([]);
@@ -685,6 +686,10 @@ const AdminProjetos = () => {
                     <option value="draft">Rascunho</option>
                     <option value="published">Publicado</option>
                   </select>
+                </label>
+                <label className="block">
+                  <span className={labelClass}>Ordem</span>
+                  <input type="number" name="ordem" value={form.ordem} onChange={handleFieldChange} className={inputClass} min={0} />
                 </label>
               </div>
               <label className="flex items-center gap-3 rounded-lg border border-white/5 bg-charcoal px-4 py-3 cursor-pointer hover:border-white/10 transition-colors">

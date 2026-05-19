@@ -44,7 +44,6 @@ const Footer = () => {
             <h4 className="text-cream font-medium text-lg mb-4">Estúdio</h4>
             <ul className="flex flex-col gap-2">
               <li><Link to="/portfolio" className="hover:text-copper transition-colors">Portfólio</Link></li>
-              <li><Link to="/planos-pacotes" className="hover:text-copper transition-colors">Planos & Pacotes</Link></li>
               <li><Link to="/processos" className="hover:text-copper transition-colors">Processos</Link></li>
               <li><Link to="/blog" className="hover:text-copper transition-colors">Blog</Link></li>
             </ul>

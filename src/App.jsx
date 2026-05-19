@@ -23,7 +23,6 @@ const Termos = lazy(() => import('./pages/Termos'));
 const ExclusaoDados = lazy(() => import('./pages/ExclusaoDados'));
 const Portfolio = lazy(() => import('./pages/Portfolio'));
 const PacoteMarca = lazy(() => import('./pages/PacoteMarca'));
-const PlanosPacotes = lazy(() => import('./pages/PlanosPacotes'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const FormularioInteresse = lazy(() => import('./pages/FormularioInteresse'));
 const Contato = lazy(() => import('./pages/Contato'));
@@ -105,7 +104,6 @@ function App() {
               />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/pacote-marca" element={<PacoteMarca />} />
-              <Route path="/planos-pacotes" element={<PlanosPacotes />} />
               <Route 
                 path="/admin/faq" 
                 element={

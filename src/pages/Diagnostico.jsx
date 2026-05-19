@@ -8,8 +8,8 @@ const Diagnostico = () => {
   return (
     <>
       <SEOHelmet
-        title="Diagnóstico de Posicionamento"
-        description="Uma conversa estratégica para entender por que sua marca ainda não sustenta o preço que você merece cobrar — e o que precisa mudar para sair da guerra de preços."
+        title="Diagnóstico de Posicionamento Clínico"
+        description="Uma análise estratégica individual para avaliar por que a marca da sua clínica não apoia o valor dos seus tratamentos particulares e o que precisa mudar."
         canonical="/diagnostico"
       />
 
@@ -24,7 +24,7 @@ const Diagnostico = () => {
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-20 text-center lg:px-10 lg:py-24">
             <span className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
               <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]" />
-              PRIMEIRO PASSO
+              ANÁLISE ESTRATÉGICA
             </span>
 
             <h1 className="mt-4 text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-tight text-cream text-balance">
@@ -32,15 +32,14 @@ const Diagnostico = () => {
             </h1>
 
             <p className="mx-auto mt-6 max-w-3xl text-lg leading-[1.6] text-muted">
-              Uma conversa estratégica para entender por que sua marca ainda não
-              sustenta o preço que você merece cobrar — e o que precisa mudar no
-              seu posicionamento para sair da guerra de preços.
+              Uma conversa estratégica para entender por que a imagem da sua clínica ainda não 
+              sustenta o valor que você merece cobrar — e o que precisa mudar na sua comunicação 
+              visual para afastar a concorrência por preço.
             </p>
 
             <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-base leading-[1.6] text-muted">
-              Profissionais diagnosticam, amadores prescrevem. Antes de falar de
-              logo, site ou “layout bonito”, entramos na sala da estratégia junto
-              com você.
+              Profissionais diagnosticam, amadores prescrevem. Antes de sugerir cores, 
+              logotipos ou mudanças estruturais em sites, avaliamos os gargalos de percepção do seu consultório.
             </p>
           </div>
         </section>
@@ -54,61 +53,52 @@ const Diagnostico = () => {
               </h2>
 
               <p className="mt-6 text-base sm:text-lg md:text-xl leading-[1.6] text-muted">
-                É uma sessão online de 45–60 minutos em que analisamos juntos como
-                sua marca é percebida hoje, onde ela está perdendo valor e quais
-                ajustes de posicionamento podem te ajudar a cobrar melhor e atrair
-                clientes mais alinhados.
+                É uma sessão online de 45 a 60 minutos em que analisamos individualmente como 
+                a sua prática clínica é percebida hoje pelo mercado local, identificando onde a sua imagem 
+                está drenando seus lucros e quais ajustes estéticos vão apoiar o fechamento de tratamentos de alto ticket.
               </p>
 
               <p className="mt-4 text-base sm:text-lg leading-[1.6] text-muted">
-                Não é uma reunião para “pegar um orçamento de logo”. É uma
-                conversa de dono de negócio para dono de negócio: falamos de
-                objetivos, vendas, público, concorrência e percepção de marca. O
-                design só entra depois disso, como ferramenta.
+                Não é uma reunião comercial para recolher um "orçamento de logotipo". É uma 
+                conversa de negócios em que avaliamos sua estrutura de tratamentos, perfil de público-alvo 
+                particular e principais concorrentes regionais. O design só entra após este alinhamento estratégico.
               </p>
 
               <ul className="mt-6 space-y-2 text-base sm:text-lg text-muted leading-[1.6]">
-                <li>• Sessão 100% estratégica, sem pitch de venda disfarçado.</li>
-                <li>• Usamos perguntas de negócio, não jargão de design.</li>
+                <li>• Sessão 100% consultiva, com foco em análise de posicionamento real.</li>
+                <li>• Abordagem focada em objetivos de faturamento e valor percebido.</li>
                 <li>
-                  • Você sai com clareza sobre por que está em guerra de preços
-                  e o que precisa mudar na sua marca.
+                  • Você sai com clareza exata sobre quais ruídos visuais estão fazendo você disputar pacientes por preço.
                 </li>
               </ul>
             </div>
 
             <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl p-8 shadow-sm hover:border-white/10 transition-colors">
               <p className="text-[10px] uppercase font-mono tracking-widest text-copper">
-                Para quem faz mais sentido
+                QUEM SE BENEFICIA DESTA ANÁLISE
               </p>
 
               <h3 className="mt-4 text-2xl sm:text-3xl font-medium tracking-tight text-cream">
-                Esse diagnóstico é ideal se você:
+                Este diagnóstico é ideal se você:
               </h3>
 
               <ul className="mt-5 space-y-3 text-base sm:text-lg text-muted leading-[1.6]">
                 <li>
-                  • Já vende, mas sente que sua marca te força a competir por
-                  preço em vez de valor.
+                  • Possui infraestrutura de excelência e alta qualificação técnica, mas sente que sua marca atual atrai pacientes focados em descontos.
                 </li>
                 <li>
-                  • Quer aumentar ticket médio, mas não tem segurança de
-                  justificar preços mais altos.
+                  • Deseja aumentar o ticket médio e focar em tratamentos particulares complexos, mas enfrenta dificuldades para justificar propostas de maior valor.
                 </li>
                 <li>
-                  • Está migrando para o digital e não quer começar com uma
-                  marca fraca, igual a todo mundo.
+                  • Decidiu reestruturar a presença visual da sua clínica e quer estabelecer um posicionamento imponente desde o primeiro momento, evitando retrabalhos.
                 </li>
                 <li>
-                  • Quer um parceiro que pense junto com você, em vez de alguém
-                  que só “faça arte” sob demanda.
+                  • Procura um parceiro estratégico focado em soluções comerciais, em vez de agências focadas em templates ou produções genéricas.
                 </li>
               </ul>
 
               <p className="mt-6 text-sm sm:text-base text-muted leading-[1.6]">
-                Se você se identificou com dois ou mais pontos, este é o melhor
-                próximo passo antes de qualquer decisão sobre identidade visual
-                ou site.
+                Se você identificou dois ou mais desses cenários na sua clínica, este diagnóstico é o ponto de partida ideal para alinhar sua marca à excelência da sua entrega técnica.
               </p>
             </div>
           </div>
@@ -118,50 +108,47 @@ const Diagnostico = () => {
         <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-10 lg:pb-20">
           <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl p-8 sm:p-10 lg:p-12 shadow-sm">
             <p className="text-[10px] uppercase font-mono tracking-widest text-copper">
-              Como funciona
+              COMO FUNCIONA O PROCESSO
             </p>
 
             <h2 className="mt-4 text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream">
-              Da sala da estratégia à sala do design
+              Da avaliação comercial à consolidação visual
             </h2>
 
             <p className="mt-6 max-w-3xl text-lg leading-[1.6] text-muted">
-              Usamos a lógica do business designer: primeiro entendemos o jogo de
-              negócio que você está jogando, depois pensamos em como a marca e o
-              design podem te ajudar a ganhar esse jogo.
+              Analisamos seu mercado de forma objetiva: primeiro entendemos as metas comerciais e o perfil 
+              de público que a sua clínica precisa atrair, para depois definirmos como a identidade e o design 
+              vão pavimentar esse caminho de valor.
             </p>
 
             <div className="mt-8 grid gap-8 md:grid-cols-3">
               <div>
                 <h3 className="text-cream font-medium text-lg mb-2">
-                  1. Perguntas estratégicas
+                  1. Mapeamento de Contexto
                 </h3>
                 <p className="text-sm sm:text-base text-muted leading-[1.6]">
-                  Começamos com um roteiro de perguntas sobre negócio, mercado,
-                  clientes, desafios e objetivos — inspirado nas perguntas que
-                  uso em consultorias e nas aulas que você viu nos ebooks.
+                  Iniciamos com perguntas estruturadas sobre o modelo de atendimentos, público local, principais 
+                  especialidades da clínica e o histórico de recusas de orçamentos complexos.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-cream font-medium text-lg mb-2">
-                  2. Mapa de dores e oportunidades
+                  2. Identificação de Gargalos
                 </h3>
                 <p className="text-sm sm:text-base text-muted leading-[1.6]">
-                  Juntos, identificamos onde sua marca está te puxando para
-                  baixo hoje: percepção, mensagem, diferenciação, experiência.
-                  É aqui que surgem os verdadeiros gargalos.
+                  Avaliamos os seus pontos de contato atuais (Instagram, site, papelaria de apresentação) para 
+                  descobrir exatamente onde a sua imagem está gerando ruídos ou desvalorizando seu currículo.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-cream font-medium text-lg mb-2">
-                  3. Próximos passos claros
+                  3. Direcionamento Prático
                 </h3>
                 <p className="text-sm sm:text-base text-muted leading-[1.6]">
-                  Ao final, você recebe uma indicação clara de próximos passos:
-                  se faz sentido um projeto com o estúdio, que tipo de projeto e
-                  qual foco ele deveria ter para gerar mais valor.
+                  Ao final da sessão, você recebe um direcionamento claro sobre as correções necessárias e se faz 
+                  sentido avançarmos para um projeto completo de Engenharia de Marca com o estúdio.
                 </p>
               </div>
             </div>
@@ -173,54 +160,46 @@ const Diagnostico = () => {
           <div className="grid gap-10 lg:grid-cols-[1.3fr,1fr] items-center">
             <div>
               <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream">
-                O que você leva dessa conversa
+                Os retornos práticos da sessão
               </h2>
 
               <ul className="mt-6 space-y-3 text-base sm:text-lg text-muted leading-[1.6]">
                 <li>
-                  • Clareza sobre por que você está em guerra de preços e quais
-                  movimentos de marca podem te tirar dela.
+                  • Entendimento claro sobre os fatores de comunicação visual que impedem a sua clínica de manter tabelas de preço mais lucrativas.
                 </li>
                 <li>
-                  • Visão externa, profissional, sobre a forma como seu negócio
-                  se apresenta hoje.
+                  • Uma perspectiva externa, técnica e profissional a respeito da imagem que a sua clínica transmite hoje para pacientes em potencial.
                 </li>
                 <li>
-                  • Um filtro: entender se o momento é de reposicionamento,
-                  de identidade visual, de site novo — ou se antes disso você
-                  precisa ajustar outras peças.
+                  • Um filtro estratégico para descobrir se a sua prioridade atual é de reposicionamento de marca, nova identidade visual ou modernização de site.
                 </li>
                 <li>
-                  • Base para tomar decisões de investimento em marca com mais
-                  segurança, sem cair em soluções estéticas que não mudam o
-                  resultado.
+                  • Segurança para investir em comunicação de forma assertiva, eliminando soluções estéticas vazias que não alteram seus resultados financeiros.
                 </li>
               </ul>
 
               <p className="mt-6 text-sm sm:text-base text-muted leading-[1.6] max-w-2xl">
-                Em outras palavras: você não sai com um “orçamento de logo”. Você
-                sai com um diagnóstico sobre o seu posicionamento e uma visão
-                clara de como a marca pode sustentar o valor que você quer
-                cobrar.
+                Em resumo: você não sai da conversa com uma mera lista de preços de artes genéricas, e sim com um diagnóstico analítico da percepção da sua clínica e as diretrizes para valorizar os seus serviços.
               </p>
             </div>
 
+            {/* CARD DESTACADO DE CTA */}
             <div className="relative rounded-[2rem] border border-copper/30 bg-copper/10 backdrop-blur-xl p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(184,115,51,0.15)] overflow-hidden">
               <div className="absolute inset-0 bg-copper/5 pointer-events-none mix-blend-overlay"></div>
               <div className="relative z-10">
                 <h3 className="text-2xl font-medium tracking-tight text-cream mb-4">
-                  Agendar Diagnóstico
+                  Solicitar Diagnóstico
                 </h3>
 
                 <p className="text-sm sm:text-base text-cream/90 leading-[1.6] mb-6">
-                  Para agendar, você pode falar direto pelo WhatsApp ou, se
-                  preferir, preencher o formulário. Em ambos os casos, a intenção é
-                  a mesma: entender o seu contexto antes de qualquer proposta.
+                  Para agendar sua análise, você pode iniciar um contato direto pelo WhatsApp ou preencher nosso 
+                  formulário estratégico. Avaliaremos o seu contexto clínico em detalhes antes de estruturar qualquer proposta.
                 </p>
 
                 <div className="flex flex-col gap-4">
                   <Button
                     href="https://wa.me/5511964932007?text=Ol%C3%A1%20Robson%2C%20gostaria%20de%20agendar%20um%20diagn%C3%B3stico%20de%20posicionamento%20para%20a%20minha%20marca."
+                    target="_blank"
                     target="_blank"
                     rel="noopener noreferrer"
                     variant="primary"
@@ -234,13 +213,12 @@ const Diagnostico = () => {
                     variant="outline"
                     className="w-full"
                   >
-                    Preencher formulário
+                    Preencher Formulário Estratégico
                   </Button>
 
                   <p className="text-[11px] text-white/70 leading-[1.6] mt-1 font-mono uppercase tracking-wider text-center">
-                    O diagnóstico não é compromisso de fechar projeto. É um passo
-                    anterior, para entender se faz sentido trabalharmos juntos e
-                    como o Svicero Studio pode gerar mais valor para o seu negócio.
+                    O diagnóstico não constitui compromisso contratual imediato. É um passo de alinhamento mútuo 
+                    para entender se o Svicero Studio é o parceiro ideal para a maturidade atual do seu consultório.
                   </p>
                 </div>
               </div>

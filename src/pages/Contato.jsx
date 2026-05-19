@@ -46,13 +46,11 @@ const Contato = () => {
           <ScrollReveal direction="up" delay={0.1}>
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-20 text-center lg:px-10 lg:py-24">
               <h1 className="mt-6 text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream text-balance">
-                Fale com o estúdio
+                Canais de Atendimento
               </h1>
 
               <p className="mx-auto mt-6 max-w-2xl text-lg leading-[1.6] text-muted">
-                Para dúvidas, parcerias ou conversas rápidas, use o canal que
-                preferir. Se a ideia é falar sobre um projeto de marca, o melhor
-                caminho é agendar um diagnóstico.
+                Para solicitações institucionais, parcerias corporativas ou suporte a projetos em andamento, utilize os acessos abaixo. Se o seu objetivo é alinhar o posicionamento visual da sua clínica ou consultório, o canal exclusivo e prioritário é através do agendamento de um Diagnóstico Inicial.
               </p>
 
               <div className="mt-8 flex justify-center">
