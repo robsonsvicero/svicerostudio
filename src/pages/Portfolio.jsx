@@ -133,7 +133,6 @@ const Portfolio = () => {
 
   const handleOpenModal = (project) => {
     setSelectedProject(project);
-    modalOpen(true);
     setModalOpen(true);
   };
 
@@ -205,14 +204,27 @@ const Portfolio = () => {
                   <div 
                     key={proj.id}
                     onClick={() => handleOpenModal(proj)}
-                    className="p-5 rounded-2xl border border-white/5 bg-[#141414] hover:border-copper/30 cursor-pointer transition-all duration-300 flex flex-col justify-between h-32 group"
+                    className="relative overflow-hidden p-5 rounded-2xl border border-white/5 bg-[#141414] hover:border-copper/30 cursor-pointer transition-all duration-300 flex flex-col justify-between h-32 group"
                   >
-                    <span className="text-[10px] font-mono text-muted uppercase group-hover:text-copper transition-colors">
-                      {proj.categoria || "Corporativo"}
-                    </span>
-                    <h4 className="text-sm font-medium text-cream line-clamp-2 mt-2">
-                      {proj.titulo}
-                    </h4>
+                    {proj.imagem_url && (
+                      <>
+                        <img 
+                          src={proj.imagem_url} 
+                          alt={proj.titulo} 
+                          className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-all duration-500 group-hover:scale-105 z-0"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-[#141414]/10 z-10 pointer-events-none"></div>
+                      </>
+                    )}
+                    <div className="relative z-20 flex flex-col h-full justify-between">
+                      <span className="text-[10px] font-mono text-white/70 uppercase group-hover:text-copper transition-colors drop-shadow-md">
+                        {proj.categoria || "Corporativo"}
+                      </span>
+                      <h4 className="text-sm font-medium text-cream line-clamp-2 mt-2 drop-shadow-md">
+                        {proj.titulo}
+                      </h4>
+                    </div>
                   </div>
                 ))}
               </div>
