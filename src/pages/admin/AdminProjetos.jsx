@@ -19,7 +19,7 @@ import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
 const generateSlug = (title) =>
   slugify(title || '', { lower: true, strict: true });
 
-const CATEGORIAS = ['Web Design', 'UX Design', 'Branding', 'Posicionamento'];
+const CATEGORIAS = ['Blindagem de percepção', 'Business design', 'Conceptual case', 'Estratégia de marca'];
 const MAX_UPLOAD_SIZE_BYTES = 8 * 1024 * 1024;
 const TARGET_UPLOAD_SIZE_BYTES = Math.floor(7.5 * 1024 * 1024);
 
