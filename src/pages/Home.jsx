@@ -70,7 +70,7 @@ const Home = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           operation: 'select',
-          orderBy: { column: 'data_projeto', ascending: false }, // Ordena por 'data_projeto' em ordem decrescente
+          orderBy: { column: 'ordem', ascending: true }, // Ordena por 'ordem' crescente
           filters: [{ column: 'mostrar_home', operator: 'eq', value: true }], // <--- FILTRO CORRIGIDO para 'mostrar_home'
           limit: 4 // Mantém o limite de 4 projetos, se for para a Home ou seção destacada
         })

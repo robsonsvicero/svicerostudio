@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Header from '../components/Layout/Header';
-
 import Footer from '../components/Layout/Footer';
 import Button from '../components/UI/Button';
 import SEOHelmet from '../components/SEOHelmet';
@@ -28,7 +27,7 @@ const fetchProjects = async () => {
 };
 
 const ProjectCard = ({ project, index, handleOpenModal }) => {
-  const isFeatured = index === 0; // Apenas o primeiro card no tamanho maior
+  const isFeatured = index === 0; // Apenas o primeiro card do nicho odonto no tamanho maior
   const cardRef = useRef(null);
 
   const handleMouseMove = (e) => {
@@ -65,8 +64,9 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       role="button"
       tabIndex={0}
       aria-label={`Ver projeto ${project.titulo}`}
-      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-copper/40 bg-[#141414]/80 backdrop-blur-md rounded-3xl flex flex-col ${isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "aspect-square"
-        }`}
+      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-copper/40 bg-[#141414]/80 backdrop-blur-md rounded-3xl flex flex-col ${
+        isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "aspect-square"
+      }`}
       style={{ transition: 'transform 0.5s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out', transformStyle: 'preserve-3d' }}
     >
       {/* Container da Imagem */}
@@ -102,7 +102,7 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
         </h3>
 
         <div className="mt-auto pt-6 flex items-center gap-3 text-sm font-bold uppercase tracking-[.15em] text-muted group-hover:text-copper transition-colors duration-300">
-          Ver Projeto Completo
+          Estudo de Caso
         </div>
       </div>
     </div>
@@ -110,16 +110,30 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
 };
 
 const Portfolio = () => {
-  const [projects, setProjects] = useState([]);
+  const [activeProjects, setActiveProjects] = useState([]);
+  const [archivedProjects, setArchivedProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    fetchProjects().then(setProjects);
+    fetchProjects().then((allProjects) => {
+      // Lista de categorias oficiais do seu novo posicionamento
+      const currentCategories = ['Conceptual case', 'Blindagem de percepção', 'Business design', 'Estratégia de marca'];
+      
+      // Filtra os projetos ativos do nicho atual
+      const active = allProjects.filter(p => currentCategories.includes(p.categoria));
+      
+      // Aloca os projetos de outros nichos no arquivo histórico corporativo
+      const archived = allProjects.filter(p => !currentCategories.includes(p.categoria));
+
+      setActiveProjects(active);
+      setArchivedProjects(archived);
+    });
   }, []);
 
   const handleOpenModal = (project) => {
     setSelectedProject(project);
+    modalOpen(true);
     setModalOpen(true);
   };
 
@@ -131,8 +145,8 @@ const Portfolio = () => {
   return (
     <div className="bg-charcoal min-h-screen text-cream font-body">
       <SEOHelmet
-        title="Projetos — Casos de Reposicionamento de Marca"
-        description="Casos reais de negócios que reposicionamos. Cada projeto começa pelo diagnóstico e termina com uma marca capaz de justificar preços mais altos."
+        title="Estudos de Caso — Estratégia de Posicionamento de Marca"
+        description="Casos de clínicas e projetos que reposicionamos para atrair o público particular e justificar orçamentos de alto ticket."
         canonical="/projetos"
       />
       <Header variant="solid" />
@@ -142,22 +156,21 @@ const Portfolio = () => {
         <ScrollReveal direction="up" delay={0.1}>
           <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
             <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-            CASES DE SUCESSO
+            CASES E ESTUDOS DE POSICIONAMENTO
           </span>
           <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream mb-6 text-balance">
-            Projetos que transformaram percepção em valor
+            Projetos que alinham imagem clínica e valor comercial
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-muted">
-            Casos reais de negócios que reposicionamos. Cada projeto começa pelo diagnóstico e termina com uma marca capaz de justificar preços mais altos e atrair clientes mais alinhados.
+            Aplicações práticas da nossa metodologia. Construímos marcas institucionais fortes para justificar o valor da sua tabela de tratamentos e atrair o público de alto ticket.
           </p>
         </ScrollReveal>
       </section>
 
-      {/* Grid de Projetos */}
-      {/* Grid de Projetos e Modal omitidos para limpeza nesta parte... Espere, tenho que manter as tags! */}
-      <section className={`${container} pb-20 lg:pb-32`}>
+      {/* Grid de Projetos do Nicho Principal */}
+      <section className={`${container} pb-16 lg:pb-24`}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ perspective: '1200px' }}>
-          {projects.map((proj, index) => (
+          {activeProjects.map((proj, index) => (
             <ScrollReveal
               key={proj.id}
               direction="up"
@@ -172,11 +185,46 @@ const Portfolio = () => {
             </ScrollReveal>
           ))}
         </div>
-
-        {/* Modal do projeto */}
-        <ProjectModal isOpen={modalOpen} onClose={handleCloseModal} project={selectedProject} />
       </section>
 
+      {/* Seção Secundária: Arquivo Histórico Corporativo (Onde entram os outros nichos) */}
+      {archivedProjects.length > 0 && (
+        <section className="border-t border-white/5 bg-[#101010]/50 py-20 px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <ScrollReveal direction="up" delay={0.1}>
+              <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-cream mb-4">
+                Histórico de Projetos Corporativos
+              </h2>
+              <p className="text-base text-muted max-w-2xl mx-auto mb-12 leading-relaxed">
+                Antes de concentrar a atuação do estúdio no mercado de saúde e clínicas odontológicas, desenvolvemos marcas e produtos digitais para múltiplos setores empresariais. Esse background multidisciplinar confere a precisão analítica que aplicamos hoje no ambiente clínico.
+              </p>
+              
+              {/* Links ou Miniaturas Discretas dos projetos arquivados */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-left">
+                {archivedProjects.map((proj) => (
+                  <div 
+                    key={proj.id}
+                    onClick={() => handleOpenModal(proj)}
+                    className="p-5 rounded-2xl border border-white/5 bg-[#141414] hover:border-copper/30 cursor-pointer transition-all duration-300 flex flex-col justify-between h-32 group"
+                  >
+                    <span className="text-[10px] font-mono text-muted uppercase group-hover:text-copper transition-colors">
+                      {proj.categoria || "Corporativo"}
+                    </span>
+                    <h4 className="text-sm font-medium text-cream line-clamp-2 mt-2">
+                      {proj.titulo}
+                    </h4>
+                  </div>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
+
+      {/* Modal do projeto */}
+      <ProjectModal isOpen={modalOpen} onClose={handleCloseModal} project={selectedProject} />
+
+      {/* Seção de Depoimentos */}
       <DepoimentosSection />
 
       {/* CTA final */}

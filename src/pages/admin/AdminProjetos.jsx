@@ -1,6 +1,7 @@
 // src/pages/admin/AdminProjetos.jsx
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -144,7 +145,7 @@ const AdminProjetos = () => {
         },
         body: JSON.stringify({
           operation: 'select',
-          orderBy: { column: 'created_at', ascending: false },
+          orderBy: { column: 'ordem', ascending: true },
         }),
       });
 
@@ -166,6 +167,37 @@ const AdminProjetos = () => {
   useEffect(() => {
     if (token) fetchProjects();
   }, [token, fetchProjects]);
+
+  // ---------------------------------------------------------------------------
+  // Reordenar projetos
+  // ---------------------------------------------------------------------------
+  const updateOrderBackendProjects = (reorderedProjects) => {
+    reorderedProjects.forEach((item, idx) => {
+      const id = item.id || item._id;
+      if (!id) return;
+      fetch(`${API_URL}/api/db/projetos/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          operation: 'update',
+          filters: [{ column: 'id', operator: 'eq', value: id }],
+          payload: { ordem: idx }
+        })
+      }).catch(err => console.error('Erro ao atualizar ordem do projeto:', err));
+    });
+  };
+
+  const handleDragEndProjects = (result) => {
+    if (!result.destination) return;
+    const reordered = Array.from(projects);
+    const [removed] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, removed);
+    setProjects(reordered);
+    updateOrderBackendProjects(reordered);
+  };
 
   // ---------------------------------------------------------------------------
   // Carregar galeria de um projeto existente
@@ -776,26 +808,47 @@ const AdminProjetos = () => {
         {isLoading && <p className="p-6 text-muted">Carregando...</p>}
         {!isLoading && projects.length === 0 && <p className="p-6 text-muted">Nenhum projeto encontrado.</p>}
         {projects.length > 0 && (
-          <ul className="divide-y divide-white/5">
-            {projects.map((proj) => (
-              <li key={proj.id} className="flex items-center px-6 py-4 gap-4 hover:bg-white/[.02] transition-colors">
-                <img src={proj.imagem_url || getPlaceholderImage(proj.titulo?.charAt(0) || 'P', '141414', 150)} alt={proj.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-charcoal" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-cream truncate flex items-center gap-2">
-                    {proj.titulo}
-                    <span className={`px-2 py-0.5 text-xs rounded-md font-medium capitalize ${proj.status === 'published' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
-                      {proj.status === 'published' ? 'Publicado' : proj.status}
-                    </span>
-                  </p>
-                  <p className="text-xs text-muted truncate">{proj.categoria || 'Sem categoria'}</p>
+          <DragDropContext onDragEnd={handleDragEndProjects}>
+            <Droppable droppableId="projects-list">
+              {(provided) => (
+                <div 
+                  className="divide-y divide-white/5" 
+                  ref={provided.innerRef} 
+                  {...provided.droppableProps}
+                >
+                  {projects.map((proj, idx) => (
+                    <Draggable key={String(proj.id || proj._id)} draggableId={String(proj.id || proj._id)} index={idx}>
+                      {(dragProvided, dragSnapshot) => (
+                        <div
+                          ref={dragProvided.innerRef}
+                          {...dragProvided.draggableProps}
+                          {...dragProvided.dragHandleProps}
+                          className={`flex items-center px-6 py-4 gap-4 transition-colors ${dragSnapshot.isDragging ? 'bg-white/5 shadow-lg' : 'hover:bg-white/[.02]'}`}
+                        >
+                          <i className="fa-solid fa-grip-vertical text-muted/30 hover:text-muted cursor-grab active:cursor-grabbing"></i>
+                          <img src={proj.imagem_url || getPlaceholderImage(proj.titulo?.charAt(0) || 'P', '141414', 150)} alt={proj.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-charcoal" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-cream truncate flex items-center gap-2">
+                              {proj.titulo}
+                              <span className={`px-2 py-0.5 text-xs rounded-md font-medium capitalize ${proj.status === 'published' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+                                {proj.status === 'published' ? 'Publicado' : proj.status}
+                              </span>
+                            </p>
+                            <p className="text-xs text-muted truncate">{proj.categoria || 'Sem categoria'}</p>
+                          </div>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <Button onClick={() => handleEditProject(proj)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted hover:text-cream hover:bg-white/10 transition">Editar</Button>
+                            <Button onClick={() => handleDeleteProject(proj.id)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
                 </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <Button onClick={() => handleEditProject(proj)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted hover:text-cream hover:bg-white/10 transition">Editar</Button>
-                  <Button onClick={() => handleDeleteProject(proj.id)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
-                </div>
-              </li>
-            ))}
-          </ul>
+              )}
+            </Droppable>
+          </DragDropContext>
         )}
       </div>
     </AdminLayout>

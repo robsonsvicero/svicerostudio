@@ -19,6 +19,7 @@ const projetoSchema = new mongoose.Schema(
     link2:            String,
     button_text2:     String,
     mostrar_home:     { type: Boolean, default: true },
+    ordem:            { type: Number, default: 0 },
     created_at:       { type: Date, default: Date.now },
     updated_at:       { type: Date, default: Date.now },
   },
