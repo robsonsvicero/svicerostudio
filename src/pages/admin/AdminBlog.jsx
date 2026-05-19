@@ -234,9 +234,9 @@ const AdminBlog = () => {
     >
       {/* Form */}
       <form onSubmit={handleSubmit} className="mb-8">
-        <div className="grid gap-6 lg:grid-cols-12">
+        <div className="grid gap-6 grid-cols-1">
           {/* Main form column */}
-          <div className="space-y-6 lg:col-span-8">
+          <div className="space-y-6">
             {/* Metadata section */}
             <div className="rounded-xl border border-white/5 bg-surface p-6">
               <div className="mb-5">
@@ -299,33 +299,40 @@ const AdminBlog = () => {
               </div>
               <ImageUploadSlot title="Imagem de capa do post" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_destaque} onUpload={handleImageUpload} isUploading={isUploading} />
             </div>
-          </div>
-
-          {/* Sidebar column */}
-          <aside className="space-y-6 lg:col-span-4">
-            {/* Publish settings */}
-            <div className="rounded-xl border border-white/5 bg-surface p-5">
-              <p className="text-xs font-mono uppercase tracking-widest text-copper mb-4">Publicação</p>
-              <label className="flex items-center justify-between rounded-lg border border-white/5 bg-charcoal px-4 py-3.5 cursor-pointer hover:border-white/10 transition-colors">
-                <span className="text-sm text-cream">Publicar artigo</span>
-                <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleFieldChange} className="sr-only" />
-                <span className={`flex h-6 w-11 items-center rounded-full border border-copper/20 px-0.5 transition-colors ${formData.publicado ? 'bg-copper/40' : 'bg-white/5'}`}>
-                  <span className={`h-5 w-5 rounded-full bg-copper transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
-                </span>
-              </label>
-              <Button type="submit" className="mt-4 w-full rounded-lg bg-copper px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSubmitting || isUploading}>
-                {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Artigo' : 'Publicar Artigo')}
-              </Button>
-            </div>
 
             {/* Markdown preview */}
-            <div className="rounded-xl border border-white/5 bg-surface p-5">
-              <p className="text-xs font-mono uppercase tracking-widest text-copper mb-4">Preview</p>
-              <div className="prose prose-sm prose-invert max-h-96 overflow-auto">
-                <Markdown>{formData.conteudo || 'O preview do seu texto em Markdown aparecerá aqui.'}</Markdown>
+            <div className="rounded-xl border border-white/5 bg-surface p-6 flex flex-col justify-end transition-all">
+              <div className="mb-5">
+                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Preview</p>
+                <h2 className="text-base font-semibold text-cream">Visualização do Artigo</h2>
+              </div>
+              <div className="prose prose-sm prose-invert overflow-auto max-h-[60vh] flex flex-col justify-end">
+                <div className="mt-auto">
+                  <Markdown>{formData.conteudo || 'O preview do seu texto em Markdown aparecerá aqui.'}</Markdown>
+                </div>
               </div>
             </div>
-          </aside>
+
+            {/* Publish settings */}
+            <div className="rounded-xl border border-white/5 bg-surface p-6">
+              <div className="mb-5">
+                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Publicação</p>
+                <h2 className="text-base font-semibold text-cream">Opções de Publicação</h2>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <label className="flex items-center justify-between sm:justify-start gap-4 rounded-lg border border-white/5 bg-charcoal px-4 py-3.5 cursor-pointer hover:border-white/10 transition-colors flex-1">
+                  <span className="text-sm text-cream">Publicar artigo imediatamente</span>
+                  <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleFieldChange} className="sr-only" />
+                  <span className={`flex h-6 w-11 items-center rounded-full border border-copper/20 px-0.5 transition-colors ${formData.publicado ? 'bg-copper/40' : 'bg-white/5'}`}>
+                    <span className={`h-5 w-5 rounded-full bg-copper transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
+                  </span>
+                </label>
+                <Button type="submit" className="w-full sm:w-auto rounded-lg bg-copper px-8 py-3.5 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSubmitting || isUploading}>
+                  {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Artigo' : 'Publicar Artigo')}
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
 
