@@ -722,27 +722,27 @@ const AdminProjetos = () => {
                 <div className="grid grid-cols-2 gap-2">
                   {gallery.map((img, index) => (
                     <div key={img.id || img.imagem_url || index} className="relative rounded-lg overflow-hidden border border-white/5 bg-charcoal group">
-                      <img src={img.imagem_url} alt={`Imagem ${index + 1}`} className="w-full h-24 object-cover" />
+                      <img src={img.imagem_url} alt={`Imagem ${index + 1}`} className="w-full h-24 object-cover relative z-0" />
                       
                       {/* Botão de Excluir no Topo Direito */}
-                      <Button 
+                      <button 
                         type="button" 
                         onClick={() => handleDeleteGalleryImage(index)} 
-                        className="absolute top-2 right-2 flex items-center justify-center w-6 h-6 bg-charcoal/80 hover:bg-red-600 text-white/50 hover:text-white rounded-md transition-colors border border-white/10 opacity-0 group-hover:opacity-100" 
+                        className="absolute top-2 right-2 z-10 flex items-center justify-center w-8 h-8 bg-black/80 hover:bg-red-600 text-red-400 hover:text-white rounded-md transition-colors border border-white/20 shadow-md" 
                         title="Excluir imagem"
                       >
-                        <FaTrash size={10} />
-                      </Button>
+                        <FaTrash size={14} />
+                      </button>
 
                       {/* Controles de Paginação Embaixo */}
-                      <div className="absolute inset-x-0 bottom-0 bg-charcoal/90 px-3 py-1.5 text-[10px] font-mono text-muted flex justify-between items-center border-t border-white/5">
-                        <Button type="button" onClick={() => handleMoveGalleryImage(index, 'left')} disabled={index === 0} className="disabled:opacity-30 hover:text-cream transition-colors flex items-center justify-center w-5 h-5 bg-white/5 hover:bg-white/10 rounded-full" title="Mover">
-                          <FaChevronLeft size={8} />
-                        </Button>
+                      <div className="absolute inset-x-0 bottom-0 z-10 bg-charcoal/95 px-3 py-2 text-[11px] font-mono text-muted flex justify-between items-center border-t border-white/10">
+                        <button type="button" onClick={() => handleMoveGalleryImage(index, 'left')} disabled={index === 0} className="disabled:opacity-30 hover:text-white transition-colors flex items-center justify-center w-7 h-7 bg-white/10 hover:bg-white/20 rounded-full border border-white/10" title="Mover para a esquerda">
+                          <FaChevronLeft size={12} />
+                        </button>
                         <span className="font-bold tracking-widest text-[#B87333]">#{index + 1}</span>
-                        <Button type="button" onClick={() => handleMoveGalleryImage(index, 'right')} disabled={index === gallery.length - 1} className="disabled:opacity-30 hover:text-cream transition-colors flex items-center justify-center w-5 h-5 bg-white/5 hover:bg-white/10 rounded-full" title="Mover">
-                          <FaChevronRight size={8} />
-                        </Button>
+                        <button type="button" onClick={() => handleMoveGalleryImage(index, 'right')} disabled={index === gallery.length - 1} className="disabled:opacity-30 hover:text-white transition-colors flex items-center justify-center w-7 h-7 bg-white/10 hover:bg-white/20 rounded-full border border-white/10" title="Mover para a direita">
+                          <FaChevronRight size={12} />
+                        </button>
                       </div>
                     </div>
                   ))}
