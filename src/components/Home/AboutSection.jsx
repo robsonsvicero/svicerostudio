@@ -42,7 +42,7 @@ const AboutSection = () => {
           <ScrollReveal direction="left" delay={0.2} className="flex flex-col justify-center h-full">
             <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper w-auto max-w-max">
               <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-              SOBRE O ESTÚDIO
+              DIREÇÃO EXECUTIVA
             </span>
 
             <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left mb-6">
@@ -50,11 +50,15 @@ const AboutSection = () => {
             </h2>
 
             <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
-              Sou o Robson Svicero, estrategista de marca com background em tecnologia, design e produto digital. Já atuei como programador, webdesigner, designer de identidade visual e UX/UI. Hoje, uso essa mistura para uma única finalidade: ajudar empresas a saírem da guerra de preços por meio de marca e estratégia como vantagem competitiva.
+              Sou o Robson Svicero, estrategista de marca focado em posicionamento e identidade visual para dentistas e clínicas que buscam atrair o público particular. Minha trajetória combina a precisão e a usabilidade do design digital com o entendimento do comportamento de consumo de alto ticket.
             </p>
 
             <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
-              Depois de anos dentro de empresas, percebendo na prática quando a marca não acompanha o nível do negócio, eu trouxe o olhar de UX e de produto digital para o branding: entender pessoas e objetivos de negócio antes de qualquer decisão visual.
+              Após anos desenhando soluções corporativas complexas, eu trouxe a metodologia de UX (User Experience) e análise profunda de negócios para o branding clínico. O meu papel não é apenas criar uma identidade visual atraente, mas entender os gargalos comerciais da sua clínica para transformá-la em um ecossistema estético imponente.
+            </p>
+
+            <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
+              Mudei o modelo tradicional de agência por uma assessoria de imersão. Eu analiso o seu modelo de atendimento, as suas especialidades de alto ticket (como Invisalign e Reabilitações Orais) e projeto uma marca que pré-educa o seu paciente particular sobre o preço das suas consultas antes mesmo de ele se sentar na sua cadeira.
             </p>
 
             <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">

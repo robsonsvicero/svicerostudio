@@ -10,13 +10,11 @@ const CTAFinal = () => {
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-copper/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
 
           <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-center mb-6 text-balance relative z-10">
-            Sua marca ainda não sustenta o preço que você merece cobrar?
+            O posicionamento da sua clínica apoia o valor da sua tabela de tratamentos?
           </h2>
 
           <p className="text-lg md:text-xl font-normal leading-[1.6] text-muted text-center mb-10 max-w-2xl relative z-10">
-            O primeiro passo é um diagnóstico honesto: entendemos juntos onde sua 
-            marca está perdendo valor hoje e o que precisa mudar para você sair da 
-            guerra de preço de vez.
+            O primeiro passo é um diagnóstico honesto: avaliamos juntos onde a sua comunicação visual está drenando a sua margem de lucro e o que precisa mudar para o seu consultório atrair o público particular definitivo.
           </p>
 
           <div className="flex flex-col md:flex-row gap-4 mt-2 relative z-10">

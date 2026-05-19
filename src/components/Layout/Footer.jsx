@@ -21,8 +21,7 @@ const Footer = () => {
                 />
               </a>
             </div>
-            <p className="text-base leading-relaxed mb-6">Design estratégico e tecnologia para profissionalizar a presença digital de autônomos e pequenos negócios.
-              Svicero Studio, sediado em São Paulo (Brasil), atendendo clientes no Brasil e no exterior.</p>
+            <p className="text-base leading-relaxed mb-6">Design estratégico e posicionamento de marca para consolidar a percepção de valor de dentistas e clínicas odontológicas. Svicero Studio, sediado em São Paulo (Brasil), desenvolvendo projetos de impacto para profissionais no Brasil e no exterior.</p>
           </div>
           <div className="flex flex-row items-center justify-between mt-2">
             <a href="https://wa.me/5511964932007" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
