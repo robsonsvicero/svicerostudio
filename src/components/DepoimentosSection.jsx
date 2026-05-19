@@ -124,6 +124,13 @@ const DepoimentosSection = () => {
                         <p className="text-muted text-lg font-normal leading-[1.7] mb-10 italic flex-1 relative z-10">
                           "{depoimento.texto}"
                         </p>
+
+                        {/* Dados do Autor */}
+                        <div className="mt-auto pt-6 border-t border-white/5 relative z-10 text-right">
+                          <p className="text-muted/60 font-mono text-[10px] uppercase tracking-[0.15em] mt-1">
+                            {depoimento.cargo}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   ))}
