@@ -61,7 +61,7 @@ const Hero = () => {
 
         <div className="reveal stagger-4 flex flex-row gap-6 items-center w-full sm:w-auto">
           <Button variant="primary" href="/formulario-interesse" className="w-full">
-            Aplicar para o Diagnóstico
+            Agendar Diagnóstico
           </Button>
         </div>
       </ScrollReveal>

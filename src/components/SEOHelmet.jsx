@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet-async';
 const DEFAULT_OG_IMAGE = 'https://svicerostudio.com.br/og-image.webp';
 
 const SEOHelmet = ({
-  title = 'Estratégia de Marca e Design para Sair da Guerra de Preços',
-  description = 'O Svicero Studio é um estúdio de estratégia de marca e design que ajuda empresas que já vendem a sair da guerra de preços — reposicionando a marca para justificar preços mais altos e atrair clientes mais alinhados.',
-  keywords = 'estratégia de marca, posicionamento de marca, identidade visual estratégica, branding para empresas, sair da guerra de preços, reposicionamento de marca, diagnóstico de posicionamento, Svicero Studio, Robson Svicero, design estratégico',
+  title = 'Posicionamento de Marca e Design para Clínicas Odontológicas',
+  description = 'O Svicero Studio é um estúdio especializado em posicionamento de marca e identidade visual para dentistas e clínicas que buscam atrair o público particular e justificar orçamentos de alto ticket.',
+  keywords = 'posicionamento de marca odontologia, identidade visual dentista, branding para clinicas odontologicas, marketing odontologico alto padrao, design institucional clinica, diagnostico de posicionamento clinico, Svicero Studio, Robson Svicero, design estrategico saude',
   ogImage = DEFAULT_OG_IMAGE,
   ogType = 'website',
   canonical,

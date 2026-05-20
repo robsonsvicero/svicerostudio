@@ -27,7 +27,7 @@ const Footer = () => {
             <a href="https://wa.me/5511964932007" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
               <i className="fa-brands fa-whatsapp text-3xl text-white/60 hover:text-copper transition-colors" />
             </a>
-            <a href="https://www.instagram.com/robsonsvicero.dsgr/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <a href="https://www.instagram.com/svicerostudio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <i className="fa-brands fa-instagram text-3xl text-white/60 hover:text-copper transition-colors" />
             </a>
             <a href="https://github.com/robsonsvicero" target="_blank" rel="noopener noreferrer" aria-label="GitHub">

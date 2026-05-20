@@ -57,7 +57,7 @@ const DiagnosticoSection = () => {
             </p>
 
             <Button variant="primary" href="/formulario-interesse" className="w-full">
-              Aplicar para o Diagnóstico de Posicionamento
+              Agendar Diagnóstico
             </Button>
           </div>
         </ScrollReveal>

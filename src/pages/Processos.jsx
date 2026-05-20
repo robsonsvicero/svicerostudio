@@ -121,7 +121,7 @@ const Processos = () => {
             className="mx-auto"
             variant='primary'
           >
-            Agendar Diagnóstico Inicial
+            AGENDAR DIAGNÓSTICO
           </Button>
         </section>
 

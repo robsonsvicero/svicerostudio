@@ -55,7 +55,7 @@ const FAQ = () => {
         <section className="mx-auto max-w-3xl px-6 py-8 lg:px-10 lg:py-12 text-center">
           <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-4">Não encontrou sua dúvida aqui?</h2>
           <p className="text-muted mb-8">Me chama no WhatsApp e eu te respondo pessoalmente.</p>
-          <Button href="https://wa.me/5511964932007" variant="outline" className="w-full md:w-auto">Falar com o Svicero Studio</Button>
+          <Button href="https://wa.me/5511964932007" variant="outline" className="w-full md:w-auto">FALAR PELO WHATSAPP</Button>
         </section>
       </main>
       <Footer />
