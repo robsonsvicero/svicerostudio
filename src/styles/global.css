@@ -110,24 +110,37 @@
   }
 
   /* Depoimentos - Cards para Marquee */
-  .depoimentos-swiper .swiper-slide {
+  .depoimentos-marquee-slide {
+    width: 400px !important;
     height: auto;
-    width: 400px !important; /* Largura fixa para o marquee funcionar bem */
+    display: flex;
     flex-shrink: 0;
   }
 
   @media (max-width: 768px) {
-    .depoimentos-swiper .swiper-slide {
+    .depoimentos-marquee-slide {
       width: 300px !important;
     }
   }
 
-  /* Forçar exatamente 3 slides no desktop */
-  /* Forçar altura mínima no desktop */
   @media (min-width: 1024px) {
-    .depoimentos-swiper .swiper-slide {
+    .depoimentos-marquee-slide {
       min-height: 360px;
     }
+  }
+
+  @keyframes infinite-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100% - 2rem)); } /* gap is 2rem = 32px */
+  }
+
+  .animate-infinite-scroll {
+    animation: infinite-scroll 45s linear infinite;
+  }
+  
+  /* Pausa a animação ao passar o mouse */
+  .group:hover .animate-infinite-scroll {
+    animation-play-state: paused;
   }
 
 
