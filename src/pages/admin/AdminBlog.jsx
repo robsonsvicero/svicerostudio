@@ -220,7 +220,7 @@ const AdminBlog = () => {
 
   const formActions = (
     <div className="flex items-center gap-3">
-      <Button type="button" onClick={resetForm} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-muted hover:text-cream hover:bg-white/10 transition">
+      <Button type="button" onClick={resetForm} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">
         {editingId ? 'Cancelar' : 'Limpar'}
       </Button>
     </div>
@@ -238,22 +238,22 @@ const AdminBlog = () => {
           {/* Main form column */}
           <div className="space-y-6">
             {/* Metadata section */}
-            <div className="rounded-xl border border-white/5 bg-surface p-6">
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
               <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Informações</p>
-                <h2 className="text-base font-semibold text-cream">
+                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Informações</p>
+                <h2 className="text-base font-semibold text-ds-text">
                   {editingId ? 'Editando Artigo' : 'Novo Artigo'}
                 </h2>
               </div>
               <div className="grid gap-4 lg:grid-cols-2">
                 {fields.map((field) => (
                   <label key={field.name} className={`${field.col} block`}>
-                    <span className="mb-1.5 block text-sm font-medium text-muted">
+                    <span className="mb-1.5 block text-sm font-medium text-ds-muted">
                       {field.label}
-                      {field.required && <span className="ml-1 text-copper">*</span>}
+                      {field.required && <span className="ml-1 text-ds-accent">*</span>}
                     </span>
                     {field.type === 'select' ? (
-                      <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20">
+                      <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20">
                         <option value="" disabled>{field.placeholder}</option>
                         {field.options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                       </select>
@@ -265,7 +265,7 @@ const AdminBlog = () => {
                         onChange={handleFieldChange}
                         placeholder={field.placeholder}
                         required={field.required}
-                        className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20"
+                        className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20"
                       />
                     )}
                   </label>
@@ -274,37 +274,37 @@ const AdminBlog = () => {
             </div>
 
             {/* Content section */}
-            <div className="rounded-xl border border-white/5 bg-surface p-6">
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
               <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Conteúdo</p>
-                <h2 className="text-base font-semibold text-cream">Corpo do Artigo</h2>
+                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Conteúdo</p>
+                <h2 className="text-base font-semibold text-ds-text">Corpo do Artigo</h2>
               </div>
               <div className="space-y-4">
                 <label>
-                  <span className="mb-1.5 block text-sm font-medium text-muted">Resumo</span>
-                  <textarea name="resumo" value={formData.resumo} onChange={handleFieldChange} placeholder="Uma síntese para SEO e chamadas." rows={3} className="w-full resize-none rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20" />
+                  <span className="mb-1.5 block text-sm font-medium text-ds-muted">Resumo</span>
+                  <textarea name="resumo" value={formData.resumo} onChange={handleFieldChange} placeholder="Uma síntese para SEO e chamadas." rows={3} className="w-full resize-none rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
                 </label>
                 <label>
-                  <span className="mb-1.5 block text-sm font-medium text-muted">Conteúdo (Markdown)</span>
-                  <textarea name="conteudo" value={formData.conteudo} onChange={handleFieldChange} placeholder="Escreva o artigo aqui..." rows={15} className="w-full resize-y rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm leading-6 text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20" />
+                  <span className="mb-1.5 block text-sm font-medium text-ds-muted">Conteúdo (Markdown)</span>
+                  <textarea name="conteudo" value={formData.conteudo} onChange={handleFieldChange} placeholder="Escreva o artigo aqui..." rows={15} className="w-full resize-y rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm leading-6 text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
                 </label>
               </div>
             </div>
 
             {/* Media section */}
-            <div className="rounded-xl border border-white/5 bg-surface p-6">
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
               <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Mídia</p>
-                <h2 className="text-base font-semibold text-cream">Imagem de Destaque</h2>
+                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Mídia</p>
+                <h2 className="text-base font-semibold text-ds-text">Imagem de Destaque</h2>
               </div>
               <ImageUploadSlot title="Imagem de capa do post" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_destaque} onUpload={handleImageUpload} isUploading={isUploading} />
             </div>
 
             {/* Markdown preview */}
-            <div className="rounded-xl border border-white/5 bg-surface p-6 flex flex-col justify-end transition-all">
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-6 flex flex-col justify-end transition-all">
               <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Preview</p>
-                <h2 className="text-base font-semibold text-cream">Visualização do Artigo</h2>
+                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Preview</p>
+                <h2 className="text-base font-semibold text-ds-text">Visualização do Artigo</h2>
               </div>
               <div className="prose prose-sm prose-invert overflow-auto max-h-[60vh] flex flex-col justify-end">
                 <div className="mt-auto">
@@ -314,20 +314,20 @@ const AdminBlog = () => {
             </div>
 
             {/* Publish settings */}
-            <div className="rounded-xl border border-white/5 bg-surface p-6">
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
               <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Publicação</p>
-                <h2 className="text-base font-semibold text-cream">Opções de Publicação</h2>
+                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Publicação</p>
+                <h2 className="text-base font-semibold text-ds-text">Opções de Publicação</h2>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <label className="flex items-center justify-between sm:justify-start gap-4 rounded-lg border border-white/5 bg-charcoal px-4 py-3.5 cursor-pointer hover:border-white/10 transition-colors flex-1">
-                  <span className="text-sm text-cream">Publicar artigo imediatamente</span>
+                <label className="flex items-center justify-between sm:justify-start gap-4 rounded-lg border border-white/5 bg-ds-bg px-4 py-3.5 cursor-pointer hover:border-white/10 transition-colors flex-1">
+                  <span className="text-sm text-ds-text">Publicar artigo imediatamente</span>
                   <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleFieldChange} className="sr-only" />
-                  <span className={`flex h-6 w-11 items-center rounded-full border border-copper/20 px-0.5 transition-colors ${formData.publicado ? 'bg-copper/40' : 'bg-white/5'}`}>
-                    <span className={`h-5 w-5 rounded-full bg-copper transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
+                  <span className={`flex h-6 w-11 items-center rounded-full border border-ds-accent/20 px-0.5 transition-colors ${formData.publicado ? 'bg-ds-accent/40' : 'bg-white/5'}`}>
+                    <span className={`h-5 w-5 rounded-full bg-ds-accent transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
                   </span>
                 </label>
-                <Button type="submit" className="w-full sm:w-auto rounded-lg bg-copper px-8 py-3.5 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSubmitting || isUploading}>
+                <Button type="submit" className="w-full sm:w-auto rounded-lg bg-ds-accent px-8 py-3.5 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSubmitting || isUploading}>
                   {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Artigo' : 'Publicar Artigo')}
                 </Button>
               </div>
@@ -337,15 +337,15 @@ const AdminBlog = () => {
       </form>
 
       {/* Posts list */}
-      <div className="rounded-xl border border-white/5 bg-surface">
+      <div className="rounded-xl border border-white/5 bg-ds-surface">
         <div className="border-b border-white/5 px-6 py-4">
-          <h2 className="text-base font-semibold text-cream">
+          <h2 className="text-base font-semibold text-ds-text">
             Artigos Cadastrados
-            {!isLoading && <span className="ml-2 text-sm font-normal text-muted">({posts.length})</span>}
+            {!isLoading && <span className="ml-2 text-sm font-normal text-ds-muted">({posts.length})</span>}
           </h2>
         </div>
-        {isLoading && <p className="p-6 text-muted">Carregando artigos...</p>}
-        {!isLoading && posts.length === 0 && <p className="p-6 text-muted">Nenhum artigo encontrado.</p>}
+        {isLoading && <p className="p-6 text-ds-muted">Carregando artigos...</p>}
+        {!isLoading && posts.length === 0 && <p className="p-6 text-ds-muted">Nenhum artigo encontrado.</p>}
         {posts.length > 0 && (
           <ul className="divide-y divide-white/5">
             {posts.map(post => {
@@ -353,16 +353,16 @@ const AdminBlog = () => {
               const autorNome = getDisplayAuthorName(post.autor_nome) || autorFallback?.nome || getDisplayAuthorName(post.autor) || 'Autor desconhecido';
               return (
                 <li key={getEntityId(post)} className="flex items-center justify-between px-6 py-4 gap-4 hover:bg-white/[.02] transition-colors">
-                  <img src={post.imagem_destaque || getPlaceholderImage(post.titulo.charAt(0), '141414', 150)} alt={post.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-charcoal" />
+                  <img src={post.imagem_destaque || getPlaceholderImage(post.titulo.charAt(0), '141414', 150)} alt={post.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-ds-bg" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-cream truncate">{post.titulo}</p>
-                    <p className="text-xs text-muted truncate">{autorNome} · {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
+                    <p className="text-sm font-medium text-ds-text truncate">{post.titulo}</p>
+                    <p className="text-xs text-ds-muted truncate">{autorNome} · {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <span className={`px-2.5 py-1 text-xs rounded-md font-medium ${post.publicado ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
                       {post.publicado ? 'Publicado' : 'Rascunho'}
                     </span>
-                    <Button onClick={() => handleEdit(post)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted hover:text-cream hover:bg-white/10 transition">Editar</Button>
+                    <Button onClick={() => handleEdit(post)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">Editar</Button>
                     <Button onClick={() => handleDelete(getEntityId(post))} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
                   </div>
                 </li>

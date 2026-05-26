@@ -622,14 +622,14 @@ const AdminProjetos = () => {
 
   // Redesign dashboard: Projects management with consistent SaaS styling
 
-  const inputClass = "w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20";
-  const labelClass = "mb-1.5 block text-sm font-medium text-muted";
+  const inputClass = "w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20";
+  const labelClass = "mb-1.5 block text-sm font-medium text-ds-muted";
 
   return (
     <AdminLayout
       title="Projetos"
       actions={
-        <Button type="button" onClick={handleCancelEdit} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-muted hover:text-cream hover:bg-white/10 transition" disabled={isSaving || isUploading || isUploadingGallery}>
+        <Button type="button" onClick={handleCancelEdit} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition" disabled={isSaving || isUploading || isUploadingGallery}>
           {editingId ? 'Cancelar' : 'Novo'}
         </Button>
       }
@@ -639,17 +639,17 @@ const AdminProjetos = () => {
           {/* Main column */}
           <div className="lg:col-span-2 space-y-6">
             {/* Basic info */}
-            <div className="rounded-xl border border-white/5 bg-surface p-6 space-y-4">
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-6 space-y-4">
               <div className="mb-2">
-                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Informações</p>
-                <h2 className="text-base font-semibold text-cream">{editingId ? 'Editando Projeto' : 'Novo Projeto'}</h2>
+                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Informações</p>
+                <h2 className="text-base font-semibold text-ds-text">{editingId ? 'Editando Projeto' : 'Novo Projeto'}</h2>
               </div>
               <label className="block">
-                <span className={labelClass}>Título <span className="text-copper">*</span></span>
+                <span className={labelClass}>Título <span className="text-ds-accent">*</span></span>
                 <input type="text" name="titulo" value={form.titulo} onChange={handleFieldChange} className={inputClass} placeholder="Nome do projeto" required />
               </label>
               <label className="block">
-                <span className={labelClass}>Slug <span className="text-copper">*</span></span>
+                <span className={labelClass}>Slug <span className="text-ds-accent">*</span></span>
                 <input type="text" name="slug" value={form.slug} onChange={handleFieldChange} className={inputClass} placeholder="nome-do-projeto" required />
               </label>
               <div className="grid gap-4 lg:grid-cols-2">
@@ -692,20 +692,20 @@ const AdminProjetos = () => {
                   <input type="number" name="ordem" value={form.ordem} onChange={handleFieldChange} className={inputClass} min={0} />
                 </label>
               </div>
-              <label className="flex items-center gap-3 rounded-lg border border-white/5 bg-charcoal px-4 py-3 cursor-pointer hover:border-white/10 transition-colors">
-                <input type="checkbox" name="mostrar_home" checked={form.mostrar_home} onChange={handleFieldChange} className="h-4 w-4 rounded border-white/10 bg-charcoal text-copper focus:ring-copper/40" />
-                <span className="text-sm text-cream">Mostrar na Home</span>
+              <label className="flex items-center gap-3 rounded-lg border border-white/5 bg-ds-bg px-4 py-3 cursor-pointer hover:border-white/10 transition-colors">
+                <input type="checkbox" name="mostrar_home" checked={form.mostrar_home} onChange={handleFieldChange} className="h-4 w-4 rounded border-white/10 bg-ds-bg text-ds-accent focus:ring-copper/40" />
+                <span className="text-sm text-ds-text">Mostrar na Home</span>
               </label>
             </div>
 
             {/* Descriptions */}
-            <div className="rounded-xl border border-white/5 bg-surface p-6 space-y-4">
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-6 space-y-4">
               <div className="mb-2">
-                <p className="text-xs font-mono uppercase tracking-widest text-copper mb-1">Conteúdo</p>
-                <h2 className="text-base font-semibold text-cream">Descrições</h2>
+                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Conteúdo</p>
+                <h2 className="text-base font-semibold text-ds-text">Descrições</h2>
               </div>
               <label className="block">
-                <span className={labelClass}>Descrição curta <span className="text-copper">*</span></span>
+                <span className={labelClass}>Descrição curta <span className="text-ds-accent">*</span></span>
                 <textarea name="descricao" value={form.descricao} onChange={handleFieldChange} className={`${inputClass} min-h-[80px] resize-y`} placeholder="Uma breve descrição do projeto..." required />
               </label>
               <label className="block">
@@ -722,14 +722,14 @@ const AdminProjetos = () => {
           {/* Sidebar */}
           <aside className="space-y-6">
             {/* Cover image */}
-            <div className="rounded-xl border border-white/5 bg-surface p-5 space-y-4">
-              <p className="text-xs font-mono uppercase tracking-widest text-copper">Imagem de Capa</p>
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-5 space-y-4">
+              <p className="text-xs font-mono uppercase tracking-widest text-ds-accent">Imagem de Capa</p>
               <ImageUploadSlot title="Imagem de capa" description="JPG, PNG até 8MB" onUpload={handleImageUpload} isUploading={isUploading} currentImageUrl={form.imagem_url} />
             </div>
 
             {/* Links */}
-            <div className="rounded-xl border border-white/5 bg-surface p-5 space-y-4">
-              <p className="text-xs font-mono uppercase tracking-widest text-copper">Links & Ações</p>
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-5 space-y-4">
+              <p className="text-xs font-mono uppercase tracking-widest text-ds-accent">Links & Ações</p>
               <label className="block">
                 <span className={labelClass}>Link principal</span>
                 <input type="text" name="link" value={form.link} onChange={handleFieldChange} className={inputClass} placeholder="https://..." />
@@ -749,16 +749,16 @@ const AdminProjetos = () => {
             </div>
 
             {/* Gallery */}
-            <div className="rounded-xl border border-white/5 bg-surface p-5 space-y-4">
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-5 space-y-4">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-xs font-mono uppercase tracking-widest text-copper">Galeria</p>
-                <span className="text-xs text-muted">{gallery.length} imagens</span>
+                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent">Galeria</p>
+                <span className="text-xs text-ds-muted">{gallery.length} imagens</span>
               </div>
               <ImageUploadSlot title="Imagens da galeria" description="Arraste ou selecione múltiplas imagens" onUpload={handleGalleryImageUpload} isUploading={isUploadingGallery} multiple={true} />
               {gallery.length > 0 && (
                 <div className="grid grid-cols-2 gap-2">
                   {gallery.map((img, index) => (
-                    <div key={img.id || img.imagem_url || index} className="relative rounded-lg overflow-hidden border border-white/5 bg-charcoal group">
+                    <div key={img.id || img.imagem_url || index} className="relative rounded-lg overflow-hidden border border-white/5 bg-ds-bg group">
                       <img src={img.imagem_url} alt={`Imagem ${index + 1}`} className="w-full h-24 object-cover relative z-0" />
                       
                       {/* Botão de Excluir no Topo Direito */}
@@ -772,7 +772,7 @@ const AdminProjetos = () => {
                       </button>
 
                       {/* Controles de Paginação Embaixo */}
-                      <div className="absolute inset-x-0 bottom-0 z-10 bg-charcoal/95 px-3 py-2 text-[11px] font-mono text-muted flex justify-between items-center border-t border-white/10">
+                      <div className="absolute inset-x-0 bottom-0 z-10 bg-ds-bg/95 px-3 py-2 text-[11px] font-mono text-ds-muted flex justify-between items-center border-t border-white/10">
                         <button type="button" onClick={() => handleMoveGalleryImage(index, 'left')} disabled={index === 0} className="disabled:opacity-30 hover:text-white transition-colors flex items-center justify-center w-7 h-7 bg-white/10 hover:bg-white/20 rounded-full border border-white/10" title="Mover para a esquerda">
                           <FaChevronLeft size={12} />
                         </button>
@@ -788,13 +788,13 @@ const AdminProjetos = () => {
             </div>
 
             {/* Action buttons */}
-            <div className="rounded-xl border border-white/5 bg-surface p-5 flex justify-end gap-3">
+            <div className="rounded-xl border border-white/5 bg-ds-surface p-5 flex justify-end gap-3">
               {editingId && (
-                <Button type="button" onClick={handleCancelEdit} disabled={isSaving || isUploading || isUploadingGallery} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-muted hover:text-cream hover:bg-white/10 transition">
+                <Button type="button" onClick={handleCancelEdit} disabled={isSaving || isUploading || isUploadingGallery} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">
                   Cancelar
                 </Button>
               )}
-              <Button type="submit" disabled={isSaving || isUploading || isUploadingGallery} className="rounded-lg bg-copper px-5 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition">
+              <Button type="submit" disabled={isSaving || isUploading || isUploadingGallery} className="rounded-lg bg-ds-accent px-5 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition">
                 {isSaving ? 'Salvando...' : editingId ? 'Atualizar' : 'Publicar'}
               </Button>
             </div>
@@ -803,15 +803,15 @@ const AdminProjetos = () => {
       </form>
 
       {/* Projects list */}
-      <div className="rounded-xl border border-white/5 bg-surface">
+      <div className="rounded-xl border border-white/5 bg-ds-surface">
         <div className="border-b border-white/5 px-6 py-4">
-          <h2 className="text-base font-semibold text-cream">
+          <h2 className="text-base font-semibold text-ds-text">
             Projetos Existentes
-            {!isLoading && <span className="ml-2 text-sm font-normal text-muted">({projects.length})</span>}
+            {!isLoading && <span className="ml-2 text-sm font-normal text-ds-muted">({projects.length})</span>}
           </h2>
         </div>
-        {isLoading && <p className="p-6 text-muted">Carregando...</p>}
-        {!isLoading && projects.length === 0 && <p className="p-6 text-muted">Nenhum projeto encontrado.</p>}
+        {isLoading && <p className="p-6 text-ds-muted">Carregando...</p>}
+        {!isLoading && projects.length === 0 && <p className="p-6 text-ds-muted">Nenhum projeto encontrado.</p>}
         {projects.length > 0 && (
           <DragDropContext onDragEnd={handleDragEndProjects}>
             <Droppable droppableId="projects-list">
@@ -830,19 +830,19 @@ const AdminProjetos = () => {
                           {...dragProvided.dragHandleProps}
                           className={`flex items-center px-6 py-4 gap-4 transition-colors ${dragSnapshot.isDragging ? 'bg-white/5 shadow-lg' : 'hover:bg-white/[.02]'}`}
                         >
-                          <i className="fa-solid fa-grip-vertical text-muted/30 hover:text-muted cursor-grab active:cursor-grabbing"></i>
-                          <img src={proj.imagem_url || getPlaceholderImage(proj.titulo?.charAt(0) || 'P', '141414', 150)} alt={proj.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-charcoal" />
+                          <i className="fa-solid fa-grip-vertical text-ds-muted/30 hover:text-ds-muted cursor-grab active:cursor-grabbing"></i>
+                          <img src={proj.imagem_url || getPlaceholderImage(proj.titulo?.charAt(0) || 'P', '141414', 150)} alt={proj.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-ds-bg" />
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-cream truncate flex items-center gap-2">
+                            <p className="text-sm font-medium text-ds-text truncate flex items-center gap-2">
                               {proj.titulo}
                               <span className={`px-2 py-0.5 text-xs rounded-md font-medium capitalize ${proj.status === 'published' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
                                 {proj.status === 'published' ? 'Publicado' : proj.status}
                               </span>
                             </p>
-                            <p className="text-xs text-muted truncate">{proj.categoria || 'Sem categoria'}</p>
+                            <p className="text-xs text-ds-muted truncate">{proj.categoria || 'Sem categoria'}</p>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
-                            <Button onClick={() => handleEditProject(proj)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted hover:text-cream hover:bg-white/10 transition">Editar</Button>
+                            <Button onClick={() => handleEditProject(proj)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">Editar</Button>
                             <Button onClick={() => handleDeleteProject(proj.id)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
                           </div>
                         </div>

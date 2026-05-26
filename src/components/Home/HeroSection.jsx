@@ -42,20 +42,20 @@ const Hero = () => {
       {/* TEXT SIDE (LEFT) */}
       <ScrollReveal direction="right" delay={0.1} className="lg:col-span-6 flex flex-col items-start text-left order-1 relative z-10">
         
-        <span className="reveal text-copper text-[11px] font-mono uppercase tracking-[0.2em] mb-6 flex items-center gap-2 px-4 py-1.5 border border-copper/20 bg-copper/10 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(184,115,51,0.15)]">
-          <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.8)]" />
+        <span className="reveal text-ds-accent text-[11px] font-mono uppercase tracking-[0.2em] mb-6 flex items-center gap-2 px-4 py-1.5 border border-ds-accent/20 bg-ds-accent/10 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(255,122,89,0.15)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(255,122,89,0.8)]" />
           Engenharia de Marca
         </span>
 
-        <h1 className="reveal stagger-1 text-4xl sm:text-5xl lg:text-[3.8rem] font-bold tracking-tight text-white leading-[1.1] mb-8">
-          Transformamos clínicas comuns em <span className="text-copper italic font-normal">Marcas de Elite.</span>
+        <h1 className="reveal stagger-1 text-4xl sm:text-5xl lg:text-[3.8rem] font-bold tracking-tight text-ds-text leading-[1.1] mb-8">
+          Transformamos clínicas comuns em <span className="text-ds-accent italic font-normal">Marcas de Elite.</span>
         </h1>
 
-        <p className="reveal stagger-2 text-lg md:text-xl text-white/80 mb-6 max-w-lg leading-[1.6]">
+        <p className="reveal stagger-2 text-lg md:text-xl text-ds-text/60 mb-6 max-w-lg leading-[1.6]">
           Usamos design estratégico de alto padrão para afastar pacientes focados em descontos, justificar orçamentos de alto ticket e atrair o público particular premium.
         </p>
 
-        <p className="reveal stagger-3 text-white/60 text-base max-w-lg leading-relaxed mb-10">
+        <p className="reveal stagger-3 text-ds-text/40 text-base max-w-lg leading-relaxed mb-10">
           Aplique para um Diagnóstico de Posicionamento gratuito e descubra onde a comunicação visual da sua clínica está fazendo você perder margem de lucro para a concorrência popular.
         </p>
 
@@ -93,7 +93,7 @@ const Hero = () => {
                 key={index}
                 onClick={() => handleDotClick(index)}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentBgIndex ? "bg-copper w-6" : "bg-white/40 hover:bg-white/80"
+                  index === currentBgIndex ? "bg-ds-accent w-6" : "bg-white/40 hover:bg-white/80"
                 }`}
                 aria-label={`Ir para imagem ${index + 1}`}
               />

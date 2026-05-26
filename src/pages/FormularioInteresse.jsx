@@ -28,10 +28,10 @@ const comoConheceu = [
 ];
 
 const inputClass =
-  'w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-cream placeholder:text-white/30 focus:outline-none focus:border-copper/60 focus:bg-white/10 transition-colors shadow-sm';
+  'w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-ds-text placeholder:text-white/30 focus:outline-none focus:border-ds-accent/60 focus:bg-white/10 transition-colors shadow-sm';
 
-const labelClass = 'block text-cream font-medium mb-1';
-const helperClass = 'text-xs text-muted mt-1';
+const labelClass = 'block text-ds-text font-medium mb-1';
+const helperClass = 'text-xs text-ds-muted mt-1';
 
 const FormularioInteresse = () => {
   const [form, setForm] = useState({
@@ -106,20 +106,20 @@ const FormularioInteresse = () => {
 
   if (success) {
     return (
-      <div className="bg-charcoal min-h-screen flex flex-col text-cream font-body">
+      <div className="bg-ds-bg min-h-screen flex flex-col text-ds-text font-body">
         <Header variant="solid" />
         <main className="flex-1 flex items-center justify-center px-4">
-          <div className="max-w-xl w-full mx-auto bg-surface rounded-[2rem] p-8 border border-white/5 shadow-md text-center mt-20 mb-20 lg:mt-36 lg:mb-36">
-            <span className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-              <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]" />
+          <div className="max-w-xl w-full mx-auto bg-ds-surface rounded-[2rem] p-8 border border-white/5 shadow-md text-center mt-20 mb-20 lg:mt-36 lg:mb-36">
+            <span className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
+              <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]" />
               RECEBIDO
             </span>
-            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-cream mb-4">
+            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-ds-text mb-4">
               Formulário recebido com sucesso.
             </h2>
-            <p className="text-muted leading-[1.6] mb-6">
+            <p className="text-ds-muted leading-[1.6] mb-6">
               O Svicero Studio vai analisar suas respostas e retornar em até{' '}
-              <span className="text-cream font-medium">2 dias úteis</span> para
+              <span className="text-ds-text font-medium">2 dias úteis</span> para
               agendar o Diagnóstico de Posicionamento.
               <br />
               <br />
@@ -144,8 +144,8 @@ const FormularioInteresse = () => {
   }
 
   return (
-    <div className="bg-charcoal min-h-screen flex flex-col text-cream font-body relative">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-copper/5 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
+    <div className="bg-ds-bg min-h-screen flex flex-col text-ds-text font-body relative">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-ds-accent/5 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
       <SEOHelmet
         title="Formulário de Interesse — Diagnóstico de Posicionamento"
         description="Conte um pouco sobre o seu negócio para que o Svicero Studio chegue ao diagnóstico já preparado para a sua realidade."
@@ -156,16 +156,16 @@ const FormularioInteresse = () => {
         <section className="mx-auto max-w-3xl px-6 py-16 lg:px-10 lg:py-36">
 
           {/* Cabeçalho */}
-          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-            <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]" />
+          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
+            <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]" />
             PRIMEIRO PASSO
           </span>
 
-          <h1 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-balance">
+          <h1 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-ds-text text-balance">
             Conte um pouco sobre o seu negócio
           </h1>
 
-          <p className="text-muted text-base sm:text-lg leading-[1.6] mb-10">
+          <p className="text-ds-muted text-base sm:text-lg leading-[1.6] mb-10">
             Essas informações ajudam o estúdio a chegar no Diagnóstico de
             Posicionamento já preparado para a sua realidade — sem perder tempo
             com perguntas básicas durante a conversa.
@@ -175,7 +175,7 @@ const FormularioInteresse = () => {
 
             {/* BLOCO 1: Identificação */}
             <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl shadow-sm p-6 sm:p-8 space-y-5">
-              <p className="text-[10px] uppercase tracking-widest font-mono text-copper">
+              <p className="text-[10px] uppercase tracking-widest font-mono text-ds-accent">
                 Sobre você
               </p>
 
@@ -227,7 +227,7 @@ const FormularioInteresse = () => {
 
             {/* BLOCO 2: Negócio */}
             <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl shadow-sm p-6 sm:p-8 space-y-5">
-              <p className="text-[10px] uppercase tracking-widest font-mono text-copper">
+              <p className="text-[10px] uppercase tracking-widest font-mono text-ds-accent">
                 Sobre o negócio
               </p>
 
@@ -258,14 +258,14 @@ const FormularioInteresse = () => {
                     required
                     className={`${inputClass} appearance-none cursor-pointer pr-10`}
                   >
-                    <option value="" disabled className="bg-charcoal text-muted">Selecione...</option>
+                    <option value="" disabled className="bg-ds-bg text-ds-muted">Selecione...</option>
                     {situacaoMarca.map((opt) => (
-                      <option key={opt} value={opt} className="bg-charcoal text-cream">
+                      <option key={opt} value={opt} className="bg-ds-bg text-ds-text">
                         {opt}
                       </option>
                     ))}
                   </select>
-                  <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                  <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-ds-muted pointer-events-none" />
                 </div>
               </div>
 
@@ -290,7 +290,7 @@ const FormularioInteresse = () => {
 
             {/* BLOCO 3: Desafio */}
             <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl shadow-sm p-6 sm:p-8 space-y-5">
-              <p className="text-[10px] uppercase tracking-widest font-mono text-copper">
+              <p className="text-[10px] uppercase tracking-widest font-mono text-ds-accent">
                 Seu momento
               </p>
 
@@ -323,21 +323,21 @@ const FormularioInteresse = () => {
                     required
                     className={`${inputClass} appearance-none cursor-pointer pr-10`}
                   >
-                    <option value="" disabled className="bg-charcoal text-muted">Selecione...</option>
+                    <option value="" disabled className="bg-ds-bg text-ds-muted">Selecione...</option>
                     {prazos.map((opt) => (
-                      <option key={opt} value={opt} className="bg-charcoal text-cream">
+                      <option key={opt} value={opt} className="bg-ds-bg text-ds-text">
                         {opt}
                       </option>
                     ))}
                   </select>
-                  <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                  <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-ds-muted pointer-events-none" />
                 </div>
               </div>
             </div>
 
             {/* BLOCO 4: Como conheceu */}
             <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl shadow-sm p-6 sm:p-8 space-y-5">
-              <p className="text-[10px] uppercase tracking-widest font-mono text-copper">
+              <p className="text-[10px] uppercase tracking-widest font-mono text-ds-accent">
                 Só curiosidade
               </p>
 
@@ -352,14 +352,14 @@ const FormularioInteresse = () => {
                     onChange={handleChange}
                     className={`${inputClass} appearance-none cursor-pointer pr-10`}
                   >
-                    <option value="" disabled className="bg-charcoal text-muted">Selecione...</option>
+                    <option value="" disabled className="bg-ds-bg text-ds-muted">Selecione...</option>
                     {comoConheceu.map((opt) => (
-                      <option key={opt} value={opt} className="bg-charcoal text-cream">
+                      <option key={opt} value={opt} className="bg-ds-bg text-ds-text">
                         {opt}
                       </option>
                     ))}
                   </select>
-                  <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                  <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-ds-muted pointer-events-none" />
                 </div>
 
                 {form.comoConheceu === 'Outro' && (
@@ -385,14 +385,14 @@ const FormularioInteresse = () => {
                   onChange={handleChange}
                   className="mt-1 accent-copper"
                 />
-                <span className="text-sm text-cream/80 leading-[1.6]">
+                <span className="text-sm text-ds-text/80 leading-[1.6]">
                   Concordo em receber contato do Svicero Studio para tratar sobre
                   meu diagnóstico de posicionamento.
                 </span>
               </label>
-              <p className="text-[10px] uppercase font-mono tracking-widest text-muted pl-6">
+              <p className="text-[10px] uppercase font-mono tracking-widest text-ds-muted pl-6">
                 Ao enviar, você concorda com nossa{' '}
-                <a href="/privacidade" className="underline text-copper hover:text-copper/80">
+                <a href="/privacidade" className="underline text-ds-accent hover:text-ds-accent/80">
                   Política de Privacidade
                 </a>
                 . Seus dados não são compartilhados com terceiros.
@@ -416,14 +416,14 @@ const FormularioInteresse = () => {
               {loading ? 'Enviando...' : 'Enviar e aguardar contato'}
             </Button>
 
-            <p className="text-[10px] font-mono tracking-widest uppercase text-muted text-center">
+            <p className="text-[10px] font-mono tracking-widest uppercase text-ds-muted text-center">
               O estúdio retorna em até 2 dias úteis para agendar o diagnóstico.
               Se preferir agilidade, fale direto pelo{' '}
               <a
                 href="https://wa.me/5511964932007"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-copper hover:text-copper/80"
+                className="underline text-ds-accent hover:text-ds-accent/80"
               >
                 WhatsApp
               </a>

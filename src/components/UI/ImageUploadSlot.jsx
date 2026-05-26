@@ -35,7 +35,7 @@ const ImageUploadSlot = ({
       className={`relative rounded-[24px] border border-dashed p-5 transition ${
         hasImage
           ? 'border-green-500/30 bg-green-900/10'
-          : 'border-white/12 bg-dark-bg/55 hover:border-[#B87333]/35 hover:bg-dark-bg/75'
+          : 'border-white/12 bg-ds-bg/55 hover:border-[#B87333]/35 hover:bg-ds-bg/75'
       }`}
     >
       <input

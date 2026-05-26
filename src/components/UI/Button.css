@@ -21,7 +21,7 @@
   transform: translate(-50%, -50%) scale(0);
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
-  background: #B87333;
+  background: #FF7A59;
   opacity: 0.9;
 }
 .btn-radial:hover .fill {
@@ -29,12 +29,12 @@
 }
 
 .outline-hover:hover {
-	border-color: #2F353B !important;
-	background-color: #2F353B !important;
-	color: #f8f7f2 !important;
+	border-color: #222222 !important;
+	background-color: #222222 !important;
+	color: #FAF7F2 !important;
 }
 /* Sobrescrever hover para variant custom */
 button[class*="bg-cream"]:hover,
 a[class*="bg-cream"]:hover {
-    background-color: var(--color-secondary, #E9BF84) !important;
+    background-color: var(--color-secondary, #fca58f) !important;
 }

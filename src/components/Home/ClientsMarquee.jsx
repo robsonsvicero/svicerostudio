@@ -21,7 +21,7 @@ const ClientsMarquee = () => {
   ];
 
   return (
-    <section className="py-12 bg-charcoal/50 border-y border-white/5 overflow-hidden relative w-full">
+    <section className="py-12 bg-ds-bg/50 border-y border-white/5 overflow-hidden relative w-full">
       <style>
         {`
           .marquee-container {
@@ -57,7 +57,7 @@ const ClientsMarquee = () => {
             </div>
             {/* O SEPARADOR DA LISTA */}
             <div className="flex-shrink-0 flex items-center justify-center">
-              <div className="w-1.5 h-1.5 rounded-full bg-copper flex-shrink-0"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-ds-accent flex-shrink-0"></div>
             </div>
           </React.Fragment>
         ))}

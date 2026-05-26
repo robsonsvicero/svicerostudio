@@ -19,7 +19,7 @@ const ServicePage = ({
   accentColor = 'secondary'
 }) => {
   return (
-    <div className="bg-dark-bg min-h-screen flex flex-col text-[#EFEFEF] font-sans">
+    <div className="bg-ds-bg min-h-screen flex flex-col text-[#EFEFEF] font-sans">
       <Header variant="solid" />
       <main className="flex-1">
         {/* HERO */}

@@ -109,7 +109,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 overflow-y-auto bg-charcoal/90 backdrop-blur-sm"
+        className="fixed inset-0 z-50 overflow-y-auto bg-ds-bg/90 backdrop-blur-sm"
         onClick={onClose}
       >
         {/* wrapper min-h-full garante que items-center funcione sem cortar o topo */}
@@ -119,10 +119,10 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative my-4 w-full max-w-7xl font-body text-cream"
+          className="relative my-4 w-full max-w-7xl font-body text-ds-text"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-surface shadow-2xl shadow-black/50">
+          <div className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-ds-surface shadow-2xl shadow-black/50">
 
             {/* Gradiente ambiente */}
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(184,115,51,0.12),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(95,178,216,0.08),_transparent_24%)]" />
@@ -131,7 +131,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
             <Button
               onClick={onClose}
               aria-label="Fechar modal"
-              className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-card/80 text-xl text-cream/75 backdrop-blur transition hover:border-copper/50 hover:text-copper shadow-sm hover:shadow-copper/20"
+              className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-ds-surface/80 text-xl text-ds-text/75 backdrop-blur transition hover:border-ds-accent/50 hover:text-ds-accent shadow-sm hover:shadow-copper/20"
             >
               ×
             </Button>
@@ -139,12 +139,12 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
             <div className="relative flex flex-col">
 
               {/* ── TOPO: Galeria (Carrossel) ── */}
-              <section className="relative w-full overflow-hidden bg-card">
+              <section className="relative w-full overflow-hidden bg-ds-surface">
                 
                 {/* Badge sobreposto */}
                 <div className="absolute left-4 top-4 lg:left-8 lg:top-8 z-10">
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-copper/25 bg-surface/80 backdrop-blur text-[11px] font-mono uppercase tracking-[.2em] text-copper shadow-sm">
-                    <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-surface/80 backdrop-blur text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
                     Projeto selecionado
                   </div>
                 </div>
@@ -159,7 +159,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-card" />
+                    <div className="absolute inset-0 bg-ds-surface" />
                   )}
 
                   {/* Overlay escuro para legibilidade do texto e dos dots */}
@@ -168,7 +168,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                   {/* Spinner de carregamento */}
                   {isLoading && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-copper border-t-transparent" />
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-ds-accent border-t-transparent" />
                     </div>
                   )}
 
@@ -178,14 +178,14 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                       <button
                         onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
                         aria-label="Imagem anterior"
-                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-xl text-cream backdrop-blur transition hover:bg-copper hover:border-copper shadow-sm hover:shadow-copper/30"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-ds-surface/80 text-xl text-ds-text backdrop-blur transition hover:bg-ds-accent hover:border-ds-accent shadow-sm hover:shadow-copper/30"
                       >
                         ‹
                       </button>
                       <button
                         onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
                         aria-label="Próxima imagem"
-                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-xl text-cream backdrop-blur transition hover:bg-copper hover:border-copper shadow-sm hover:shadow-copper/30"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-ds-surface/80 text-xl text-ds-text backdrop-blur transition hover:bg-ds-accent hover:border-ds-accent shadow-sm hover:shadow-copper/30"
                       >
                         ›
                       </button>
@@ -194,7 +194,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
 
                   {/* Dots (Paginação no rodapé do carrossel) */}
                   {total > 1 && (
-                    <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-1.5 rounded-full border border-white/10 bg-surface/60 px-3 py-2 backdrop-blur shadow-sm z-20">
+                    <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-1.5 rounded-full border border-white/10 bg-ds-surface/60 px-3 py-2 backdrop-blur shadow-sm z-20">
                       {galleryImages.map((_, idx) => (
                         <button
                           key={idx}
@@ -202,7 +202,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                           aria-label={`Ir para imagem ${idx + 1}`}
                           className={`h-1.5 rounded-full transition-all ${
                             idx === currentImageIndex
-                              ? 'w-6 bg-copper shadow-[0_0_8px_rgba(184,115,51,0.8)]'
+                              ? 'w-6 bg-ds-accent shadow-[0_0_8px_rgba(184,115,51,0.8)]'
                               : 'w-1.5 bg-cream/50 hover:bg-cream/90'
                           }`}
                         />
@@ -213,30 +213,30 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
               </section>
 
               {/* ── BASE: Informações ── */}
-              <section className="flex flex-col p-6 lg:p-10 border-t border-white/5 bg-surface">
+              <section className="flex flex-col p-6 lg:p-10 border-t border-white/5 bg-ds-surface">
                 {/* Cabeçalho: título + seletor de idioma */}
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                   <div>
-                    <h1 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream">
+                    <h1 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-ds-text">
                       {project.titulo}
                     </h1>
                     {formattedDate && (
-                      <p className="mt-3 text-[10px] uppercase tracking-[0.22em] text-muted font-mono">
+                      <p className="mt-3 text-[10px] uppercase tracking-[0.22em] text-ds-muted font-mono">
                         {formattedDate}
                       </p>
                     )}
                   </div>
 
                   {/* Seletor de idioma */}
-                  <div className="shrink-0 rounded-2xl border border-white/5 bg-card/50 px-4 py-3">
-                    <p className="text-[10px] uppercase tracking-widest text-muted font-mono text-center mb-2">Idioma</p>
+                  <div className="shrink-0 rounded-2xl border border-white/5 bg-ds-surface/50 px-4 py-3">
+                    <p className="text-[10px] uppercase tracking-widest text-ds-muted font-mono text-center mb-2">Idioma</p>
                     <div className="flex gap-2">
                       <Button
                         onClick={() => setLanguage('pt')}
                         className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
                           language === 'pt'
-                            ? 'bg-copper text-white shadow-[0_0_10px_rgba(184,115,51,0.3)]'
-                            : 'border border-white/10 text-muted hover:text-cream hover:border-white/20'
+                            ? '!bg-ds-text !text-ds-tech !border !border-ds-tech hover:!bg-ds-text hover:!text-ds-tech hover:!border-ds-tech'
+                            : '!bg-ds-bg !text-ds-text !border !border-ds-border hover:!bg-ds-bg hover:!text-ds-text hover:!border-ds-border'
                         }`}
                       >
                         PT
@@ -245,8 +245,8 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                         onClick={() => setLanguage('en')}
                         className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
                           language === 'en'
-                            ? 'bg-copper text-white shadow-[0_0_10px_rgba(184,115,51,0.3)]'
-                            : 'border border-white/10 text-muted hover:text-cream hover:border-white/20'
+                            ? '!bg-ds-text !text-ds-tech !border !border-ds-tech hover:!bg-ds-text hover:!text-ds-tech hover:!border-ds-tech'
+                            : '!bg-ds-bg !text-ds-text !border !border-ds-border hover:!bg-ds-bg hover:!text-ds-text hover:!border-ds-border'
                         }`}
                       >
                         EN
@@ -263,10 +263,10 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                     {meta.map(([label, value]) => (
                       <div
                         key={label}
-                        className="rounded-2xl border border-white/5 bg-card/30 px-4 py-4"
+                        className="rounded-2xl border border-white/5 bg-ds-surface/30 px-4 py-4"
                       >
-                        <p className="text-[10px] uppercase tracking-widest font-mono text-muted">{label}</p>
-                        <p className="mt-2 text-sm font-medium text-cream">{value}</p>
+                        <p className="text-[10px] uppercase tracking-widest font-mono text-ds-muted">{label}</p>
+                        <p className="mt-2 text-sm font-medium text-ds-text">{value}</p>
                       </div>
                     ))}
                   </div>
@@ -274,7 +274,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                   {/* Col 2 e 3: Descrição e Botões */}
                   <div className="lg:col-span-2 flex flex-col">
                     {description && (
-                      <div className="space-y-5 text-[15px] leading-8 text-muted">
+                      <div className="space-y-5 text-[15px] leading-8 text-ds-muted">
                         {description.split(/\n\n+/).map((para, i) => (
                           <p key={i}>{para}</p>
                         ))}
@@ -288,7 +288,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                           href={project.site_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-full border border-copper/20 bg-copper/5 px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-copper transition hover:bg-copper/10 hover:shadow-[0_0_15px_rgba(184,115,51,0.2)]"
+                          className="rounded-full border border-ds-accent/20 bg-ds-accent/5 px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-ds-accent transition hover:bg-ds-accent/10 hover:shadow-[0_0_15px_rgba(184,115,51,0.2)]"
                         >
                           {language === 'pt' ? 'Ver site' : 'Visit site'}
                         </a>
@@ -298,7 +298,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-full bg-copper px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-white shadow-sm transition hover:shadow-md hover:shadow-copper/30 hover:bg-copper/90"
+                          className="rounded-full bg-ds-accent px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-white shadow-sm transition hover:shadow-md hover:shadow-copper/30 hover:bg-ds-accent/90"
                         >
                           {project.button_text || (language === 'pt' ? 'Ver Projeto' : 'View Project')}
                         </a>
@@ -308,7 +308,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                           href={project.link2}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-full border border-white/10 bg-card px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-cream shadow-sm transition hover:shadow-md hover:bg-white/5"
+                          className="rounded-full border border-white/10 bg-ds-surface px-6 py-3.5 text-xs font-bold tracking-[.15em] uppercase text-ds-text shadow-sm transition hover:shadow-md hover:bg-white/5"
                         >
                           {project.button_text2 || (language === 'pt' ? 'Ver mais' : 'See more')}
                         </a>

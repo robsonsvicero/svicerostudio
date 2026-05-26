@@ -123,7 +123,7 @@ const Blog = () => {
         description="Artigos e insights sobre UX Design, Estratégia de Marca e Engenharia de Percepção. O conteúdo exclusivo do Svicero Studio para quem busca o topo do mercado digital."
         keywords="blog design, tendências design, desenvolvimento web, ui ux, design thinking"
       />
-      <div className="bg-charcoal min-h-screen text-cream font-body">
+      <div className="bg-ds-bg min-h-screen text-ds-text font-body">
         <Header variant="solid" />
 
         {/* Hero */}
@@ -138,7 +138,7 @@ const Blog = () => {
           {/* Conteúdo principal */}
           <ScrollReveal direction="up" delay={0.1} className="relative z-20 w-full mx-auto flex flex-col items-center sm:items-start justify-center text-left py-12 px-4 sm:px-6 lg:px-8">
             <div className='flex flex-col items-start'>
-              <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream mb-5 sm:mb-6">
+              <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-ds-text mb-5 sm:mb-6">
                 Blog
               </h1>
               
@@ -159,12 +159,12 @@ const Blog = () => {
                 placeholder="Buscar por título, conteúdo ou tags…"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-6 py-4 pr-12 rounded-2xl bg-surface border border-white/5 hover:border-white/10 text-cream text-base placeholder-muted focus:border-copper focus:outline-none transition-colors shadow-sm"
+                className="w-full px-6 py-4 pr-12 rounded-2xl bg-ds-surface border border-white/5 hover:border-white/10 text-ds-text text-base placeholder-muted focus:border-ds-accent focus:outline-none transition-colors shadow-sm"
               />
-              <i className="fa-solid fa-search absolute right-5 top-1/2 -translate-y-1/2 text-muted text-lg pointer-events-none"></i>
+              <i className="fa-solid fa-search absolute right-5 top-1/2 -translate-y-1/2 text-ds-muted text-lg pointer-events-none"></i>
             </div>
             {searchTerm && (
-              <p className="text-sm text-muted mt-2 text-center">
+              <p className="text-sm text-ds-muted mt-2 text-center">
                 {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
               </p>
             )}
@@ -180,8 +180,8 @@ const Blog = () => {
                     key={category}
                     onClick={() => setSelectedCategory(category)}
                     className={`px-5 py-2 rounded-full text-[15px] whitespace-nowrap transition-all outline-none ${selectedCategory === category
-                      ? 'bg-copper text-white shadow-md font-medium'
-                      : 'bg-transparent text-muted hover:text-cream font-normal border-none'
+                      ? 'bg-ds-accent text-white shadow-md font-medium'
+                      : 'bg-transparent text-ds-muted hover:text-ds-text font-normal border-none'
                       }`}
                   >
                     {category}
@@ -223,7 +223,7 @@ const Blog = () => {
             <div className="flex justify-center mb-8">
               <Button
                 onClick={clearAllFilters}
-                className="text-sm text-muted hover:text-cream transition-colors underline underline-offset-2"
+                className="text-sm text-ds-muted hover:text-ds-text transition-colors underline underline-offset-2"
               >
                 Limpar todos os filtros
               </Button>
@@ -234,13 +234,13 @@ const Blog = () => {
           {/* Grid de Posts */}
           {isLoading ? (
             <div className="text-center py-24">
-              <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-copper"></div>
-              <p className="mt-4 text-muted text-sm">Carregando posts…</p>
+              <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-ds-accent"></div>
+              <p className="mt-4 text-ds-muted text-sm">Carregando posts…</p>
             </div>
           ) : filteredPosts.length === 0 ? (
             <div className="text-center py-24">
               <i className="fa-regular fa-newspaper text-5xl text-black/10 mb-5 block"></i>
-              <p className="text-lg text-muted">
+              <p className="text-lg text-ds-muted">
                 {!hasActiveFilter
                   ? 'Nenhum post publicado ainda.'
                   : 'Nenhum post encontrado com os filtros selecionados.'}
@@ -252,11 +252,11 @@ const Blog = () => {
                 <ScrollReveal direction="up" delay={0.1 + (idx % 3) * 0.15} key={post.id}>
                   <Link
                     to={`/blog/${post.slug}`}
-                    className="group overflow-hidden rounded-[2rem] border border-white/5 bg-surface hover:border-white/10 shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-copper flex flex-col h-full"
+                    className="group overflow-hidden rounded-[2rem] border border-white/5 bg-ds-surface hover:border-white/10 shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-copper flex flex-col h-full"
                   >
                     {/* Imagem de Destaque */}
                     {post.imagem_destaque && (
-                      <div className="aspect-video overflow-hidden bg-surface">
+                      <div className="aspect-video overflow-hidden bg-ds-surface">
                         <img
                           src={post.imagem_destaque}
                           alt={post.titulo}
@@ -270,23 +270,23 @@ const Blog = () => {
                       {/* Categoria e Data */}
                       <div className="flex flex-wrap items-center gap-3 mb-4">
                         {post.categoria && (
-                          <span className="inline-flex rounded-full border border-copper/20 bg-copper/5 px-3 py-1 text-copper font-mono text-[10px] uppercase tracking-widest">
+                          <span className="inline-flex rounded-full border border-ds-accent/20 bg-ds-accent/5 px-3 py-1 text-ds-accent font-mono text-[10px] uppercase tracking-widest">
                             {post.categoria}
                           </span>
                         )}
-                        <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
+                        <span className="text-ds-muted font-mono text-[10px] tracking-widest uppercase">
                           {formatDate(post.data_publicacao)}
                         </span>
                       </div>
 
                       {/* Título */}
-                      <h2 className="text-[1.25rem] font-medium tracking-tight text-cream mb-3 leading-snug line-clamp-2">
+                      <h2 className="text-[1.25rem] font-medium tracking-tight text-ds-text mb-3 leading-snug line-clamp-2">
                         {post.titulo}
                       </h2>
 
                       {/* Resumo */}
                       {post.resumo && (
-                        <p className="text-muted text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
+                        <p className="text-ds-muted text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
                           {post.resumo}
                         </p>
                       )}
@@ -297,7 +297,7 @@ const Blog = () => {
                           {post.tags.toLowerCase().split(',').slice(0, 3).map((tag, idx) => (
                             <span
                               key={idx}
-                              className="px-2 py-0.5 bg-white/5 border border-white/5 text-muted rounded text-[10px] font-mono tracking-wider"
+                              className="px-2 py-0.5 bg-white/5 border border-white/5 text-ds-muted rounded text-[10px] font-mono tracking-wider"
                             >
                               #{tag.trim()}
                             </span>
@@ -306,7 +306,7 @@ const Blog = () => {
                       )}
 
                       {/* Ler mais */}
-                      <div className="flex items-center text-sm font-bold uppercase tracking-[.15em] text-cream group-hover:text-copper transition-colors mt-auto">
+                      <div className="flex items-center text-sm font-bold uppercase tracking-[.15em] text-ds-text group-hover:text-ds-accent transition-colors mt-auto">
                         Ler mais →
                       </div>
                     </div>

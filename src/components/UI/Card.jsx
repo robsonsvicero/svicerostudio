@@ -43,13 +43,13 @@ Card.Content = ({ children, className = '' }) => (
 );
 
 Card.Title = ({ children, className = '' }) => (
-  <h3 className={`font-title text-2xl font-light text-cream mb-6 ${className}`}>
+  <h3 className={`font-title text-2xl font-light text-ds-text mb-6 ${className}`}>
     {children}
   </h3>
 );
 
 Card.Description = ({ children, className = '' }) => (
-  <p className={`text-lg text-cream/60 mb-6 leading-relaxed ${className}`}>
+  <p className={`text-lg text-ds-text/60 mb-6 leading-relaxed ${className}`}>
     {children}
   </p>
 );
@@ -62,8 +62,8 @@ Card.Actions = ({ children, className = '' }) => (
 
 Card.Button = ({ children, href, variant = 'outline', className = '' }) => {
   const variantClasses = {
-    outline: 'border-2 border-primary text-cream hover:bg-secondary hover:border-secondary',
-    filled: 'bg-primary text-cream hover:bg-secondary/80',
+    outline: 'border-2 border-primary text-ds-text hover:bg-ds-accent hover:border-ds-accent',
+    filled: 'bg-ds-bg text-ds-text hover:bg-ds-accent/80',
   };
   return (
     <a
@@ -79,11 +79,11 @@ Card.Button = ({ children, href, variant = 'outline', className = '' }) => {
 
 Card.Badge = ({ children, variant = 'default', className = '' }) => {
   const variantClasses = {
-    default: 'bg-primary/10 text-primary border border-primary/20',
-    designer: 'bg-primary/10 text-primary border border-primary/20',
-    'ui-ux': 'bg-primary/10 text-primary border border-primary/20',
-    developer: 'bg-primary/10 text-primary border border-primary/20',
-    cta: 'bg-primary/10 text-primary border border-primary/30 hover:bg-primary hover:border-primary hover:text-cream',
+    default: 'bg-ds-bg/10 text-ds-text border border-primary/20',
+    designer: 'bg-ds-bg/10 text-ds-text border border-primary/20',
+    'ui-ux': 'bg-ds-bg/10 text-ds-text border border-primary/20',
+    developer: 'bg-ds-bg/10 text-ds-text border border-primary/20',
+    cta: 'bg-ds-bg/10 text-ds-text border border-primary/30 hover:bg-ds-bg hover:border-primary hover:text-ds-text',
   };
   return (
     <span className={`inline-block text-sm font-medium px-4 py-2 rounded-full w-fit my-4 transition-all duration-300 ${variantClasses[variant]} ${className}`}>

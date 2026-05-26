@@ -95,15 +95,15 @@ const reforcoNaoEh =
 // Componente único e correto — tudo junto em um só lugar
 const PacoteMarca = () => {
   return (
-    <div className="bg-charcoal min-h-screen flex flex-col text-cream font-body py-14 sm:py-20 md:py-28 lg:py-36">
+    <div className="bg-ds-bg min-h-screen flex flex-col text-ds-text font-body py-14 sm:py-20 md:py-28 lg:py-36">
       <Header variant="solid" />
       <main className="flex-1">
         {/* HERO */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-14 sm:pb-16 lg:px-10 lg:pb-24">
-          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-tight text-cream text-balance">
+          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-tight text-ds-text text-balance">
             Pacote Marca de Alto Padrão
           </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-[1.6] text-muted">
+          <p className="mt-6 max-w-3xl text-lg leading-[1.6] text-ds-muted">
             Para autônomos, MEIs e pequenos negócios que querem sair da "cara de amador" e ter uma
             marca à altura da qualidade do que entregam.
           </p>
@@ -111,37 +111,37 @@ const PacoteMarca = () => {
 
         {/* PARA QUEM É */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-ds-text mb-6">
             Esse pacote é para você se…
           </h2>
           <ul className="space-y-5">
             {bulletsParaQuem.map((item, idx) => (
               <li key={idx} className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">
                   {idx + 1}
                 </span>
-                <span className="text-muted text-base leading-[1.6]">{item}</span>
+                <span className="text-ds-muted text-base leading-[1.6]">{item}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-lg text-copper font-medium">{reforcoParaQuem}</p>
+          <p className="mt-8 text-lg text-ds-accent font-medium">{reforcoParaQuem}</p>
         </section>
 
         {/* O QUE ESTÁ INCLUÍDO */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-8">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-ds-text mb-8">
             O que está incluído no Pacote Marca de Alto Padrão
           </h2>
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             {blocosIncluidos.map((bloco) => (
               <div
                 key={bloco.titulo}
-                className="rounded-[2rem] border border-white/5 bg-surface p-8 shadow-sm hover:border-white/10 hover:shadow-md transition-all"
+                className="rounded-[2rem] border border-white/5 bg-ds-surface p-8 shadow-sm hover:border-white/10 hover:shadow-md transition-all"
               >
-                <h3 className="text-xl font-medium tracking-tight text-copper mb-4">{bloco.titulo}</h3>
+                <h3 className="text-xl font-medium tracking-tight text-ds-accent mb-4">{bloco.titulo}</h3>
                 <ul className="space-y-3">
                   {bloco.itens.map((item, i) => (
-                    <li key={i} className="text-muted text-base leading-[1.6]">
+                    <li key={i} className="text-ds-muted text-base leading-[1.6]">
                       {item}
                     </li>
                   ))}
@@ -153,12 +153,12 @@ const PacoteMarca = () => {
 
         {/* PROCESSO */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-ds-text mb-6">
             Como vamos trabalhar juntos
           </h2>
           <ol className="space-y-3 list-decimal list-inside">
             {processo.map((step, idx) => (
-              <li key={idx} className="text-muted text-base leading-[1.6]">
+              <li key={idx} className="text-ds-muted text-base leading-[1.6]">
                 {step}
               </li>
             ))}
@@ -167,16 +167,16 @@ const PacoteMarca = () => {
 
         {/* BENEFÍCIOS */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-ds-text mb-6">
             O que muda para o seu negócio com esse pacote
           </h2>
           <ul className="space-y-5">
             {beneficios.map((item, idx) => (
               <li key={idx} className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">
                   {idx + 1}
                 </span>
-                <span className="text-muted text-base leading-[1.6]">{item}</span>
+                <span className="text-ds-muted text-base leading-[1.6]">{item}</span>
               </li>
             ))}
           </ul>
@@ -184,29 +184,29 @@ const PacoteMarca = () => {
 
         {/* PARA QUEM NÃO É */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-ds-text mb-6">
             Esse pacote não é para você se…
           </h2>
           <ul className="space-y-5">
             {bulletsNaoEh.map((item, idx) => (
               <li key={idx} className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">
                   {idx + 1}
                 </span>
-                <span className="text-muted text-base leading-[1.6]">{item}</span>
+                <span className="text-ds-muted text-base leading-[1.6]">{item}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-lg text-copper font-medium">{reforcoNaoEh}</p>
+          <p className="mt-8 text-lg text-ds-accent font-medium">{reforcoNaoEh}</p>
         </section>
 
         {/* INVESTIMENTO E CTA */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center">
-          <div className="rounded-[2rem] border border-white/5 bg-surface shadow-sm p-12 hover:border-white/10 hover:shadow-md transition-all">
-            <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-cream mb-6">
+          <div className="rounded-[2rem] border border-white/5 bg-ds-surface shadow-sm p-12 hover:border-white/10 hover:shadow-md transition-all">
+            <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight text-ds-text mb-6">
               Investimento
             </h2>
-            <p className="text-muted text-lg mb-8 max-w-2xl mx-auto leading-[1.6]">
+            <p className="text-ds-muted text-lg mb-8 max-w-2xl mx-auto leading-[1.6]">
               O Pacote Marca de Alto Padrão é personalizado de acordo com o momento e a complexidade
               do seu negócio.
               <br />

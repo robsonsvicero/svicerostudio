@@ -37,36 +37,36 @@ const ConsentBanner = () => {
   if (!isVisible) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-[#181818]/95 backdrop-blur-sm text-cream p-4 md:p-6 z-50 border-t border-white/10 font-body">
+    <div className="fixed bottom-0 left-0 right-0 bg-[#181818]/95 backdrop-blur-sm text-ds-text p-4 md:p-6 z-50 border-t border-white/10 font-body">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex-1">
-            <h3 className="font-title text-lg font-semibold mb-2 text-cream">
-              <i className="fa-solid fa-shield-halved text-secondary mr-2"></i>
+            <h3 className="font-title text-lg font-semibold mb-2 text-ds-text">
+              <i className="fa-solid fa-shield-halved text-ds-accent mr-2"></i>
               Sua Privacidade é Importante
             </h3>
-            <p className="text-cream/80 text-sm leading-relaxed mb-2">
+            <p className="text-ds-text/80 text-sm leading-relaxed mb-2">
               Nós utilizamos cookies e tecnologias similares para melhorar sua experiência,
               analisar o uso do site e personalizar conteúdo. Ao continuar navegando, você aceita nossa
-              <Link to="/privacidade" className="text-secondary hover:underline ml-1">Política de Privacidade</Link>.
+              <Link to="/privacidade" className="text-ds-accent hover:underline ml-1">Política de Privacidade</Link>.
             </p>
-            <p className="text-cream/60 text-xs">
+            <p className="text-ds-text/60 text-xs">
               Para exercer seus direitos de acesso, correção ou exclusão de dados, visite nossa
-              <Link to="/exclusao-dados" className="text-secondary hover:underline ml-1">página de exclusão de dados</Link>.
+              <Link to="/exclusao-dados" className="text-ds-accent hover:underline ml-1">página de exclusão de dados</Link>.
             </p>
           </div>
 
           <div className="flex gap-3 flex-shrink-0 w-full md:w-auto">
             <Button
               onClick={handleReject}
-              className="flex-1 md:flex-none px-4 py-2 rounded-lg border border-cream/30 text-cream hover:bg-white/10 transition-colors text-sm font-medium"
+              className="flex-1 md:flex-none px-4 py-2 rounded-lg border border-cream/30 text-ds-text hover:bg-white/10 transition-colors text-sm font-medium"
             >
               <i className="fa-solid fa-x mr-2"></i>
               Rejeitar
             </Button>
             <Button
               onClick={handleAccept}
-              className="flex-1 md:flex-none px-4 py-2 rounded-lg bg-secondary text-white hover:bg-secondary/90 transition-colors text-sm font-medium"
+              className="flex-1 md:flex-none px-4 py-2 rounded-lg bg-ds-accent text-white hover:bg-ds-accent/90 transition-colors text-sm font-medium"
             >
               <i className="fa-solid fa-check mr-2"></i>
               Aceitar

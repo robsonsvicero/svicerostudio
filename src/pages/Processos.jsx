@@ -67,7 +67,7 @@ const Processos = () => {
   }, []);
 
   return (
-    <div className="bg-charcoal min-h-screen flex flex-col text-cream font-body">
+    <div className="bg-ds-bg min-h-screen flex flex-col text-ds-text font-body">
       <Header variant="solid" />
       <main className="flex-1">
         <SEOHelmet 
@@ -77,38 +77,38 @@ const Processos = () => {
         
         {/* HERO */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 lg:px-10 lg:pb-24 mt-20 lg:mt-36 text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-tight text-cream mb-4 text-balance">
+          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-tight text-ds-text mb-4 text-balance">
             A Engenharia por trás do Design
           </h1>
-          <p className="mt-6 max-w-3xl mx-auto text-lg leading-[1.6] text-muted lg:text-xl">
+          <p className="mt-6 max-w-3xl mx-auto text-lg leading-[1.6] text-ds-muted lg:text-xl">
             Sem improvisos ou abordagens genéricas. Você acompanha o desenvolvimento do projeto através de fases lineares bem definidas, do diagnóstico estratégico à entrega técnica das plataformas.
           </p>
         </section>
 
         {/* POR QUE TER PROCESSO IMPORTA */}
-        <section className="flex flex-col items-center justify-center rounded-[2rem] border border-white/5 bg-surface shadow-sm text-xs font-semibold text-copper mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center hover:border-white/10 transition-colors">
-          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight leading-tight text-cream mb-4">
+        <section className="flex flex-col items-center justify-center rounded-[2rem] border border-white/5 bg-ds-surface shadow-sm text-xs font-semibold text-ds-accent mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20 text-center hover:border-white/10 transition-colors">
+          <h2 className="text-[1.875rem] md:text-4xl font-medium tracking-tight leading-tight text-ds-text mb-4">
             Por que a previsibilidade metodológica protege o seu investimento
           </h2>
-          <p className="max-w-4xl mx-auto text-left font-normal text-lg mb-6 text-muted leading-[1.6]">
+          <p className="max-w-4xl mx-auto text-left font-normal text-lg mb-6 text-ds-muted leading-[1.6]">
             Um projeto de posicionamento de marca não se resume a ilustrar um logotipo ou diagramar uma página padrão. Ele precisa refletir a seriedade técnica do seu consultório e conversar com o comportamento de consumo do paciente particular de alto ticket. No Svicero Studio, o processo foi desenhado para extrair seus diferenciais técnicos, estruturar bases lógicas sólidas e, apenas com esses alicerces fixados, construir as suas frentes visuais e institucionais.
           </p>
           
           <div className="w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 mb-16">
               {etapas.map((etapa, idx) => (
-                <div key={idx} className="rounded-[2rem] border border-white/5 bg-charcoal p-8 shadow-sm flex flex-col h-full text-cream hover:border-white/10 hover:shadow-md transition-all">
-                  <div className="text-2xl font-medium tracking-tight text-copper mb-2">{etapa.titulo}</div>
-                  <p className="text-base font-normal mb-6 text-muted leading-[1.6] text-left">{etapa.texto}</p>
+                <div key={idx} className="rounded-[2rem] border border-white/5 bg-ds-bg p-8 shadow-sm flex flex-col h-full text-ds-text hover:border-white/10 hover:shadow-md transition-all">
+                  <div className="text-2xl font-medium tracking-tight text-ds-accent mb-2">{etapa.titulo}</div>
+                  <p className="text-base font-normal mb-6 text-ds-muted leading-[1.6] text-left">{etapa.texto}</p>
                   
                   <div className="flex flex-col md:flex-row md:gap-8 mt-auto border-t border-white/5 pt-6">
                     <div className="flex-1 mb-4 md:mb-0">
-                      <div className="text-[10px] uppercase font-mono tracking-widest text-copper mb-2">O seu papel:</div>
-                      <div className="text-sm font-normal text-muted leading-[1.6] text-left">{etapa.papelCliente}</div>
+                      <div className="text-[10px] uppercase font-mono tracking-widest text-ds-accent mb-2">O seu papel:</div>
+                      <div className="text-sm font-normal text-ds-muted leading-[1.6] text-left">{etapa.papelCliente}</div>
                     </div>
                     <div className="flex-1">
-                      <div className="text-[10px] uppercase font-mono tracking-widest text-cream mb-2">A entrega do estúdio:</div>
-                      <div className="text-sm font-normal text-muted leading-[1.6] text-left">{etapa.papelEstudio}</div>
+                      <div className="text-[10px] uppercase font-mono tracking-widest text-ds-text mb-2">A entrega do estúdio:</div>
+                      <div className="text-sm font-normal text-ds-muted leading-[1.6] text-left">{etapa.papelEstudio}</div>
                     </div>
                   </div>
                 </div>
@@ -127,36 +127,36 @@ const Processos = () => {
 
         {/* PAPEL DO CLIENTE */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <div className="rounded-[2rem] border border-white/5 bg-surface p-10 shadow-sm hover:border-white/10 transition-colors">
-            <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-4">
+          <div className="rounded-[2rem] border border-white/5 bg-ds-surface p-10 shadow-sm hover:border-white/10 transition-colors">
+            <h2 className="text-[1.875rem] font-medium tracking-tight text-ds-text mb-4">
               O que é exigido da sua rotina durante o projeto?
             </h2>
-            <p className="mb-8 text-muted leading-[1.6]">
+            <p className="mb-8 text-ds-muted leading-[1.6]">
               O desenvolvimento é colaborativo, mas estruturado de forma a não sobrecarregar sua agenda. Você entra com a expertise clínica do seu negócio; o estúdio assume a engenharia analítica e visual.
             </p>
             
             <ul className="space-y-5 text-base mb-8 max-w-2xl mx-auto text-left">
               <li className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">1</span>
-                <span className="text-muted leading-[1.6]">Participar das reuniões estratégicas pontuais de diagnóstico e validação de fases.</span>
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">1</span>
+                <span className="text-ds-muted leading-[1.6]">Participar das reuniões estratégicas pontuais de diagnóstico e validação de fases.</span>
               </li>
               <li className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">2</span>
-                <span className="text-muted leading-[1.6]">Preencher o mapeamento técnico inicial sobre os objetivos e estrutura da sua clínica.</span>
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">2</span>
+                <span className="text-ds-muted leading-[1.6]">Preencher o mapeamento técnico inicial sobre os objetivos e estrutura da sua clínica.</span>
               </li>
               <li className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">3</span>
-                <span className="text-muted leading-[1.6]">Disponibilizar materiais básicos de consulta (como registros de CRO e fotografias institucionais, se hover).</span>
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">3</span>
+                <span className="text-ds-muted leading-[1.6]">Disponibilizar materiais básicos de consulta (como registros de CRO e fotografias institucionais, se hover).</span>
               </li>
               <li className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">4</span>
-                <span className="text-muted leading-[1.6]">Fornecer feedbacks objetivos dentro das janelas de alinhamento combinadas em cronograma.</span>
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">4</span>
+                <span className="text-ds-muted leading-[1.6]">Fornecer feedbacks objetivos dentro das janelas de alinhamento combinadas em cronograma.</span>
               </li>
             </ul>
             
             <div className='flex justify-center border-t border-white/5 pt-8 mt-4'>
-              <p className="text-center max-w-2xl text-muted text-sm">
-                <span className='font-medium text-cream'>Diretriz de tranquilidade:</span> você não precisa dominar conceitos de design ou desenvolvimento de software. Seu papel é expor a visão clínica do seu negócio; o nosso é traduzir isso em autoridade de mercado estável.
+              <p className="text-center max-w-2xl text-ds-muted text-sm">
+                <span className='font-medium text-ds-text'>Diretriz de tranquilidade:</span> você não precisa dominar conceitos de design ou desenvolvimento de software. Seu papel é expor a visão clínica do seu negócio; o nosso é traduzir isso em autoridade de mercado estável.
               </p>
             </div>
           </div>
@@ -164,30 +164,30 @@ const Processos = () => {
 
         {/* PAPEL DO ESTÚDIO */}
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
-          <div className="rounded-[2rem] border border-white/5 bg-surface p-10 shadow-sm hover:border-white/10 transition-colors">
-            <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-8 text-center">
+          <div className="rounded-[2rem] border border-white/5 bg-ds-surface p-10 shadow-sm hover:border-white/10 transition-colors">
+            <h2 className="text-[1.875rem] font-medium tracking-tight text-ds-text mb-8 text-center">
               As garantias contratuais e profissionais do Svicero Studio
             </h2>
             <ul className="space-y-5 text-base max-w-2xl mx-auto text-left">
               <li className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">1</span>
-                <span className="text-muted leading-[1.6]">Organização rigorosa e relatórios de andamento em cada fase linear do projeto.</span>
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">1</span>
+                <span className="text-ds-muted leading-[1.6]">Organização rigorosa e relatórios de andamento em cada fase linear do projeto.</span>
               </li>
               <li className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">2</span>
-                <span className="text-muted leading-[1.6]">Prazos de entrega estipulados em cronograma e rigorosamente respeitados.</span>
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">2</span>
+                <span className="text-ds-muted leading-[1.6]">Prazos de entrega estipulados em cronograma e rigorosamente respeitados.</span>
               </li>
               <li className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">3</span>
-                <span className="text-muted leading-[1.6]">Comunicação clara e transparente em linguagem corporativa, livre de jargões técnicos vazios.</span>
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">3</span>
+                <span className="text-ds-muted leading-[1.6]">Comunicação clara e transparente em linguagem corporativa, livre de jargões técnicos vazios.</span>
               </li>
               <li className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">4</span>
-                <span className="text-muted leading-[1.6]">Foco total na entrega de ativos visuais que gerem valor comercial e facilitem vendas de alto ticket.</span>
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">4</span>
+                <span className="text-ds-muted leading-[1.6]">Foco total na entrega de ativos visuais que gerem valor comercial e facilitem vendas de alto ticket.</span>
               </li>
               <li className="flex gap-4 items-start">
-                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-copper/25 bg-copper/10 text-xs font-mono font-medium text-copper">5</span>
-                <span className="text-muted leading-[1.6]">Consultoria honesta: se alguma solução visual ou tecnológica não for condizente com o estágio da sua clínica, faremos o alerta prontamente.</span>
+                <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">5</span>
+                <span className="text-ds-muted leading-[1.6]">Consultoria honesta: se alguma solução visual ou tecnológica não for condizente com o estágio da sua clínica, faremos o alerta prontamente.</span>
               </li>
             </ul>
           </div>
@@ -195,7 +195,7 @@ const Processos = () => {
 
         {/* MINI FAQ SOBRE O PROCESSO */}
         {loading ? (
-          <div className="text-muted text-center py-12">Carregando perguntas...</div>
+          <div className="text-ds-muted text-center py-12">Carregando perguntas...</div>
         ) : (
           <FAQSection
             faqs={perguntas}

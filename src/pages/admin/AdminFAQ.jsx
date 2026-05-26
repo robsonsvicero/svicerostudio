@@ -114,41 +114,41 @@ const AdminFAQ = () => {
   return (
     <AdminLayout title="FAQ">
       {/* Add form */}
-      <div className="rounded-xl border border-white/5 bg-surface p-6 mb-6">
-        <h2 className="text-base font-semibold text-cream mb-4">Nova Pergunta</h2>
+      <div className="rounded-xl border border-white/5 bg-ds-surface p-6 mb-6">
+        <h2 className="text-base font-semibold text-ds-text mb-4">Nova Pergunta</h2>
         <form onSubmit={handleAdd} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-muted mb-1.5">Pergunta</label>
+            <label className="block text-sm font-medium text-ds-muted mb-1.5">Pergunta</label>
             <input
               type="text"
               value={pergunta}
               onChange={e => setPergunta(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20"
+              className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20"
               placeholder="Digite a pergunta"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-muted mb-1.5">Resposta</label>
+            <label className="block text-sm font-medium text-ds-muted mb-1.5">Resposta</label>
             <textarea
               value={resposta}
               onChange={e => setResposta(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream placeholder:text-muted/50 outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20 resize-none"
+              className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20 resize-none"
               placeholder="Digite a resposta"
               rows={3}
             />
           </div>
           <div className="flex items-end gap-4">
             <div className="w-32">
-              <label className="block text-sm font-medium text-muted mb-1.5">Ordem</label>
+              <label className="block text-sm font-medium text-ds-muted mb-1.5">Ordem</label>
               <input
                 type="number"
                 value={ordem}
                 onChange={e => setOrdem(Number(e.target.value))}
-                className="w-full rounded-lg border border-white/10 bg-charcoal px-4 py-3 text-sm text-cream outline-none transition focus:border-copper/40 focus:ring-1 focus:ring-copper/20"
+                className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20"
                 min={0}
               />
             </div>
-            <Button type="submit" className="rounded-lg bg-copper px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition">
+            <Button type="submit" className="rounded-lg bg-ds-accent px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition">
               Adicionar
             </Button>
           </div>
@@ -156,19 +156,19 @@ const AdminFAQ = () => {
       </div>
 
       {/* FAQ list */}
-      <div className="rounded-xl border border-white/5 bg-surface">
+      <div className="rounded-xl border border-white/5 bg-ds-surface">
         <div className="border-b border-white/5 px-6 py-4">
-          <h2 className="text-base font-semibold text-cream">
+          <h2 className="text-base font-semibold text-ds-text">
             Perguntas Cadastradas
-            {!loading && <span className="ml-2 text-sm font-normal text-muted">({perguntas.length})</span>}
+            {!loading && <span className="ml-2 text-sm font-normal text-ds-muted">({perguntas.length})</span>}
           </h2>
         </div>
 
         <div className="p-4">
           {loading ? (
-            <div className="text-center text-muted py-10">Carregando perguntas...</div>
+            <div className="text-center text-ds-muted py-10">Carregando perguntas...</div>
           ) : perguntas.length === 0 ? (
-            <div className="text-center text-muted py-10">Nenhuma pergunta cadastrada.</div>
+            <div className="text-center text-ds-muted py-10">Nenhuma pergunta cadastrada.</div>
           ) : (
             <DragDropContext onDragEnd={handleDragEnd}>
               <Droppable droppableId="faq-list">
@@ -181,7 +181,7 @@ const AdminFAQ = () => {
                           <div
                             ref={dragProvided.innerRef}
                             {...dragProvided.draggableProps}
-                            className={`rounded-lg border bg-charcoal p-4 transition-all ${dragSnapshot.isDragging ? 'border-copper/50 shadow-lg shadow-copper/10' : 'border-white/5 hover:border-white/10'}`}
+                            className={`rounded-lg border bg-ds-bg p-4 transition-all ${dragSnapshot.isDragging ? 'border-ds-accent/50 shadow-lg shadow-copper/10' : 'border-white/5 hover:border-white/10'}`}
                             style={{ overflow: 'visible' }}
                           >
                             {editIdx === idx ? (
@@ -190,12 +190,12 @@ const AdminFAQ = () => {
                                   type="text"
                                   value={editPergunta}
                                   onChange={e => setEditPergunta(e.target.value)}
-                                  className="w-full rounded-lg border border-white/10 bg-surface px-4 py-2.5 text-sm text-cream outline-none transition focus:border-copper/40"
+                                  className="w-full rounded-lg border border-white/10 bg-ds-surface px-4 py-2.5 text-sm text-ds-text outline-none transition focus:border-ds-accent/40"
                                 />
                                 <textarea
                                   value={editResposta}
                                   onChange={e => setEditResposta(e.target.value)}
-                                  className="w-full rounded-lg border border-white/10 bg-surface px-4 py-2.5 text-sm text-cream outline-none transition focus:border-copper/40 resize-none"
+                                  className="w-full rounded-lg border border-white/10 bg-ds-surface px-4 py-2.5 text-sm text-ds-text outline-none transition focus:border-ds-accent/40 resize-none"
                                   rows={3}
                                 />
                                 <div className="flex items-center gap-3">
@@ -203,24 +203,24 @@ const AdminFAQ = () => {
                                     type="number"
                                     value={editOrdem}
                                     onChange={e => setEditOrdem(Number(e.target.value))}
-                                    className="w-24 rounded-lg border border-white/10 bg-surface px-3 py-2.5 text-sm text-cream outline-none transition focus:border-copper/40"
+                                    className="w-24 rounded-lg border border-white/10 bg-ds-surface px-3 py-2.5 text-sm text-ds-text outline-none transition focus:border-ds-accent/40"
                                     min={0}
                                   />
-                                  <Button onClick={() => handleSaveEdit(idx)} className="rounded-lg bg-copper px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition">Salvar</Button>
-                                  <Button onClick={handleCancelEdit} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-muted hover:text-cream transition">Cancelar</Button>
+                                  <Button onClick={() => handleSaveEdit(idx)} className="rounded-lg bg-ds-accent px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition">Salvar</Button>
+                                  <Button onClick={handleCancelEdit} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-ds-muted hover:text-ds-text transition">Cancelar</Button>
                                 </div>
                               </div>
                             ) : (
                               <div className="flex items-start gap-3">
-                                <span {...dragProvided.dragHandleProps} className="cursor-grab text-muted hover:text-copper mt-0.5 text-base select-none flex-shrink-0 transition-colors" title="Arraste para reordenar">
+                                <span {...dragProvided.dragHandleProps} className="cursor-grab text-ds-muted hover:text-ds-accent mt-0.5 text-base select-none flex-shrink-0 transition-colors" title="Arraste para reordenar">
                                   <i className="fa-solid fa-grip-vertical"></i>
                                 </span>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-cream">{item.pergunta}</p>
-                                  <p className="mt-1 text-sm text-muted leading-relaxed line-clamp-2">{item.resposta}</p>
+                                  <p className="text-sm font-medium text-ds-text">{item.pergunta}</p>
+                                  <p className="mt-1 text-sm text-ds-muted leading-relaxed line-clamp-2">{item.resposta}</p>
                                 </div>
                                 <div className="flex items-center gap-2 flex-shrink-0">
-                                  <Button onClick={() => handleEdit(idx)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted hover:text-cream hover:bg-white/10 transition">Editar</Button>
+                                  <Button onClick={() => handleEdit(idx)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">Editar</Button>
                                   <Button onClick={() => handleDelete(idx)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Remover</Button>
                                 </div>
                               </div>

@@ -21,14 +21,14 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-dark-bg px-4">
+        <div className="min-h-screen flex items-center justify-center bg-ds-bg px-4">
           <div className="max-w-2xl w-full text-center">
             <div className="mb-8">
               <div className="text-6xl mb-4">⚠️</div>
-              <h1 className="font-title text-4xl md:text-5xl font-semibold text-low-dark mb-4">
+              <h1 className="font-title text-4xl md:text-5xl font-semibold text-ds-text mb-4">
                 Algo deu errado
               </h1>
-              <p className="font-body text-lg text-low-dark mb-8">
+              <p className="font-body text-lg text-ds-text mb-8">
                 Desculpe, encontramos um problema inesperado. Nossa equipe foi notificada e está trabalhando para resolver.
               </p>
             </div>
@@ -36,7 +36,7 @@ class ErrorBoundary extends React.Component {
             <div className="space-y-4">
               <Button
                 onClick={() => window.location.reload()}
-                className="inline-block px-8 py-3 bg-secondary text-white font-title text-lg rounded-lg shadow-md hover:scale-105 hover:bg-secondary/90 transition-all duration-300"
+                className="inline-block px-8 py-3 bg-ds-accent text-white font-title text-lg rounded-lg shadow-md hover:scale-105 hover:bg-ds-accent/90 transition-all duration-300"
               >
                 Recarregar página
               </Button>
@@ -44,7 +44,7 @@ class ErrorBoundary extends React.Component {
               <div className="mt-4">
                 <a
                   href="/"
-                  className="inline-block px-8 py-3 bg-transparent border-2 border-white/30 text-text-primary font-title text-lg rounded-lg hover:bg-secondary hover:border-secondary hover:text-white transition-all duration-300"
+                  className="inline-block px-8 py-3 bg-transparent border-2 border-white/30 text-text-ds-text font-title text-lg rounded-lg hover:bg-ds-accent hover:border-ds-accent hover:text-white transition-all duration-300"
                 >
                   Voltar para a página inicial
                 </a>

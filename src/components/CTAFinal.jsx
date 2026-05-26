@@ -3,17 +3,17 @@ import ScrollReveal from './UI/ScrollReveal';
 
 const CTAFinal = () => {
   return (
-    <section className="w-full bg-charcoal py-16 sm:py-24 px-4 sm:px-6 flex justify-center items-center min-h-[320px] sm:min-h-[420px] font-body">
+    <section className="w-full bg-ds-bg py-16 sm:py-24 px-4 sm:px-6 flex justify-center items-center min-h-[320px] sm:min-h-[420px] font-body">
       <ScrollReveal direction="up" delay={0.2} duration={0.8} className="w-full max-w-screen-xl mx-auto">
-        <div className="w-full bg-surface border border-white/5 text-cream rounded-[2rem] sm:rounded-[3rem] shadow-xl flex flex-col items-center justify-center px-5 sm:px-8 py-10 sm:py-16 relative overflow-hidden transition-colors hover:border-white/10">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-copper/15 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-copper/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+        <div className="w-full bg-ds-surface border border-white/5 text-ds-text rounded-[2rem] sm:rounded-[3rem] shadow-xl flex flex-col items-center justify-center px-5 sm:px-8 py-10 sm:py-16 relative overflow-hidden transition-colors hover:border-white/10">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-ds-accent/15 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-ds-accent/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
 
           <h2 className="text-[1.875rem] md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-center mb-6 text-balance relative z-10">
             O posicionamento da sua clínica apoia o valor da sua tabela de tratamentos?
           </h2>
 
-          <p className="text-lg md:text-xl font-normal leading-[1.6] text-muted text-center mb-10 max-w-2xl relative z-10">
+          <p className="text-lg md:text-xl font-normal leading-[1.6] text-ds-muted text-center mb-10 max-w-2xl relative z-10">
             O primeiro passo é um diagnóstico honesto: avaliamos juntos onde a sua comunicação visual está drenando a sua margem de lucro e o que precisa mudar para o seu consultório atrair o público particular definitivo.
           </p>
 

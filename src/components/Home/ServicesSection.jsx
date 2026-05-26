@@ -8,12 +8,12 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const ServicesSection = ({ servicos }) => (
-  <section id="servicos" className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 bg-dark-bg font-body">
+  <section id="servicos" className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 bg-ds-bg font-body">
     <div className="max-w-screen-xl mx-auto">
       <ScrollReveal direction="up" delay={0.1}>
         <div className="mb-12 text-left">
-          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary/5 text-xs font-semibold text-secondary tracking-widest shadow-sm border border-secondary/30">
-                  <span className="w-2 h-2 -rotate-45 bg-secondary inline-block"></span>
+          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-ds-accent/5 text-xs font-semibold text-ds-accent tracking-widest shadow-sm border border-ds-accent/30">
+                  <span className="w-2 h-2 -rotate-45 bg-ds-accent inline-block"></span>
                   ESPECIALIDADES
                 </span>
           <h2 className="font-title text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 text-balance">Nossos Serviços</h2>
@@ -36,16 +36,18 @@ const ServicesSection = ({ servicos }) => (
       >
         {servicos.map((servico, idx) => (
           <SwiperSlide key={idx}>
+            {/* TODO: revisar cor (sem equivalente claro no mapeamento) */}
             <div className="bg-white/5 rounded-2xl border border-secondary700 p-8 flex flex-col h-full shadow-lg">
               <div className="w-full aspect-[4/3] mb-6 overflow-hidden rounded-xl shadow-md">
                 <img src={servico.img} alt={servico.alt} className="w-full h-full object-cover" loading="lazy" />
               </div>
+              {/* TODO: revisar cor (sem equivalente claro no mapeamento) */}
               <span className={`inline-block px-4 py-2 rounded-full mb-3 text-sm font-semibold bg-cream/5`}>{servico.badge.text}</span>
               <p className="text-[#B2B8C6] text-base font-normal leading-relaxed mb-4">{servico.title}</p>
               <Button
                 href={servico.link}
                 variant="secondary"
-                className="w-full mt-auto border border-[#E5E5E5] bg-[#F8F8F8] text-[#3A220C] hover:bg-[#FFE5E9] hover:text-secondary transition-colors"
+                className="w-full mt-auto border border-[#E5E5E5] bg-[#F8F8F8] text-[#3A220C] hover:bg-[#FFE5E9] hover:text-ds-accent transition-colors"
               >Ver mais ...
               </Button>
             </div>

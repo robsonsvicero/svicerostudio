@@ -7,7 +7,7 @@ const AboutSection = () => {
   return (
     <section
       id="sobre"
-      className="bg-charcoal py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body"
+      className="bg-ds-bg py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body"
     >
       <div className="max-w-screen-xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -25,7 +25,7 @@ const AboutSection = () => {
                 />
                 {/* Badge laranja */}
                 <div className="absolute bottom-[-40px] left-6">
-                  <div className="bg-copper text-white rounded-xl px-6 py-4 shadow-lg text-left">
+                  <div className="bg-ds-accent text-white rounded-xl px-6 py-4 shadow-lg text-left">
                     <span className="block text-3xl font-bold leading-tight mb-1">
                       10+
                     </span>
@@ -40,28 +40,28 @@ const AboutSection = () => {
 
           {/* Texto e indicadores */}
           <ScrollReveal direction="left" delay={0.2} className="flex flex-col justify-center h-full">
-            <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper w-auto max-w-max">
-              <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
+            <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent w-auto max-w-max">
+              <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
               DIREÇÃO EXECUTIVA
             </span>
 
-            <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left mb-6">
+            <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-ds-text text-left mb-6">
               Quem está por trás do Svicero Studio?
             </h2>
 
-            <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
+            <p className="text-xl font-normal leading-[1.6] text-ds-muted max-w-2xl mb-6">
               Sou o Robson Svicero, estrategista de marca focado em posicionamento e identidade visual para dentistas e clínicas que buscam atrair o público particular. Minha trajetória combina a precisão e a usabilidade do design digital com o entendimento do comportamento de consumo de alto ticket.
             </p>
 
-            <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
+            <p className="text-xl font-normal leading-[1.6] text-ds-muted max-w-2xl mb-6">
               Após anos desenhando soluções corporativas complexas, eu trouxe a metodologia de UX (User Experience) e análise profunda de negócios para o branding clínico. O meu papel não é apenas criar uma identidade visual atraente, mas entender os gargalos comerciais da sua clínica para transformá-la em um ecossistema estético imponente.
             </p>
 
-            <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
+            <p className="text-xl font-normal leading-[1.6] text-ds-muted max-w-2xl mb-6">
               Mudei o modelo tradicional de agência por uma assessoria de imersão. Eu analiso o seu modelo de atendimento, as suas especialidades de alto ticket (como Invisalign e Reabilitações Orais) e projeto uma marca que pré-educa o seu paciente particular sobre o preço das suas consultas antes mesmo de ele se sentar na sua cadeira.
             </p>
 
-            <p className="text-xl font-normal leading-[1.6] text-muted max-w-2xl mb-6">
+            <p className="text-xl font-normal leading-[1.6] text-ds-muted max-w-2xl mb-6">
               No Svicero Studio:
             </p>
 
@@ -72,10 +72,10 @@ const AboutSection = () => {
                 'Entregamos marca como ativo de negócio, não como peça gráfica.',
               ].map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <span className="mt-1.5 flex-shrink-0 w-5 h-5 rounded-full bg-copper/10 flex items-center justify-center">
-                    <span className="w-1.5 h-1.5 bg-copper rounded-full inline-block" />
+                  <span className="mt-1.5 flex-shrink-0 w-5 h-5 rounded-full bg-ds-accent/10 flex items-center justify-center">
+                    <span className="w-1.5 h-1.5 bg-ds-accent rounded-full inline-block" />
                   </span>
-                  <span className="text-lg md:text-xl text-muted">
+                  <span className="text-lg md:text-xl text-ds-muted">
                     {item}
                   </span>
                 </li>
@@ -85,26 +85,26 @@ const AboutSection = () => {
             {/* Indicadores */}
             <div className="flex flex-wrap gap-6 sm:gap-8 mt-4 pb-10 border-b border-white/5">
               <div>
-                <span className="block text-3xl font-semibold text-cream mb-1">
+                <span className="block text-3xl font-semibold text-ds-text mb-1">
                   150+
                 </span>
-                <span className="block text-[10px] font-mono text-muted uppercase tracking-widest">
+                <span className="block text-[10px] font-mono text-ds-muted uppercase tracking-widest">
                   Projetos Entregues
                 </span>
               </div>
               <div>
-                <span className="block text-3xl font-semibold text-cream mb-1">
+                <span className="block text-3xl font-semibold text-ds-text mb-1">
                   10+
                 </span>
-                <span className="block text-[10px] font-mono text-muted uppercase tracking-widest">
+                <span className="block text-[10px] font-mono text-ds-muted uppercase tracking-widest">
                   Anos no Mercado
                 </span>
               </div>
               <div>
-                <span className="block text-3xl font-semibold text-cream mb-1">
+                <span className="block text-3xl font-semibold text-ds-text mb-1">
                   3x
                 </span>
-                <span className="block text-[10px] font-mono text-muted uppercase tracking-widest">
+                <span className="block text-[10px] font-mono text-ds-muted uppercase tracking-widest">
                   Ticket médio aumentado
                 </span>
               </div>

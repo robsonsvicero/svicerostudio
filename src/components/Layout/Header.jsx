@@ -43,7 +43,7 @@ const Header = () => {
         <div className="flex justify-center items-center">
           <Button 
             onClick={() => setMenuOpen(true)}
-            className="group flex items-center gap-3 text-sm font-bold tracking-[0.3em] text-cream hover:text-copper transition-colors"
+            className="group flex items-center gap-3 text-sm font-bold tracking-[0.3em] text-ds-text hover:text-ds-accent transition-colors"
           >
             <span className="w-8 h-[1px] bg-white/40 group-hover:w-12 transition-all"></span>
             MENU
@@ -60,7 +60,7 @@ const Header = () => {
 
         <Button
           onClick={() => setMenuOpen(true)}
-          className="text-cream p-2"
+          className="text-ds-text p-2"
           aria-label="Abrir Menu"
         >
           <Menu size={28} />
@@ -69,12 +69,12 @@ const Header = () => {
       </header>
 
       {/* OVERLAY MENU (FULL SCREEN) */}
-      <div className={`fixed inset-0 w-full h-[100dvh] z-[100] bg-charcoal transition-all duration-500 ease-in-out ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} overflow-y-auto overflow-x-hidden`}>
+      <div className={`fixed inset-0 w-full h-[100dvh] z-[100] bg-ds-bg transition-all duration-500 ease-in-out ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} overflow-y-auto overflow-x-hidden`}>
         {/* Botão de Fechar */}
         <div className="absolute top-6 right-6 md:top-10 md:right-10 z-[110]">
           <Button 
             onClick={() => setMenuOpen(false)}
-            className="text-cream hover:text-copper transition-colors p-3 bg-white/5 rounded-full"
+            className="text-ds-text hover:text-ds-accent transition-colors p-3 bg-white/5 rounded-full"
             aria-label="Fechar Menu"
           >
             <X size={32} strokeWidth={1.5} />
@@ -87,7 +87,7 @@ const Header = () => {
             <a
               key={link.href}
               href={link.href}
-              className={`text-[1.875rem] md:text-[3.25rem] font-medium tracking-tight text-cream hover:text-copper transition-all transform text-center ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+              className={`text-[1.875rem] md:text-[3.25rem] font-medium tracking-tight text-ds-text hover:text-ds-accent transition-all transform text-center ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
               style={{ transitionDelay: `${index * 100}ms` }}
               onClick={() => setMenuOpen(false)}
             >
@@ -98,7 +98,7 @@ const Header = () => {
           {/* Botão Admin no final do menu */}
           <a 
             href="/admin"
-            className={`mt-10 flex items-center gap-3 px-10 py-5 rounded-full border border-white/10 bg-surface text-[12px] font-bold tracking-[0.2em] text-cream hover:bg-copper hover:border-copper transition-all shadow-sm ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+            className={`mt-10 flex items-center gap-3 px-10 py-5 rounded-full border border-white/10 bg-ds-surface text-[12px] font-bold tracking-[0.2em] text-ds-text hover:bg-ds-accent hover:border-ds-accent transition-all shadow-sm ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
             style={{ transitionDelay: `${navLinks.length * 100}ms` }}
             onClick={() => setMenuOpen(false)}
           >
@@ -108,7 +108,7 @@ const Header = () => {
 
           {/* Rodapé do Menu */}
           <div className="mt-20 text-center opacity-90">
-            <p className="text-[10px] tracking-[0.5em] font-medium uppercase text-copper">
+            <p className="text-[10px] tracking-[0.5em] font-medium uppercase text-ds-accent">
               Svicero Studio © 2026
             </p>
           </div>

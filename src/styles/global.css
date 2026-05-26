@@ -1,50 +1,84 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-    .blog-swiper .swiper-pagination {
-      position: static !important;
-      margin-top: 2rem !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
-      z-index: 1;
-    }
+/* ─────────────────────────────────────────────
+   TOKENS CSS GLOBAIS — Svicero Studio (Fase 2)
+   Paleta: Estratégia & Design de Marcas
+───────────────────────────────────────────── */
+:root {
+  /* Fundos */
+  --ds-bg:           #FAF7F2;
+  --ds-surface:      #FFFFFF;
 
-    .blog-swiper .swiper-pagination-bullet {
-      background: theme('colors.cream') !important;
-      opacity: 1 !important;
-      transition: background 0.2s;
-    }
+  /* Textos */
+  --ds-text:         #222222;
+  --ds-muted:        #6B7280;
 
-    .blog-swiper .swiper-pagination-bullet-active {
-      background: theme('colors.secondary') !important;
-      opacity: 1 !important;
-    }
-  .services-swiper .swiper-pagination {
-    position: static !important;
-    margin-top: 2rem !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    z-index: 1;
-  }
+  /* Destaque coral (ação, CTA, ponto do logo) */
+  --ds-accent:       #FF7A59;
+  --ds-accent-hover: #E8633F;
 
-  .services-swiper .swiper-pagination-bullet {
-    background: theme('colors.cream') !important;
-    opacity: 1 !important;
-    transition: background 0.2s;
-  }
+  /* Destaque tech/azul (dados, IA, gráficos) */
+  --ds-tech:         #3B82F6;
+  --ds-tech-hover:   #2563EB;
 
-  .services-swiper .swiper-pagination-bullet-active {
-    background: theme('colors.secondary') !important;
-    opacity: 1 !important;
-  }
+  /* Estrutura */
+  --ds-border:       #E2E4E8;
+  --ds-divider:      #D1D5DB;
+}
+
+/* ─────────────────────────────────────────────
+   SWIPER — Blog
+───────────────────────────────────────────── */
+.blog-swiper .swiper-pagination {
+  position: static !important;
+  margin-top: 2rem !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 1;
+}
+
+.blog-swiper .swiper-pagination-bullet {
+  background: var(--ds-text) !important;
+  opacity: 0.3 !important;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.blog-swiper .swiper-pagination-bullet-active {
+  background: var(--ds-accent) !important;
+  opacity: 1 !important;
+}
+
+/* ─────────────────────────────────────────────
+   SWIPER — Services
+───────────────────────────────────────────── */
+.services-swiper .swiper-pagination {
+  position: static !important;
+  margin-top: 2rem !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 1;
+}
+
+.services-swiper .swiper-pagination-bullet {
+  background: var(--ds-text) !important;
+  opacity: 0.3 !important;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.services-swiper .swiper-pagination-bullet-active {
+  background: var(--ds-accent) !important;
+  opacity: 1 !important;
+}
 
 @layer base {
   html {
@@ -53,12 +87,15 @@
   }
 
   body {
-    @apply font-sans text-base font-normal leading-normal bg-bg-primary text-text-primary antialiased;
+    @apply font-sans text-base font-normal leading-normal antialiased;
+    background-color: var(--ds-bg);
+    color: var(--ds-text);
     position: relative;
     min-height: 100vh;
     overflow-x: hidden;
   }
 
+  /* Textura de noise — mantida, mas levíssima no novo fundo claro */
   body::before {
     content: '';
     position: fixed;
@@ -67,8 +104,8 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: 200px 200px;
     background-repeat: repeat;
-    mix-blend-mode: overlay;
-    opacity: 0.025;
+    mix-blend-mode: multiply;
+    opacity: 0.015; /* reduzido: no fundo claro o noise aparece mais */
     z-index: -1;
   }
 
@@ -80,10 +117,10 @@
 }
 
 @layer components {
-  /* Todas as classes CSS foram migradas para Tailwind */
-  /* Use classes utilitárias do Tailwind diretamente no JSX */
 
-  /* Swiper - Garantir mesma altura nos slides */
+  /* ─────────────────────────────────────────────
+     SWIPER — Base
+  ───────────────────────────────────────────── */
   .swiper-wrapper {
     @apply items-stretch;
   }
@@ -93,15 +130,14 @@
     display: flex;
   }
 
-  .swiper-slide>* {
+  .swiper-slide > * {
     width: 100%;
   }
 
-  /* Swiper - Botões de navegação */
   .swiper-button-prev,
   .swiper-button-next {
     --swiper-navigation-size: 24px;
-    --swiper-navigation-color: theme('colors.cream');
+    --swiper-navigation-color: var(--ds-text);
   }
 
   .swiper-button-prev::after,
@@ -109,54 +145,36 @@
     display: none;
   }
 
-  /* Depoimentos - Cards para Marquee */
-  .depoimentos-marquee-slide {
-    width: 400px !important;
+  /* ─────────────────────────────────────────────
+     SWIPER — Depoimentos
+  ───────────────────────────────────────────── */
+  .depoimentos-swiper .swiper-slide {
     height: auto;
-    display: flex;
+    width: 400px !important;
     flex-shrink: 0;
   }
 
   @media (max-width: 768px) {
-    .depoimentos-marquee-slide {
+    .depoimentos-swiper .swiper-slide {
       width: 300px !important;
     }
   }
 
   @media (min-width: 1024px) {
-    .depoimentos-marquee-slide {
+    .depoimentos-swiper .swiper-slide {
       min-height: 360px;
     }
   }
 
-  @keyframes infinite-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(calc(-100% - 2rem)); } /* gap is 2rem = 32px */
-  }
-
-  .animate-infinite-scroll {
-    animation: infinite-scroll 45s linear infinite;
-  }
-  
-  /* Pausa a animação ao passar o mouse */
-  .group:hover .animate-infinite-scroll {
-    animation-play-state: paused;
-  }
-
-
-
-  /* Garantir que o container não mostre overflow */
   .depoimentos-swiper {
     overflow: hidden !important;
   }
 
-  /* Efeito de rolagem infinita linear (Marquee) */
   .depoimentos-swiper .swiper-wrapper,
   .clients-marquee-swiper .swiper-wrapper {
     transition-timing-function: linear !important;
   }
 
-  /* Swiper Pagination Dots - garantir centralização e posição abaixo dos cards */
   .depoimentos-swiper .swiper-pagination {
     position: static !important;
     margin-top: 2rem !important;
@@ -169,34 +187,35 @@
   }
 
   .depoimentos-swiper .swiper-pagination-bullet {
-    background: theme('colors.cream') !important;
-    opacity: 1 !important;
-    transition: background 0.2s;
+    background: var(--ds-text) !important;
+    opacity: 0.3 !important;
+    transition: background 0.2s, opacity 0.2s;
   }
 
   .depoimentos-swiper .swiper-pagination-bullet-active {
-    background: theme('colors.secondary') !important;
+    background: var(--ds-accent) !important;
     opacity: 1 !important;
   }
 
-
-  /* Prose dark theme overrides */
+  /* ─────────────────────────────────────────────
+     PROSE — Tema claro (novo padrão)
+  ───────────────────────────────────────────── */
   .prose {
-    --tw-prose-body: #BBBBBB;
-    --tw-prose-headings: #EFEFEF;
-    --tw-prose-lead: #BBBBBB;
-    --tw-prose-links: #B87333;
-    --tw-prose-bold: #EFEFEF;
-    --tw-prose-counters: #888888;
-    --tw-prose-bullets: #888888;
-    --tw-prose-hr: #333333;
-    --tw-prose-quotes: #EFEFEF;
-    --tw-prose-quote-borders: #B87333;
-    --tw-prose-captions: #888888;
-    --tw-prose-code: #B87333;
-    --tw-prose-pre-code: #EFEFEF;
-    --tw-prose-pre-bg: #1E1E1E;
-    --tw-prose-th-borders: #333333;
-    --tw-prose-td-borders: #333333;
+    --tw-prose-body:          #444444;
+    --tw-prose-headings:      #222222;
+    --tw-prose-lead:          #555555;
+    --tw-prose-links:         #FF7A59;
+    --tw-prose-bold:          #222222;
+    --tw-prose-counters:      #6B7280;
+    --tw-prose-bullets:       #6B7280;
+    --tw-prose-hr:            #E2E4E8;
+    --tw-prose-quotes:        #222222;
+    --tw-prose-quote-borders: #FF7A59;
+    --tw-prose-captions:      #6B7280;
+    --tw-prose-code:          #FF7A59;
+    --tw-prose-pre-code:      #222222;
+    --tw-prose-pre-bg:        #F0EDE8;
+    --tw-prose-th-borders:    #E2E4E8;
+    --tw-prose-td-borders:    #E2E4E8;
   }
 }

@@ -145,10 +145,10 @@ const Admin = () => {
     <AdminLayout title="Visão Geral">
       {/* Welcome */}
       <div className="mb-8">
-        <h2 className="text-2xl font-semibold text-cream tracking-tight">
+        <h2 className="text-2xl font-semibold text-ds-text tracking-tight">
           Bem-vindo, {user?.email?.split('@')[0] || 'Admin'}
         </h2>
-        <p className="mt-1 text-sm text-muted">
+        <p className="mt-1 text-sm text-ds-muted">
           Último acesso: {lastAccess || '---'}
         </p>
       </div>
@@ -156,45 +156,46 @@ const Admin = () => {
       {/* Metric cards row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {metrics.map((m) => (
-          <div key={m.label} className="rounded-xl border border-white/5 bg-surface p-5 hover:border-white/10 transition-colors">
+          <div key={m.label} className="rounded-xl border border-white/5 bg-ds-surface p-5 hover:border-white/10 transition-colors">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-mono uppercase tracking-widest text-muted">{m.label}</span>
+              <span className="text-xs font-mono uppercase tracking-widest text-ds-muted">{m.label}</span>
               <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${m.bg}`}>
                 <i className={`${m.icon} text-sm ${m.color}`}></i>
               </div>
             </div>
-            <div className="text-3xl font-semibold text-cream tracking-tight">
+            <div className="text-3xl font-semibold text-ds-text tracking-tight">
               {m.value !== null ? m.value : '—'}
             </div>
-            <p className="mt-1 text-xs text-muted">{m.suffix}</p>
+            <p className="mt-1 text-xs text-ds-muted">{m.suffix}</p>
           </div>
         ))}
       </div>
 
       {/* Section navigation grid */}
       <div className="mb-4">
-        <h3 className="text-sm font-mono uppercase tracking-widest text-muted mb-4">Gerenciar</h3>
+        <h3 className="text-sm font-mono uppercase tracking-widest text-ds-muted mb-4">Gerenciar</h3>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {sections.map((s) => (
           <Link
             key={s.title}
             to={s.link}
-            className="group rounded-xl border border-white/5 bg-surface p-5 hover:border-copper/30 hover:bg-card transition-all"
+            className="group rounded-xl border border-white/5 bg-ds-surface p-5 hover:border-ds-accent/30 hover:bg-ds-surface transition-all"
           >
             <div className="flex items-start justify-between mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-copper/10 border border-copper/20 group-hover:bg-copper/20 transition-colors">
-                <i className={`${s.icon} text-copper text-base`}></i>
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-ds-accent/10 border border-ds-accent/20 group-hover:bg-ds-accent/20 transition-colors">
+                <i className={`${s.icon} text-ds-accent text-base`}></i>
               </div>
-              <span className="text-xs text-muted tabular-nums">
+              <span className="text-xs text-ds-muted tabular-nums">
                 {s.count !== null ? s.count : '—'} {s.countLabel}
               </span>
             </div>
-            <h4 className="text-base font-semibold text-cream mb-1 group-hover:text-copper-light transition-colors">
+            {/* TODO: revisar cor (sem equivalente claro no mapeamento) */}
+            <h4 className="text-base font-semibold text-ds-text mb-1 group-hover:text-copper-light transition-colors">
               {s.title}
             </h4>
-            <p className="text-sm text-muted leading-relaxed">{s.desc}</p>
-            <div className="mt-4 flex items-center gap-1.5 text-xs font-medium text-copper opacity-0 group-hover:opacity-100 transition-opacity">
+            <p className="text-sm text-ds-muted leading-relaxed">{s.desc}</p>
+            <div className="mt-4 flex items-center gap-1.5 text-xs font-medium text-ds-accent opacity-0 group-hover:opacity-100 transition-opacity">
               Acessar <i className="fa-solid fa-arrow-right text-[10px]"></i>
             </div>
           </Link>

@@ -64,14 +64,14 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       role="button"
       tabIndex={0}
       aria-label={`Ver projeto ${project.titulo}`}
-      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-copper/40 bg-[#141414]/80 backdrop-blur-md rounded-3xl flex flex-col ${
+      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-ds-accent/40 bg-[#141414]/80 backdrop-blur-md rounded-3xl flex flex-col ${
         isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "aspect-square"
       }`}
       style={{ transition: 'transform 0.5s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out', transformStyle: 'preserve-3d' }}
     >
       {/* Container da Imagem */}
       <div className={`relative overflow-hidden ${isFeatured ? "md:w-3/5 order-1 md:order-1" : "w-full h-1/2 flex-none order-1"}`} style={{ transform: 'translateZ(20px)' }}>
-        <div className="absolute inset-0 bg-copper/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-ds-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>
         {project.imagem_url ? (
           <img
             src={project.imagem_url}
@@ -89,19 +89,19 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       {/* Container do Conteúdo */}
       <div className={`relative z-20 flex flex-col justify-center p-8 lg:p-12 ${isFeatured ? "md:w-2/5 order-2 border-t md:border-t-0 md:border-l border-white/5 bg-[#141414]" : "h-1/2 flex-none order-2 border-t border-white/5 bg-[#141414]"}`} style={{ transform: 'translateZ(30px)' }}>
         <div className="flex items-center justify-between mb-6">
-          <span className="text-[10px] font-mono text-copper uppercase tracking-widest bg-copper/10 px-4 py-1.5 rounded-full border border-copper/20">
+          <span className="text-[10px] font-mono text-ds-accent uppercase tracking-widest bg-ds-accent/10 px-4 py-1.5 rounded-full border border-ds-accent/20">
             {project.categoria || "Case Study"}
           </span>
-          <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-copper group-hover:border-copper transition-all duration-300 shadow-[0_0_15px_rgba(184,115,51,0)] group-hover:shadow-[0_0_15px_rgba(184,115,51,0.5)]">
-            <i className="fa-solid fa-arrow-right text-muted text-xs group-hover:text-white transition-colors -rotate-45 group-hover:rotate-0 duration-300"></i>
+          <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-ds-accent group-hover:border-ds-accent transition-all duration-300 shadow-[0_0_15px_rgba(184,115,51,0)] group-hover:shadow-[0_0_15px_rgba(184,115,51,0.5)]">
+            <i className="fa-solid fa-arrow-right text-ds-muted text-xs group-hover:text-white transition-colors -rotate-45 group-hover:rotate-0 duration-300"></i>
           </div>
         </div>
 
-        <h3 className={`text-cream font-medium tracking-tight leading-[1.1] mb-4 ${isFeatured ? "text-3xl md:text-[2.5rem]" : "text-2xl"}`}>
+        <h3 className={`text-ds-text font-medium tracking-tight leading-[1.1] mb-4 ${isFeatured ? "text-3xl md:text-[2.5rem]" : "text-2xl"}`}>
           {project.titulo}
         </h3>
 
-        <div className="mt-auto pt-6 flex items-center gap-3 text-sm font-bold uppercase tracking-[.15em] text-muted group-hover:text-copper transition-colors duration-300">
+        <div className="mt-auto pt-6 flex items-center gap-3 text-sm font-bold uppercase tracking-[.15em] text-ds-muted group-hover:text-ds-accent transition-colors duration-300">
           Estudo de Caso
         </div>
       </div>
@@ -142,7 +142,7 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="bg-charcoal min-h-screen text-cream font-body">
+    <div className="bg-ds-bg min-h-screen text-ds-text font-body">
       <SEOHelmet
         title="Estudos de Caso — Estratégia de Posicionamento de Marca"
         description="Casos de clínicas e projetos que reposicionamos para atrair o público particular e justificar orçamentos de alto ticket."
@@ -153,14 +153,14 @@ const Portfolio = () => {
       {/* Hero Section */}
       <section className={`${container} py-14 sm:py-16 lg:py-24 text-center`}>
         <ScrollReveal direction="up" delay={0.1}>
-          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-            <span className="w-1.5 h-1.5 rounded-full bg-copper shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
+          <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
+            <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
             CASES E ESTUDOS DE POSICIONAMENTO
           </span>
-          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-cream mb-6 text-balance">
+          <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-ds-text mb-6 text-balance">
             Projetos que alinham imagem clínica e valor comercial
           </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-muted">
+          <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-ds-muted">
             Aplicações práticas da nossa metodologia. Construímos marcas institucionais fortes para justificar o valor da sua tabela de tratamentos e atrair o público de alto ticket.
           </p>
         </ScrollReveal>
@@ -191,10 +191,10 @@ const Portfolio = () => {
         <section className="border-t border-white/5 bg-[#101010]/50 py-20 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <ScrollReveal direction="up" delay={0.1}>
-              <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-cream mb-4">
+              <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-ds-text mb-4">
                 Histórico de Projetos Corporativos
               </h2>
-              <p className="text-base text-muted max-w-2xl mx-auto mb-12 leading-relaxed">
+              <p className="text-base text-ds-muted max-w-2xl mx-auto mb-12 leading-relaxed">
                 Antes de concentrar a atuação do estúdio no mercado de saúde e clínicas odontológicas, desenvolvemos marcas e produtos digitais para múltiplos setores empresariais. Esse background multidisciplinar confere a precisão analítica que aplicamos hoje no ambiente clínico.
               </p>
               
@@ -204,7 +204,7 @@ const Portfolio = () => {
                   <div 
                     key={proj.id}
                     onClick={() => handleOpenModal(proj)}
-                    className="relative overflow-hidden p-5 rounded-2xl border border-white/5 bg-[#141414] hover:border-copper/30 cursor-pointer transition-all duration-300 flex flex-col justify-between h-32 group"
+                    className="relative overflow-hidden p-5 rounded-2xl border border-white/5 bg-[#141414] hover:border-ds-accent/30 cursor-pointer transition-all duration-300 flex flex-col justify-between h-32 group"
                   >
                     {proj.imagem_url && (
                       <>
@@ -218,10 +218,10 @@ const Portfolio = () => {
                       </>
                     )}
                     <div className="relative z-20 flex flex-col h-full justify-between">
-                      <span className="text-[10px] font-mono text-white/70 uppercase group-hover:text-copper transition-colors drop-shadow-md">
+                      <span className="text-[10px] font-mono text-white/70 uppercase group-hover:text-ds-accent transition-colors drop-shadow-md">
                         {proj.categoria || "Corporativo"}
                       </span>
-                      <h4 className="text-sm font-medium text-cream line-clamp-2 mt-2 drop-shadow-md">
+                      <h4 className="text-sm font-medium text-ds-text line-clamp-2 mt-2 drop-shadow-md">
                         {proj.titulo}
                       </h4>
                     </div>

@@ -172,7 +172,7 @@ const Home = () => {
         description="Estúdio de estratégia de marca e design que ajuda empresas que já vendem a reposicionar a marca, justificar preços mais altos e atrair clientes melhores."
         canonical="https://svicerostudio.com.br"
       />
-      <div className="bg-charcoal text-cream min-h-screen font-body">
+      <div className="bg-ds-bg text-ds-text min-h-screen font-body">
         <Header />
 
         <a
@@ -188,21 +188,21 @@ const Home = () => {
         <HeroSection />
 
         {/* Triade Section */}
-        <section id="triade" className="py-24 px-4 md:px-16 bg-surface font-body border-t border-white/5">
+        <section id="triade" className="py-24 px-4 md:px-16 bg-ds-surface font-body border-t border-white/5">
           <div className="max-w-screen-xl mx-auto">
 
             {/* CABEÇALHO DA SEÇÃO */}
             <ScrollReveal direction="up" delay={0.1}>
               <div className="container max-w-5xl text-left mb-16">
-                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-copper/25 bg-copper/5 text-[11px] font-mono uppercase tracking-[.2em] text-copper">
-                  <span className="w-1.5 h-1.5 rounded-full bg-copper" />
+                <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
+                  <span className="w-1.5 h-1.5 rounded-full bg-ds-accent" />
                   METODOLOGIA
                 </span>
-                <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-cream text-left">
+                <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-ds-text text-left">
                   Como o Svicero Studio trabalha
                 </h2>
-                <p className="mt-6 text-xl font-normal leading-[1.6] text-muted text-left">
-                  Começamos pelo seu <span className="font-semibold text-cream">modelo de negócios</span>, passamos pela <span className="font-semibold text-cream">estratégia de posicionamento</span> e só então chegamos ao <span className="font-semibold text-cream">design de grife</span>. Nessa ordem, sempre.
+                <p className="mt-6 text-xl font-normal leading-[1.6] text-ds-muted text-left">
+                  Começamos pelo seu <span className="font-semibold text-ds-text">modelo de negócios</span>, passamos pela <span className="font-semibold text-ds-text">estratégia de posicionamento</span> e só então chegamos ao <span className="font-semibold text-ds-text">design de grife</span>. Nessa ordem, sempre.
                 </p>
               </div>
             </ScrollReveal>
@@ -212,12 +212,12 @@ const Home = () => {
 
               {/* PILAR 01 */}
               <ScrollReveal direction="up" delay={0.1}>
-                <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500 h-full">
-                  <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">01</span>
-                  <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
+                <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-ds-border/50 rounded-3xl hover:shadow-xl hover:border-ds-border/50 transition-all duration-500 h-full">
+                  <span className="text-5xl md:text-6xl text-ds-accent/30 mb-4 block">01</span>
+                  <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-ds-text mt-2">
                     Diagnóstico de Percepção
                   </h3>
-                  <p className="text-base font-normal leading-[1.6] text-muted mt-4">
+                  <p className="text-base font-normal leading-[1.6] text-ds-muted mt-4">
                     Antes de qualquer decisão visual, analisamos os pontos cegos da sua imagem atual: onde a sua comunicação está fazendo você perder lucros e atrair pacientes focados apenas em descontos.
                   </p>
                 </div>
@@ -225,12 +225,12 @@ const Home = () => {
 
               {/* PILAR 02 */}
               <ScrollReveal direction="up" delay={0.2}>
-                <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500 h-full">
-                  <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">02</span>
-                  <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
+                <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-ds-border/50 rounded-3xl hover:shadow-xl hover:border-ds-border/50 transition-all duration-500 h-full">
+                  <span className="text-5xl md:text-6xl text-ds-accent/30 mb-4 block">02</span>
+                  <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-ds-text mt-2">
                     Engenharia de Marca
                   </h3>
-                  <p className="text-base font-normal leading-[1.6] text-muted mt-4">
+                  <p className="text-base font-normal leading-[1.6] text-ds-muted mt-4">
                     Definimos as regras de valor da sua clínica. Alinhamos os códigos visuais e verbais necessários para atrair o público particular premium e blindar a sua tabela de preços contra o mercado popular.
                   </p>
                 </div>
@@ -238,12 +238,12 @@ const Home = () => {
 
               {/* PILAR 03 */}
               <ScrollReveal direction="up" delay={0.3}>
-                <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-3xl hover:shadow-xl hover:border-white/10 transition-all duration-500 h-full">
-                  <span className="font-mono text-5xl md:text-6xl text-copper/30 mb-4 block">03</span>
-                  <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-cream mt-2">
+                <div className="flex flex-col items-center text-center p-8 bg-[#f4f4f4]/10 backdrop-blur-xl border border-ds-border/50 rounded-3xl hover:shadow-xl hover:border-ds-border/50 transition-all duration-500 h-full">
+                  <span className="text-5xl md:text-6xl text-ds-accent/30 mb-4 block">03</span>
+                  <h3 className="text-[1.875rem] font-medium tracking-tight leading-[1.25] text-ds-text mt-2">
                     Presença Comercial Blindada
                   </h3>
-                  <p className="text-base font-normal leading-[1.6] text-muted mt-4">
+                  <p className="text-base font-normal leading-[1.6] text-ds-muted mt-4">
                     Com a estratégia consolidada, criamos a sua nova identidade visual moderna e os materiais digitais de suporte que servem como ferramenta de fechamento para orçamentos de alto ticket.
                   </p>
                 </div>
@@ -253,51 +253,51 @@ const Home = () => {
             {/* CARD "PARA QUEM É" */}
             <ScrollReveal direction="up" delay={0.2} duration={0.8}>
               <div className="bg-[#f4f4f4]/10 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 md:p-10 mt-32 mb-8 max-w-4xl mx-auto flex flex-col shadow-xl">
-                <h2 className="text-[1.875rem] font-medium tracking-tight text-cream mb-3">
+                <h2 className="text-[1.875rem] font-medium tracking-tight text-ds-text mb-3">
                   Para quem é
                 </h2>
-                <div className="text-xl font-normal leading-[1.6] text-muted mb-10">
+                <div className="text-xl font-normal leading-[1.6] text-ds-muted mb-10">
                   Trabalhamos exclusivamente com donos de clínicas odontológicas e ortodontistas que já possuem excelência clínica, mas entendem que um posicionamento fraco custa caro para o faturamento do negócio.
                 </div>
 
-                <h3 className="text-base font-semibold text-cream mb-6 uppercase tracking-wider">
+                <h3 className="text-base font-semibold text-ds-text mb-6 uppercase tracking-wider">
                   Faz sentido conversarmos se:
                 </h3>
 
-                <ul className="text-base font-normal leading-[1.6] text-muted mb-10 space-y-4">
+                <ul className="text-base font-normal leading-[1.6] text-ds-muted mb-10 space-y-4">
                   <li className="flex items-start gap-4">
-                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-copper" />
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-ds-accent/10 flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-ds-accent" />
                     </span>
                     Sua entrega técnica e infraestrutura são excelentes, mas a sua marca atual não reflete o nível e o rigor dos seus tratamentos.
                   </li>
                   <li className="flex items-start gap-4">
-                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-copper" />
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-ds-accent/10 flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-ds-accent" />
                     </span>
                     Pacientes em potencial aparecem, mas costumam questionar seus preços ou comparar seu orçamento com clínicas populares da região.
                   </li>
                   <li className="flex items-start gap-4">
-                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-copper" />
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-ds-accent/10 flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-ds-accent" />
                     </span>
                     A comunicação visual da sua clínica parece genérica ou dependente de templates prontos, sem um diferencial óbvio de autoridade.
                   </li>
                   <li className="flex items-start gap-4">
-                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-copper" />
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-ds-accent/10 flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-ds-accent" />
                     </span>
                     Você deseja construir uma barreira estética de valor que pré-eduque o paciente particular sobre os seus preços antes mesmo de sentar na cadeira.
                   </li>
                   <li className="flex items-start gap-4">
-                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-copper/10 flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-copper" />
+                    <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-ds-accent/10 flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-ds-accent" />
                     </span>
                     Você procura um parceiro estratégico que entenda de percepção de negócios, e não um mero executor de logotipos genéricos.
                   </li>
                 </ul>
 
-                <div className="border-t border-white/5 pt-8 mb-8 text-muted">
+                <div className="border-t border-white/5 pt-8 mb-8 text-ds-muted">
                   Se você se identificou em dois ou mais pontos, a sua clínica está sofrendo com ruído de valor. Vale a pena conversarmos.
                 </div>
 
