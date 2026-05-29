@@ -145,7 +145,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                 <div className="absolute left-4 top-4 lg:left-8 lg:top-8 z-10">
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-surface/80 backdrop-blur text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent shadow-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-                    Projeto selecionado
+                    {project.categoria || 'Projeto selecionado'}
                   </div>
                 </div>
 

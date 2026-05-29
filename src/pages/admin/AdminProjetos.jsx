@@ -737,20 +737,20 @@ const AdminProjetos = () => {
             {/* Links */}
             <AdminSectionCard badge="Links & Ações" paddingClassName="p-5">
               <label className="block">
-                <span className={labelClass}>Link principal</span>
-                <input type="text" name="link" value={form.link} onChange={handleFieldChange} className={inputClass} placeholder="https://..." />
+                <span className={adminLabelClass}>Link principal</span>
+                <input type="text" name="link" value={form.link} onChange={handleFieldChange} className={adminInputClass} placeholder="https://..." />
               </label>
               <label className="block">
-                <span className={labelClass}>Texto do botão</span>
-                <input type="text" name="button_text" value={form.button_text} onChange={handleFieldChange} className={inputClass} placeholder="Ver Projeto" />
+                <span className={adminLabelClass}>Texto do botão</span>
+                <input type="text" name="button_text" value={form.button_text} onChange={handleFieldChange} className={adminInputClass} placeholder="Ver Projeto" />
               </label>
               <label className="block">
-                <span className={labelClass}>Segundo Link</span>
-                <input type="text" name="link2" value={form.link2} onChange={handleFieldChange} className={inputClass} placeholder="https://..." />
+                <span className={adminLabelClass}>Segundo Link</span>
+                <input type="text" name="link2" value={form.link2} onChange={handleFieldChange} className={adminInputClass} placeholder="https://..." />
               </label>
               <label className="block">
-                <span className={labelClass}>Texto do 2º botão</span>
-                <input type="text" name="button_text2" value={form.button_text2} onChange={handleFieldChange} className={inputClass} placeholder="Texto alternativo" />
+                <span className={adminLabelClass}>Texto do 2º botão</span>
+                <input type="text" name="button_text2" value={form.button_text2} onChange={handleFieldChange} className={adminInputClass} placeholder="Texto alternativo" />
               </label>
             </AdminSectionCard>
 
