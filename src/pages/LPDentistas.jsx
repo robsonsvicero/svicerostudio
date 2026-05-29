@@ -62,15 +62,15 @@ const HeroSection = (
         </Button>
       </div>
 
-      {/* Lado Direito (Imagem) - Esconde no Mobile, aparece a partir do Medium */}
-      <div className="w-full md:w-1/2 hidden md:flex justify-end relative">
+      {/* Lado Direito (Imagem) - Exibe também no mobile */}
+      <div className="w-full md:w-1/2 flex justify-center md:justify-end relative">
         {/* Efeito de brilho/sombra atrás da imagem */}
         <div className="absolute -inset-4 bg-ds-accent/20 blur-2xl rounded-full opacity-30"></div>
         
         <img 
           src={imageConsultorio} 
           alt="Consultório Odontológico Premium" 
-          className="w-full max-w-[600px] aspect-[4/5] object-cover rounded-lg shadow-2xl border border-ds-border z-10 relative"
+          className="w-full max-w-[420px] md:max-w-[600px] aspect-[4/5] object-cover rounded-lg shadow-2xl border border-ds-border z-10 relative"
           loading="lazy"
         />
       </div>
