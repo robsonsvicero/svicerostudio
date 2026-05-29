@@ -1,23 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import logoBranco from '../../assets/logo_horizontal.png';
+import logoBranco from '../../assets/logo-vertical1.png';
 
 const Footer = () => {
   return (
     <footer className="w-full bg-ds-text text-ds-bg pt-14 sm:pt-16 pb-8 px-4 sm:px-6 md:px-12 lg:px-20 font-body relative overflow-hidden border-t border-white/5">
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-ds-accent/5 rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20">
+      <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-12 md:gap-20">
         {/* Coluna esquerda: logo, texto, redes */}
         <div className="flex-1 min-w-0 flex flex-col gap-6">
           <div className="mb-2">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <a href="/#inicio" onClick={(e) => handleNavigation(e, 'inicio')}>
+              <a href="/#inicio" onClick={(e) => handleNavigation(e, 'inicio')} className="flex justify-center items-center lg:justify-start">
                 <img
                   src={logoBranco}
                   alt="Logo Svicero Studio"
-                  className="h-12 sm:h-14 md:h-16 w-auto mb-4 md:mb-6 transition-all duration-300"
+                  className="h-28 md:h-36 w-auto mb-4 md:mb-6 transition-all duration-300"
                 />
               </a>
             </div>
