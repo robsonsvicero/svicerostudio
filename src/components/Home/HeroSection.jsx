@@ -73,7 +73,7 @@ const Hero = () => {
               <img
                 key={index}
                 src={bg}
-                alt="Portfólio Svicero Studio"
+                alt="Projetos Svicero Studio"
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
                   index === currentBgIndex ? "opacity-100" : "opacity-0"
                 }`}

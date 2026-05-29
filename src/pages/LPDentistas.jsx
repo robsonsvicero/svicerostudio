@@ -448,7 +448,7 @@ const CTAFinalSection = () => {
                 </div>
 
                  <div>
-                  <label className={labelClass}>Link do site, Instagram ou portfólio</label>
+                  <label className={labelClass}>Link do site, Instagram ou projetos</label>
                   <input
                     name="link"
                     value={form.link}

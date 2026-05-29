@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import BackToTopButton from './components/UI/BackToTopButton';
 import { AuthProvider } from './contexts/AuthContext';
@@ -22,7 +22,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const Privacidade = lazy(() => import('./pages/Privacidade'));
 const Termos = lazy(() => import('./pages/Termos'));
 const ExclusaoDados = lazy(() => import('./pages/ExclusaoDados'));
-const Portfolio = lazy(() => import('./pages/Portfolio'));
+const Projetos = lazy(() => import('./pages/Projetos'));
 const PacoteMarca = lazy(() => import('./pages/PacoteMarca'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const FormularioInteresse = lazy(() => import('./pages/FormularioInteresse'));
@@ -103,7 +103,8 @@ function App() {
                   </ProtectedRoute>
                 } 
               />
-              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/projetos" element={<Projetos />} />
+              <Route path="/portfolio/*" element={<Navigate to="/projetos" replace />} />
               <Route path="/pacote-marca" element={<PacoteMarca />} />
               <Route 
                 path="/admin/faq" 

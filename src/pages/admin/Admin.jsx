@@ -134,7 +134,7 @@ const Admin = () => {
   ];
 
   const sections = [
-    { title: 'Projetos', desc: 'Cases, capas e destaques do portfólio', icon: 'fa-solid fa-folder-open', link: '/admin/projetos', count: projectCount, countLabel: 'ativos' },
+    { title: 'Projetos', desc: 'Cases, capas e destaques dos projetos', icon: 'fa-solid fa-folder-open', link: '/admin/projetos', count: projectCount, countLabel: 'ativos' },
     { title: 'Blog', desc: 'Artigos, rascunhos e conteúdo editorial', icon: 'fa-solid fa-newspaper', link: '/admin/blog', count: postCount, countLabel: 'artigos' },
     { title: 'Depoimentos', desc: 'Provas sociais e feedbacks', icon: 'fa-solid fa-comment-dots', link: '/admin/depoimentos', count: testimonialCount, countLabel: 'publicados' },
     { title: 'Autores', desc: 'Perfis, bios e assinaturas', icon: 'fa-solid fa-user-tie', link: '/admin/autores', count: authorCount, countLabel: 'perfis' },

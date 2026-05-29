@@ -261,7 +261,13 @@ const Processos = () => {
         )}
 
         {/* CTA FINAL */}
-        <CTAFinal />
+        <CTAFinal
+          secondaryCta={{
+            label: 'Ver projetos',
+            href: '/projetos',
+            variant: 'outline',
+          }}
+        />
       </main>
       <Footer />
     </div>

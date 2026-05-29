@@ -46,21 +46,21 @@ const Home = () => {
       alt: 'Card Designer',
       badge: { text: 'Branding & Identidade', className: 'designer text-[15px] font-medium text-[#FF9BAA] bg-[#FF9BAA]/20' },
       title: 'Arquitetura de marca para ampliar percepção de valor e desejo.',
-      link: '/portfolio'
+      link: '/projetos'
     },
     {
       img: uiDesigner,
       alt: 'Card UI designer',
       badge: { text: 'UI & UX', className: 'ui-ux text-[15px] font-medium text-[#7EC8E3] bg-[#7EC8E3]/20' },
       title: 'Experiências digitais que reduzem fricção e elevam conversão qualificada.',
-      link: '/portfolio'
+      link: '/projetos'
     },
     {
       img: developer,
       alt: 'Card Web Design',
       badge: { text: 'Web Design', className: 'developer text-[15px] font-medium text-[#6FCF97] bg-[#6FCF97]/20' },
       title: 'Infraestrutura web de alta performance para operações premium.',
-      link: '/portfolio'
+      link: '/projetos'
     },
   ];
 
@@ -345,8 +345,8 @@ const Home = () => {
                   <Button variant="primary" href="/formulario-interesse" className="w-full">
                     Agendar Diagnóstico
                   </Button>
-                  <Button variant="outline" href="/processos" className="w-full">
-                    Ver Casos de Estudo
+                  <Button variant="outline" href="/projetos" className="w-full">
+                    Ver Projetos
                   </Button>
                 </div>
               </div>

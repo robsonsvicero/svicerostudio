@@ -115,7 +115,7 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
   );
 };
 
-const Portfolio = () => {
+const Projetos = () => {
   const [activeProjects, setActiveProjects] = useState([]);
   const [archivedProjects, setArchivedProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -255,4 +255,4 @@ const Portfolio = () => {
   );
 };
 
-export default Portfolio;
+export default Projetos;

@@ -1,6 +1,6 @@
 # 🎨 Svicero Studio - Engenharia Visual & Design Estratégico
 
-Svicero Studio é uma plataforma de portfólio, blog corporativo e serviços de design estratégico focada em posicionamento de marcas de elite (High-Ticket). O projeto atua com excelência, do diagnóstico à presença digital, combinando uma interface moderna (Front-end) com gerenciamento de conteúdo completo através de um painel administrativo (Back-end).
+Svicero Studio é uma plataforma de projetos, blog corporativo e serviços de design estratégico focada em posicionamento de marcas de elite (High-Ticket). O projeto atua com excelência, do diagnóstico à presença digital, combinando uma interface moderna (Front-end) com gerenciamento de conteúdo completo através de um painel administrativo (Back-end).
 
 ![Preview do Projeto](./src/images/preview.webp)
 
@@ -17,7 +17,7 @@ Svicero Studio é uma plataforma de portfólio, blog corporativo e serviços de 
 
 ## 📌 Descrição do Projeto
 
-Desenvolvido para **Svicero Studio**, este projeto funciona tanto como um portfólio interativo quanto uma plataforma de atração e conversão contínua. Ele reflete a filosofia da marca: começar pelo negócio, passando por estratégia e culminando no design visual impecável.
+Desenvolvido para **Svicero Studio**, este projeto funciona tanto como uma vitrine de projetos quanto uma plataforma de atração e conversão contínua. Ele reflete a filosofia da marca: começar pelo negócio, passando por estratégia e culminando no design visual impecável.
 
 A aplicação conta com animações perfeitamente sincronizadas ao longo da rolagem, formulários integrados e um sistema robusto no backend para gerenciamento dinâmico de depoimentos, projetos de sucesso, comentários e postagens no blog corporativo.
 

@@ -1,7 +1,21 @@
 import Button from './UI/Button';
 import ScrollReveal from './UI/ScrollReveal';
 
-const CTAFinal = () => {
+const CTAFinal = ({ primaryCta, secondaryCta }) => {
+  const primary = {
+    label: 'Agendar Diagnóstico',
+    href: '/formulario-interesse',
+    variant: 'primary',
+    ...primaryCta,
+  };
+
+  const secondary = {
+    label: 'Conheça o processo',
+    href: '/processos',
+    variant: 'outline',
+    ...secondaryCta,
+  };
+
   const ctaCardBackground = {
     background: `
       radial-gradient(52% 58% at 18% 20%, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.04) 36%, rgba(59,130,246,0) 72%),
@@ -25,16 +39,16 @@ const CTAFinal = () => {
 
           <div className="flex flex-col md:flex-row gap-4 mt-2 relative z-10">
             <Button
-              variant='primary'
-              href="/formulario-interesse"
+              variant={primary.variant}
+              href={primary.href}
             >
-              Agendar Diagnóstico
+              {primary.label}
             </Button>
             <Button
-              variant='outline'
-              href="/processos"
+              variant={secondary.variant}
+              href={secondary.href}
             >
-              Conheça o processo
+              {secondary.label}
             </Button>
           </div>
 

@@ -268,7 +268,7 @@ const FormularioInteresse = () => {
 
               <div>
                 <label className={labelClass}>
-                  Link do site, Instagram ou portfólio
+                  Link do site, Instagram ou projetos
                 </label>
                 <input
                   name="link"

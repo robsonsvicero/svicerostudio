@@ -42,7 +42,7 @@ const ServicePage = ({
               <div className="mt-10 flex flex-col gap-3 sm:flex-row">
                 {/* Botão Diagnostico removido */}
                 <Button 
-                  href="/portfolio"
+                  href="/projetos"
                   variant='outline'>
                   Ver projetos entregues
                 </Button>
@@ -97,12 +97,12 @@ const ServicePage = ({
           <ScrollReveal direction="up" delay={0.1}>
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Portfólio</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-[#E9BF84]">Projetos</p>
                 <h2 className="mt-3 font-[DM Sans] text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[-0.04em] text-white text-balance">
                   Projetos entregues
                 </h2>
               </div>
-              <a href="/portfolio" className="hidden rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white/75 transition hover:bg-white/8 lg:block">
+              <a href="/projetos" className="hidden rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white/75 transition hover:bg-white/8 lg:block">
                 Ver todos
               </a>
             </div>

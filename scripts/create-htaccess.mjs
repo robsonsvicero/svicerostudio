@@ -8,6 +8,8 @@ const content = `# SPA routing for Hostinger/Apache
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+  RewriteRule ^portfolio/?$ /projetos [R=301,L,NC]
+  RewriteRule ^portfolio/(.*)$ /projetos/$1 [R=301,L,NC]
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

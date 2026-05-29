@@ -39,7 +39,7 @@ const Termos = () => {
                 </h2>
                 <div className="space-y-4 text-ds-muted leading-[1.6]">
                   <p>1.1. O site Svicero Studio é mantido por Svicero Studio (doravante denominado simplesmente “Estúdio”), um estúdio de estratégia de marca e design focado em posicionamento e percepção de valor.</p>
-                  <p>1.2. Estes Termos de Uso regulam o acesso e uso do site, bem como a forma de utilização das informações e conteúdos disponibilizados, incluindo textos, imagens, cases, portfólio, materiais educativos e demais conteúdos relacionados a branding e design.</p>
+                  <p>1.2. Estes Termos de Uso regulam o acesso e uso do site, bem como a forma de utilização das informações e conteúdos disponibilizados, incluindo textos, imagens, cases, projetos, materiais educativos e demais conteúdos relacionados a branding e design.</p>
                   <p>1.3. Ao utilizar o site, o usuário declara ter lido, compreendido e aceito integralmente estes Termos.</p>
                 </div>
               </section>
@@ -65,7 +65,7 @@ const Termos = () => {
                   3. Conteúdos e Propriedade Intelectual
                 </h2>
                 <div className="space-y-4 text-ds-muted leading-[1.6]">
-                  <p>3.1. Todos os conteúdos disponibilizados neste site, incluindo, mas não se limitando a textos, imagens, marcas, logos, elementos gráficos, projetos, cases, portfólios, apresentações, vídeos, áudios, layouts e demais materiais relacionados à estratégia de marca e design, são de propriedade exclusiva do Estúdio ou de terceiros licenciantes, protegidos pelas leis de direitos autorais, marcas e propriedade intelectual.</p>
+                  <p>3.1. Todos os conteúdos disponibilizados neste site, incluindo, mas não se limitando a textos, imagens, marcas, logos, elementos gráficos, projetos, cases, apresentações, vídeos, áudios, layouts e demais materiais relacionados à estratégia de marca e design, são de propriedade exclusiva do Estúdio ou de terceiros licenciantes, protegidos pelas leis de direitos autorais, marcas e propriedade intelectual.</p>
                   <p>3.2. É vedada qualquer reprodução, distribuição, exibição, transmissão, publicação, criação de obras derivadas ou qualquer outra forma de utilização dos conteúdos deste site sem autorização expressa e por escrito do Estúdio, exceto nos casos permitidos pela legislação (uso estritamente pessoal, sem fins comerciais, e desde que mantida a integridade e a autoria dos conteúdos).</p>
                   <p>3.3. O uso indevido de qualquer conteúdo poderá acarretar medidas administrativas, civis e criminais cabíveis.</p>
                   <p>3.4. Cases e projetos apresentados no site podem ter informações suprimidas ou adaptadas por questões de confidencialidade e estratégia, não representando necessariamente todas as etapas ou entregas envolvidas em cada projeto real.</p>

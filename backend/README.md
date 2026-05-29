@@ -1,6 +1,6 @@
 # Svicero Studio - Backend
 
-API Node.js/Express para o portfólio Svicero Studio com suporte a Mongoose (MongoDB), JWT, AWS S3, e-mail e muito mais.
+API Node.js/Express para os projetos Svicero Studio com suporte a Mongoose (MongoDB), JWT, AWS S3, e-mail e muito mais.
 
 ## Instalação
 

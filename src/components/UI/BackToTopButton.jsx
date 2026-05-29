@@ -11,7 +11,7 @@ const ENABLED_PATHS = new Set([
   '/formulario-interesse',
   '/lp-dentistas',
   '/pacote-marca',
-  '/portfolio',
+  '/projetos',
   '/processos',
 ]);
 
