@@ -34,7 +34,7 @@ const Header = () => {
               <img
                 src={logo}
                 alt="Svicero Studio Logo"
-                className="h-16 w-auto object-contain brightness-0 invert"
+                className="h-20 w-auto object-contain brightness-0 invert"
               />
           </a>
         </div>
@@ -44,7 +44,7 @@ const Header = () => {
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
-            className="group flex items-center gap-3 text-sm font-bold tracking-[0.3em] text-white bg-ds-accent hover:bg-ds-accent-hover transition-colors px-5 py-2 rounded-full"
+            className="group flex items-center gap-3 text-sm font-bold tracking-[0.3em] text-white bg-ds-accent hover:bg-ds-accent-hover transition-colors px-6 py-4 rounded-full"
           >
             <span className="w-8 h-[1px] bg-white/40 group-hover:w-12 transition-all"></span>
             MENU

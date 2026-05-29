@@ -32,9 +32,9 @@ const CTAFinal = () => {
             </Button>
             <Button
               variant='outline'
-              href="/processo"
+              href="/processos"
             >
-              Conhecer nosso processo
+              Conheça o processo
             </Button>
           </div>
 

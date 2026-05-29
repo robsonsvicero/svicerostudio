@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import logoPreloader from '../assets/svicero-simbolo.png';
+import logoPreloader from '../assets/simbolo1.png';
 
 
 const Preloader = () => {

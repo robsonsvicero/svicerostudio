@@ -65,12 +65,12 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       role="button"
       tabIndex={0}
       aria-label={`Ver projeto ${project.titulo}`}
-      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-ds-border hover:border-ds-accent/40 bg-ds-surface rounded-3xl flex flex-col ${isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "aspect-square"
+      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-ds-border hover:border-ds-accent/40 bg-ds-surface rounded-3xl flex flex-col ${isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "min-h-[420px] sm:aspect-square"
         }`}
       style={{ transition: 'transform 0.5s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out', transformStyle: 'preserve-3d' }}
     >
       {/* Container da Imagem */}
-      <div className={`relative overflow-hidden ${isFeatured ? "md:w-3/5 order-1 md:order-1" : "w-full h-1/2 flex-none order-1"}`} style={{ transform: 'translateZ(20px)' }}>
+      <div className={`relative overflow-hidden ${isFeatured ? "md:w-3/5 order-1 md:order-1" : "w-full h-52 sm:h-1/2 flex-none order-1"}`} style={{ transform: 'translateZ(20px)' }}>
         <div className="absolute inset-0 bg-ds-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>
         {project.imagem_url ? (
           <img
@@ -87,7 +87,7 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       </div>
 
       {/* Container do Conteúdo */}
-      <div className={`relative z-20 flex flex-col justify-center p-8 lg:p-12 ${isFeatured ? "md:w-2/5 order-2 border-t md:border-t-0 md:border-l border-ds-border bg-ds-surface" : "h-1/2 flex-none order-2 border-t border-ds-border bg-ds-surface"}`} style={{ transform: 'translateZ(30px)' }}>
+      <div className={`relative z-20 flex flex-col justify-center p-8 lg:p-12 ${isFeatured ? "md:w-2/5 order-2 border-t md:border-t-0 md:border-l border-ds-border bg-ds-surface" : "flex-1 sm:h-1/2 order-2 border-t border-ds-border bg-ds-surface"}`} style={{ transform: 'translateZ(30px)' }}>
         <div className="flex items-center justify-between mb-6">
           <span className="text-[10px] font-mono text-ds-accent uppercase tracking-widest bg-ds-accent/10 px-4 py-1.5 rounded-full border border-ds-accent/20">
             {project.categoria || "Case Study"}

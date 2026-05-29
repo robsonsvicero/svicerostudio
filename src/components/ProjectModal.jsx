@@ -230,27 +230,29 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                   {/* Seletor de idioma */}
                   <div className="shrink-0 rounded-2xl border border-white/5 bg-ds-surface/50 px-4 py-3">
                     <p className="text-[10px] uppercase tracking-widest text-ds-muted font-mono text-center mb-2">Idioma</p>
-                    <div className="flex gap-2">
-                      <Button
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
                         onClick={() => setLanguage('pt')}
-                        className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
+                        className={`inline-flex min-w-[84px] items-center justify-center rounded-full border px-5 py-2 text-sm font-bold uppercase leading-none tracking-[.14em] transition-colors ${
                           language === 'pt'
-                            ? '!bg-ds-text !text-ds-tech !border !border-ds-tech hover:!bg-ds-text hover:!text-ds-tech hover:!border-ds-tech'
-                            : '!bg-ds-bg !text-ds-text !border !border-ds-border hover:!bg-ds-bg hover:!text-ds-text hover:!border-ds-border'
+                            ? 'bg-ds-text text-ds-tech border-ds-tech'
+                            : 'bg-ds-bg text-ds-text border-ds-border hover:border-ds-tech/40'
                         }`}
                       >
                         PT
-                      </Button>
-                      <Button
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => setLanguage('en')}
-                        className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${
+                        className={`inline-flex min-w-[84px] items-center justify-center rounded-full border px-5 py-2 text-sm font-bold uppercase leading-none tracking-[.14em] transition-colors ${
                           language === 'en'
-                            ? '!bg-ds-text !text-ds-tech !border !border-ds-tech hover:!bg-ds-text hover:!text-ds-tech hover:!border-ds-tech'
-                            : '!bg-ds-bg !text-ds-text !border !border-ds-border hover:!bg-ds-bg hover:!text-ds-text hover:!border-ds-border'
+                            ? 'bg-ds-text text-ds-tech border-ds-tech'
+                            : 'bg-ds-bg text-ds-text border-ds-border hover:border-ds-tech/40'
                         }`}
                       >
                         EN
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 </div>

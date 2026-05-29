@@ -175,7 +175,7 @@ const Diagnostico = () => {
             </div>
 
             {/* CARD DESTACADO DE CTA */}
-            <div className="relative rounded-[2rem] border border-ds-accent/30 bg-ds-surface backdrop-blur-xl p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(184,115,51,0.15)] overflow-hidden">
+            <div className="relative rounded-[2rem] border border-ds-accent/30 bg-ds-surface backdrop-blur-xl p-6 sm:p-8 lg:p-10 flex flex-col justify-between shadow-[0_8px_32px_rgba(184,115,51,0.15)] overflow-hidden">
               <div className="absolute inset-0 bg-ds-accent/5 pointer-events-none mix-blend-overlay"></div>
               <div className="relative z-10">
                 <h3 className="text-2xl font-medium tracking-tight text-ds-text mb-4">

@@ -132,7 +132,7 @@ const Blog = () => {
         <Header variant="solid" />
 
         {/* Hero */}
-        <section className="relative flex items-center justify-center px-0 pb-32 pt-64 mg:pt-32 mb-12 sm:mb-16 overflow-hidden min-h-[320px] sm:min-h-[420px]">
+        <section className="relative flex items-center justify-center py-16 sm:py-24 px-4 sm:px-6 md:px-16 overflow-hidden min-h-[320px] sm:min-h-[420px]">
 
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -140,14 +140,9 @@ const Blog = () => {
               backgroundImage: `url(${capaBlog})`
             }}
           ></div>
-          <div
-            className="absolute inset-0 z-10 pointer-events-none"
-            style={{
-              background: 'linear-gradient(90deg, rgba(34, 34, 34, 0.75) 0%, rgba(34, 34, 34, 0.38) 40%, rgba(34, 34, 34, 0.16) 72%, rgba(34, 34, 34, 0.04) 100%)'
-            }}
-          ></div>
+          
           {/* Conteúdo principal */}
-          <ScrollReveal direction="up" delay={0.1} className="relative z-20 w-full mx-auto flex flex-col items-center sm:items-start justify-center text-left py-12 px-4 sm:px-6 lg:px-8">
+          <ScrollReveal direction="up" delay={0.1} className="bg-ds-bg/75 rounded-xl relative z-20 w-full mx-auto flex flex-col items-center sm:items-start justify-center text-left py-12 px-4 sm:px-6 lg:px-8">
             <div className='flex flex-col items-start'>
               <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-ds-text mb-5 sm:mb-6">
                 Percepção, Marca & Negócios
