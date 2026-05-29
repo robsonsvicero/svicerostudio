@@ -58,7 +58,7 @@ const HeroSection = (
           size="lg" 
           className="w-full md:w-auto text-center"
         >
-          Quero um Diagnóstico
+          Agendar Diagnóstico
         </Button>
       </div>
 
@@ -331,8 +331,8 @@ const CTAFinalSection = () => {
           </p>
         </div>
 
-        {/* Formulário Sofisticado (Dark Mode - Logica Copiada de FormularioInteresse) */}
-        <div className="bg-ds-surface p-8 md:p-12 rounded-[2rem] border border-white/5 shadow-2xl">
+        {/* Formulário Sofisticado (Logica Copiada de FormularioInteresse) */}
+        <div className="bg-ds-surface p-6 md:p-8 rounded-[2rem] border border-white/5 shadow-2xl">
           {success ? (
             <div className="text-center py-10">
                <span className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
@@ -561,11 +561,11 @@ const CTAFinalSection = () => {
                 <Button 
                   type="submit" 
                   variant="primary" 
-                  size="lg" 
+                  size="md" 
                   className="w-full md:w-auto text-center"
                   disabled={loading}
                 >
-                  {loading ? 'Enviando...' : 'Quero um Diagnóstico'}
+                  {loading ? 'Enviando...' : 'Agendar Diagnóstico'}
                 </Button>
               </div>
             </form>
