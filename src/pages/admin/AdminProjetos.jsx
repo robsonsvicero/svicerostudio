@@ -16,6 +16,11 @@ import { FaEdit, FaTrash, FaPlus, FaChevronLeft, FaChevronRight } from 'react-ic
 import AdminLayout from '../../components/Admin/AdminLayout';
 import Button from '../../components/UI/Button';
 import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
+import { adminInputClass, adminLabelClass } from '../../components/Admin/adminFormStyles';
+import AdminSectionCard from '../../components/Admin/AdminSectionCard';
+import AdminListCard from '../../components/Admin/AdminListCard';
+import AdminRowActions from '../../components/Admin/AdminRowActions';
+import AdminHeaderActionButton from '../../components/Admin/AdminHeaderActionButton';
 
 const generateSlug = (title) =>
   slugify(title || '', { lower: true, strict: true });
@@ -622,16 +627,17 @@ const AdminProjetos = () => {
 
   // Redesign dashboard: Projects management with consistent SaaS styling
 
-  const inputClass = "w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20";
-  const labelClass = "mb-1.5 block text-sm font-medium text-ds-muted";
-
   return (
     <AdminLayout
       title="Projetos"
       actions={
-        <Button type="button" onClick={handleCancelEdit} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition" disabled={isSaving || isUploading || isUploadingGallery}>
+        <AdminHeaderActionButton
+          onClick={handleCancelEdit}
+          size="lg"
+          disabled={isSaving || isUploading || isUploadingGallery}
+        >
           {editingId ? 'Cancelar' : 'Novo'}
-        </Button>
+        </AdminHeaderActionButton>
       }
     >
       <form onSubmit={handleSubmit} className="mb-8">
@@ -639,33 +645,39 @@ const AdminProjetos = () => {
           {/* Main column */}
           <div className="lg:col-span-2 space-y-6">
             {/* Basic info */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-6 space-y-4">
-              <div className="mb-2">
-                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Informações</p>
-                <h2 className="text-base font-semibold text-ds-text">{editingId ? 'Editando Projeto' : 'Novo Projeto'}</h2>
-              </div>
+            <AdminSectionCard badge="Informações" title={editingId ? 'Editando Projeto' : 'Novo Projeto'} className="space-y-4">
               <label className="block">
-                <span className={labelClass}>Título <span className="text-ds-accent">*</span></span>
-                <input type="text" name="titulo" value={form.titulo} onChange={handleFieldChange} className={inputClass} placeholder="Nome do projeto" required />
+                <span className={adminLabelClass}>Título <span className="text-ds-accent">*</span></span>
+                <input type="text" name="titulo" value={form.titulo} onChange={handleFieldChange} className={adminInputClass} placeholder="Nome do projeto" required />
               </label>
               <label className="block">
-                <span className={labelClass}>Slug <span className="text-ds-accent">*</span></span>
-                <input type="text" name="slug" value={form.slug} onChange={handleFieldChange} className={inputClass} placeholder="nome-do-projeto" required />
+                <span className={adminLabelClass}>Slug <span className="text-ds-accent">*</span></span>
+                <input type="text" name="slug" value={form.slug} onChange={handleFieldChange} className={adminInputClass} placeholder="nome-do-projeto" required />
               </label>
               <div className="grid gap-4 lg:grid-cols-2">
                 <label className="block">
-                  <span className={labelClass}>Categoria</span>
-                  <select name="categoria" value={form.categoria} onChange={handleFieldChange} className={inputClass}>
-                    <option value="">Selecione</option>
-                    {CATEGORIAS.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
-                  </select>
+                  <span className={adminLabelClass}>Categoria</span>
+                  <input
+                    type="text"
+                    name="categoria"
+                    value={form.categoria}
+                    onChange={handleFieldChange}
+                    className={adminInputClass}
+                    list="categoria-sugestoes"
+                    placeholder="Selecione ou digite uma categoria"
+                  />
+                  <datalist id="categoria-sugestoes">
+                    {CATEGORIAS.map((cat) => (
+                      <option key={cat} value={cat} />
+                    ))}
+                  </datalist>
                 </label>
                 <label className="block">
-                  <span className={labelClass}>Cliente</span>
-                  <input type="text" name="cliente" value={form.cliente} onChange={handleFieldChange} className={inputClass} placeholder="Nome do cliente" />
+                  <span className={adminLabelClass}>Cliente</span>
+                  <input type="text" name="cliente" value={form.cliente} onChange={handleFieldChange} className={adminInputClass} placeholder="Nome do cliente" />
                 </label>
                 <label className="block">
-                  <span className={labelClass}>Data do Projeto</span>
+                  <span className={adminLabelClass}>Data do Projeto</span>
                   <DatePicker
                     selected={form.data_projeto ? new Date(form.data_projeto) : null}
                     onChange={(date) => {
@@ -676,60 +688,54 @@ const AdminProjetos = () => {
                     }}
                     dateFormat="dd/MM/yyyy"
                     placeholderText="Selecione a data"
-                    className={inputClass}
+                    className={adminInputClass}
                     calendarClassName="bg-[#1a1a1a] text-white border-white/10"
                   />
                 </label>
                 <label className="block">
-                  <span className={labelClass}>Status</span>
-                  <select name="status" value={form.status} onChange={handleFieldChange} className={inputClass}>
+                  <span className={adminLabelClass}>Status</span>
+                  <select name="status" value={form.status} onChange={handleFieldChange} className={adminInputClass}>
                     <option value="draft">Rascunho</option>
                     <option value="published">Publicado</option>
                   </select>
                 </label>
                 <label className="block">
-                  <span className={labelClass}>Ordem</span>
-                  <input type="number" name="ordem" value={form.ordem} onChange={handleFieldChange} className={inputClass} min={0} />
+                  <span className={adminLabelClass}>Ordem</span>
+                  <input type="number" name="ordem" value={form.ordem} onChange={handleFieldChange} className={adminInputClass} min={0} />
                 </label>
               </div>
               <label className="flex items-center gap-3 rounded-lg border border-white/5 bg-ds-bg px-4 py-3 cursor-pointer hover:border-white/10 transition-colors">
                 <input type="checkbox" name="mostrar_home" checked={form.mostrar_home} onChange={handleFieldChange} className="h-4 w-4 rounded border-white/10 bg-ds-bg text-ds-accent focus:ring-copper/40" />
                 <span className="text-sm text-ds-text">Mostrar na Home</span>
               </label>
-            </div>
+            </AdminSectionCard>
 
             {/* Descriptions */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-6 space-y-4">
-              <div className="mb-2">
-                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Conteúdo</p>
-                <h2 className="text-base font-semibold text-ds-text">Descrições</h2>
-              </div>
+            <AdminSectionCard badge="Conteúdo" title="Descrições" className="space-y-4">
               <label className="block">
-                <span className={labelClass}>Descrição curta <span className="text-ds-accent">*</span></span>
-                <textarea name="descricao" value={form.descricao} onChange={handleFieldChange} className={`${inputClass} min-h-[80px] resize-y`} placeholder="Uma breve descrição do projeto..." required />
+                <span className={adminLabelClass}>Descrição curta <span className="text-ds-accent">*</span></span>
+                <textarea name="descricao" value={form.descricao} onChange={handleFieldChange} className={`${adminInputClass} min-h-[80px] resize-y`} placeholder="Uma breve descrição do projeto..." required />
               </label>
               <label className="block">
-                <span className={labelClass}>Descrição longa (PT)</span>
-                <textarea name="descricao_longa" value={form.descricao_longa} onChange={handleFieldChange} className={`${inputClass} min-h-[120px] resize-y`} placeholder="Detalhes do projeto..." />
+                <span className={adminLabelClass}>Descrição longa (PT)</span>
+                <textarea name="descricao_longa" value={form.descricao_longa} onChange={handleFieldChange} className={`${adminInputClass} min-h-[120px] resize-y`} placeholder="Detalhes do projeto..." />
               </label>
               <label className="block">
-                <span className={labelClass}>Descrição longa (EN)</span>
-                <textarea name="descricao_longa_en" value={form.descricao_longa_en} onChange={handleFieldChange} className={`${inputClass} min-h-[120px] resize-y`} placeholder="Project details in English..." />
+                <span className={adminLabelClass}>Descrição longa (EN)</span>
+                <textarea name="descricao_longa_en" value={form.descricao_longa_en} onChange={handleFieldChange} className={`${adminInputClass} min-h-[120px] resize-y`} placeholder="Project details in English..." />
               </label>
-            </div>
+            </AdminSectionCard>
           </div>
 
           {/* Sidebar */}
           <aside className="space-y-6">
             {/* Cover image */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-5 space-y-4">
-              <p className="text-xs font-mono uppercase tracking-widest text-ds-accent">Imagem de Capa</p>
-              <ImageUploadSlot title="Imagem de capa" description="JPG, PNG até 8MB" onUpload={handleImageUpload} isUploading={isUploading} currentImageUrl={form.imagem_url} />
-            </div>
+            <AdminSectionCard badge="Imagem de Capa" paddingClassName="p-5">
+              <ImageUploadSlot title="Imagem de capa" description="JPG, PNG até 8MB" onUpload={handleImageUpload} isUploading={isUploading} currentImageUrl={form.imagem_url} useTechText={true} />
+            </AdminSectionCard>
 
             {/* Links */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-5 space-y-4">
-              <p className="text-xs font-mono uppercase tracking-widest text-ds-accent">Links & Ações</p>
+            <AdminSectionCard badge="Links & Ações" paddingClassName="p-5">
               <label className="block">
                 <span className={labelClass}>Link principal</span>
                 <input type="text" name="link" value={form.link} onChange={handleFieldChange} className={inputClass} placeholder="https://..." />
@@ -746,15 +752,15 @@ const AdminProjetos = () => {
                 <span className={labelClass}>Texto do 2º botão</span>
                 <input type="text" name="button_text2" value={form.button_text2} onChange={handleFieldChange} className={inputClass} placeholder="Texto alternativo" />
               </label>
-            </div>
+            </AdminSectionCard>
 
             {/* Gallery */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-5 space-y-4">
+            <AdminSectionCard paddingClassName="p-5">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-xs font-mono uppercase tracking-widest text-ds-accent">Galeria</p>
-                <span className="text-xs text-ds-muted">{gallery.length} imagens</span>
+                <span className="text-xs text-ds-text">{gallery.length} imagens</span>
               </div>
-              <ImageUploadSlot title="Imagens da galeria" description="Arraste ou selecione múltiplas imagens" onUpload={handleGalleryImageUpload} isUploading={isUploadingGallery} multiple={true} />
+              <ImageUploadSlot title="Imagens da galeria" description="Arraste ou selecione múltiplas imagens" onUpload={handleGalleryImageUpload} isUploading={isUploadingGallery} multiple={true} useTechText={true} />
               {gallery.length > 0 && (
                 <div className="grid grid-cols-2 gap-2">
                   {gallery.map((img, index) => (
@@ -765,7 +771,7 @@ const AdminProjetos = () => {
                       <button 
                         type="button" 
                         onClick={() => handleDeleteGalleryImage(index)} 
-                        className="absolute top-2 right-2 z-10 flex items-center justify-center w-8 h-8 bg-black/80 hover:bg-red-600 text-red-400 hover:text-white rounded-md transition-colors border border-white/20 shadow-md" 
+                        className="absolute top-2 right-2 z-10 flex items-center justify-center w-8 h-8 bg-black/80 hover:bg-red-600 text-red-400 hover:text-white rounded-full transition-colors border border-white/20 shadow-md" 
                         title="Excluir imagem"
                       >
                         <FaTrash size={14} />
@@ -785,16 +791,16 @@ const AdminProjetos = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </AdminSectionCard>
 
             {/* Action buttons */}
             <div className="rounded-xl border border-white/5 bg-ds-surface p-5 flex justify-end gap-3">
               {editingId && (
-                <Button type="button" onClick={handleCancelEdit} disabled={isSaving || isUploading || isUploadingGallery} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">
+                <Button type="button" onClick={handleCancelEdit} disabled={isSaving || isUploading || isUploadingGallery} className="rounded-full border border-ds-text bg-ds-bg/10 px-4 py-2.5 text-sm font-medium text-ds-text hover:text-ds-surface hover:bg-ds-tech transition hover:border-ds-tech uppercase">
                   Cancelar
                 </Button>
               )}
-              <Button type="submit" disabled={isSaving || isUploading || isUploadingGallery} className="rounded-lg bg-ds-accent px-5 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition">
+              <Button type="submit" disabled={isSaving || isUploading || isUploadingGallery} variant='primary'>
                 {isSaving ? 'Salvando...' : editingId ? 'Atualizar' : 'Publicar'}
               </Button>
             </div>
@@ -803,59 +809,58 @@ const AdminProjetos = () => {
       </form>
 
       {/* Projects list */}
-      <div className="rounded-xl border border-white/5 bg-ds-surface">
-        <div className="border-b border-white/5 px-6 py-4">
-          <h2 className="text-base font-semibold text-ds-text">
-            Projetos Existentes
-            {!isLoading && <span className="ml-2 text-sm font-normal text-ds-muted">({projects.length})</span>}
-          </h2>
-        </div>
-        {isLoading && <p className="p-6 text-ds-muted">Carregando...</p>}
-        {!isLoading && projects.length === 0 && <p className="p-6 text-ds-muted">Nenhum projeto encontrado.</p>}
-        {projects.length > 0 && (
-          <DragDropContext onDragEnd={handleDragEndProjects}>
-            <Droppable droppableId="projects-list">
-              {(provided) => (
-                <div 
-                  className="divide-y divide-white/5" 
-                  ref={provided.innerRef} 
-                  {...provided.droppableProps}
-                >
-                  {projects.map((proj, idx) => (
-                    <Draggable key={String(proj.id || proj._id)} draggableId={String(proj.id || proj._id)} index={idx}>
-                      {(dragProvided, dragSnapshot) => (
-                        <div
-                          ref={dragProvided.innerRef}
-                          {...dragProvided.draggableProps}
-                          {...dragProvided.dragHandleProps}
-                          className={`flex items-center px-6 py-4 gap-4 transition-colors ${dragSnapshot.isDragging ? 'bg-white/5 shadow-lg' : 'hover:bg-white/[.02]'}`}
-                        >
-                          <i className="fa-solid fa-grip-vertical text-ds-muted/30 hover:text-ds-muted cursor-grab active:cursor-grabbing"></i>
-                          <img src={proj.imagem_url || getPlaceholderImage(proj.titulo?.charAt(0) || 'P', '141414', 150)} alt={proj.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-ds-bg" />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-ds-text truncate flex items-center gap-2">
-                              {proj.titulo}
-                              <span className={`px-2 py-0.5 text-xs rounded-md font-medium capitalize ${proj.status === 'published' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
-                                {proj.status === 'published' ? 'Publicado' : proj.status}
-                              </span>
-                            </p>
-                            <p className="text-xs text-ds-muted truncate">{proj.categoria || 'Sem categoria'}</p>
-                          </div>
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            <Button onClick={() => handleEditProject(proj)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">Editar</Button>
-                            <Button onClick={() => handleDeleteProject(proj.id)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
-                          </div>
+      <AdminListCard
+        title="Projetos Existentes"
+        count={projects.length}
+        loading={isLoading}
+        loadingText="Carregando..."
+        emptyText="Nenhum projeto encontrado."
+        bodyClassName="p-0"
+      >
+        <DragDropContext onDragEnd={handleDragEndProjects}>
+          <Droppable droppableId="projects-list">
+            {(provided) => (
+              <div
+                className="divide-y divide-white/5"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {projects.map((proj, idx) => (
+                  <Draggable key={String(proj.id || proj._id)} draggableId={String(proj.id || proj._id)} index={idx}>
+                    {(dragProvided, dragSnapshot) => (
+                      <div
+                        ref={dragProvided.innerRef}
+                        {...dragProvided.draggableProps}
+                        {...dragProvided.dragHandleProps}
+                        className={`flex items-center px-6 py-4 gap-4 transition-colors ${dragSnapshot.isDragging ? 'bg-white/5 shadow-lg' : 'hover:bg-white/[.02]'}`}
+                      >
+                        <i className="fa-solid fa-grip-vertical text-ds-muted/30 hover:text-ds-muted cursor-grab active:cursor-grabbing"></i>
+                        <img src={proj.imagem_url || getPlaceholderImage(proj.titulo?.charAt(0) || 'P', '141414', 150)} alt={proj.titulo} className="w-14 h-10 object-cover rounded-lg flex-shrink-0 bg-ds-bg" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-ds-text truncate flex items-center gap-2">
+                            {proj.titulo}
+                            <span className={`px-2 py-0.5 text-xs rounded-md font-medium capitalize ${proj.status === 'published' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+                              {proj.status === 'published' ? 'Publicado' : proj.status}
+                            </span>
+                          </p>
+                          <p className="text-xs text-ds-muted truncate">{proj.categoria || 'Sem categoria'}</p>
                         </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        )}
-      </div>
+                        <AdminRowActions
+                          onEdit={() => handleEditProject(proj)}
+                          onDelete={() => handleDeleteProject(proj.id)}
+                          editClassName="uppercase rounded-full border border-ds-border bg-white/5 px-3 py-1.5 text-xs font-medium text-ds-muted hover:text-ds-text hover:bg-ds-tech transition"
+                          deleteClassName="uppercase rounded-full border border-red-500/20 bg-red-500 px-3 py-1.5 text-xs font-medium text-ds-surface hover:bg-red-700 transition"
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </AdminListCard>
     </AdminLayout>
   );
 };

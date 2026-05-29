@@ -9,6 +9,11 @@ import ImageUploadSlot from "../../components/UI/ImageUploadSlot.jsx"; // Certif
 import AdminLayout from "../../components/Admin/AdminLayout.jsx"; // Certifique-se de que este caminho está correto
 import { generateSlug } from '../../utils/slugGenerator'; // Importa a função de slug
 import { getAvatarPlaceholder } from '../../utils/placeholders';
+import { adminInputClass, adminLabelClass } from '../../components/Admin/adminFormStyles';
+import AdminSectionCard from '../../components/Admin/AdminSectionCard';
+import AdminListCard from '../../components/Admin/AdminListCard';
+import AdminRowActions from '../../components/Admin/AdminRowActions';
+import AdminHeaderActionButton from '../../components/Admin/AdminHeaderActionButton';
 
 const AdminAutores = () => {
     const { token } = useAuth();
@@ -205,9 +210,9 @@ const AdminAutores = () => {
           title="Autores"
           actions={
             <div className="flex items-center gap-3">
-              <Button type="button" onClick={clearForm} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">
+              <AdminHeaderActionButton onClick={clearForm} size="md">
                 {editingAuthorId ? 'Cancelar' : 'Limpar'}
-              </Button>
+              </AdminHeaderActionButton>
             </div>
           }
           toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}
@@ -217,57 +222,44 @@ const AdminAutores = () => {
             <div className="grid gap-6 lg:grid-cols-12">
               <div className="space-y-6 lg:col-span-8">
                 {/* Author identification */}
-                <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-                  <div className="mb-5">
-                    <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Identificação</p>
-                    <h2 className="text-base font-semibold text-ds-text">{editingAuthorId ? 'Editando Autor' : 'Novo Autor'}</h2>
-                  </div>
+                <AdminSectionCard badge="Identificação" title={editingAuthorId ? 'Editando Autor' : 'Novo Autor'}>
                   <div className="grid gap-4 lg:grid-cols-2">
                     <label className="lg:col-span-1 block">
-                      <span className="mb-1.5 block text-sm font-medium text-ds-muted">Nome do autor <span className="ml-1 text-ds-accent">*</span></span>
-                      <input type="text" name="nome" value={formData.nome || ''} onChange={handleInputChange} placeholder="Ex: Robson Svicero" required className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
+                      <span className={adminLabelClass}>Nome do autor <span className="ml-1 text-ds-accent">*</span></span>
+                      <input type="text" name="nome" value={formData.nome || ''} onChange={handleInputChange} placeholder="Ex: Robson Svicero" required className={adminInputClass} />
                     </label>
                     <label className="lg:col-span-1 block">
-                      <span className="mb-1.5 block text-sm font-medium text-ds-muted">Cargo <span className="ml-1 text-ds-accent">*</span></span>
-                      <input type="text" name="cargo" value={formData.cargo || ''} onChange={handleInputChange} placeholder="Ex: Diretor de Arte & Design" required className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
+                      <span className={adminLabelClass}>Cargo <span className="ml-1 text-ds-accent">*</span></span>
+                      <input type="text" name="cargo" value={formData.cargo || ''} onChange={handleInputChange} placeholder="Ex: Diretor de Arte & Design" required className={adminInputClass} />
                     </label>
                     <label className="lg:col-span-2 block">
-                      <span className="mb-1.5 block text-sm font-medium text-ds-muted">Email de contato</span>
-                      <input type="email" name="email" value={formData.email || ''} onChange={handleInputChange} placeholder="contato@svicero.com" className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
+                      <span className={adminLabelClass}>Email de contato</span>
+                      <input type="email" name="email" value={formData.email || ''} onChange={handleInputChange} placeholder="contato@svicero.com" className={adminInputClass} />
                     </label>
                     <label className="lg:col-span-2 block">
-                      <span className="mb-1.5 block text-sm font-medium text-ds-muted">Slug (URL amigável)</span>
-                      <input type="text" name="slug" value={formData.slug || ''} onChange={handleInputChange} placeholder="Ex: robson-svicero" className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
+                      <span className={adminLabelClass}>Slug (URL amigável)</span>
+                      <input type="text" name="slug" value={formData.slug || ''} onChange={handleInputChange} placeholder="Ex: robson-svicero" className={adminInputClass} />
                     </label>
                   </div>
-                </div>
+                </AdminSectionCard>
 
                 {/* Bio */}
-                <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-                  <div className="mb-5">
-                    <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Conteúdo</p>
-                    <h2 className="text-base font-semibold text-ds-text">Biografia</h2>
-                  </div>
+                <AdminSectionCard badge="Conteúdo" title="Biografia">
                   <label>
-                    <span className="mb-1.5 block text-sm font-medium text-ds-muted">Bio</span>
-                    <textarea name="bio" value={formData.bio} onChange={handleInputChange} placeholder="Escreva uma biografia curta..." rows={4} className="w-full resize-y rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm leading-6 text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
+                    <span className={adminLabelClass}>Bio</span>
+                    <textarea name="bio" value={formData.bio} onChange={handleInputChange} placeholder="Escreva uma biografia curta..." rows={4} className={`${adminInputClass} resize-y leading-6`} />
                   </label>
-                </div>
+                </AdminSectionCard>
 
                 {/* Photo */}
-                <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-                  <div className="mb-5">
-                    <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Mídia</p>
-                    <h2 className="text-base font-semibold text-ds-text">Foto de Perfil</h2>
-                  </div>
-                  <ImageUploadSlot title="Foto de perfil do autor" description="Arraste ou clique para enviar (Recomendado: 400x400px)" currentImageUrl={formData.foto_url} onUpload={handleImageUpload} isUploading={isUploading} />
-                </div>
+                <AdminSectionCard badge="Mídia" title="Foto de Perfil">
+                  <ImageUploadSlot title="Foto de perfil do autor" description="Arraste ou clique para enviar (Recomendado: 400x400px)" currentImageUrl={formData.foto_url} onUpload={handleImageUpload} isUploading={isUploading} useTechText={true} />
+                </AdminSectionCard>
               </div>
 
               {/* Sidebar */}
               <aside className="space-y-6 lg:col-span-4">
-                <div className="rounded-xl border border-white/5 bg-ds-surface p-5">
-                  <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-4">Configurações</p>
+                <AdminSectionCard badge="Configurações" paddingClassName="p-5">
                   <label className="flex items-center justify-between rounded-lg border border-white/5 bg-ds-bg px-4 py-3.5 cursor-pointer hover:border-white/10 transition-colors">
                     <span className="text-sm text-ds-text">Perfil público</span>
                     <input type="checkbox" name="publicado" checked={formData.publicado} onChange={handleInputChange} className="sr-only" />
@@ -275,48 +267,46 @@ const AdminAutores = () => {
                       <span className={`h-5 w-5 rounded-full bg-ds-accent transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
                     </span>
                   </label>
-                  <Button type="submit" className="mt-4 w-full rounded-lg bg-ds-accent px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSaving || isUploading}>
+                  <Button type="submit" className="uppercase mt-4 w-full rounded-full bg-ds-accent px-5 py-3 text-sm font-semibold text-white hover:bg-ds-accent-hover hover:scale-110transition" disabled={isSaving || isUploading}>
                     {isSaving ? 'Salvando...' : editingAuthorId ? 'Atualizar Autor' : 'Publicar Autor'}
                   </Button>
-                </div>
+                </AdminSectionCard>
               </aside>
             </div>
           </form>
 
           {/* List */}
-          <div className="rounded-xl border border-white/5 bg-ds-surface">
-            <div className="border-b border-white/5 px-6 py-4">
-              <h2 className="text-base font-semibold text-ds-text">
-                Autores Cadastrados
-                {!isLoading && <span className="ml-2 text-sm font-normal text-ds-muted">({autores.length})</span>}
-              </h2>
-            </div>
-            {isLoading && <p className="p-6 text-ds-muted">Carregando...</p>}
-            {!isLoading && autores.length === 0 && <p className="p-6 text-ds-muted">Nenhum autor encontrado.</p>}
-            {autores.length > 0 && (
-              <ul className="divide-y divide-white/5">
-                {autores.map(author => (
+          <AdminListCard
+            title="Autores Cadastrados"
+            count={autores.length}
+            loading={isLoading}
+            loadingText="Carregando..."
+            emptyText="Nenhum autor encontrado."
+          >
+            <ul className="divide-y divide-white/5">
+              {autores.map(author => (
                   <li key={author.id} className="flex items-center px-6 py-4 gap-4 hover:bg-white/[.02] transition-colors">
                     <img src={author.foto_url || getAvatarPlaceholder(author.nome.charAt(0), '141414', 150)} alt={author.nome} className="w-10 h-10 object-cover rounded-full flex-shrink-0 bg-ds-bg" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-ds-text truncate flex items-center gap-2">
                         {author.nome}
-                        <span className={`px-2 py-0.5 text-xs rounded-md font-medium ${author.publicado ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+                        <span className={`px-2 py-0.5 text-xs rounded-full font-medium ${author.publicado ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
                           {author.publicado ? 'Público' : 'Privado'}
                         </span>
                       </p>
                       <p className="text-xs text-ds-muted truncate">{author.cargo}</p>
                       {author.slug && <p className="text-xs text-ds-muted/60 truncate">/{author.slug}</p>}
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <Button onClick={() => handleEditAuthor(author)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">Editar</Button>
-                      <Button onClick={() => handleDeleteAuthor(author.id)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
-                    </div>
+                    <AdminRowActions
+                      onEdit={() => handleEditAuthor(author)}
+                      onDelete={() => handleDeleteAuthor(author.id)}
+                      editClassName="uppercase rounded-full border-2 border-ds-text bg-ds-surface px-3 py-1.5 text-xs font-medium text-ds-text hover:text-ds-surface hover:bg-ds-tech hover:border-ds-tech transition"
+                      deleteClassName="uppercase rounded-full border-2 border-red-500 bg-red-500 px-3 py-1.5 text-xs font-medium text-ds-surface hover:bg-red-700 hover:border-red-700 transition"
+                    />
                   </li>
-                ))}
-              </ul>
-            )}
-          </div>
+              ))}
+            </ul>
+          </AdminListCard>
         </AdminLayout>
     );
 };

@@ -9,8 +9,14 @@ const ImageUploadSlot = ({
   currentImageUrl,
   isUploading,
   multiple = false,   // 1) nova prop
+  useTechText = false,
 }) => {
   const [fileName, setFileName] = useState('');
+  const titleClass = useTechText ? 'text-ds-tech' : 'text-white';
+  const descriptionClass = useTechText ? 'text-ds-tech/70' : 'text-white/55';
+  const iconClass = useTechText
+    ? 'border-ds-tech/40 bg-ds-tech/10 text-ds-tech'
+    : 'border-white/10 bg-white/5 text-white/80';
 
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files || []);
@@ -51,8 +57,8 @@ const ImageUploadSlot = ({
         <div className="flex items-center gap-4">
           <img src={currentImageUrl} alt={title} className="w-16 h-16 object-cover rounded-xl" />
           <div>
-            <h3 className="font-[DM Sans] text-lg font-semibold text-white">{title}</h3>
-            <p className="mt-1 text-sm leading-6 text-white/55 truncate">
+            <h3 className={`font-[DM Sans] text-lg font-semibold ${titleClass}`}>{title}</h3>
+            <p className={`mt-1 text-sm leading-6 truncate ${descriptionClass}`}>
               {fileName || 'Imagem carregada.'}
             </p>
             <Button
@@ -62,7 +68,7 @@ const ImageUploadSlot = ({
                 onUpload(null);
                 setFileName('');
               }}
-              className="text-xs text-red-400 hover:underline mt-1"
+              className={`mt-1 text-xs hover:underline ${useTechText ? 'text-ds-tech' : 'text-red-400'}`}
             >
               Remover
             </Button>
@@ -70,11 +76,11 @@ const ImageUploadSlot = ({
         </div>
       ) : (
         <>
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white/80">
+          <div className={`flex h-12 w-12 items-center justify-center rounded-2xl border ${iconClass}`}>
             {isUploading ? '...' : '⊕'}
           </div>
-          <h3 className="mt-5 font-[DM Sans] text-lg font-semibold text-white">{title}</h3>
-          <p className="mt-2 text-sm leading-6 text-white/55">
+          <h3 className={`mt-5 font-[DM Sans] text-lg font-semibold ${titleClass}`}>{title}</h3>
+          <p className={`mt-2 text-sm leading-6 ${descriptionClass}`}>
             {isUploading ? `Enviando ${fileName}...` : description}
           </p>
         </>

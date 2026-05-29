@@ -6,6 +6,11 @@ import Button from '../../components/UI/Button';
 import Markdown from 'react-markdown';
 import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
 import AdminLayout from '../../components/Admin/AdminLayout';
+import { adminInputClass, adminLabelClass } from '../../components/Admin/adminFormStyles';
+import AdminSectionCard from '../../components/Admin/AdminSectionCard';
+import AdminListCard from '../../components/Admin/AdminListCard';
+import AdminRowActions from '../../components/Admin/AdminRowActions';
+import AdminHeaderActionButton from '../../components/Admin/AdminHeaderActionButton';
 
 import { API_URL } from '../../lib/api.js';
 import { getPlaceholderImage } from '../../utils/placeholders';
@@ -211,18 +216,18 @@ const AdminBlog = () => {
     { name: 'titulo', label: 'Título do post', placeholder: 'Como criar uma marca memorável', type: 'text', required: true, col: 'lg:col-span-2' },
     { name: 'slug', label: 'Slug', placeholder: 'como-criar-marca-memoravel', type: 'text', required: true, col: 'lg:col-span-2' },
     { name: 'autor', label: autores.length === 0 ? 'Autor ⚠ Nenhum autor cadastrado — acesse Autores primeiro' : 'Autor', placeholder: 'Selecione um autor', type: 'select', required: true, options: autores.map(a => ({ value: getEntityId(a), label: a.nome })), col: 'lg:col-span-1' },
-    { name: 'categoria', label: 'Categoria', placeholder: 'Selecione uma categoria', type: 'select', required: true, options: ['Posicionamento', 'Marca', 'Digital', 'Negócios', 'Processo', 'Cases', 'Designer'].map(c => ({ value: c, label: c})), col: 'lg:col-span-1' },
+    { name: 'categoria', label: 'Categoria', placeholder: 'Selecione uma categoria', type: 'select', required: true, options: ['Estratégia & Posicionamento', 'Design & Branding', 'UX & Digital', 'Cases'].map(c => ({ value: c, label: c})), col: 'lg:col-span-1' },
     { name: 'data_publicacao', label: 'Data de publicação', placeholder: 'YYYY-MM-DD', type: 'date', required: true, col: 'lg:col-span-1' },
-    { name: 'tags', label: 'Tags', placeholder: 'branding, ux, design', type: 'text', required: false, col: 'lg:col-span-1' },
+    { name: 'tags', label: 'Tags', placeholder: 'percepção, posicionamento, confiança', type: 'text', required: false, col: 'lg:col-span-1' },
   ];
 
   // Redesign dashboard: Blog management with consistent SaaS styling
 
   const formActions = (
     <div className="flex items-center gap-3">
-      <Button type="button" onClick={resetForm} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">
+      <AdminHeaderActionButton onClick={resetForm}>
         {editingId ? 'Cancelar' : 'Limpar'}
-      </Button>
+      </AdminHeaderActionButton>
     </div>
   );
 
@@ -238,22 +243,16 @@ const AdminBlog = () => {
           {/* Main form column */}
           <div className="space-y-6">
             {/* Metadata section */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-              <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Informações</p>
-                <h2 className="text-base font-semibold text-ds-text">
-                  {editingId ? 'Editando Artigo' : 'Novo Artigo'}
-                </h2>
-              </div>
+            <AdminSectionCard badge="Informações" title={editingId ? 'Editando Artigo' : 'Novo Artigo'}>
               <div className="grid gap-4 lg:grid-cols-2">
                 {fields.map((field) => (
                   <label key={field.name} className={`${field.col} block`}>
-                    <span className="mb-1.5 block text-sm font-medium text-ds-muted">
+                    <span className={adminLabelClass}>
                       {field.label}
                       {field.required && <span className="ml-1 text-ds-accent">*</span>}
                     </span>
                     {field.type === 'select' ? (
-                      <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20">
+                      <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className={adminInputClass}>
                         <option value="" disabled>{field.placeholder}</option>
                         {field.options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                       </select>
@@ -265,60 +264,44 @@ const AdminBlog = () => {
                         onChange={handleFieldChange}
                         placeholder={field.placeholder}
                         required={field.required}
-                        className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20"
+                        className={adminInputClass}
                       />
                     )}
                   </label>
                 ))}
               </div>
-            </div>
+            </AdminSectionCard>
 
             {/* Content section */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-              <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Conteúdo</p>
-                <h2 className="text-base font-semibold text-ds-text">Corpo do Artigo</h2>
-              </div>
+            <AdminSectionCard badge="Conteúdo" title="Corpo do Artigo">
               <div className="space-y-4">
                 <label>
-                  <span className="mb-1.5 block text-sm font-medium text-ds-muted">Resumo</span>
-                  <textarea name="resumo" value={formData.resumo} onChange={handleFieldChange} placeholder="Uma síntese para SEO e chamadas." rows={3} className="w-full resize-none rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
+                  <span className={adminLabelClass}>Resumo</span>
+                  <textarea name="resumo" value={formData.resumo} onChange={handleFieldChange} placeholder="Uma síntese para SEO e chamadas." rows={3} className={`${adminInputClass} resize-none`} />
                 </label>
                 <label>
-                  <span className="mb-1.5 block text-sm font-medium text-ds-muted">Conteúdo (Markdown)</span>
-                  <textarea name="conteudo" value={formData.conteudo} onChange={handleFieldChange} placeholder="Escreva o artigo aqui..." rows={15} className="w-full resize-y rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm leading-6 text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
+                  <span className={adminLabelClass}>Conteúdo (Markdown)</span>
+                  <textarea name="conteudo" value={formData.conteudo} onChange={handleFieldChange} placeholder="Escreva o artigo aqui..." rows={15} className={`${adminInputClass} resize-y leading-6`} />
                 </label>
               </div>
-            </div>
+            </AdminSectionCard>
 
             {/* Media section */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-              <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Mídia</p>
-                <h2 className="text-base font-semibold text-ds-text">Imagem de Destaque</h2>
-              </div>
-              <ImageUploadSlot title="Imagem de capa do post" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_destaque} onUpload={handleImageUpload} isUploading={isUploading} />
-            </div>
+            <AdminSectionCard badge="Mídia" title="Imagem de Destaque">
+              <ImageUploadSlot title="Imagem de capa do post" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_destaque} onUpload={handleImageUpload} isUploading={isUploading} useTechText={true} />
+            </AdminSectionCard>
 
             {/* Markdown preview */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-6 flex flex-col justify-end transition-all">
-              <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Preview</p>
-                <h2 className="text-base font-semibold text-ds-text">Visualização do Artigo</h2>
-              </div>
+            <AdminSectionCard badge="Preview" title="Visualização do Artigo" className="flex flex-col justify-end transition-all">
               <div className="prose prose-sm prose-invert overflow-auto max-h-[60vh] flex flex-col justify-end">
                 <div className="mt-auto">
                   <Markdown>{formData.conteudo || 'O preview do seu texto em Markdown aparecerá aqui.'}</Markdown>
                 </div>
               </div>
-            </div>
+            </AdminSectionCard>
 
             {/* Publish settings */}
-            <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-              <div className="mb-5">
-                <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Publicação</p>
-                <h2 className="text-base font-semibold text-ds-text">Opções de Publicação</h2>
-              </div>
+            <AdminSectionCard badge="Publicação" title="Opções de Publicação">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <label className="flex items-center justify-between sm:justify-start gap-4 rounded-lg border border-white/5 bg-ds-bg px-4 py-3.5 cursor-pointer hover:border-white/10 transition-colors flex-1">
                   <span className="text-sm text-ds-text">Publicar artigo imediatamente</span>
@@ -327,28 +310,25 @@ const AdminBlog = () => {
                     <span className={`h-5 w-5 rounded-full bg-ds-accent transition-all ${formData.publicado ? 'ml-auto' : 'ml-0'}`} />
                   </span>
                 </label>
-                <Button type="submit" className="w-full sm:w-auto rounded-lg bg-ds-accent px-8 py-3.5 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSubmitting || isUploading}>
+                <Button type="submit" className="uppercase rounded-full w-full sm:w-auto bg-ds-accent px-8 py-3.5 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSubmitting || isUploading}>
                   {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Artigo' : 'Publicar Artigo')}
                 </Button>
               </div>
-            </div>
+            </AdminSectionCard>
           </div>
         </div>
       </form>
 
       {/* Posts list */}
-      <div className="rounded-xl border border-white/5 bg-ds-surface">
-        <div className="border-b border-white/5 px-6 py-4">
-          <h2 className="text-base font-semibold text-ds-text">
-            Artigos Cadastrados
-            {!isLoading && <span className="ml-2 text-sm font-normal text-ds-muted">({posts.length})</span>}
-          </h2>
-        </div>
-        {isLoading && <p className="p-6 text-ds-muted">Carregando artigos...</p>}
-        {!isLoading && posts.length === 0 && <p className="p-6 text-ds-muted">Nenhum artigo encontrado.</p>}
-        {posts.length > 0 && (
-          <ul className="divide-y divide-white/5">
-            {posts.map(post => {
+      <AdminListCard
+        title="Artigos Cadastrados"
+        count={posts.length}
+        loading={isLoading}
+        loadingText="Carregando artigos..."
+        emptyText="Nenhum artigo encontrado."
+      >
+        <ul className="divide-y divide-white/5">
+          {posts.map(post => {
               const autorFallback = autores.find(a => String(getEntityId(a)) === String(post.autor));
               const autorNome = getDisplayAuthorName(post.autor_nome) || autorFallback?.nome || getDisplayAuthorName(post.autor) || 'Autor desconhecido';
               return (
@@ -359,18 +339,21 @@ const AdminBlog = () => {
                     <p className="text-xs text-ds-muted truncate">{autorNome} · {new Date(post.data_publicacao).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className={`px-2.5 py-1 text-xs rounded-md font-medium ${post.publicado ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+                    <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${post.publicado ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
                       {post.publicado ? 'Publicado' : 'Rascunho'}
                     </span>
-                    <Button onClick={() => handleEdit(post)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">Editar</Button>
-                    <Button onClick={() => handleDelete(getEntityId(post))} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
+                    <AdminRowActions
+                      onEdit={() => handleEdit(post)}
+                      onDelete={() => handleDelete(getEntityId(post))}
+                      editClassName="uppercase rounded-full border border-ds-text bg-white/5 px-3 py-1.5 text-xs font-medium text-ds-text hover:text-ds-surface hover:bg-ds-tech transition hover:border-ds-tech"
+                      deleteClassName="uppercase rounded-full border border-red-500 bg-red-500 px-3 py-1.5 text-xs font-medium text-ds-surface hover:bg-red-700 transition"
+                    />
                   </div>
                 </li>
               );
-            })}
-          </ul>
-        )}
-      </div>
+          })}
+        </ul>
+      </AdminListCard>
   </AdminLayout>
   );
 };

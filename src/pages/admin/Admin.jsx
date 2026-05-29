@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../lib/api.js';
 import AdminLayout from '../../components/Admin/AdminLayout';
+import AdminMetricCard from '../../components/Admin/AdminMetricCard';
+import AdminSectionLinkCard from '../../components/Admin/AdminSectionLinkCard';
 
 // Redesign dashboard: SaaS-style overview with metric cards + navigation grid
 
@@ -154,20 +155,17 @@ const Admin = () => {
       </div>
 
       {/* Metric cards row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {metrics.map((m) => (
-          <div key={m.label} className="rounded-xl border border-white/5 bg-ds-surface p-5 hover:border-white/10 transition-colors">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-mono uppercase tracking-widest text-ds-muted">{m.label}</span>
-              <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${m.bg}`}>
-                <i className={`${m.icon} text-sm ${m.color}`}></i>
-              </div>
-            </div>
-            <div className="text-3xl font-semibold text-ds-text tracking-tight">
-              {m.value !== null ? m.value : '—'}
-            </div>
-            <p className="mt-1 text-xs text-ds-muted">{m.suffix}</p>
-          </div>
+          <AdminMetricCard
+            key={m.label}
+            label={m.label}
+            value={m.value}
+            suffix={m.suffix}
+            icon={m.icon}
+            iconColor={m.color}
+            iconBg={m.bg}
+          />
         ))}
       </div>
 
@@ -175,30 +173,17 @@ const Admin = () => {
       <div className="mb-4">
         <h3 className="text-sm font-mono uppercase tracking-widest text-ds-muted mb-4">Gerenciar</h3>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {sections.map((s) => (
-          <Link
+          <AdminSectionLinkCard
             key={s.title}
-            to={s.link}
-            className="group rounded-xl border border-white/5 bg-ds-surface p-5 hover:border-ds-accent/30 hover:bg-ds-surface transition-all"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-ds-accent/10 border border-ds-accent/20 group-hover:bg-ds-accent/20 transition-colors">
-                <i className={`${s.icon} text-ds-accent text-base`}></i>
-              </div>
-              <span className="text-xs text-ds-muted tabular-nums">
-                {s.count !== null ? s.count : '—'} {s.countLabel}
-              </span>
-            </div>
-            {/* TODO: revisar cor (sem equivalente claro no mapeamento) */}
-            <h4 className="text-base font-semibold text-ds-text mb-1 group-hover:text-copper-light transition-colors">
-              {s.title}
-            </h4>
-            <p className="text-sm text-ds-muted leading-relaxed">{s.desc}</p>
-            <div className="mt-4 flex items-center gap-1.5 text-xs font-medium text-ds-accent opacity-0 group-hover:opacity-100 transition-opacity">
-              Acessar <i className="fa-solid fa-arrow-right text-[10px]"></i>
-            </div>
-          </Link>
+            title={s.title}
+            desc={s.desc}
+            icon={s.icon}
+            link={s.link}
+            count={s.count}
+            countLabel={s.countLabel}
+          />
         ))}
       </div>
     </AdminLayout>

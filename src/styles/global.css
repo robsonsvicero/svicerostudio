@@ -198,6 +198,42 @@
   }
 
   /* ─────────────────────────────────────────────
+     MARQUEE — Depoimentos
+  ───────────────────────────────────────────── */
+  .depoimentos-marquee-slide {
+    width: 400px;
+    min-width: 400px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .depoimentos-marquee-slide {
+      width: 300px;
+      min-width: 300px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .depoimentos-marquee-slide {
+      min-height: 360px;
+    }
+  }
+
+  @keyframes infinite-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - 2rem));
+    }
+  }
+
+  .animate-infinite-scroll {
+    animation: infinite-scroll 35s linear infinite;
+    will-change: transform;
+  }
+
+  /* ─────────────────────────────────────────────
      PROSE — Tema claro (novo padrão)
   ───────────────────────────────────────────── */
   .prose {

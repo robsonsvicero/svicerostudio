@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../UI/Button';
 import ScrollReveal from '../UI/ScrollReveal';
+import SectionHeader from '../UI/SectionHeader';
 
 const FAQSection = ({ faqs, title, subtitle, startIndex = 0, endIndex }) => {
   const displayedFaqs = endIndex ? faqs.slice(startIndex, endIndex) : faqs.slice(startIndex);
@@ -11,22 +12,18 @@ const FAQSection = ({ faqs, title, subtitle, startIndex = 0, endIndex }) => {
     <section className="py-24 px-4 md:px-16 bg-ds-surface font-body border-t border-white/5">
       <div className="max-w-screen-xl mx-auto">
         <ScrollReveal direction="up" delay={0.1}>
-          <div className="mb-16 text-left">
-            <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
-              <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-              {subtitle || "FAQ"}
-            </span>
-            <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-ds-text text-left mb-6">
-              {title || "Dúvidas que costumam surgir antes do diagnóstico"}
-            </h2>
-          </div>
+          <SectionHeader
+            badge={subtitle || 'FAQ'}
+            title={title || 'Dúvidas comuns antes do diagnóstico estratégico'}
+            className="mb-16"
+          />
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {displayedFaqs.map((item, idx) => (
             <ScrollReveal key={item.id || item._id || idx} direction="up" delay={0.1 + idx * 0.1}>
               <div 
-                className="rounded-3xl border border-white/5 bg-[#141414]/60 backdrop-blur-xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 group hover:border-white/10 h-full"
+                className="rounded-3xl border border-white/5 bg-ds-bg backdrop-blur-xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 group hover:border-white/10 h-full"
               >
                 <h3 className="text-[1.125rem] font-medium text-ds-text mb-4 flex items-start gap-3">
                   <span className="text-ds-accent font-mono text-xl leading-none font-bold">?</span>
@@ -41,7 +38,7 @@ const FAQSection = ({ faqs, title, subtitle, startIndex = 0, endIndex }) => {
         </div>
 
         <div className="mt-16 flex justify-center">
-          <Button href="/faq" variant="outline">
+          <Button href="/faq" variant="secondary">
             Ver todas as dúvidas
           </Button>
         </div>

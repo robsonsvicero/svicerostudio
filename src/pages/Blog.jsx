@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import capaBlog from '../assets/capa-blog.jpg'
+import capaBlog from '../assets/capa-blog.png'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import SEOHelmet from '../components/SEOHelmet'
@@ -98,11 +98,16 @@ const Blog = () => {
       const categoryMatch = selectedCategory === 'Todos' || post.categoria === selectedCategory
       const tagMatch = !selectedTag || (post.tags && post.tags.toLowerCase().split(',').map(t => t.trim()).includes(selectedTag.toLowerCase()))
       const authorMatch = !selectedAuthor || post.autor === selectedAuthor
+      const normalizedSearch = searchTerm.trim().toLowerCase()
       const searchMatch =
-        !searchTerm ||
-        post.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (post.resumo && post.resumo.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        post.conteudo.toLowerCase().includes(searchTerm.toLowerCase())
+        !normalizedSearch ||
+        // Tema
+        (post.categoria && post.categoria.toLowerCase().includes(normalizedSearch)) ||
+        // Dúvida
+        post.titulo.toLowerCase().includes(normalizedSearch) ||
+        (post.resumo && post.resumo.toLowerCase().includes(normalizedSearch)) ||
+        // Palavra-chave
+        (post.tags && post.tags.toLowerCase().includes(normalizedSearch))
       return categoryMatch && tagMatch && authorMatch && searchMatch
     })
     .sort((a, b) => new Date(b.data_publicacao) - new Date(a.data_publicacao))
@@ -135,13 +140,22 @@ const Blog = () => {
               backgroundImage: `url(${capaBlog})`
             }}
           ></div>
+          <div
+            className="absolute inset-0 z-10 pointer-events-none"
+            style={{
+              background: 'linear-gradient(90deg, rgba(34, 34, 34, 0.75) 0%, rgba(34, 34, 34, 0.38) 40%, rgba(34, 34, 34, 0.16) 72%, rgba(34, 34, 34, 0.04) 100%)'
+            }}
+          ></div>
           {/* Conteúdo principal */}
           <ScrollReveal direction="up" delay={0.1} className="relative z-20 w-full mx-auto flex flex-col items-center sm:items-start justify-center text-left py-12 px-4 sm:px-6 lg:px-8">
             <div className='flex flex-col items-start'>
               <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-ds-text mb-5 sm:mb-6">
-                Blog
+                Percepção, Marca & Negócios
               </h1>
-              
+              <p className="reveal stagger-2 text-lg md:text-xl text-ds-text/60 mb-6 max-w-lg leading-[1.6]">
+                Reflexões sobre percepção, posicionamento, design e negócios. Para clínicas, estúdios e marcas que querem crescer com clareza e menos ruído.
+              </p>
+
             </div>
           </ScrollReveal>
         </section>
@@ -156,7 +170,7 @@ const Blog = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Buscar por título, conteúdo ou tags…"
+                placeholder="Buscar por tema, dúvida ou palavra-chave..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-6 py-4 pr-12 rounded-2xl bg-ds-surface border border-white/5 hover:border-white/10 text-ds-text text-base placeholder-muted focus:border-ds-accent focus:outline-none transition-colors shadow-sm"

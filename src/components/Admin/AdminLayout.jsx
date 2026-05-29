@@ -132,8 +132,9 @@ const AdminLayout = ({ children, title, actions, toastProps }) => {
               <p className="text-xs text-ds-muted">Administrador</p>
             </div>
             <Button
+              variant="custom"
               onClick={signOut}
-              className="p-2 rounded-lg text-ds-muted hover:text-red-400 hover:bg-red-400/10 transition-colors"
+              className="p-2 rounded-lg text-ds-muted hover:text-white hover:bg-ds-accent transition-colors border-0"
               aria-label="Sair"
               title="Sair"
             >

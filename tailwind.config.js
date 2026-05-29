@@ -33,6 +33,10 @@ export default {
         'ds-border':    '#E2E4E8',
         'ds-divider':   '#D1D5DB',
 
+        //background Outline
+        'ds-outline': '#ffffff',
+        'ds-outline-hover': '#f2f2f2',
+
         // ─────────────────────────────────────────────
         // LEGADO — mantido para evitar quebra em rotas
         // não afetadas pela nova identidade visual

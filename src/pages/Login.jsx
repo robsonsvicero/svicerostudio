@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/UI/Button'
-import logoImage from '../assets/logo_horizontal.png'
+import logoImage from '../assets/logo-vertical.png'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -64,7 +64,7 @@ const Login = () => {
         </div>
 
         {/* Formulário de Login */}
-        <div className="bg-[#141414]/60 backdrop-blur-xl rounded-[2rem] p-8 border border-white/5 shadow-2xl">
+        <div className="bg-ds-surface backdrop-blur-xl rounded-[2rem] p-8 border border-white/5 shadow-2xl">
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             {error && (
               <div className="bg-red-900/20 border border-red-900/50 rounded-lg p-4 flex items-center gap-3">
@@ -83,7 +83,7 @@ const Login = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-ds-text text-base focus:border-ds-accent/60 focus:bg-white/10 focus:outline-none transition-all placeholder:text-white/20"
+                className="w-full px-4 py-3 rounded-xl bg-ds-border/10 border border-ds-border text-ds-text text-base focus:border-ds-accent/60 focus:bg-white/10 focus:outline-none transition-all placeholder:text-ds-text/30"
                 placeholder="seu@email.com"
                 disabled={isLoading}
               />
@@ -100,7 +100,7 @@ const Login = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 pr-12 rounded-xl bg-white/5 border border-white/10 text-ds-text text-base focus:border-ds-accent/60 focus:bg-white/10 focus:outline-none transition-all placeholder:text-white/20"
+                  className="w-full px-4 py-3 rounded-xl bg-ds-border/10 border border-ds-border text-ds-text text-base focus:border-ds-accent/60 focus:bg-white/10 focus:outline-none transition-all placeholder:text-ds-text/30"
                   placeholder="••••••••"
                   disabled={isLoading}
                 />
@@ -117,7 +117,7 @@ const Login = () => {
             <Button 
               type="submit" 
               disabled={isLoading}
-              variant='primary'
+              variant='secondary'
               className="w-full"
             >
               {isLoading ? (

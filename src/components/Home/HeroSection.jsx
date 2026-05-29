@@ -2,10 +2,10 @@ import Button from "../UI/Button.jsx";
 import ScrollReveal from "../UI/ScrollReveal.jsx";
 import { useState, useEffect, useRef } from "react";
 
-import heroBg1 from "../../assets/hero-odonto-luxo.png"; 
-import heroBg2 from "../../assets/hero-grid-perfeito.png";
-import heroBg3 from "../../assets/hero-fresta-luz.png";
-import heroBg4 from "../../assets/hero-alinhador-premium.png";
+import heroBg1 from "../../assets/hero01.png"; 
+import heroBg2 from "../../assets/hero02.png";
+import heroBg3 from "../../assets/hero03.png";
+import heroBg4 from "../../assets/hero04.png";
 
 const backgroundImages = [heroBg1, heroBg2, heroBg3, heroBg4];
 
@@ -37,28 +37,24 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero" className="max-w-7xl mx-auto px-6 pt-32 pb-24 lg:pt-48 lg:pb-32 grid lg:grid-cols-12 gap-12 lg:gap-8 items-center border-b border-white/5 font-body">
+    <section id="hero" className="max-w-7xl mx-auto px-6 py-16 sm:py-24 grid lg:grid-cols-12 gap-12 lg:gap-8 items-center border-b border-white/5 font-body">
       
       {/* TEXT SIDE (LEFT) */}
       <ScrollReveal direction="right" delay={0.1} className="lg:col-span-6 flex flex-col items-start text-left order-1 relative z-10">
         
         <span className="reveal text-ds-accent text-[11px] font-mono uppercase tracking-[0.2em] mb-6 flex items-center gap-2 px-4 py-1.5 border border-ds-accent/20 bg-ds-accent/10 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(255,122,89,0.15)]">
           <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(255,122,89,0.8)]" />
-          Engenharia de Marca
+          ESTRATÉGIA, PERCEPÇÃO & POSICIONAMENTO
         </span>
 
         <h1 className="reveal stagger-1 text-4xl sm:text-5xl lg:text-[3.8rem] font-bold tracking-tight text-ds-text leading-[1.1] mb-8">
-          Transformamos clínicas comuns em <span className="text-ds-accent italic font-normal">Marcas de Elite.</span>
+          Existe uma diferença entre entregar qualidade e ser <span className="text-ds-accent italic font-normal">percebido como referência.</span>
         </h1>
 
         <p className="reveal stagger-2 text-lg md:text-xl text-ds-text/60 mb-6 max-w-lg leading-[1.6]">
-          Usamos design estratégico de alto padrão para afastar pacientes focados em descontos, justificar orçamentos de alto ticket e atrair o público particular premium.
+          Construímos sistemas de marca que tornam percepção, comunicação e experiência mais coerentes com o nível da sua clínica.
         </p>
-
-        <p className="reveal stagger-3 text-ds-text/40 text-base max-w-lg leading-relaxed mb-10">
-          Aplique para um Diagnóstico de Posicionamento gratuito e descubra onde a comunicação visual da sua clínica está fazendo você perder margem de lucro para a concorrência popular.
-        </p>
-
+        
         <div className="reveal stagger-4 flex flex-row gap-6 items-center w-full sm:w-auto">
           <Button variant="primary" href="/formulario-interesse" className="w-full">
             Agendar Diagnóstico

@@ -31,7 +31,7 @@ const Preloader = () => {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-cream transition-opacity duration-600 ${
+      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-ds-text transition-opacity duration-600 ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >

@@ -4,6 +4,13 @@ import { API_URL } from '../lib/api.js';
 
 const DepoimentosSection = () => {
   const [depoimentos, setDepoimentos] = useState([]);
+  const depoimentoCardBackground = {
+    background: `
+      radial-gradient(52% 58% at 18% 20%, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.04) 36%, rgba(59,130,246,0) 72%),
+      radial-gradient(36% 42% at 100% 100%, rgba(59,130,246,0.16) 0%, rgba(59,130,246,0.05) 38%, rgba(59,130,246,0) 76%),
+      linear-gradient(120deg, rgba(247,248,255,0.96) 0%, rgba(235,238,252,0.97) 48%, rgba(223,228,249,0.98) 100%)
+    `,
+  };
 
   const fetchDepoimentos = async () => {
     try {
@@ -35,26 +42,31 @@ const DepoimentosSection = () => {
               CLIENTES
             </span>
             <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-ds-text text-left">
-              O que diz quem passa pelo nosso processo
+              O que muda quando percepção e posicionamento começam a se alinhar
             </h2>
+            <p className="text-base text-ds-muted max-w-2xl mx-auto mb-12 leading-relaxed">
+              Nossos projetos não começam pela paleta de cores.
+              Eles começam pela pergunta: <span className="font-semibold text-ds-text">como sua clínica precisa ser percebida para crescer com mais segurança? </span>
+              Os depoimentos abaixo são reflexos desse alinhamento entre estratégia, identidade e experiência.
+            </p>
           </div>
         </ScrollReveal>
-        
+
         <ScrollReveal direction="up" delay={0.2} duration={0.8}>
           <div className="relative group">
             {/* Edges Fade Effect */}
-            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none hidden md:block" />
-            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none hidden md:block" />
-            
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-ds-surface to-transparent z-10 pointer-events-none hidden md:block" />
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-ds-surface to-transparent z-10 pointer-events-none hidden md:block" />
+
             {/* Infinite Marquee Container */}
             <div className="flex overflow-hidden gap-8">
               {/* Box 1 */}
               <div className="flex gap-8 shrink-0 animate-infinite-scroll">
                 {depoimentos.map((depoimento, idx) => (
                   <div key={`box1-${depoimento.id}-${idx}`} className="depoimentos-marquee-slide">
-                    <div className="bg-[#141414]/60 backdrop-blur-xl rounded-[2rem] border border-white/5 p-8 md:p-10 flex flex-col w-full h-full shadow-lg hover:shadow-2xl hover:border-ds-accent/20 transition-all duration-500 group/card relative overflow-hidden cursor-pointer">
-                      <div className="absolute inset-0 bg-gradient-to-br from-copper/5 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-                      
+                    <div style={depoimentoCardBackground} className="backdrop-blur-xl rounded-[2rem] border border-white/10 p-8 md:p-10 flex flex-col w-full h-full shadow-lg hover:shadow-2xl hover:border-ds-tech/20 transition-all duration-500 group/card relative overflow-hidden cursor-pointer">
+                      <div className="absolute inset-0 bg-gradient-to-br from-ds-tech/5 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+
                       <div className="absolute top-6 right-8 text-ds-accent/10 text-7xl font-serif select-none">
                         "
                       </div>
@@ -90,9 +102,9 @@ const DepoimentosSection = () => {
               <div aria-hidden="true" className="flex gap-8 shrink-0 animate-infinite-scroll">
                 {depoimentos.map((depoimento, idx) => (
                   <div key={`box2-${depoimento.id}-${idx}`} className="depoimentos-marquee-slide">
-                    <div className="bg-[#141414]/60 backdrop-blur-xl rounded-[2rem] border border-white/5 p-8 md:p-10 flex flex-col w-full h-full shadow-lg hover:shadow-2xl hover:border-ds-accent/20 transition-all duration-500 group/card relative overflow-hidden cursor-pointer">
-                      <div className="absolute inset-0 bg-gradient-to-br from-copper/5 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-                      
+                    <div style={depoimentoCardBackground} className="backdrop-blur-xl rounded-[2rem] border border-white/10 p-8 md:p-10 flex flex-col w-full h-full shadow-lg hover:shadow-2xl hover:border-ds-tech/20 transition-all duration-500 group/card relative overflow-hidden cursor-pointer">
+                      <div className="absolute inset-0 bg-gradient-to-br from-ds-tech/5 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+
                       <div className="absolute top-6 right-8 text-ds-accent/10 text-7xl font-serif select-none">
                         "
                       </div>

@@ -1,14 +1,14 @@
 import React from "react";
-import logo from "../assets/logo_horizontal.png";
+import logo from "../assets/logo-vertical.png";
 import Button from "../components/UI/Button";
 
 const Agradecimento = () => (
   <div className="min-h-screen flex items-center justify-center bg-ds-bg px-4 py-12 font-body relative overflow-hidden">
     {/* Efeitos de Luz de Fundo */}
-    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-ds-accent/5 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
-    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-ds-accent/5 rounded-full blur-[80px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
+    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-ds-surface rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
+    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-ds-surface rounded-full blur-[80px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
 
-    <div className="max-w-lg w-full bg-[#141414]/60 backdrop-blur-xl rounded-[2rem] p-8 md:p-12 text-left border border-white/5 shadow-2xl relative z-10">
+    <div className="max-w-lg w-full bg-ds-surface backdrop-blur-xl rounded-[2rem] p-8 md:p-12 text-left border border-white/5 shadow-2xl relative z-10">
       <img
         src={logo}
         alt="Logo Svicero Studio"
@@ -32,7 +32,7 @@ const Agradecimento = () => (
       </p>
       
       <div className="rounded-xl border border-white/5 bg-[#1A1A1A] p-5 mb-8">
-        <p className="text-ds-text font-medium mb-3 text-base">O que acontece agora?</p>
+        <p className="text-ds-surface font-medium mb-3 text-base">O que acontece agora?</p>
         <p className="text-ds-muted leading-[1.6] text-sm">
           O próximo passo é uma avaliação técnica do seu posicionamento atual. Em até 48 horas úteis, entraremos em contato via WhatsApp para agendar sua breve reunião estratégica.
         </p>

@@ -28,7 +28,7 @@ const comoConheceu = [
 ];
 
 const inputClass =
-  'w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-ds-text placeholder:text-white/30 focus:outline-none focus:border-ds-accent/60 focus:bg-white/10 transition-colors shadow-sm';
+  'w-full rounded-lg border border-ds-border bg-ds-surface px-4 py-3 text-ds-text placeholder:text-ds-muted focus:outline-none focus:border-ds-accent/60 transition-colors shadow-sm';
 
 const labelClass = 'block text-ds-text font-medium mb-1';
 const helperClass = 'text-xs text-ds-muted mt-1';
@@ -109,7 +109,7 @@ const FormularioInteresse = () => {
       <div className="bg-ds-bg min-h-screen flex flex-col text-ds-text font-body">
         <Header variant="solid" />
         <main className="flex-1 flex items-center justify-center px-4">
-          <div className="max-w-xl w-full mx-auto bg-ds-surface rounded-[2rem] p-8 border border-white/5 shadow-md text-center mt-20 mb-20 lg:mt-36 lg:mb-36">
+          <div className="max-w-xl w-full mx-auto bg-ds-surface rounded-[2rem] p-8 border border-ds-border shadow-md text-center mt-20 mb-20 lg:mt-36 lg:mb-36">
             <span className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
               <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]" />
               RECEBIDO
@@ -166,15 +166,13 @@ const FormularioInteresse = () => {
           </h1>
 
           <p className="text-ds-muted text-base sm:text-lg leading-[1.6] mb-10">
-            Essas informações ajudam o estúdio a chegar no Diagnóstico de
-            Posicionamento já preparado para a sua realidade — sem perder tempo
-            com perguntas básicas durante a conversa.
+            Quanto mais claro for o cenário que você descreve aqui, mais objetivo será o diagnóstico sobre o que está ajudando ou atrapalhando a percepção da sua clínica.
           </p>
 
           <form className="space-y-8" onSubmit={handleSubmit}>
 
             {/* BLOCO 1: Identificação */}
-            <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl shadow-sm p-6 sm:p-8 space-y-5">
+            <div className="rounded-[2rem] border border-ds-border bg-ds-surface shadow-sm p-6 sm:p-8 space-y-5">
               <p className="text-[10px] uppercase tracking-widest font-mono text-ds-accent">
                 Sobre você
               </p>
@@ -204,7 +202,7 @@ const FormularioInteresse = () => {
                   placeholder="Seu e-mail"
                 />
                 <p className={helperClass}>
-                  É por aqui que o estúdio vai retornar com os próximos passos.
+                  Usaremos este e-mail para retorno e envio dos próximos passos.
                 </p>
               </div>
 
@@ -219,14 +217,13 @@ const FormularioInteresse = () => {
                   placeholder="(XX) XXXXX-XXXX"
                 />
                 <p className={helperClass}>
-                  Opcional. Usado apenas se precisar tirar alguma dúvida rápida
-                  antes do diagnóstico.
+                  Opcional. Usado apenas para alinhamentos rápidos antes ou depois do diagnóstico.
                 </p>
               </div>
             </div>
 
             {/* BLOCO 2: Negócio */}
-            <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl shadow-sm p-6 sm:p-8 space-y-5">
+            <div className="rounded-[2rem] border border-ds-border bg-ds-surface shadow-sm p-6 sm:p-8 space-y-5">
               <p className="text-[10px] uppercase tracking-widest font-mono text-ds-accent">
                 Sobre o negócio
               </p>
@@ -242,7 +239,7 @@ const FormularioInteresse = () => {
                   required
                   className={inputClass}
                   type="text"
-                  placeholder="Ex.: consultoria financeira, clínica odontológica, loja de moda feminina..."
+                  placeholder="Ex.: clínica odontológica, harmonização orofacial…"
                 />
               </div>
 
@@ -282,14 +279,13 @@ const FormularioInteresse = () => {
                   placeholder="https://"
                 />
                 <p className={helperClass}>
-                  Opcional, mas ajuda muito o estúdio a entender seu momento
-                  visual antes da conversa.
+                  Opcional, mas ajuda a entender rapidamente sua presença atual antes da conversa.
                 </p>
               </div>
             </div>
 
             {/* BLOCO 3: Desafio */}
-            <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl shadow-sm p-6 sm:p-8 space-y-5">
+            <div className="rounded-[2rem] border border-ds-border bg-ds-surface shadow-sm p-6 sm:p-8 space-y-5">
               <p className="text-[10px] uppercase tracking-widest font-mono text-ds-accent">
                 Seu momento
               </p>
@@ -304,7 +300,7 @@ const FormularioInteresse = () => {
                   onChange={handleChange}
                   required
                   className={`${inputClass} min-h-[120px] resize-none`}
-                  placeholder="Pode ser algo como: 'Clientes sempre pedem desconto e não enxergam o valor do que entrego' ou 'Minha comunicação parece genérica, igual à dos meus concorrentes'."
+                  placeholder="Pode ser algo como: “Clientes sempre pedem desconto e não enxergam o valor do que entrego” ou “Minha comunicação parece genérica, igual à de várias outras clínicas”."
                 />
                 <p className={helperClass}>
                   Quanto mais honesto, mais produtivo vai ser o diagnóstico.
@@ -336,7 +332,7 @@ const FormularioInteresse = () => {
             </div>
 
             {/* BLOCO 4: Como conheceu */}
-            <div className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl shadow-sm p-6 sm:p-8 space-y-5">
+            <div className="rounded-[2rem] border border-ds-border bg-ds-surface shadow-sm p-6 sm:p-8 space-y-5">
               <p className="text-[10px] uppercase tracking-widest font-mono text-ds-accent">
                 Só curiosidade
               </p>
@@ -386,8 +382,7 @@ const FormularioInteresse = () => {
                   className="mt-1 accent-copper"
                 />
                 <span className="text-sm text-ds-text/80 leading-[1.6]">
-                  Concordo em receber contato do Svicero Studio para tratar sobre
-                  meu diagnóstico de posicionamento.
+                  Concordo em receber contato do Svicero Studio para tratar do meu Diagnóstico de Posicionamento. Ao enviar, estou de acordo com a política de privacidade do estúdio. Meus dados não serão compartilhados com terceiros.
                 </span>
               </label>
               <p className="text-[10px] uppercase font-mono tracking-widest text-ds-muted pl-6">

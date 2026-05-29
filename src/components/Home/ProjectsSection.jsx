@@ -1,9 +1,12 @@
 import React, { useState, useRef } from 'react';
 import ProjectModal from '../ProjectModal';
 import ScrollReveal from '../UI/ScrollReveal';
+import SectionHeader from '../UI/SectionHeader';
 
 const ProjectCard = ({ project, index, handleOpenModal }) => {
   const isFeatured = index === 0;
+  const isSecondCard = index === 1;
+  const shortDescription = (project.descricao || '').trim();
   const cardRef = useRef(null);
 
   const handleMouseMove = (e) => {
@@ -69,15 +72,21 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
             {project.categoria || "Case Study"}
           </span>
           <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-ds-accent group-hover:border-ds-accent transition-all duration-300 shadow-[0_0_15px_rgba(184,115,51,0)] group-hover:shadow-[0_0_15px_rgba(184,115,51,0.5)]">
-            <i className="fa-solid fa-arrow-right text-ds-muted text-xs group-hover:text-white transition-colors -rotate-45 group-hover:rotate-0 duration-300"></i>
+            <i className={`fa-solid fa-arrow-right ${isSecondCard ? "text-surface" : "text-ds-muted"} text-xs group-hover:text-white transition-colors -rotate-45 group-hover:rotate-0 duration-300`}></i>
           </div>
         </div>
 
-        <h3 className={`text-ds-text font-medium tracking-tight leading-[1.1] mb-4 ${isFeatured ? "text-3xl md:text-[2.5rem]" : "text-2xl"}`}>
+        <h3 className={`${isSecondCard ? "text-surface" : "text-ds-text"} font-medium tracking-tight leading-[1.1] mb-4 ${isFeatured ? "text-3xl md:text-[2.5rem]" : "text-2xl"}`}>
           {project.titulo}
         </h3>
 
-        <div className="mt-auto pt-6 flex items-center gap-3 text-sm font-bold uppercase tracking-[.15em] text-ds-muted group-hover:text-ds-accent transition-colors duration-300">
+        {shortDescription && (
+          <p className={`text-sm leading-relaxed ${isSecondCard ? "text-surface/80" : "text-ds-muted"} mb-4`}>
+            {shortDescription}
+          </p>
+        )}
+
+        <div className={`mt-auto pt-6 flex items-center gap-3 text-sm font-bold uppercase tracking-[.15em] ${isSecondCard ? "text-surface" : "text-ds-muted"} group-hover:text-ds-accent transition-colors duration-300`}>
           Ver Projeto Completo
         </div>
       </div>
@@ -106,22 +115,16 @@ const ProjectsSection = ({ projects }) => {
         className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 bg-ds-surface font-body"
       >
         <div className="max-w-screen-xl mx-auto">
-          <ScrollReveal direction="up" delay={0.1} className="flex items-center justify-between mb-10">
-            <div>
-              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
-                <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-                PORTFÓLIO
-              </span>
-
-              <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-ds-text text-left mb-6">
-                Projetos em Destaque
-              </h2>
-
-              <p className="text-xl font-normal leading-[1.6] text-ds-muted max-w-2xl">
-                Transformamos excelência clínica em percepção de valor.
-                Criamos ativos visuais que posicionam o consultório para atrair pacientes particulares que buscam confiança, experiência e diferenciação.
-              </p>
-            </div>
+          <ScrollReveal direction="up" delay={0.1} className="mb-10">
+            <SectionHeader
+              badge="PROJETOS"
+              title={(
+                <>
+                  Projetos desenvolvidos para alinhar <span className='text-ds-accent font-bold'>percepção</span>, <span className='text-ds-accent font-bold'>clareza</span> e <span className='text-ds-accent font-bold'>posicionamento</span>
+                </>
+              )}
+              description="Cada projeto nasce de um diagnóstico estratégico. Nosso foco não é apenas estética, é construir marcas mais coerentes, confiáveis e memoráveis."
+            />
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-14" style={{ perspective: '1200px' }}>

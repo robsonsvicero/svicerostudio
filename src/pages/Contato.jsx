@@ -9,19 +9,19 @@ const channels = [
   {
     title: 'E-mail',
     value: 'contato@svicerostudio.com.br',
-    description: 'Para mensagens formais, parcerias ou apresentações.',
+    description: 'Para mensagens formais, propostas, convites e apresentações.',
     href: 'mailto:contato@svicerostudio.com.br',
   },
   {
     title: 'WhatsApp',
     value: '(11) 96493-2007',
-    description: 'Para conversas rápidas ou demandas mais urgentes.',
+    description: 'Para conversas rápidas, alinhamentos pontuais e demandas mais urgentes.',
     href: 'https://wa.me/5511964932007?text=Olá%20Robson%2C%20gostaria%20de%20conversar%20com%20o%20Svicero%20Studio.',
   },
   {
     title: 'Instagram',
     value: '@svicerostudio',
-    description: 'Acompanhe projetos, bastidores e conteúdos do estúdio.',
+    description: 'Para acompanhar projetos, bastidores, reflexões sobre marca e atualizações do estúdio.',
     href: 'https://instagram.com/svicerostudio',
   },
 ];
@@ -46,11 +46,11 @@ const Contato = () => {
           <ScrollReveal direction="up" delay={0.1}>
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-20 text-center lg:px-10 lg:py-24">
               <h1 className="mt-6 text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-ds-text text-balance">
-                Canais de Atendimento
+                Como falar com o Svicero Studio
               </h1>
 
               <p className="mx-auto mt-6 max-w-2xl text-lg leading-[1.6] text-ds-muted">
-                Para solicitações institucionais, parcerias corporativas ou suporte a projetos em andamento, utilize os acessos abaixo. Se o seu objetivo é alinhar o posicionamento visual da sua clínica ou consultório, o canal exclusivo e prioritário é através do agendamento de um Diagnóstico Inicial.
+                Para dúvidas, convites, parcerias institucionais ou suporte a projetos em andamento, você pode utilizar os canais abaixo. Se a sua intenção é entender como podemos ajudar a alinhar a percepção da sua clínica ao nível do seu trabalho, o caminho prioritário é agendar um Diagnóstico Estratégico inicial.
               </p>
 
               <div className="mt-8 flex justify-center">
@@ -76,9 +76,7 @@ const Contato = () => {
                 </h2>
 
                 <p className="mt-6 text-base leading-[1.6] text-ds-muted">
-                  Se ainda não é o momento de falar sobre um projeto, mas você
-                  quer tirar uma dúvida ou conversar sobre outra demanda, use um
-                  destes canais diretamente.
+                  Se ainda não é o momento de iniciar um projeto completo, mas você quer tirar uma dúvida, conversar sobre uma demanda específica ou propor uma parceria, use um destes canais de forma direta.
                 </p>
               </div>
             </ScrollReveal>
@@ -124,7 +122,7 @@ const Contato = () => {
 
               <p className="mt-4 text-base leading-[1.6] text-ds-muted">
                 O estúdio costuma responder mensagens em até dois dias úteis.
-                Se sua demanda for urgente, o caminho mais rápido é o WhatsApp.
+                Se a sua demanda for urgente ou estiver ligada a prazos imediatos, o caminho mais rápido é o WhatsApp.
               </p>
             </div>
           </ScrollReveal>

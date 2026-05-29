@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../hooks/useToast';
 import Button from '../../components/UI/Button';
 import AdminLayout from '../../components/Admin/AdminLayout';
+import AdminListCard from '../../components/Admin/AdminListCard';
 
 import { API_URL } from '../../lib/api.js';
 
@@ -66,19 +67,21 @@ const AdminComentarios = () => {
 
     // --- JSX (redesigned) ---
     const filterTabs = (
-      <div className="flex items-center gap-1 rounded-lg border border-white/10 bg-ds-bg p-1">
-        <Button
+      <div className="flex items-center">
+        <button
+          type="button"
           onClick={() => setFilter('pending')}
-          className={`rounded-md px-4 py-2 text-sm font-medium transition ${filter === 'pending' ? 'bg-ds-accent text-white' : 'text-ds-muted hover:text-ds-text hover:bg-white/5'}`}
+          className={`px-4 py-2 text-sm font-medium transition ${filter === 'pending' ? 'bg-ds-accent text-white' : 'text-ds-muted hover:text-ds-text hover:bg-white/5'}`}
         >
           Pendentes
-        </Button>
-        <Button
+        </button>
+        <button
+          type="button"
           onClick={() => setFilter('approved')}
-          className={`rounded-md px-4 py-2 text-sm font-medium transition ${filter === 'approved' ? 'bg-ds-accent text-white' : 'text-ds-muted hover:text-ds-text hover:bg-white/5'}`}
+          className={`px-4 py-2 text-sm font-medium transition ${filter === 'approved' ? 'bg-ds-accent text-white' : 'text-ds-muted border border-ds-border/30 hover:text-ds-text hover:bg-ds-bg'}`}
         >
           Aprovados
-        </Button>
+        </button>
       </div>
     );
 
@@ -88,28 +91,17 @@ const AdminComentarios = () => {
           actions={filterTabs}
           toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}
         >
-          <div className="rounded-xl border border-white/5 bg-ds-surface">
-            <div className="border-b border-white/5 px-6 py-4">
-              <h2 className="text-base font-semibold text-ds-text">
-                {filter === 'pending' ? 'Comentários Pendentes' : 'Comentários Aprovados'}
-                {!loading && <span className="ml-2 text-sm font-normal text-ds-muted">({comments.length})</span>}
-              </h2>
-            </div>
-
-            <div className="p-4">
-              {loading && <p className="text-ds-muted text-center py-12">Carregando comentários...</p>}
-              {!loading && comments.length === 0 && (
-                <div className="py-16 text-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 mx-auto mb-4">
-                    <i className="fa-solid fa-check-double text-lg text-ds-muted"></i>
-                  </div>
-                  <p className="text-sm font-medium text-ds-text">Nenhum comentário {filter === 'pending' ? 'pendente' : 'aprovado'}</p>
-                  <p className="mt-1 text-xs text-ds-muted">Todos os comentários estão em dia!</p>
-                </div>
-              )}
-              {!loading && comments.length > 0 && (
-                <div className="space-y-2">
-                  {comments.map((comment) => (
+          <AdminListCard
+            title={filter === 'pending' ? 'Comentários Pendentes' : 'Comentários Aprovados'}
+            count={comments.length}
+            loading={loading}
+            loadingText="Carregando comentários..."
+            emptyText={`Nenhum comentário ${filter === 'pending' ? 'pendente' : 'aprovado'}`}
+            bodyClassName="p-4"
+          >
+            {comments.length > 0 && (
+              <div className="space-y-2">
+                {comments.map((comment) => (
                     <div key={getEntityId(comment)} className="rounded-lg border border-white/5 bg-ds-bg p-4 hover:border-white/10 transition-colors">
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                         <div className="flex-1 min-w-0">
@@ -142,11 +134,10 @@ const AdminComentarios = () => {
                       </div>
                       <p className="mt-3 text-sm text-ds-text/80 whitespace-pre-line leading-relaxed border-t border-white/5 pt-3">{comment.content}</p>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+                ))}
+              </div>
+            )}
+          </AdminListCard>
     </AdminLayout>
     );
 };

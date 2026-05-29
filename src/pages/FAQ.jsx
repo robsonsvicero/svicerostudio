@@ -33,7 +33,7 @@ const FAQ = () => {
         <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-14 sm:pb-16 lg:px-10 lg:pb-24 text-center mt-20 lg:mt-36">
           <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-tight text-ds-text text-balance">FAQ – Perguntas Frequentes</h1>
           <p className="mt-6 max-w-3xl mx-auto text-lg leading-[1.6] text-ds-muted lg:text-xl">
-            Use essa página para responder exatamente o que seus leads te perguntam pelo WhatsApp.
+            Respostas diretas para as principais dúvidas sobre o trabalho do Svicero Studio, o Diagnóstico de Posicionamento e o processo de reposicionamento de marca.
           </p>
         </section>
         <section className="mx-auto max-w-3xl px-6 py-8 lg:px-10 lg:py-12">
@@ -44,7 +44,7 @@ const FAQ = () => {
               <div className="text-center text-ds-muted py-8">Nenhuma pergunta cadastrada.</div>
             ) : (
               perguntas.map((item, idx) => (
-                <div key={item.id || item._id} className="rounded-[2rem] border border-white/5 bg-[#141414]/60 backdrop-blur-xl p-8 md:p-10 shadow-lg hover:border-white/10 transition-colors">
+                <div key={item.id || item._id} className="rounded-[2rem] border border-white/5 bg-ds-surface backdrop-blur-xl p-8 md:p-10 shadow-lg hover:border-white/10 transition-colors">
                   <h2 className="text-xl font-medium text-ds-accent mb-4">{item.pergunta}</h2>
                   <p className="text-ds-muted text-base leading-[1.6]">{item.resposta}</p>
                 </div>
@@ -55,7 +55,7 @@ const FAQ = () => {
         <section className="mx-auto max-w-3xl px-6 py-8 lg:px-10 lg:py-12 text-center">
           <h2 className="text-[1.875rem] font-medium tracking-tight text-ds-text mb-4">Não encontrou sua dúvida aqui?</h2>
           <p className="text-ds-muted mb-8">Me chama no WhatsApp e eu te respondo pessoalmente.</p>
-          <Button href="https://wa.me/5511964932007" variant="outline" className="w-full md:w-auto">FALAR PELO WHATSAPP</Button>
+          <Button href="https://wa.me/5511964932007" variant="secondary" className="w-full md:w-auto">FALAR PELO WHATSAPP</Button>
         </section>
       </main>
       <Footer />

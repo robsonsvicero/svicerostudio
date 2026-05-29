@@ -5,7 +5,7 @@ import logoBranco from '../../assets/logo_horizontal.png';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-ds-surface text-ds-muted pt-14 sm:pt-16 pb-8 px-4 sm:px-6 md:px-12 lg:px-20 font-body relative overflow-hidden border-t border-white/5">
+    <footer className="w-full bg-ds-text text-ds-bg pt-14 sm:pt-16 pb-8 px-4 sm:px-6 md:px-12 lg:px-20 font-body relative overflow-hidden border-t border-white/5">
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-ds-accent/5 rounded-full blur-[100px] pointer-events-none"></div>
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20">
         {/* Coluna esquerda: logo, texto, redes */}
@@ -21,7 +21,7 @@ const Footer = () => {
                 />
               </a>
             </div>
-            <p className="text-base leading-relaxed mb-6">Design estratégico e posicionamento de marca para consolidar a percepção de valor de dentistas e clínicas odontológicas. Svicero Studio, sediado em São Paulo (Brasil), desenvolvendo projetos de impacto para profissionais no Brasil e no exterior.</p>
+            <p className="text-base leading-relaxed mb-6">Estratégia, percepção e posicionamento para clínicas que cresceram tecnicamente e desejam transmitir isso com mais clareza, confiança e coerência. O Svicero Studio atua no alinhamento entre marca, experiência e comunicação para negócios da área odontológica no Brasil e no exterior.</p>
           </div>
           <div className="flex flex-row items-center justify-between mt-2">
             <a href="https://wa.me/5511964932007" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
@@ -41,16 +41,16 @@ const Footer = () => {
         {/* Coluna menus */}
         <div className="flex-[2] flex flex-col sm:flex-row gap-10 sm:gap-12 md:gap-24 justify-start md:justify-end">
           <div>
-            <h4 className="text-ds-text font-medium text-lg mb-4">Estúdio</h4>
-            <ul className="flex flex-col gap-2">
+            <h4 className="text-ds-white font-medium text-lg mb-4">Estúdio</h4>
+            <ul className="flex flex-col gap-2 text-ds-muted">
               <li><Link to="/portfolio" className="hover:text-ds-accent transition-colors">Projetos</Link></li>
               <li><Link to="/processos" className="hover:text-ds-accent transition-colors">Processos</Link></li>
               <li><Link to="/blog" className="hover:text-ds-accent transition-colors">Blog</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-ds-text font-medium text-lg mb-4">Suporte</h4>
-            <ul className="flex flex-col gap-2">
+            <h4 className="text-ds-white/90 font-medium text-lg mb-4">Suporte</h4>
+            <ul className="flex flex-col gap-2 text-ds-muted">
               <li><Link to="/contato" className="hover:text-ds-accent transition-colors">Contato</Link></li>
               <li><Link to="/faq" className="hover:text-ds-accent transition-colors">FAQ</Link></li>
               <li><Link to="/privacidade" className="hover:text-ds-accent transition-colors">Privacidade</Link></li>

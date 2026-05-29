@@ -25,7 +25,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0D0D0D]/60 backdrop-blur-2xl py-2 font-body border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
+      <header className="w-full z-50 bg-ds-text py-2 font-body border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
         {/* DESKTOP */}
         <div className="hidden md:flex items-center justify-between max-w-7xl mx-auto px-6 h-16">
           {/* Logo à esquerda */}
@@ -41,14 +41,15 @@ const Header = () => {
 
         {/* Centro: MENU aciona o overlay */}
         <div className="flex justify-center items-center">
-          <Button 
+          <button
+            type="button"
             onClick={() => setMenuOpen(true)}
-            className="group flex items-center gap-3 text-sm font-bold tracking-[0.3em] text-ds-text hover:text-ds-accent transition-colors"
+            className="group flex items-center gap-3 text-sm font-bold tracking-[0.3em] text-white bg-ds-accent hover:bg-ds-accent-hover transition-colors px-5 py-2 rounded-full"
           >
             <span className="w-8 h-[1px] bg-white/40 group-hover:w-12 transition-all"></span>
             MENU
             <span className="w-8 h-[1px] bg-white/40 group-hover:w-12 transition-all"></span>
-          </Button>
+          </button>
         </div>
       </div>
 
@@ -58,13 +59,14 @@ const Header = () => {
           <img src={simbolo} alt="Logo" className="h-10 brightness-0 invert" />
         </a>
 
-        <Button
+        <button
+          type="button"
           onClick={() => setMenuOpen(true)}
-          className="text-ds-text p-2"
+          className="text-white bg-ds-accent hover:bg-ds-accent-hover p-2 rounded-full transition-colors"
           aria-label="Abrir Menu"
         >
           <Menu size={28} />
-        </Button>
+        </button>
       </div>
       </header>
 
@@ -74,7 +76,8 @@ const Header = () => {
         <div className="absolute top-6 right-6 md:top-10 md:right-10 z-[110]">
           <Button 
             onClick={() => setMenuOpen(false)}
-            className="text-ds-text hover:text-ds-accent transition-colors p-3 bg-white/5 rounded-full"
+            variant="custom"
+            className="text-white hover:bg-ds-accent transition-colors p-3 bg-ds-text rounded-full"
             aria-label="Fechar Menu"
           >
             <X size={32} strokeWidth={1.5} />
@@ -98,7 +101,7 @@ const Header = () => {
           {/* Botão Admin no final do menu */}
           <a 
             href="/admin"
-            className={`mt-10 flex items-center gap-3 px-10 py-5 rounded-full border border-white/10 bg-ds-surface text-[12px] font-bold tracking-[0.2em] text-ds-text hover:bg-ds-accent hover:border-ds-accent transition-all shadow-sm ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+            className={`mt-10 flex items-center gap-3 px-10 py-5 rounded-full border border-white/10 bg-ds-tech text-[12px] font-bold tracking-[0.2em] text-ds-surface hover:bg-ds-tech-hover transition-all shadow-sm ${menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
             style={{ transitionDelay: `${navLinks.length * 100}ms` }}
             onClick={() => setMenuOpen(false)}
           >

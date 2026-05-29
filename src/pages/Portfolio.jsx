@@ -28,6 +28,7 @@ const fetchProjects = async () => {
 
 const ProjectCard = ({ project, index, handleOpenModal }) => {
   const isFeatured = index === 0; // Apenas o primeiro card do nicho odonto no tamanho maior
+  const shortDescription = (project.descricao || '').trim();
   const cardRef = useRef(null);
 
   const handleMouseMove = (e) => {
@@ -64,9 +65,8 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       role="button"
       tabIndex={0}
       aria-label={`Ver projeto ${project.titulo}`}
-      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/15 hover:border-ds-accent/40 bg-[#141414]/80 backdrop-blur-md rounded-3xl flex flex-col ${
-        isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "aspect-square"
-      }`}
+      className={`relative group cursor-pointer overflow-hidden shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-ds-border hover:border-ds-accent/40 bg-ds-surface rounded-3xl flex flex-col ${isFeatured ? "md:col-span-2 md:flex-row min-h-[400px] lg:min-h-[500px] z-10 hover:z-20" : "aspect-square"
+        }`}
       style={{ transition: 'transform 0.5s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out', transformStyle: 'preserve-3d' }}
     >
       {/* Container da Imagem */}
@@ -87,7 +87,7 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
       </div>
 
       {/* Container do Conteúdo */}
-      <div className={`relative z-20 flex flex-col justify-center p-8 lg:p-12 ${isFeatured ? "md:w-2/5 order-2 border-t md:border-t-0 md:border-l border-white/5 bg-[#141414]" : "h-1/2 flex-none order-2 border-t border-white/5 bg-[#141414]"}`} style={{ transform: 'translateZ(30px)' }}>
+      <div className={`relative z-20 flex flex-col justify-center p-8 lg:p-12 ${isFeatured ? "md:w-2/5 order-2 border-t md:border-t-0 md:border-l border-ds-border bg-ds-surface" : "h-1/2 flex-none order-2 border-t border-ds-border bg-ds-surface"}`} style={{ transform: 'translateZ(30px)' }}>
         <div className="flex items-center justify-between mb-6">
           <span className="text-[10px] font-mono text-ds-accent uppercase tracking-widest bg-ds-accent/10 px-4 py-1.5 rounded-full border border-ds-accent/20">
             {project.categoria || "Case Study"}
@@ -101,8 +101,14 @@ const ProjectCard = ({ project, index, handleOpenModal }) => {
           {project.titulo}
         </h3>
 
+        {shortDescription && (
+          <p className="text-sm leading-relaxed text-ds-muted mb-4">
+            {shortDescription}
+          </p>
+        )}
+
         <div className="mt-auto pt-6 flex items-center gap-3 text-sm font-bold uppercase tracking-[.15em] text-ds-muted group-hover:text-ds-accent transition-colors duration-300">
-          Estudo de Caso
+          Estudo de caso
         </div>
       </div>
     </div>
@@ -119,10 +125,10 @@ const Portfolio = () => {
     fetchProjects().then((allProjects) => {
       // Lista de categorias oficiais do seu novo posicionamento
       const currentCategories = ['Conceptual case', 'Blindagem de percepção', 'Business design', 'Estratégia de marca'];
-      
+
       // Filtra os projetos ativos do nicho atual
       const active = allProjects.filter(p => currentCategories.includes(p.categoria));
-      
+
       // Aloca os projetos de outros nichos no arquivo histórico corporativo
       const archived = allProjects.filter(p => !currentCategories.includes(p.categoria));
 
@@ -158,10 +164,10 @@ const Portfolio = () => {
             CASES E ESTUDOS DE POSICIONAMENTO
           </span>
           <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1] text-ds-text mb-6 text-balance">
-            Projetos que alinham imagem clínica e valor comercial
+            Projetos que transformam percepção em confiança e valor
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl font-normal leading-[1.6] text-ds-muted">
-            Aplicações práticas da nossa metodologia. Construímos marcas institucionais fortes para justificar o valor da sua tabela de tratamentos e atrair o público de alto ticket.
+            Construímos marcas institucionais claras e consistentes, que justificam o valor dos tratamentos, fortalecem a confiança e atraem um público mais qualificado.
           </p>
         </ScrollReveal>
       </section>
@@ -188,29 +194,29 @@ const Portfolio = () => {
 
       {/* Seção Secundária: Arquivo Histórico Corporativo (Onde entram os outros nichos) */}
       {archivedProjects.length > 0 && (
-        <section className="border-t border-white/5 bg-[#101010]/50 py-20 px-4">
+        <section className="border-t border-white/5 bg-[#eeeeee] py-20 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <ScrollReveal direction="up" delay={0.1}>
               <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-ds-text mb-4">
-                Histórico de Projetos Corporativos
+                Antes das clínicas, uma década traduzindo estratégia em marca
               </h2>
               <p className="text-base text-ds-muted max-w-2xl mx-auto mb-12 leading-relaxed">
-                Antes de concentrar a atuação do estúdio no mercado de saúde e clínicas odontológicas, desenvolvemos marcas e produtos digitais para múltiplos setores empresariais. Esse background multidisciplinar confere a precisão analítica que aplicamos hoje no ambiente clínico.
+                Antes de concentrar nossa atuação em clínicas e negócios de saúde, desenvolvemos marcas e projetos digitais para múltiplos setores empresariais. Essa experiência amplia nosso repertório, aprofunda nossa capacidade de análise e nos ajuda a ir além da estética em cada projeto de posicionamento.
               </p>
-              
+
               {/* Links ou Miniaturas Discretas dos projetos arquivados */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-left">
                 {archivedProjects.map((proj) => (
-                  <div 
+                  <div
                     key={proj.id}
                     onClick={() => handleOpenModal(proj)}
                     className="relative overflow-hidden p-5 rounded-2xl border border-white/5 bg-[#141414] hover:border-ds-accent/30 cursor-pointer transition-all duration-300 flex flex-col justify-between h-32 group"
                   >
                     {proj.imagem_url && (
                       <>
-                        <img 
-                          src={proj.imagem_url} 
-                          alt={proj.titulo} 
+                        <img
+                          src={proj.imagem_url}
+                          alt={proj.titulo}
                           className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-all duration-500 group-hover:scale-105 z-0"
                           loading="lazy"
                         />
@@ -221,9 +227,11 @@ const Portfolio = () => {
                       <span className="text-[10px] font-mono text-white/70 uppercase group-hover:text-ds-accent transition-colors drop-shadow-md">
                         {proj.categoria || "Corporativo"}
                       </span>
-                      <h4 className="text-sm font-medium text-ds-text line-clamp-2 mt-2 drop-shadow-md">
+                      <h4 className="text-sm font-medium text-[#eeeeee] line-clamp-2 mt-2 drop-shadow-md">
                         {proj.titulo}
                       </h4>
+                      
+                      
                     </div>
                   </div>
                 ))}

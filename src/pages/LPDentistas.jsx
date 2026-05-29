@@ -45,11 +45,11 @@ const HeroSection = (
       <div className="w-full md:w-1/2 flex flex-col items-start gap-8 z-10">
         <h1 className="font-display text-4xl md:text-5xl lg:text-exg leading-tight tracking-tight">
           {/* TODO: revisar cor (sem equivalente claro no mapeamento) */}
-          Pare de competir pelo preço da manutenção e torne-se a escolha óbvia para <span className="text-ds-accent italic">tratamentos de alto ticket.</span>
+          Pare de competir pelo preço da manutenção e torne-se a escolha óbvia para <span className="text-ds-accent italic">tratamentos particulares.</span>
         </h1>
         
         <p className="font-body text-lg md:text-g text-ds-muted leading-relaxed">
-          Estratégia de marca e posicionamento exclusivo para ortodontistas e clínicas que desejam atrair pacientes que valorizam a excelência, não o desconto.
+          Estratégia de marca e posicionamento para ortodontistas e clínicas que desejam atrair pacientes que valorizam excelência, segurança, confiança e não o menor preço.
         </p>
         
         <Button 
@@ -58,7 +58,7 @@ const HeroSection = (
           size="lg" 
           className="w-full md:w-auto text-center"
         >
-          Quero um Diagnóstico de Posicionamento
+          Quero um Diagnóstico
         </Button>
       </div>
 
@@ -86,7 +86,7 @@ const DoresSection = (
       {/* Título da Seção */}
       <div className="text-center mb-16 md:mb-20">
         <h2 className="font-display text-3xl md:text-4xl lg:text-xg text-ds-text max-w-2xl mx-auto">
-          O verdadeiro custo de um consultório <span className="text-ds-muted italic">invisível</span>
+          O verdadeiro custo de um consultório <span className="text-ds-accent italic">invisível</span>
         </h2>
       </div>
 
@@ -102,7 +102,7 @@ const DoresSection = (
           <div>
             <h3 className="font-display text-xl md:text-2xl text-ds-text mb-4">Agenda Cheia, Lucro Baixo</h3>
             <p className="font-body text-ds-muted leading-relaxed">
-              Você se esforça para lotar a agenda de procedimentos de baixo valor, mas no fim do mês a margem não acompanha o esforço.
+              Você trabalha com a agenda lotada, mas no fim do mês a margem não acompanha o esforço. O problema não é falta de demanda, é falta de percepção de valor nos tratamentos certos.
             </p>
           </div>
         </div>
@@ -124,7 +124,7 @@ const DoresSection = (
           <div>
             <h3 className="font-display text-xl md:text-2xl text-ds-text mb-4">Guerra de Preços</h3>
             <p className="font-body text-ds-muted leading-relaxed">
-              Seus pacientes acham que Invisalign ou implantes são iguais aos da concorrência popular e sempre pedem desconto.
+              Seus pacientes ainda comparam seu trabalho com o de clínicas que vivem de promoções e parcelamentos agressivos. Quando a marca não comunica diferença real, a conversa inevitavelmente desce para o preço.
             </p>
           </div>
         </div>
@@ -138,7 +138,7 @@ const DoresSection = (
           <div>
             <h3 className="font-display text-xl md:text-2xl text-ds-text mb-4">Comunicação Genérica</h3>
             <p className="font-body text-ds-muted leading-relaxed">
-              Sua marca parece um copia e cola do Canva de outros dentistas e não transmite a sua verdadeira excelência.
+              Sua marca parece mais uma entre tantas: feed parecido, frases prontas, site sem personalidade. Isso enfraquece sua autoridade e faz uma clínica de excelência parecer apenas “mais uma opção”.
             </p>
           </div>
         </div>
@@ -159,7 +159,7 @@ const SolucaoSection = (
           Do Consultório Comum à <span className="text-ds-accent italic">Marca de Elite</span>
         </h2>
         <p className="font-body text-lg md:text-xl text-ds-muted max-w-3xl mx-auto leading-relaxed">
-          Não entregamos apenas design. Construímos os pilares que sustentam um negócio de alto valor.
+          Não entregamos apenas design. Construímos os pilares que tornam sua clínica mais clara, desejada e confiável para o paciente certo.
         </p>
       </div>
 
@@ -172,7 +172,7 @@ const SolucaoSection = (
           <span className="font-display text-7xl text-ds-accent/15 font-light tracking-tighter group-hover:text-ds-accent/30 transition-colors duration-500">01</span>
           <h3 className="font-display text-2xl text-ds-text">Diagnóstico de Percepção</h3>
           <p className="font-body text-ds-muted leading-relaxed">
-            Analisamos como o seu paciente te enxerga hoje e onde você está perdendo dinheiro por falta de diferenciação.
+            Analisamos como o seu paciente te enxerga hoje e onde sua clínica está perdendo dinheiro por falhas de diferenciação e comunicação.
           </p>
         </div>
 
@@ -182,7 +182,7 @@ const SolucaoSection = (
           <span className="font-display text-7xl text-ds-accent/15 font-light tracking-tighter group-hover:text-ds-accent/30 transition-colors duration-500">02</span>
           <h3 className="font-display text-2xl text-ds-text">Engenharia de Marca</h3>
           <p className="font-body text-ds-muted leading-relaxed">
-            Criamos uma identidade visual e um tom de voz que eliminam a comparação por preço. Sua clínica passa a transmitir o rigor técnico que você possui.
+            Criamos uma identidade visual e um tom de voz que eliminam a sensação de “clínica comum” e sustentam o valor dos seus tratamentos particulares.
           </p>
         </div>
 
@@ -192,7 +192,7 @@ const SolucaoSection = (
           <span className="font-display text-7xl text-ds-accent/15 font-light tracking-tighter group-hover:text-ds-accent/30 transition-colors duration-500">03</span>
           <h3 className="font-display text-2xl text-ds-text">Blindagem Comercial</h3>
           <p className="font-body text-ds-muted leading-relaxed">
-            Alinhamos sua comunicação para que sua equipe e seu ambiente físico vendam por você, facilitando o fechamento de tratamentos de alto ticket.
+            Alinhamos sua comunicação para que a proposta de tratamento faça sentido para o paciente antes mesmo de falar em valores, facilitando a aceitação de orçamentos de alto valor.
           </p>
         </div>
 
@@ -223,18 +223,18 @@ const ProvaSocialSection = (
             Filtro de Audiência e Aumento de Conversão
           </h3>
           <p className="font-body text-ds-muted leading-relaxed text-lg">
-            A clínica sofria com pacientes que buscavam apenas preço popular, gerando baixa margem de lucro. Nossa estratégia visual redefiniu a percepção de valor. O resultado? Redução drástica de curiosos e aumento de pacientes com perfil para tratamentos de alto ticket, otimizando os fechamentos de orçamento.
+            A clínica atraía principalmente pacientes em busca de preço baixo, comprimindo a margem de lucro. Nossa estratégia reposicionou a percepção de valor da marca, ajustando narrativa, identidade visual e presença digital. Resultado, redução de pedidos de desconto, aumento de pacientes com perfil para tratamentos de alto valor e melhora nas taxas de fechamento de orçamento.
           </p>
         </div>
 
-        {/* Case 2: Dra. Sandra */}
+        {/* Case 2: Sigiloso */}
         <div className="flex-1 bg-ds-surface p-10 lg:p-12 rounded-2xl border border-white/5 shadow-xl hover:border-ds-accent/30 transition-colors duration-300 flex flex-col justify-start">
           <span className="text-ds-accent font-mono text-sm uppercase tracking-widest mb-5 block">Case: Sigiloso</span>
           <h3 className="font-display text-2xl md:text-3xl text-ds-text mb-6 leading-tight">
-            Posicionamento de Autoridade para Ortodontia de Elite
+            Posicionamento de Autoridade para Ortodontia
           </h3>
           <p className="font-body text-ds-muted leading-relaxed text-lg">
-            Um projeto sigiloso focado em reposicionar uma profissional de destaque para o público AA. Através de branding sofisticado, garantimos a segurança necessária para que o paciente investisse em tratamentos premium sem questionar o orçamento.
+            Um projeto focado em reposicionar uma profissional de destaque para um público A/B. Através de branding sólido, linguagem mais madura e presença digital consistente, construímos a segurança necessária para que o paciente investisse em tratamentos premium sem questionar a todo momento o valor.
           </p>
         </div>
 
@@ -327,7 +327,7 @@ const CTAFinalSection = () => {
             Aplicação para Diagnóstico de <span className="text-ds-accent italic">Posicionamento de Marca</span>
           </h2>
           <p className="font-body text-lg md:text-xl text-ds-muted">
-            Exclusivo para Clínicas e Profissionais de Saúde que buscam elite.
+            Exclusivo para clínicas e profissionais de saúde que buscam estrutura de marca à altura da qualidade do seu trabalho.
           </p>
         </div>
 
@@ -565,7 +565,7 @@ const CTAFinalSection = () => {
                   className="w-full md:w-auto text-center"
                   disabled={loading}
                 >
-                  {loading ? 'Enviando...' : 'Quero um Diagnóstico de Posicionamento'}
+                  {loading ? 'Enviando...' : 'Quero um Diagnóstico'}
                 </Button>
               </div>
             </form>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { formatDate } from '../../utils/formatDate';
 import Button from '../UI/Button';
 import ScrollReveal from '../UI/ScrollReveal';
+import SectionHeader from '../UI/SectionHeader';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -13,23 +14,11 @@ const BlogSection = ({ blogPosts }) => {
     <section id="blog" className="bg-ds-bg py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body">
       <div className="max-w-screen-xl mx-auto">
         <ScrollReveal direction="up" delay={0.1}>
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
-            <div>
-              <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
-                <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-                BLOG
-              </span>
-              <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-ds-text text-left mb-6">
-                Conteúdos para fortalecer sua marca</h2>
-            </div>
-            <div className="mt-4 md:mt-0">
-              <a href="/blog" className="text-ds-accent text-sm uppercase tracking-widest font-bold flex items-center gap-2 hover:text-ds-accent/80 transition-colors">
-                Ver todos os artigos
-                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
-              </a>
-
-            </div>
-          </div>
+          <SectionHeader
+            badge="NEWS"
+            title="Conteúdos sobre percepção, posicionamento e crescimento de marca"
+            className="mb-12"
+          />
         </ScrollReveal>
 
         <Swiper
@@ -87,6 +76,11 @@ const BlogSection = ({ blogPosts }) => {
               </SwiperSlide>
             ))}
         </Swiper>
+      </div>
+      <div className="flex justify-center">
+        <Button 
+        href="/blog"
+        variant='secondary'>Ver todos os artigos</Button>
       </div>
     </section>
   );

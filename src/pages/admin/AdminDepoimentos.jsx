@@ -5,6 +5,11 @@ import { useToast } from '../../hooks/useToast';
 import Button from '../../components/UI/Button';
 import ImageUploadSlot from '../../components/UI/ImageUploadSlot';
 import AdminLayout from '../../components/Admin/AdminLayout';
+import { adminInputClass, adminLabelClass } from '../../components/Admin/adminFormStyles';
+import AdminSectionCard from '../../components/Admin/AdminSectionCard';
+import AdminListCard from '../../components/Admin/AdminListCard';
+import AdminRowActions from '../../components/Admin/AdminRowActions';
+import AdminHeaderActionButton from '../../components/Admin/AdminHeaderActionButton';
 
 import { API_URL } from '../../lib/api.js';
 import { getAvatarPlaceholder, getNameInitials } from '../../utils/placeholders';
@@ -162,9 +167,9 @@ const AdminDepoimentos = () => {
           title="Depoimentos"
           actions={
             <div className="flex items-center gap-3">
-              <Button type="button" onClick={resetForm} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">
+              <AdminHeaderActionButton onClick={resetForm}>
                 {editingId ? 'Cancelar' : 'Limpar'}
-              </Button>
+              </AdminHeaderActionButton>
             </div>
           }
           toastProps={{ show: showToast, message: toastMessage, type: toastType, onClose: hideToast }}
@@ -174,57 +179,44 @@ const AdminDepoimentos = () => {
             <div className="grid gap-6 lg:grid-cols-12">
               <div className="space-y-6 lg:col-span-8">
                 {/* Author info */}
-                <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-                  <div className="mb-5">
-                    <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Informações</p>
-                    <h2 className="text-base font-semibold text-ds-text">{editingId ? 'Editando Depoimento' : 'Novo Depoimento'}</h2>
-                  </div>
+                <AdminSectionCard badge="Informações" title={editingId ? 'Editando Depoimento' : 'Novo Depoimento'}>
                   <div className="grid gap-4 lg:grid-cols-2">
                     {fields.map((field) => (
                       <label key={field.name} className={`${field.col} block`}>
-                        <span className="mb-1.5 block text-sm font-medium text-ds-muted">
+                        <span className={adminLabelClass}>
                           {field.label}
                           {field.required && <span className="ml-1 text-ds-accent">*</span>}
                         </span>
                         {field.type === 'select' ? (
-                          <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20">
+                          <select name={field.name} value={formData[field.name]} onChange={handleFieldChange} required={field.required} className={adminInputClass}>
                             <option value="" disabled>{field.placeholder}</option>
                             {field.options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                           </select>
                         ) : (
-                          <input type={field.type} name={field.name} value={formData[field.name] || ''} onChange={handleFieldChange} placeholder={field.placeholder} required={field.required} className="w-full rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
+                          <input type={field.type} name={field.name} value={formData[field.name] || ''} onChange={handleFieldChange} placeholder={field.placeholder} required={field.required} className={adminInputClass} />
                         )}
                       </label>
                     ))}
                   </div>
-                </div>
+                </AdminSectionCard>
 
                 {/* Testimonial text */}
-                <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-                  <div className="mb-5">
-                    <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Conteúdo</p>
-                    <h2 className="text-base font-semibold text-ds-text">Texto do Depoimento</h2>
-                  </div>
+                <AdminSectionCard badge="Conteúdo" title="Texto do Depoimento">
                   <label>
-                    <span className="mb-1.5 block text-sm font-medium text-ds-muted">Depoimento</span>
-                    <textarea name="texto" value={formData.texto} onChange={handleFieldChange} placeholder="Escreva o depoimento aqui..." rows={6} required className="w-full resize-y rounded-lg border border-white/10 bg-ds-bg px-4 py-3 text-sm leading-6 text-ds-text placeholder:text-ds-muted/50 outline-none transition focus:border-ds-accent/40 focus:ring-1 focus:ring-copper/20" />
+                    <span className={adminLabelClass}>Depoimento</span>
+                    <textarea name="texto" value={formData.texto} onChange={handleFieldChange} placeholder="Escreva o depoimento aqui..." rows={6} required className={`${adminInputClass} resize-y leading-6`} />
                   </label>
-                </div>
+                </AdminSectionCard>
 
                 {/* Photo */}
-                <div className="rounded-xl border border-white/5 bg-ds-surface p-6">
-                  <div className="mb-5">
-                    <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-1">Mídia</p>
-                    <h2 className="text-base font-semibold text-ds-text">Foto do Autor</h2>
-                  </div>
+                <AdminSectionCard badge="Mídia" title="Foto do Autor">
                   <ImageUploadSlot title="Foto do autor" description="Arraste ou clique para enviar" currentImageUrl={formData.imagem_autor_url} onUpload={handleImageUpload} isUploading={isUploading} />
-                </div>
+                </AdminSectionCard>
               </div>
 
               {/* Sidebar */}
               <aside className="space-y-6 lg:col-span-4">
-                <div className="rounded-xl border border-white/5 bg-ds-surface p-5">
-                  <p className="text-xs font-mono uppercase tracking-widest text-ds-accent mb-4">Configurações</p>
+                <AdminSectionCard badge="Configurações" paddingClassName="p-5">
                   <div className="space-y-3">
                     <label className="flex items-center justify-between rounded-lg border border-white/5 bg-ds-bg px-4 py-3.5 cursor-pointer hover:border-white/10 transition-colors">
                       <span className="text-sm text-ds-text">Depoimento ativo</span>
@@ -238,27 +230,24 @@ const AdminDepoimentos = () => {
                       <input type="number" name="ordem" value={formData.ordem} onChange={handleFieldChange} placeholder="0" className="w-full rounded-lg border border-white/10 bg-ds-surface px-3 py-2 text-sm text-ds-text outline-none focus:border-ds-accent/40" />
                     </label>
                   </div>
-                  <Button type="submit" className="mt-4 w-full rounded-lg bg-ds-accent px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSubmitting || isUploading}>
+                  <Button type="submit" className="uppercase mt-4 w-full rounded-full bg-ds-accent px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition" disabled={isSubmitting || isUploading}>
                     {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar' : 'Publicar')}
                   </Button>
-                </div>
+                </AdminSectionCard>
               </aside>
             </div>
           </form>
 
           {/* List */}
-          <div className="rounded-xl border border-white/5 bg-ds-surface">
-            <div className="border-b border-white/5 px-6 py-4">
-              <h2 className="text-base font-semibold text-ds-text">
-                Depoimentos Cadastrados
-                {!isLoading && <span className="ml-2 text-sm font-normal text-ds-muted">({depoimentos.length})</span>}
-              </h2>
-            </div>
-            {isLoading && <p className="p-6 text-ds-muted">Carregando...</p>}
-            {!isLoading && depoimentos.length === 0 && <p className="p-6 text-ds-muted">Nenhum depoimento encontrado.</p>}
-            {depoimentos.length > 0 && (
-              <ul className="divide-y divide-white/5">
-                {depoimentos.map(depoimento => (
+          <AdminListCard
+            title="Depoimentos Cadastrados"
+            count={depoimentos.length}
+            loading={isLoading}
+            loadingText="Carregando..."
+            emptyText="Nenhum depoimento encontrado."
+          >
+            <ul className="divide-y divide-white/5">
+              {depoimentos.map(depoimento => (
                   <li key={depoimento.id} className="flex items-center px-6 py-4 gap-4 hover:bg-white/[.02] transition-colors">
                     <img src={depoimento.imagem_autor_url || getAvatarPlaceholder(getNameInitials(depoimento.nome), '141414', 150)} alt={depoimento.nome} className="w-10 h-10 object-cover rounded-full flex-shrink-0 bg-ds-bg" />
                     <div className="flex-1 min-w-0">
@@ -270,15 +259,16 @@ const AdminDepoimentos = () => {
                       </p>
                       <p className="text-xs text-ds-muted truncate">"{depoimento.texto}"</p>
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <Button onClick={() => handleEdit(depoimento)} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-ds-muted hover:text-ds-text hover:bg-white/10 transition">Editar</Button>
-                      <Button onClick={() => handleDelete(depoimento.id)} className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition">Excluir</Button>
-                    </div>
+                    <AdminRowActions
+                      onEdit={() => handleEdit(depoimento)}
+                      onDelete={() => handleDelete(depoimento.id)}
+                      editClassName="uppercase rounded-full border border-ds-text bg-ds-surface px-3 py-1.5 text-xs font-medium text-ds-text hover:text-ds-surface hover:bg-ds-tech hover:border-ds-tech transition"
+                      deleteClassName="uppercase rounded-full border border-red-500 bg-red-500 px-3 py-1.5 text-xs font-medium text-ds-surface hover:bg-red-700 transition"
+                    />
                   </li>
-                ))}
-              </ul>
-            )}
-          </div>
+              ))}
+            </ul>
+          </AdminListCard>
     </AdminLayout>
     );
 };
