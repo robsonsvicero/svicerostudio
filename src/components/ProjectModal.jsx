@@ -276,10 +276,11 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                   {/* Col 2 e 3: Descrição e Botões */}
                   <div className="lg:col-span-2 flex flex-col">
                     {description && (
-                      <div className="space-y-5 text-[15px] leading-8 text-ds-muted">
-                        {description.split(/\n\n+/).map((para, i) => (
-                          <p key={i}>{para}</p>
-                        ))}
+                      <div
+                        className="space-y-5 text-[15px] leading-8 text-ds-muted"
+                        style={{ whiteSpace: 'pre-line' }}
+                      >
+                        {description}
                       </div>
                     )}
                     
