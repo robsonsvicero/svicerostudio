@@ -24,7 +24,6 @@ import DiagnosticoSection from '../components/Home/DiagnosticoSection';
 import HeroSection from '../components/Home/HeroSection';
 import ClientsMarquee from '../components/Home/ClientsMarquee';
 import ServicesSection from '../components/Home/ServicesSection';
-import sviceroCta from '../images/Svicero_CTA.png';
 import AboutSection from '../components/Home/AboutSection';
 import FAQSection from '../components/Home/FAQSection';
 import DepoimentosSection from '../components/DepoimentosSection';
