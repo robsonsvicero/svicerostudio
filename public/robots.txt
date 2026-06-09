@@ -1,4 +1,8 @@
 User-agent: *
+Disallow: /admin
+Disallow: /api
+
+# Permite o restante do site
 Allow: /
 
 # Sitemap

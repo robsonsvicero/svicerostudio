@@ -6,15 +6,15 @@ import SEOHelmet from '../components/SEOHelmet'
 const ExclusaoDados = () => {
   return (
     <>
-      <SEOHelmet 
-        title="Termos de Exclusão e Tratamento de Dados"
-        description="Instruções para solicitar a exclusão de seus dados do Svicero Studio."
+      <SEOHelmet
+        title="Termos de Exclusão e Tratamento de Dados | Svicero Studio"
+        description="Saiba como o Svicero Studio coleta, usa e exclui seus dados, com transparência e respeito à privacidade em todos os pontos de contato."
       />
       <div className="min-h-screen bg-ds-bg font-body relative overflow-hidden">
         {/* Efeito de iluminação de fundo */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-ds-accent/5 rounded-full blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
         <Header variant="solid" />
-        
+
         <main className="pt-28 sm:pt-36 md:pt-[200px] pb-16 sm:pb-24 px-4 sm:px-6 md:px-16 relative z-10">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-[3.75rem] font-medium tracking-tight text-ds-text mb-8 text-balance">
@@ -27,7 +27,7 @@ const ExclusaoDados = () => {
                   Como Solicitar a Exclusão dos Seus Dados
                 </h2>
                 <p className="text-ds-muted leading-[1.6] mb-4">
-                  Respeitamos sua privacidade e seu direito de controlar suas informações pessoais. 
+                  Respeitamos sua privacidade e seu direito de controlar suas informações pessoais.
                   Se você deseja que seus dados sejam removidos de nossos sistemas, siga as instruções abaixo.
                 </p>
               </section>
@@ -87,7 +87,7 @@ const ExclusaoDados = () => {
                     Passo 3: Processamento
                   </h3>
                   <p className="text-ds-muted leading-[1.6]">
-                    Processaremos sua solicitação em até <strong className="text-ds-text font-medium">7 dias úteis</strong> e enviaremos 
+                    Processaremos sua solicitação em até <strong className="text-ds-text font-medium">7 dias úteis</strong> e enviaremos
                     uma confirmação por e-mail assim que a exclusão for concluída.
                   </p>
                 </div>
@@ -106,9 +106,9 @@ const ExclusaoDados = () => {
                   <li>Selecione "Excluir"</li>
                   <li>
                     Ou gerencie através das{' '}
-                    <a 
-                      href="https://www.facebook.com/help/contact/260749603972907" 
-                      target="_blank" 
+                    <a
+                      href="https://www.facebook.com/help/contact/260749603972907"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-ds-accent hover:text-ds-accent/80 hover:underline font-medium"
                     >
@@ -123,8 +123,8 @@ const ExclusaoDados = () => {
                   Dados Retidos por Obrigação Legal
                 </h2>
                 <p className="text-ds-muted leading-[1.6]">
-                  Alguns dados podem ser retidos por períodos específicos quando exigido por lei ou 
-                  para fins de auditoria, segurança ou prevenção de fraudes. Nesses casos, informaremos 
+                  Alguns dados podem ser retidos por períodos específicos quando exigido por lei ou
+                  para fins de auditoria, segurança ou prevenção de fraudes. Nesses casos, informaremos
                   o motivo da retenção.
                 </p>
               </section>

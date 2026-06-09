@@ -147,9 +147,9 @@ const FormularioInteresse = () => {
     <div className="bg-ds-bg min-h-screen flex flex-col text-ds-text font-body relative">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-ds-accent/5 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
       <SEOHelmet
-        title="Formulário de Interesse — Diagnóstico de Posicionamento"
-        description="Conte um pouco sobre o seu negócio para que o Svicero Studio chegue ao diagnóstico já preparado para a sua realidade."
-        canonical="/formulario-interesse"
+        title="Formulário de Interesse | Svicero Studio — Diagnóstico de Marca"
+        description="Conte um pouco sobre sua marca e seu momento de negócio. Assim o Svicero Studio chega ao diagnóstico já preparado para entender sua realidade e o que precisa mudar."
+        canonical="https://svicerostudio.com.br/formulario-interesse"
       />
       <Header variant="solid" />
       <main className="flex-1 relative z-10">

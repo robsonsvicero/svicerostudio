@@ -30,9 +30,9 @@ const Contato = () => {
   return (
     <>
       <SEOHelmet
-        title="Contato"
-        description="Fale com o Svicero Studio pelo canal que preferir: e-mail, WhatsApp ou Instagram. Para projetos de marca, agende um diagnóstico de posicionamento."
-        canonical="/contato"
+        title="Contato | Svicero Studio — Consultoria de Estratégia & Design de Marcas"
+        description="Fale com o Svicero Studio pelo canal que preferir. Se a sua marca precisa de clareza, consistência e resultado, a conversa começa aqui."
+        canonical="https://svicerostudio.com.br/contato"
       />
 
       <div className="bg-ds-bg min-h-screen text-ds-text font-body">

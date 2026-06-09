@@ -8,9 +8,9 @@ const Diagnostico = () => {
   return (
     <>
       <SEOHelmet
-        title="Diagnóstico de Posicionamento Clínico"
-        description="Uma análise estratégica individual para avaliar por que a marca da sua clínica não apoia o valor dos seus tratamentos particulares e o que precisa mudar."
-        canonical="/diagnostico"
+        title="Diagnóstico de Marca | Svicero Studio — Consultoria de Estratégia & Design de Marcas"
+        description="Uma análise estratégica individual para entender onde sua marca perde clareza, valor e consistência — e o que precisa mudar para crescer com resultado."
+        canonical="https://svicerostudio.com.br/diagnostico"
       />
 
       <div className="bg-ds-bg min-h-screen text-ds-text font-body">
@@ -188,8 +188,8 @@ const Diagnostico = () => {
 
                 <div className="flex flex-col gap-4">
                   <Button
-                  href="/formulario-interesse"
-                    
+                    href="/formulario-interesse"
+
                     variant="primary"
                     className="w-full"
                   >

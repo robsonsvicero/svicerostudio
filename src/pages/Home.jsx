@@ -175,8 +175,8 @@ const Home = () => {
     <>
       <Preloader />
       <SEOHelmet
-        title="Svicero Studio | Estratégia de Marca e Design para Sair da Guerra de Preços"
-        description="Estúdio de estratégia de marca e design que ajuda empresas que já vendem a reposicionar a marca, justificar preços mais altos e atrair clientes melhores."
+        title="Svicero Studio | Consultoria de Estratégia & Design de Marcas"
+        description="Unimos estratégia, tecnologia e design contemporâneo para transformar marcas em sistemas claros, consistentes e lucrativos. Menos ruído, mais resultado."
         canonical="https://svicerostudio.com.br"
       />
       <div className="bg-ds-bg text-ds-text min-h-screen font-body">

@@ -72,8 +72,9 @@ const Processos = () => {
       <Header variant="solid" />
       <main className="flex-1">
         <SEOHelmet
-          title="Metodologia de Trabalho — Engenharia de Percepção Visual"
-          description="Conheça as etapas estruturadas do Svicero Studio para alinhar a identidade visual e a presença digital da sua clínica ao nível do seu rigor técnico."
+          title="Metodologia | Svicero Studio — Como Transformamos Marca em Resultado"
+          description="Conheça o processo estruturado do Svicero Studio: estratégia, tecnologia e design contemporâneo trabalhando juntos para transformar sua marca em um sistema claro, consistente e lucrativo."
+          canonical="https://svicerostudio.com.br/metodologia"
         />
 
         {/* HERO */}
@@ -153,47 +154,47 @@ const Processos = () => {
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
           <ScrollReveal direction="right" delay={0.04} duration={0.7}>
             <div className="rounded-[2rem] border border-white/5 bg-ds-surface p-10 shadow-sm hover:border-white/10 transition-colors">
-            <h2 className="text-[1.875rem] font-medium tracking-tight text-ds-text mb-4">
-              O que o projeto exige da sua rotina (de forma prática)
-            </h2>
-            <p className="mb-8 text-ds-muted leading-[1.6]">
-              Nosso trabalho é aprofundado e colaborativo, mas foi pensado para encaixar na rotina clínica. Você entra com a expertise técnica do negócio e decisões estratégicas; nós cuidamos da organização, análise e tradução em marca.
-            </p>
+              <h2 className="text-[1.875rem] font-medium tracking-tight text-ds-text mb-4">
+                O que o projeto exige da sua rotina (de forma prática)
+              </h2>
+              <p className="mb-8 text-ds-muted leading-[1.6]">
+                Nosso trabalho é aprofundado e colaborativo, mas foi pensado para encaixar na rotina clínica. Você entra com a expertise técnica do negócio e decisões estratégicas; nós cuidamos da organização, análise e tradução em marca.
+              </p>
 
-            <ul className="space-y-5 text-base mb-8 max-w-2xl mx-auto text-left">
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="right" delay={0.06} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">1</span>
-                  <span className="text-ds-muted leading-[1.6]">Participar de algumas conversas estratégicas ao longo do projeto (reuniões online em datas combinadas).</span>
-                </ScrollReveal>
-              </li>
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="right" delay={0.1} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">2</span>
-                  <span className="text-ds-muted leading-[1.6]">Reservar tempo para revisar materiais-chave e aprovar direcionamentos importantes.</span>
-                </ScrollReveal>
-              </li>
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="right" delay={0.14} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">3</span>
-                  <span className="text-ds-muted leading-[1.6]">Disponibilizar informações básicas da clínica (história, equipe, especialidades, números relevantes).</span>
-                </ScrollReveal>
-              </li>
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="right" delay={0.18} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">4</span>
-                  <span className="text-ds-muted leading-[1.6]">Oferecer feedbacks honestos sobre como se sente em relação às propostas apresentadas.</span>
-                </ScrollReveal>
-              </li>
-            </ul>
+              <ul className="space-y-5 text-base mb-8 max-w-2xl mx-auto text-left">
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="right" delay={0.06} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">1</span>
+                    <span className="text-ds-muted leading-[1.6]">Participar de algumas conversas estratégicas ao longo do projeto (reuniões online em datas combinadas).</span>
+                  </ScrollReveal>
+                </li>
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="right" delay={0.1} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">2</span>
+                    <span className="text-ds-muted leading-[1.6]">Reservar tempo para revisar materiais-chave e aprovar direcionamentos importantes.</span>
+                  </ScrollReveal>
+                </li>
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="right" delay={0.14} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">3</span>
+                    <span className="text-ds-muted leading-[1.6]">Disponibilizar informações básicas da clínica (história, equipe, especialidades, números relevantes).</span>
+                  </ScrollReveal>
+                </li>
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="right" delay={0.18} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">4</span>
+                    <span className="text-ds-muted leading-[1.6]">Oferecer feedbacks honestos sobre como se sente em relação às propostas apresentadas.</span>
+                  </ScrollReveal>
+                </li>
+              </ul>
 
-            <div className='flex justify-center border-t border-white/5 pt-8 mt-4'>
-              <ScrollReveal direction="up" delay={0.12} duration={0.6}>
-                <p className="text-center max-w-2xl text-ds-muted text-sm">
-                  <span className='font-medium text-ds-text'>Sempre que possível, usamos métodos assíncronos (formulários, gravações, revisões comentadas) para diminuir o impacto na sua agenda clínica.</span>
-                </p>
-              </ScrollReveal>
-            </div>
+              <div className='flex justify-center border-t border-white/5 pt-8 mt-4'>
+                <ScrollReveal direction="up" delay={0.12} duration={0.6}>
+                  <p className="text-center max-w-2xl text-ds-muted text-sm">
+                    <span className='font-medium text-ds-text'>Sempre que possível, usamos métodos assíncronos (formulários, gravações, revisões comentadas) para diminuir o impacto na sua agenda clínica.</span>
+                  </p>
+                </ScrollReveal>
+              </div>
             </div>
           </ScrollReveal>
         </section>
@@ -202,47 +203,47 @@ const Processos = () => {
         <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-20">
           <ScrollReveal direction="left" delay={0.04} duration={0.7}>
             <div className="rounded-[2rem] border border-white/5 bg-ds-surface p-10 shadow-sm hover:border-white/10 transition-colors">
-            <h2 className="text-[1.875rem] font-medium tracking-tight text-ds-text mb-8 text-center">
-              As garantias contratuais e profissionais do Svicero Studio
-            </h2>
-            <ul className="space-y-5 text-base max-w-2xl mx-auto text-left">
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="left" delay={0.06} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">1</span>
-                  <span className="text-ds-muted leading-[1.6]">Organização rigorosa e relatórios de andamento em cada fase linear do projeto.</span>
-                </ScrollReveal>
-              </li>
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="left" delay={0.1} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">2</span>
-                  <span className="text-ds-muted leading-[1.6]">Cronograma organizado e comunicação transparente durante todo o projeto.</span>
-                </ScrollReveal>
-              </li>
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="left" delay={0.14} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">3</span>
-                  <span className="text-ds-muted leading-[1.6]">Entrega de arquivos finais em formatos adequados para uso digital e impressão.</span>
-                </ScrollReveal>
-              </li>
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="left" delay={0.18} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">4</span>
-                  <span className="text-ds-muted leading-[1.6]">Manual de marca para orientar o uso correto da identidade visual.</span>
-                </ScrollReveal>
-              </li>
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="left" delay={0.22} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">5</span>
-                  <span className="text-ds-muted leading-[1.6]">Conduta ética: confidencialidade sobre dados internos, números e estratégias da clínica.</span>
-                </ScrollReveal>
-              </li>
-              <li className="flex gap-4 items-start">
-                <ScrollReveal direction="left" delay={0.26} duration={0.55} className="flex gap-4 items-start">
-                  <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">5</span>
-                  <span className="text-ds-muted leading-[1.6]">Uso responsável de Inteligência Artificial, sempre como ferramenta de análise e organização, nunca para copiar ou replicar identidades de terceiros.</span>
-                </ScrollReveal>
-              </li>
-            </ul>
+              <h2 className="text-[1.875rem] font-medium tracking-tight text-ds-text mb-8 text-center">
+                As garantias contratuais e profissionais do Svicero Studio
+              </h2>
+              <ul className="space-y-5 text-base max-w-2xl mx-auto text-left">
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="left" delay={0.06} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">1</span>
+                    <span className="text-ds-muted leading-[1.6]">Organização rigorosa e relatórios de andamento em cada fase linear do projeto.</span>
+                  </ScrollReveal>
+                </li>
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="left" delay={0.1} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">2</span>
+                    <span className="text-ds-muted leading-[1.6]">Cronograma organizado e comunicação transparente durante todo o projeto.</span>
+                  </ScrollReveal>
+                </li>
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="left" delay={0.14} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">3</span>
+                    <span className="text-ds-muted leading-[1.6]">Entrega de arquivos finais em formatos adequados para uso digital e impressão.</span>
+                  </ScrollReveal>
+                </li>
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="left" delay={0.18} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">4</span>
+                    <span className="text-ds-muted leading-[1.6]">Manual de marca para orientar o uso correto da identidade visual.</span>
+                  </ScrollReveal>
+                </li>
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="left" delay={0.22} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">5</span>
+                    <span className="text-ds-muted leading-[1.6]">Conduta ética: confidencialidade sobre dados internos, números e estratégias da clínica.</span>
+                  </ScrollReveal>
+                </li>
+                <li className="flex gap-4 items-start">
+                  <ScrollReveal direction="left" delay={0.26} duration={0.55} className="flex gap-4 items-start">
+                    <span className="mt-0.5 h-6 w-6 flex-shrink-0 flex items-center justify-center rounded-full border border-ds-accent/25 bg-ds-accent/10 text-xs font-mono font-medium text-ds-accent">5</span>
+                    <span className="text-ds-muted leading-[1.6]">Uso responsável de Inteligência Artificial, sempre como ferramenta de análise e organização, nunca para copiar ou replicar identidades de terceiros.</span>
+                  </ScrollReveal>
+                </li>
+              </ul>
             </div>
           </ScrollReveal>
         </section>

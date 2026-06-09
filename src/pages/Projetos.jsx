@@ -150,9 +150,9 @@ const Projetos = () => {
   return (
     <div className="bg-ds-bg min-h-screen text-ds-text font-body">
       <SEOHelmet
-        title="Estudos de Caso — Estratégia de Posicionamento de Marca"
-        description="Casos de clínicas e projetos que reposicionamos para atrair o público particular e justificar orçamentos de alto ticket."
-        canonical="/projetos"
+        title="Projetos | Svicero Studio — Estratégia, Design e Resultado na Prática"
+        description="Conheça marcas que transformamos em sistemas claros e consistentes. Casos reais de estratégia, design contemporâneo e tecnologia aplicados para gerar resultado."
+        canonical="https://svicerostudio.com.br/projetos"
       />
       <Header variant="solid" />
 
@@ -230,8 +230,8 @@ const Projetos = () => {
                       <h4 className="text-sm font-medium text-[#eeeeee] line-clamp-2 mt-2 drop-shadow-md">
                         {proj.titulo}
                       </h4>
-                      
-                      
+
+
                     </div>
                   </div>
                 ))}

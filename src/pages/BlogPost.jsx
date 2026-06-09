@@ -116,9 +116,9 @@ const BlogPost = () => {
   return (
     <>
       <SEOHelmet
-        title={post?.titulo || 'Insights de Engenharia Visual'}
-        description={post?.resumo || 'Leia mais sobre design, desenvolvimento e estratégia digital no Svicero Studio.'}
-        keywords={post?.tags || 'design, desenvolvimento, tecnologia'}
+        title={post?.titulo || 'Artigo | Svicero Studio — Estratégia, Design e Tecnologia de Marca'}
+        description={post?.resumo || 'Leia reflexões sobre estratégia de marca, design contemporâneo e inteligência artificial aplicada. Conteúdo direto e sem enrolação do Svicero Studio.'}
+        keywords={post?.tags || 'estratégia de marca, design de marcas, branding, inteligência artificial, identidade visual, posicionamento de marca, consultoria de marca'}
         ogImage={post?.imagem_capa || '/images/og-image.jpg'}
         ogType="article"
       />

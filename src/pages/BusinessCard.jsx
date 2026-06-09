@@ -10,28 +10,28 @@ const BusinessCard = () => {
 
   return (
     <>
-      <SEOHelmet 
-        title="Links Oficiais — Svicero Studio" 
-        description="Acesse nossos canais oficiais. Estratégia que eleva, design que posiciona."
+      <SEOHelmet
+        title="Links Oficiais | Svicero Studio — Consultoria de Estratégia & Design de Marcas"
+        description="Acesse os canais oficiais do Svicero Studio. Estratégia, tecnologia e design contemporâneo para marcas que querem crescer com clareza e consistência."
       />
-      
+
       <div className="min-h-screen bg-ds-surface font-body flex flex-col items-center justify-center py-12 px-4 sm:px-6 relative overflow-hidden">
-        
+
         {/* Glow Effects (Luzes de fundo) */}
         <div className="absolute top-[-10%] right-[-10%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-ds-accent/10 rounded-full blur-[100px] pointer-events-none mix-blend-screen" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-ds-accent/5 rounded-full blur-[100px] pointer-events-none mix-blend-screen" />
-        
+
         {/* Main Card (Glassmorphism) */}
         <div className="w-full max-w-[420px] bg-ds-bg backdrop-blur-xl border border-white/5 rounded-[2.5rem] p-8 sm:p-10 shadow-2xl relative z-10 flex flex-col items-center text-center hover:border-white/10 transition-colors duration-500">
-          
+
           {/* Logo Container com animação no hover */}
           <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-white/10 bg-ds-surface flex items-center justify-center mb-6 shadow-xl relative group cursor-default">
             <div className="absolute inset-0 rounded-full bg-ds-accent/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <img 
-              src={simbolo} 
-              alt="Svicero Studio" 
-              className="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-110" 
-              loading="lazy" 
+            <img
+              src={simbolo}
+              alt="Svicero Studio"
+              className="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-110"
+              loading="lazy"
             />
           </div>
 

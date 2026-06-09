@@ -124,9 +124,9 @@ const Blog = () => {
   return (
     <>
       <SEOHelmet
-        title="Insights de Engenharia Visual"
-        description="Artigos e insights sobre UX Design, Estratégia de Marca e Engenharia de Percepção. O conteúdo exclusivo do Svicero Studio para quem busca o topo do mercado digital."
-        keywords="blog design, tendências design, desenvolvimento web, ui ux, design thinking"
+        title="Blog | Svicero Studio — Estratégia, Design e Tecnologia de Marca"
+        description="Artigos e reflexões sobre estratégia de marca, design contemporâneo e inteligência artificial aplicada. Conteúdo direto, sem enrolação, para marcas que querem crescer com consistência."
+        keywords="estratégia de marca, design de marcas, branding, inteligência artificial, IA para marcas, identidade visual, UX design, consultoria de marca, posicionamento de marca, design contemporâneo"
       />
       <div className="bg-ds-bg min-h-screen text-ds-text font-body">
         <Header variant="solid" />
@@ -140,7 +140,7 @@ const Blog = () => {
               backgroundImage: `url(${capaBlog})`
             }}
           ></div>
-          
+
           {/* Conteúdo principal */}
           <ScrollReveal direction="up" delay={0.1} className="bg-ds-bg/75 rounded-xl relative z-20 w-full mx-auto flex flex-col items-center sm:items-start justify-center text-left py-12 px-4 sm:px-6 lg:px-8">
             <div className='flex flex-col items-start'>
