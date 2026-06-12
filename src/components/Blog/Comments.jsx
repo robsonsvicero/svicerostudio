@@ -86,7 +86,7 @@ const Comments = ({ slug }) => {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 required
-                className="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-ds-text placeholder:text-ds-muted/50 focus:border-ds-accent/60 focus:bg-white/10 focus:outline-none transition-all shadow-inner"
+                className="w-full px-5 py-4 rounded-2xl bg-white/50 border border-white/10 text-ds-text placeholder:text-ds-muted/50 focus:border-ds-accent/60 focus:bg-white/10 focus:outline-none transition-all shadow-inner"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -96,7 +96,7 @@ const Comments = ({ slug }) => {
                 value={content}
                 onChange={e => setContent(e.target.value)}
                 required
-                className="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-ds-text placeholder:text-ds-muted/50 focus:border-ds-accent/60 focus:bg-white/10 focus:outline-none transition-all shadow-inner min-h-[120px]"
+                className="w-full px-5 py-4 rounded-2xl bg-white/50 border border-white/10 text-ds-text placeholder:text-ds-muted/50 focus:border-ds-accent/60 focus:bg-white/10 focus:outline-none transition-all shadow-inner min-h-[120px]"
                 rows={4}
               />
             </div>

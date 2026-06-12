@@ -203,13 +203,13 @@ const BlogPost = () => {
             )}
 
             {/* Conteúdo do Post */}
-            <div className="bg-[#141414]/60 backdrop-blur-xl rounded-[2.5rem] p-8 md:p-16 mb-12 border border-white/5 shadow-2xl">
+            <div className="bg-[#222222]/10 backdrop-blur-xl rounded-[2.5rem] p-8 md:p-16 mb-12 border border-white/5 shadow-2xl">
               {renderContent(post.conteudo)}
             </div>
 
             {/* Informações do Autor */}
             {autor && autor.nome && (
-              <div className="bg-[#141414]/40 backdrop-blur-md rounded-[2.5rem] p-8 md:p-12 mb-12 border border-white/5 shadow-xl">
+              <div className="bg-[#222222]/10 backdrop-blur-md rounded-[2.5rem] p-8 md:p-12 mb-12 border border-white/5 shadow-xl">
                 <p className="text-[10px] font-mono tracking-widest text-ds-accent uppercase mb-8 flex items-center gap-3">
                   <span className="w-8 h-[1px] bg-ds-accent/30"></span>
                   Sobre o Autor
@@ -256,7 +256,7 @@ const BlogPost = () => {
             )}
 
             {/* Seção de Comentários */}
-            <div className="bg-[#141414]/40 backdrop-blur-md rounded-[2.5rem] p-8 md:p-12 mb-16 border border-white/5 shadow-xl">
+            <div className="bg-[#222222]/10 backdrop-blur-md rounded-[2.5rem] p-8 md:p-12 mb-16 border border-white/5 shadow-xl">
               <Comments slug={slug} />
             </div>
 
