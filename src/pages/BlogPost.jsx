@@ -83,6 +83,47 @@ const BlogPost = () => {
             setAutor({ nome: getDisplayAuthorName(payload.data.autor) || 'Autor desconhecido' })
           }
         }
+
+        // Buscar posts relacionados (mesma categoria)
+        try {
+          const relatedRes = await fetch(`${API_URL}/api/db/posts/query`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              operation: 'select',
+              filters: payload.data.categoria ? [{ column: 'categoria', operator: 'eq', value: payload.data.categoria }] : [],
+            }),
+          });
+          const relatedPayload = await relatedRes.json();
+          let filtered = [];
+          if (relatedRes.ok && Array.isArray(relatedPayload.data)) {
+            filtered = relatedPayload.data.filter(p => p.slug !== slug);
+          }
+
+          // Fallback: se não houver posts suficientes da mesma categoria, buscar posts gerais
+          if (filtered.length < 3) {
+            const generalRes = await fetch(`${API_URL}/api/db/posts/query`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                operation: 'select',
+              }),
+            });
+            const generalPayload = await generalRes.json();
+            if (generalRes.ok && Array.isArray(generalPayload.data)) {
+              const extraPosts = generalPayload.data.filter(
+                p => p.slug !== slug && !filtered.some(f => f.slug === p.slug)
+              );
+              filtered = [...filtered, ...extraPosts];
+            }
+          }
+
+          // Ordenar por data_publicacao decrescente
+          filtered.sort((a, b) => new Date(b.data_publicacao) - new Date(a.data_publicacao));
+          setRelatedPosts(filtered.slice(0, 3));
+        } catch (err) {
+          console.error('Erro ao buscar posts relacionados:', err);
+        }
       } catch {
         navigate('/404');
       }
@@ -272,7 +313,7 @@ const BlogPost = () => {
                     <Link
                       key={relatedPost.id}
                       to={`/blog/${relatedPost.slug}`}
-                      className="group bg-[#141414]/60 backdrop-blur-sm rounded-[2rem] border border-white/5 shadow-lg hover:border-ds-accent/30 transition-all duration-500 overflow-hidden hover:-translate-y-2"
+                      className="group bg-white backdrop-blur-sm rounded-[2rem] border border-white/5 shadow-lg hover:border-ds-accent/30 transition-all duration-500 overflow-hidden hover:-translate-y-2"
                     >
                       {relatedPost.imagem_destaque && (
                         <div className="aspect-[16/10] overflow-hidden">

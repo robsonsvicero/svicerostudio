@@ -41,16 +41,16 @@ const ConsentBanner = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex-1">
-            <h3 className="font-title text-lg font-semibold mb-2 text-ds-text">
+            <h3 className="font-title text-lg font-semibold mb-2 text-ds-bg">
               <i className="fa-solid fa-shield-halved text-ds-accent mr-2"></i>
               Sua Privacidade é Importante
             </h3>
-            <p className="text-ds-text/80 text-sm leading-relaxed mb-2">
+            <p className="text-ds-bg/80 text-sm leading-relaxed mb-2">
               Nós utilizamos cookies e tecnologias similares para melhorar sua experiência,
               analisar o uso do site e personalizar conteúdo. Ao continuar navegando, você aceita nossa
               <Link to="/privacidade" className="text-ds-accent hover:underline ml-1">Política de Privacidade</Link>.
             </p>
-            <p className="text-ds-text/60 text-xs">
+            <p className="text-ds-bg/60 text-xs">
               Para exercer seus direitos de acesso, correção ou exclusão de dados, visite nossa
               <Link to="/exclusao-dados" className="text-ds-accent hover:underline ml-1">página de exclusão de dados</Link>.
             </p>
@@ -59,7 +59,7 @@ const ConsentBanner = () => {
           <div className="flex gap-3 flex-shrink-0 w-full md:w-auto">
             <Button
               onClick={handleReject}
-              className="flex-1 md:flex-none px-4 py-2 rounded-lg border border-cream/30 text-ds-text hover:bg-white/10 transition-colors text-sm font-medium"
+              className="flex-1 md:flex-none px-4 py-2 rounded-lg border border-cream/30 text-ds-bg hover:bg-white/10 transition-colors text-sm font-medium"
             >
               <i className="fa-solid fa-x mr-2"></i>
               Rejeitar
