@@ -26,6 +26,7 @@ import ClientsMarquee from '../components/Home/ClientsMarquee';
 import ServicesSection from '../components/Home/ServicesSection';
 import AboutSection from '../components/Home/AboutSection';
 import FAQSection from '../components/Home/FAQSection';
+import PartnersSection from '../components/Home/PartnersSection';
 import DepoimentosSection from '../components/DepoimentosSection';
 import CTAFinal from '../components/CTAFinal';
 import ScrollReveal from '../components/UI/ScrollReveal';
@@ -362,6 +363,8 @@ const Home = () => {
         <AboutSection />
 
         <DepoimentosSection />
+
+        <PartnersSection />
 
         <BlogSection blogPosts={blogPosts} />
 

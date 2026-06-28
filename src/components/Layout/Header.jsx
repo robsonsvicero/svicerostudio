@@ -19,6 +19,7 @@ const Header = () => {
     { href: "/projetos", label: "PROJETOS" },
     { href: "/processos", label: "PROCESSOS" },
     { href: "/diagnostico", label: "DIAGNÓSTICO" },
+    { href: "/#parceiros", label: "PARCEIROS" },
     { href: "/contato", label: "CONTATO" },
     { href: "/blog", label: "BLOG" },
   ];
