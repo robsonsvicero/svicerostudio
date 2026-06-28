@@ -8,24 +8,24 @@ import logoPowerBrain from '../../assets/logo-powerbrain.png';
 
 const partners = [
   {
-    title: 'Menu ZN',
-    logo: logoMenuZn,
-    site: 'https://menuzonanorte.com.br',
-  },
-  {
-    title: 'Robson Svicero',
-    logo: logoRobsonSvicero,
-    site: 'https://robsonsvicero.com.br',
-  },
-  {
     title: 'Instituto Sublim',
     logo: seloSublim,
     site: 'https://institutosublim.org',
   },
   {
+    title: 'Menu ZN',
+    logo: logoMenuZn,
+    site: 'https://menuzonanorte.com.br',
+  },
+  {
     title: 'PowerBrain',
     logo: logoPowerBrain,
     site: 'https://powerbrainbr.com/',
+  },
+  {
+    title: 'Robson Svicero',
+    logo: logoRobsonSvicero,
+    site: 'https://robsonsvicero.com.br',
   },
 ];
 

@@ -362,9 +362,9 @@ const Home = () => {
 
         <AboutSection />
 
-        <DepoimentosSection />
-
         <PartnersSection />
+
+        <DepoimentosSection />
 
         <BlogSection blogPosts={blogPosts} />
 
