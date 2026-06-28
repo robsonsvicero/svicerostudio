@@ -29,11 +29,21 @@ const partners = [
   },
 ];
 
+const degradeBackground = {
+  background: `
+      radial-gradient(52% 58% at 18% 20%, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.04) 36%, rgba(59,130,246,0) 72%),
+      radial-gradient(36% 42% at 100% 100%, rgba(59,130,246,0.16) 0%, rgba(59,130,246,0.05) 38%, rgba(59,130,246,0) 76%),
+      linear-gradient(120deg, rgba(247,248,255,0.96) 0%, rgba(235,238,252,0.97) 48%, rgba(223,228,249,0.98) 100%)
+    `,
+};
+
 const PartnersSection = () => {
   return (
     <section
+      style={degradeBackground}
       id="parceiros"
-      className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 bg-ds-bg font-body border-y border-ds-border/70"
+      className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body border-y border-ds-border/70"
+      style={degradeBackground}
     >
       <div className="max-w-screen-xl mx-auto">
         <ScrollReveal direction="up" delay={0.1} className="mb-10">
