@@ -74,7 +74,7 @@ const Processos = () => {
         <SEOHelmet
           title="Metodologia | Svicero Studio — Como Transformamos Marca em Resultado"
           description="Conheça o processo estruturado do Svicero Studio: estratégia, tecnologia e design contemporâneo trabalhando juntos para transformar sua marca em um sistema claro, consistente e lucrativo."
-          canonical="https://svicerostudio.com.br/metodologia"
+          canonical="https://svicerostudio.com.br/processos"
         />
 
         {/* HERO */}
