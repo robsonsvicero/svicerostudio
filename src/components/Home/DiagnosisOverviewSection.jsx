@@ -23,7 +23,7 @@ const DiagnosisOverviewSection = () => {
   return (
     <section
       aria-labelledby="diagnosis-overview-title"
-      className="border-y border-white/5 bg-ds-bg px-4 py-20 font-body sm:px-6 sm:py-28 md:px-16"
+      className="border-y border-white/5 bg-ds-surface px-4 py-20 font-body sm:px-6 sm:py-28 md:px-16"
     >
       <div className="mx-auto max-w-screen-xl">
         <ScrollReveal direction="up" delay={0.1}>

@@ -11,7 +11,7 @@ const CTAFinal = ({ primaryCta, questions = defaultQuestions }) => {
   const primary = {
     label: 'Agendar Diagnóstico',
     href: '/formulario-interesse',
-    variant: 'primary',
+    variant: 'secondary',
     ...primaryCta,
   };
 

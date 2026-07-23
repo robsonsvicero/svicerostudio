@@ -30,7 +30,7 @@ const AboutSection = () => {
     <section
       id="sobre"
       aria-labelledby="visao-marca-title"
-      className="bg-ds-surface py-20 sm:py-28 px-4 sm:px-6 md:px-16 font-body border-y border-white/5"
+      className="bg-ds-bg/50 py-20 sm:py-28 px-4 sm:px-6 md:px-16 font-body border-y border-white/5"
     >
       <div className="max-w-screen-xl mx-auto">
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 items-start">

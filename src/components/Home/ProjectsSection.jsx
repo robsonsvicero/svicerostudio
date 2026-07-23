@@ -112,7 +112,7 @@ const ProjectsSection = ({ projects }) => {
     <>
       <section
         id="projetos"
-        className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 bg-ds-surface font-body"
+        className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 bg-ds-bg/50 font-body"
       >
         <div className="max-w-screen-xl mx-auto">
           <ScrollReveal direction="up" delay={0.1} className="mb-10">

@@ -11,7 +11,7 @@ import 'swiper/css/pagination';
 
 const BlogSection = ({ blogPosts }) => {
   return (
-    <section id="blog" className="bg-ds-bg py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body">
+    <section id="blog" className="bg-ds-surface py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body">
       <div className="max-w-screen-xl mx-auto">
         <ScrollReveal direction="up" delay={0.1}>
           <SectionHeader

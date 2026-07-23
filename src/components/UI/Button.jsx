@@ -51,8 +51,8 @@ const Button = ({
         {/* Beam is now default */}
         <span className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#FF7A59_100%)] opacity-100 transition-opacity duration-300"></span>
         {/* Solid border appears on hover to "illuminate" */}
-        <span className="absolute inset-0 rounded-full bg-ds-tech opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-        <span className={`flex items-center justify-center gap-3 uppercase transition-colors duration-300 group-hover:text-ds-surface font-bold tracking-[0.15em] text-ds-surface bg-ds-tech w-full h-full rounded-full relative shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ${sizeClasses[size] || ''}`}>
+        <span className="absolute inset-0 rounded-full bg-ds-text opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+        <span className={`flex items-center justify-center gap-3 uppercase transition-colors duration-300 group-hover:text-ds-surface font-bold tracking-[0.15em] text-ds-surface bg-ds-text w-full h-full rounded-full relative shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ${sizeClasses[size] || ''}`}>
             <span className="relative z-10">{children}</span>
             {icon && <span className="relative z-10 transition-transform duration-300 group-hover:scale-110">{icon}</span>}
         </span>
@@ -86,7 +86,7 @@ const Button = ({
   const usesLightSurfaceStyling = /(?:^|\s)(?:bg-white\/(?:5|10)|bg-white\/\[.*?\])/.test(className);
 
   if (usesSurfaceStyling) {
-    const plainClasses = `inline-flex items-center justify-center gap-3 transition-all duration-300 focus:outline-none ${sizeClasses[size] || ''} ${className} ${usesLightSurfaceStyling ? 'hover:bg-ds-tech hover:text-white' : ''}`;
+    const plainClasses = `inline-flex items-center justify-center gap-3 transition-all duration-300 focus:outline-none ${sizeClasses[size] || ''} ${className} ${usesLightSurfaceStyling ? 'hover:bg-ds-text hover:text-white' : ''}`;
     const plainContent = (
       <>
         <span className="relative z-10">{children}</span>

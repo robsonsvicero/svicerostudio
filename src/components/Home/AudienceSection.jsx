@@ -45,7 +45,7 @@ const AudienceSection = () => {
   return (
     <section
       aria-labelledby="audience-title"
-      className="bg-ds-bg px-4 py-20 font-body sm:px-6 sm:py-28 md:px-16"
+      className="bg-ds-surface px-4 py-20 font-body sm:px-6 sm:py-28 md:px-16"
     >
       <div className="mx-auto max-w-screen-xl">
         <ScrollReveal direction="up" delay={0.1}>
