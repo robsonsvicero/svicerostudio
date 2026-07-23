@@ -48,11 +48,11 @@ const Hero = () => {
         </span>
 
         <h1 className="reveal stagger-1 text-4xl sm:text-5xl lg:text-[3.8rem] font-bold tracking-tight text-ds-text leading-[1.1] mb-8">
-          Existe uma diferença entre entregar qualidade e ser <span className="text-ds-accent italic font-normal">percebido como referência.</span>
+          Existe uma diferença entre entregar qualidade e ser <span className="text-ds-accent italic font-normal">reconhecido como referência.</span>
         </h1>
 
         <p className="reveal stagger-2 text-lg md:text-xl text-ds-text/60 mb-6 max-w-lg leading-[1.6]">
-          Construímos sistemas de marca que tornam percepção, comunicação e experiência mais coerentes com o nível da sua clínica.
+          Desenvolvemos estratégias de marca que alinham posicionamento, comunicação e experiência para transformar qualidade em valor percebido e tornar sua empresa uma referência no mercado.
         </p>
         
         <div className="reveal stagger-4 flex flex-row gap-6 items-center w-full sm:w-auto">

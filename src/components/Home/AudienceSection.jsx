@@ -28,7 +28,7 @@ const AudienceItem = ({ item, index }) => {
     </>
   );
 
-  const className = 'flex min-h-28 items-center gap-5 border-b border-white/10 py-7 transition-colors hover:border-ds-accent/40';
+  const className = 'flex min-h-20 items-center gap-5 border-b border-white/10 py-4 transition-colors hover:border-ds-accent/40';
 
   return item.href ? (
     <a href={item.href} className={className}>
