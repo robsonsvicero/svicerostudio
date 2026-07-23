@@ -1,113 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
-<url>
-  <loc>https://svicerostudio.com.br/</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>1.00</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/blog</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.90</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/cartao</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.80</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/contato</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.80</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/formulario-interesse</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.80</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/projetos</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.85</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/processos</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.80</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/pacote-marca</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.80</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/diagnostico</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.75</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/faq</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.75</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/lp-dentistas</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.75</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/privacidade</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>yearly</changefreq>
-  <priority>0.50</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/termos</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>yearly</changefreq>
-  <priority>0.50</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/exclusao-dados</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>yearly</changefreq>
-  <priority>0.50</priority>
-</url>
-
-<url>
-  <loc>https://svicerostudio.com.br/agradecimento</loc>
-  <lastmod>2026-07-01T00:00:00+00:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
-</url>
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://svicerostudio.com.br/</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/sobre</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/projetos</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/processos</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/diagnostico</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/pacote-marca</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/blog</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/contato</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/faq</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/lp-dentistas</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/privacidade</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/termos</loc>
+  </url>
+  <url>
+    <loc>https://svicerostudio.com.br/exclusao-dados</loc>
+  </url>
 </urlset>

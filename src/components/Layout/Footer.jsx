@@ -43,8 +43,10 @@ const Footer = () => {
           <div>
             <h4 className="text-ds-white font-medium text-lg mb-4">Estúdio</h4>
             <ul className="flex flex-col gap-2 text-ds-muted">
+              <li><Link to="/sobre" className="hover:text-ds-accent transition-colors">Sobre</Link></li>
               <li><Link to="/projetos" className="hover:text-ds-accent transition-colors">Projetos</Link></li>
               <li><Link to="/processos" className="hover:text-ds-accent transition-colors">Processos</Link></li>
+              <li><Link to="/diagnostico" className="hover:text-ds-accent transition-colors">Diagnóstico</Link></li>
               <li><Link to="/blog" className="hover:text-ds-accent transition-colors">Blog</Link></li>
             </ul>
           </div>

@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
-import BackToTopButton from './components/UI/BackToTopButton';
+import WhatsAppButton from './components/UI/WhatsAppButton';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -33,6 +33,7 @@ const AdminFAQ = lazy(() => import('./pages/admin/AdminFAQ'));
 const Agradecimento = lazy(() => import('./pages/Agradecimento'));
 const Diagnostico = lazy(() => import('./pages/Diagnostico'));
 const LPDentistas = lazy(() => import('./pages/LPDentistas'));
+const Sobre = lazy(() => import('./pages/Sobre'));
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
               <Route path="/termos" element={<Termos />} />
               <Route path="/exclusao-dados" element={<ExclusaoDados />} />
               <Route path="/processos" element={<Processos />} />
+              <Route path="/sobre" element={<Sobre />} />
               <Route 
                 path="/admin" 
                 element={
@@ -120,7 +122,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
-          <BackToTopButton />
+          <WhatsAppButton />
           <ConsentBanner />
         </Router>
       </AuthProvider>

@@ -260,10 +260,10 @@ const BlogPost = () => {
                     <img
                       src={autor.foto_url}
                       alt={autor.nome}
-                      className="w-24 h-24 rounded-2xl object-cover flex-shrink-0 border border-white/10 shadow-lg"
+                      className="w-24 h-24 rounded-full object-cover flex-shrink-0 border border-white/10 shadow-lg"
                     />
                   ) : (
-                    <div className="w-24 h-24 rounded-2xl bg-ds-accent/10 border border-ds-accent/20 flex items-center justify-center text-ds-accent text-2xl font-bold flex-shrink-0">
+                    <div className="w-24 h-24 rounded-full bg-ds-accent/10 border border-ds-accent/20 flex items-center justify-center text-ds-accent text-2xl font-bold flex-shrink-0">
                       {autor.nome[0]}
                     </div>
                   )}
