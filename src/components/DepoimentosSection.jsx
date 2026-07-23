@@ -33,7 +33,7 @@ const DepoimentosSection = () => {
   if (depoimentos.length === 0) return null;
 
   return (
-    <section className="bg-ds-surface py-24 px-4 md:px-16 border-t border-white/5 overflow-hidden">
+    <section className="bg-ds-bg/50 py-24 px-4 md:px-16 border-t border-white/5 overflow-hidden">
       <div className="max-w-screen-xl mx-auto">
         <ScrollReveal direction="up" delay={0.1}>
           <div className="mb-12 text-center md:text-left flex flex-col items-center md:items-start">

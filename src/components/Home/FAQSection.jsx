@@ -9,7 +9,7 @@ const FAQSection = ({ faqs, title, subtitle, startIndex = 0, endIndex }) => {
   if (!displayedFaqs || displayedFaqs.length === 0) return null;
 
   return (
-    <section className="py-24 px-4 md:px-16 bg-ds-surface font-body border-t border-white/5">
+    <section className="py-24 px-4 md:px-16 bg-ds-sbg/50 font-body border-t border-white/5">
       <div className="max-w-screen-xl mx-auto">
         <ScrollReveal direction="up" delay={0.1}>
           <SectionHeader

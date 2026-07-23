@@ -29,7 +29,7 @@ const services = [
 ];
 
 const ServicesSection = () => (
-  <section id="servicos" aria-labelledby="services-title" className="bg-ds-bg px-4 py-20 font-body sm:px-6 sm:py-28 md:px-16">
+  <section id="servicos" aria-labelledby="services-title" className="bg-ds-surface px-4 py-20 font-body sm:px-6 sm:py-28 md:px-16">
     <div className="mx-auto max-w-screen-xl">
       <ScrollReveal direction="up" delay={0.1}>
         <div className="grid gap-8 border-b border-white/10 pb-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
