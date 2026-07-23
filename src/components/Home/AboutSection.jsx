@@ -1,49 +1,95 @@
 import React from 'react';
 import aboutPhoto from '../../assets/about-photo.png';
-import Button from '../UI/Button';
 import ScrollReveal from '../UI/ScrollReveal';
-import SectionHeader from '../UI/SectionHeader';
+
+const fundamentos = [
+  {
+    numero: '01',
+    titulo: 'Engenharia de Percepção',
+    texto: 'Toda marca emite sinais. Organizamos linguagem, identidade e experiência para que esses sinais transmitam com clareza o nível real da entrega.',
+  },
+  {
+    numero: '02',
+    titulo: 'Posicionamento',
+    texto: 'Posicionar não é escolher uma frase de efeito. É definir o espaço que a marca pode ocupar, para quem ela é relevante e por que merece ser escolhida.',
+  },
+  {
+    numero: '03',
+    titulo: 'Construção de valor',
+    texto: 'Valor percebido nasce da coerência entre promessa, comunicação e experiência. Quando essas camadas se confirmam, confiança deixa de depender de convencimento.',
+  },
+  {
+    numero: '04',
+    titulo: 'Diferenciação',
+    texto: 'Diferenciação consistente não vem do excesso. Ela surge de decisões próprias, repetidas com intenção e reconhecidas em cada ponto de contato.',
+  },
+];
 
 const AboutSection = () => {
   return (
     <section
       id="sobre"
-      className="bg-ds-bg py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body"
+      aria-labelledby="visao-marca-title"
+      className="bg-ds-surface py-20 sm:py-28 px-4 sm:px-6 md:px-16 font-body border-y border-white/5"
     >
       <div className="max-w-screen-xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <ScrollReveal direction="right" delay={0.1} className="flex justify-center lg:justify-start">
-            <div className="relative w-full max-w-xl">
-              <div className="aspect-[4/5] sm:aspect-[5/6] rounded-2xl overflow-hidden shadow-xl">
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 items-start">
+          <ScrollReveal direction="right" delay={0.1}>
+            <div className="lg:sticky lg:top-8">
+              <span className="mb-6 flex w-fit items-center gap-2 rounded-full border border-ds-accent/20 bg-ds-accent/10 px-4 py-1.5 text-[11px] font-mono uppercase tracking-[0.2em] text-ds-accent shadow-[0_0_15px_rgba(255,122,89,0.15)] backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(255,122,89,0.8)]" />
+                Sobre o estúdio
+              </span>
+              <h2
+                id="visao-marca-title"
+                className="text-4xl md:text-5xl font-medium tracking-[-0.02em] leading-[1.1] text-ds-text"
+              >
+                Quem é o Svicero Studio e nossa visão sobre estratégia
+              </h2>
+              <p className="mt-6 text-lg leading-[1.7] text-ds-muted">
+                Marca não é apenas identidade visual. É o sistema de percepções que se forma antes, durante e depois de cada contato com um negócio.
+              </p>
+
+              <div className="mt-9 flex items-center gap-4 border-t border-white/10 pt-6">
                 <img
                   src={aboutPhoto}
-                  alt="Robson Svicero, estrategista e designer à frente do Svicero Studio"
+                  alt="Robson Svicero, estrategista de marca e fundador do Svicero Studio"
                   loading="lazy"
-                  className="w-full h-full object-contain rounded-2xl"
+                  className="h-16 w-16 rounded-full object-cover object-top border border-white/10"
                 />
-              </div>
-              <div className="absolute -bottom-6 left-6 overflow-hidden bg-ds-accent/55 backdrop-blur-2xl border border-white/60 text-white rounded-xl px-6 py-4 shadow-[0_18px_45px_rgba(255,122,89,0.35)]">
-                <span className="block text-3xl font-bold leading-tight mb-1">10+</span>
-                <span className="block text-xs tracking-widest font-semibold">ANOS DE EXPERIÊNCIA</span>
+                <div>
+                  <p className="font-medium text-ds-text">Robson Svicero</p>
+                  <p className="mt-1 text-sm leading-relaxed text-ds-muted">
+                    Estrategista e designer, fundador do Svicero Studio, com mais de 10 anos de experiência.
+                  </p>
+                </div>
               </div>
             </div>
           </ScrollReveal>
 
-          <ScrollReveal direction="left" delay={0.2}>
-            <SectionHeader
-              badge="SOBRE O ESTÚDIO"
-              title="Estratégia e design para alinhar percepção à qualidade real do seu negócio"
-              description="O Svicero Studio ajuda marcas que evoluíram tecnicamente, mas ainda comunicam uma fase anterior."
-              className="mb-0"
-              descriptionClassName="mb-6"
-            />
-            <p className="text-lg md:text-xl font-normal leading-[1.6] text-ds-muted max-w-2xl mb-8">
-              Liderado por Robson Svicero, o estúdio combina estratégia, sistemas visuais e clareza de comunicação para construir marcas mais maduras, coerentes e confiáveis.
-            </p>
-            <Button variant="secondary" href="/sobre">
-              Conheça o estúdio
-            </Button>
-          </ScrollReveal>
+          <div className="border-t border-white/10">
+            {fundamentos.map((item, index) => (
+              <ScrollReveal
+                key={item.numero}
+                direction="up"
+                delay={0.1 + index * 0.08}
+              >
+                <article className="grid gap-4 border-b border-white/10 py-8 sm:grid-cols-[4rem_1fr] sm:gap-6 md:py-10">
+                  <span className="font-mono text-xs tracking-widest text-ds-accent/70">
+                    {item.numero}
+                  </span>
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-medium tracking-tight text-ds-text">
+                      {item.titulo}
+                    </h3>
+                    <p className="mt-4 max-w-2xl text-base md:text-lg leading-[1.7] text-ds-muted">
+                      {item.texto}
+                    </p>
+                  </div>
+                </article>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>

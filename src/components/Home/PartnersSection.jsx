@@ -1,5 +1,4 @@
 import ScrollReveal from '../UI/ScrollReveal';
-import SectionHeader from '../UI/SectionHeader';
 
 import logoMenuZn from '../../assets/logo-menuzn.png';
 import logoRobsonSvicero from '../../assets/logo-robsonsvicero.png';
@@ -29,64 +28,43 @@ const partners = [
   },
 ];
 
-const degradeBackground = {
-  background: `
-      radial-gradient(52% 58% at 18% 20%, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.04) 36%, rgba(59,130,246,0) 72%),
-      radial-gradient(36% 42% at 100% 100%, rgba(59,130,246,0.16) 0%, rgba(59,130,246,0.05) 38%, rgba(59,130,246,0) 76%),
-      linear-gradient(120deg, rgba(247,248,255,0.96) 0%, rgba(235,238,252,0.97) 48%, rgba(223,228,249,0.98) 100%)
-    `,
-};
-
 const PartnersSection = () => {
   return (
     <section
-      style={degradeBackground}
       id="parceiros"
-      className="py-16 sm:py-24 px-4 sm:px-6 md:px-16 font-body border-y border-ds-border/70"
-      style={degradeBackground}
+      aria-label="Parceiros do Svicero Studio"
+      className="border-y border-white/10 bg-ds-surface px-4 py-10 font-body sm:px-6 md:px-16"
     >
-      <div className="max-w-screen-xl mx-auto">
-        <ScrollReveal direction="up" delay={0.1} className="mb-10">
-          <SectionHeader
-            badge="PARCEIROS"
-            title="Marcas e iniciativas que caminham com a gente"
-            description="Uma rede de projetos parceiros conectados por estratégia, comunicação e desenvolvimento de marcas."
-          />
-        </ScrollReveal>
+      <ScrollReveal direction="up" delay={0.1}>
+        <div className="mx-auto flex max-w-screen-xl flex-col gap-8 lg:flex-row lg:items-center lg:gap-14">
+          <span className="flex w-fit flex-shrink-0 items-center gap-2 rounded-full border border-ds-accent/20 bg-ds-accent/10 px-4 py-1.5 text-[11px] font-mono uppercase tracking-[0.2em] text-ds-accent shadow-[0_0_15px_rgba(255,122,89,0.15)] backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(255,122,89,0.8)]" />
+            Parceiros
+          </span>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-12">
-          {partners.map((partner, index) => (
-            <ScrollReveal
-              key={partner.title}
-              direction="up"
-              delay={0.1 + index * 0.08}
-              className="h-full"
-            >
-              <article className="h-full min-h-[230px] flex flex-col items-center justify-center text-center p-6 bg-ds-surface border border-ds-border rounded-2xl shadow-sm hover:-translate-y-1 hover:border-ds-accent/35 hover:shadow-xl transition-all duration-300">
-                <a
-                  href={partner.site}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-28 w-full items-center justify-center rounded-xl bg-ds-bg/70 p-5 transition-colors duration-300 hover:bg-ds-accent/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-ds-accent focus-visible:ring-offset-4 focus-visible:ring-offset-ds-surface"
-                  aria-label={`Acessar site ${partner.title}`}
-                >
-                  <img
-                    src={partner.logo}
-                    alt={`Logo ${partner.title}`}
-                    className="max-h-20 max-w-full object-contain"
-                    loading="lazy"
-                    draggable="false"
-                  />
-                </a>
-
-                <h3 className="mt-6 text-xl font-medium tracking-tight text-ds-text">
-                  {partner.title}
-                </h3>
-              </article>
-            </ScrollReveal>
-          ))}
+          <div className="grid flex-1 grid-cols-2 items-center gap-x-8 gap-y-7 sm:grid-cols-4 lg:gap-x-12">
+            {partners.map((partner) => (
+              <a
+                key={partner.title}
+                href={partner.site}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-16 items-center justify-center rounded-xl px-3 transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-ds-accent"
+                aria-label={`Acessar site ${partner.title}`}
+                title={partner.title}
+              >
+                <img
+                  src={partner.logo}
+                  alt={`Logo ${partner.title}`}
+                  className="max-h-12 max-w-full object-contain opacity-70 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                  loading="lazy"
+                  draggable="false"
+                />
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   );
 };

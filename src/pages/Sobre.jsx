@@ -37,10 +37,11 @@ const Sobre = () => {
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-ds-accent/5 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
             <ScrollReveal direction="up" delay={0.1}>
               <div className="relative mx-auto max-w-7xl px-6 py-16 text-center lg:px-10 lg:py-24">
-                <p className="text-[10px] uppercase tracking-[0.35em] text-ds-accent font-mono">
+                <span className="mx-auto mb-6 flex w-fit items-center gap-2 rounded-full border border-ds-accent/20 bg-ds-accent/10 px-4 py-1.5 text-[11px] font-mono uppercase tracking-[0.2em] text-ds-accent shadow-[0_0_15px_rgba(255,122,89,0.15)] backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(255,122,89,0.8)]" />
                   Sobre o estúdio
-                </p>
-                <h1 className="mx-auto mt-6 max-w-5xl text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1.05] text-balance">
+                </span>
+                <h1 className="mx-auto max-w-5xl text-4xl sm:text-5xl lg:text-[4rem] font-medium tracking-[-0.02em] leading-[1.05] text-balance">
                   Estratégia, percepção e clareza para marcas que cresceram, mas ainda não comunicam isso
                 </h1>
                 <p className="mx-auto mt-7 max-w-3xl text-lg md:text-xl leading-[1.6] text-ds-muted">
@@ -112,8 +113,11 @@ const Sobre = () => {
           <section className="border-t border-white/5 px-6 py-16 lg:py-24">
             <ScrollReveal direction="up" delay={0.1}>
               <div className="mx-auto max-w-4xl rounded-[2rem] border border-white/5 bg-ds-surface p-8 text-center shadow-sm sm:p-12">
-                <p className="text-[10px] uppercase tracking-widest text-ds-accent font-mono">Próximo passo</p>
-                <h2 className="mt-4 text-3xl md:text-4xl font-medium tracking-tight">
+                <span className="mx-auto mb-4 flex w-fit items-center gap-2 rounded-full border border-ds-accent/20 bg-ds-accent/10 px-4 py-1.5 text-[11px] font-mono uppercase tracking-[0.2em] text-ds-accent shadow-[0_0_15px_rgba(255,122,89,0.15)] backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(255,122,89,0.8)]" />
+                  Próximo passo
+                </span>
+                <h2 className="text-3xl md:text-4xl font-medium tracking-tight">
                   Sua marca precisa acompanhar a qualidade da sua entrega?
                 </h2>
                 <p className="mx-auto mt-5 max-w-2xl text-base md:text-lg leading-[1.6] text-ds-muted">

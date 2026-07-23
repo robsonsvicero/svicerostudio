@@ -39,10 +39,10 @@ const DepoimentosSection = () => {
           <div className="mb-12 text-center md:text-left flex flex-col items-center md:items-start">
             <span className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-ds-accent/25 bg-ds-accent/5 text-[11px] font-mono uppercase tracking-[.2em] text-ds-accent">
               <span className="w-1.5 h-1.5 rounded-full bg-ds-accent shadow-[0_0_10px_rgba(184,115,51,0.5)]"></span>
-              CLIENTES
+              RESULTADOS
             </span>
             <h2 className="text-4xl md:text-[3.75rem] font-medium tracking-[-0.02em] leading-[1.1] text-ds-text text-left">
-              O que muda quando percepção e posicionamento começam a se alinhar
+              Resultados e depoimentos
             </h2>
             <p className="text-base text-ds-muted max-w-2xl mx-auto mb-12 leading-relaxed">
               Nossos projetos não começam pela paleta de cores.

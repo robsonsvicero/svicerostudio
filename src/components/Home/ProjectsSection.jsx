@@ -117,12 +117,8 @@ const ProjectsSection = ({ projects }) => {
         <div className="max-w-screen-xl mx-auto">
           <ScrollReveal direction="up" delay={0.1} className="mb-10">
             <SectionHeader
-              badge="PROJETOS"
-              title={(
-                <>
-                  Projetos desenvolvidos para alinhar <span className='text-ds-accent font-bold'>percepção</span>, <span className='text-ds-accent font-bold'>clareza</span> e <span className='text-ds-accent font-bold'>posicionamento</span>
-                </>
-              )}
+              badge="ESTUDOS DE CASO"
+              title="Estratégia aplicada a desafios reais de marca"
               description="Cada projeto nasce de um diagnóstico estratégico. Nosso foco não é apenas estética, é construir marcas mais coerentes, confiáveis e memoráveis."
             />
           </ScrollReveal>
